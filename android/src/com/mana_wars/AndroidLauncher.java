@@ -1,5 +1,6 @@
 package com.mana_wars;
 
+import android.app.Application;
 import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
@@ -11,6 +12,9 @@ public class AndroidLauncher extends AndroidApplication {
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		initialize(new ManaWars(), config);
+		config.useCompass = false;
+		config.useAccelerometer = false;
+		config.useGyroscope = false;
+		initialize(ManaWars.getInstance(), config);
 	}
 }
