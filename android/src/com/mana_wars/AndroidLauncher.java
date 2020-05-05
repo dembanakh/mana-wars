@@ -5,7 +5,10 @@ import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.mana_wars.ManaWars;
+
+import model.SharedPreferencesRepository;
+
+import static com.mana_wars.ui.LocalizedStringsRepository.SKILL_LABEL;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override
@@ -13,9 +16,25 @@ public class AndroidLauncher extends AndroidApplication {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		config.useCompass = false;
+
 		config.useAccelerometer = false;
 		config.useGyroscope = false;
 
-		initialize(ManaWars.getInstance(), config);
+
+		ManaWars app = ManaWars.getInstance();
+		//TODO set android impl classes
+		app.setLocalUserDataRepository(new SharedPreferencesRepository(this));
+		app.setLocalizedStringsRepository(id->
+		{
+			switch (id) {
+				case SKILL_LABEL:
+					return getResources().getString(R.string.skills_label);
+
+				default:
+					return null;
+			}
+		});
+		initialize(app, config);
+
 	}
 }

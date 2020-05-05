@@ -1,4 +1,4 @@
-package com.mana_wars.view.screens;
+package com.mana_wars.ui.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -8,15 +8,28 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.mana_wars.view.AssetsFactory;
+import com.mana_wars.ManaWars;
+import com.mana_wars.model.interactor.MainMenuInteractor;
+import com.mana_wars.presentation.presenters.MainMenuPresenter;
+import com.mana_wars.presentation.view.MainMenuView;
+import com.mana_wars.ui.AssetsFactory;
+import com.mana_wars.ui.LocalizedStringsRepository;
 
-public class MainMenuScreen extends BaseScreen {
+public class MainMenuScreen extends com.mana_wars.ui.screens.BaseScreen implements MainMenuView {
 
     private Stage stage;
+    private MainMenuPresenter presenter;
 
     MainMenuScreen() {
+        //TODO think about rewrite
+        presenter = new MainMenuPresenter(this, new MainMenuInteractor(ManaWars.getInstance().getLocalUserDataRepository()));
+
         stage = new Stage();
-        stage.addActor(initTabsBar("SKILLS", "PLACEHOLDER1", "PLACEHOLDER2", "PLACEHOLDER3"));
+
+        stage.addActor(initTabsBar(
+                ManaWars.getInstance().getLocalizedStringsRepository().get(LocalizedStringsRepository.SKILL_LABEL),
+                "PLACEHOLDER1", "PLACEHOLDER2", "PLACEHOLDER3"));
+
         TextButton skillCaseButton = initTab("GET SKILL CASE", new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -54,7 +67,7 @@ public class MainMenuScreen extends BaseScreen {
 
                 @Override
                 public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                    System.out.println("TOUCH " + pointer + " " + button);
+                    System.out.println("TOUCH " + pointer + " " + event.getButton());
                     // ManaWars.getInstance().getScreenManager().switchScreenTo();
                 }
             }))

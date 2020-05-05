@@ -1,4 +1,4 @@
-package com.mana_wars.view.screens;
+package com.mana_wars.ui.screens;
 
 import com.badlogic.gdx.Screen;
 

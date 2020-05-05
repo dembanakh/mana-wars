@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Mana Wars</string>
-    <string name="skills_label">Skills</string>
-
+    <string name="skills_label">Umiejętności</string>
 </resources>

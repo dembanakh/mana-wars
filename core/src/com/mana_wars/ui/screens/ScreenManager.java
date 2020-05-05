@@ -1,10 +1,10 @@
-package com.mana_wars.view.screens;
+package com.mana_wars.ui.screens;
 
 public class ScreenManager {
 
     private ScreenHandler handler;
 
-    private BaseScreen mainMenuScreen;
+    private com.mana_wars.ui.screens.BaseScreen mainMenuScreen;
 
     public ScreenManager(ScreenHandler handler) {
         this.handler = handler;
