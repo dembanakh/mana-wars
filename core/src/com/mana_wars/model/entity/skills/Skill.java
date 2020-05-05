@@ -8,13 +8,13 @@ import java.util.List;
 
 public class Skill extends GameItem {
 
-    protected int mana_cost;
+    protected int manaCost;
     protected String description;
     protected List <SkillCharacteristic> skillCharacteristics;
 
-    public Skill(int level, String iconPath, Rarity rarity, int mana_cost, String description) {
+    public Skill(int level, String iconPath, Rarity rarity, int manaCost, String description) {
         super(level, iconPath, rarity);
-        this.mana_cost = mana_cost;
+        this.manaCost = manaCost;
         this.description = description;
     }
 
