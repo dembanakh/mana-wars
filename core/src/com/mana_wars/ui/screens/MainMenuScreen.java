@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mana_wars.ManaWars;
 import com.mana_wars.model.interactor.MainMenuInteractor;
@@ -21,6 +22,8 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
 
     private Stage stage;
     private Skin skin;
+
+    private Window skillCaseWindow;
 
     private MainMenuPresenter presenter;
 
@@ -36,6 +39,7 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
         Table layerBackground = buildBackgroundLayer(skin);
         Table layerForeground = buildForegroundLayer(skin);
         Table navigationBar = buildNavigationBar(skin);
+        Table layerSkillCaseWindow = buildSkillCaseWindowLayer(skin);
 
         // fill stage
         stage.clear();
@@ -44,6 +48,7 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
         stack.setFillParent(true);
         stack.add(layerBackground);
         stack.add(layerForeground);
+        stack.add(layerSkillCaseWindow);
         stage.addActor(navigationBar);
     }
 
@@ -61,6 +66,7 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 System.out.println("OPEN SKILL CASE");
+                onOpenSkillCase();
             }
         });
         layer.add(skillCaseButton);
@@ -109,10 +115,42 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
         return layer;
     }
 
+    private Table buildSkillCaseWindowLayer(Skin skin) {
+        skillCaseWindow = new Window("NEW SKILL", skin);
+        skillCaseWindow.setFillParent(false);
+        skillCaseWindow.setMovable(false);
+        skillCaseWindow.setResizable(false);
+        skillCaseWindow.add(getButton(skin, "GET", new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                System.out.println("GET SKILL");
+                onGetSkill();
+            }
+        })).bottom().pad(100, 100, 100, 100).row();
+        skillCaseWindow.setVisible(false);
+        skillCaseWindow.setDebug(true);
+        skillCaseWindow.pack();
+
+        return skillCaseWindow;
+    }
+
     private TextButton getButton(Skin skin, String label, ChangeListener eventListener) {
         TextButton button = new TextButton(label, skin);
         button.addListener(eventListener);
         return button;
+    }
+
+    private void onOpenSkillCase() {
+        skillCaseWindow.setVisible(true);
+        skillCaseWindow.pack();
+        int screenWidth = Gdx.graphics.getWidth();
+        int screenHeight = Gdx.graphics.getHeight();
+        skillCaseWindow.setPosition((screenWidth - skillCaseWindow.getWidth()) * 0.5f,
+                (screenHeight - skillCaseWindow.getHeight()) * 0.5f);
+    }
+
+    private void onGetSkill() {
+        skillCaseWindow.setVisible(false);
     }
 
     @Override
