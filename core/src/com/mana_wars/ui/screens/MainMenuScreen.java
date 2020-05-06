@@ -2,12 +2,14 @@ package com.mana_wars.ui.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mana_wars.ManaWars;
 import com.mana_wars.model.interactor.MainMenuInteractor;
 import com.mana_wars.presentation.presenters.MainMenuPresenter;
@@ -15,83 +17,114 @@ import com.mana_wars.presentation.view.MainMenuView;
 import com.mana_wars.ui.AssetsFactory;
 import com.mana_wars.ui.LocalizedStringsRepository;
 
-public class MainMenuScreen extends com.mana_wars.ui.screens.BaseScreen implements MainMenuView {
+public class MainMenuScreen extends BaseScreen implements MainMenuView {
 
     private Stage stage;
+    private Skin skin;
+
     private MainMenuPresenter presenter;
 
     MainMenuScreen() {
         //TODO think about rewrite
-        presenter = new MainMenuPresenter(this, new MainMenuInteractor(ManaWars.getInstance().getLocalUserDataRepository()));
+        presenter = new MainMenuPresenter(this,
+                new MainMenuInteractor(ManaWars.getInstance().getLocalUserDataRepository()));
+    }
 
-        stage = new Stage();
+    private void rebuildStage() {
+        skin = AssetsFactory.getSkin("freezing");
+        // layers
+        Table layerBackground = buildBackgroundLayer(skin);
+        Table layerForeground = buildForegroundLayer(skin);
+        Table navigationBar = buildNavigationBar(skin);
 
-        stage.addActor(initTabsBar(
-                ManaWars.getInstance().getLocalizedStringsRepository().get(LocalizedStringsRepository.SKILL_LABEL),
-                "PLACEHOLDER1", "PLACEHOLDER2", "PLACEHOLDER3"));
+        // fill stage
+        stage.clear();
+        Stack stack = new Stack();
+        stage.addActor(stack);
+        stack.setFillParent(true);
+        stack.add(layerBackground);
+        stack.add(layerForeground);
+        stage.addActor(navigationBar);
+    }
 
-        TextButton skillCaseButton = initTab("GET SKILL CASE", new ClickListener() {
+    private Table buildBackgroundLayer(Skin skin) {
+        Table layer = new Table();
+
+        return layer;
+    }
+
+    private Table buildForegroundLayer(Skin skin) {
+        Table layer = new Table();
+        layer.setFillParent(true);
+
+        TextButton skillCaseButton = getButton(skin, "OPEN SKILL CASE", new ChangeListener() {
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println("TOUCH " + pointer + " " + button);
-                // ManaWars.getInstance().getScreenManager().switchScreenTo();
+            public void changed(ChangeEvent event, Actor actor) {
+                System.out.println("OPEN SKILL CASE");
             }
         });
-        skillCaseButton.setPosition(Gdx.graphics.getWidth() * 0.7f, Gdx.graphics.getHeight() * 0.7f);
-        skillCaseButton.setSize(Gdx.graphics.getWidth() * 0.2f, Gdx.graphics.getWidth() * 0.2f);
-        stage.addActor(skillCaseButton);
+        layer.add(skillCaseButton);
+
+        return layer;
     }
 
-    private Table initTabsBar(String... labels) {
-        Table table = new Table(AssetsFactory.getSkin("freezing"));
-        int screenWidth = Gdx.graphics.getWidth();
-        int screenHeight = Gdx.graphics.getHeight();
-        table.setSize(screenWidth, screenHeight * 0.1f);
-        table.setPosition(0, 0);
-        table.setBackground("white");
-        table.setDebug(false);
+    private Table buildNavigationBar(Skin skin) {
+        Table layer = new Table(skin);
+        layer.bottom().setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() * 0.1f);
+        layer.setBackground("white");
 
-        int tabsNumber = labels.length;
+        int tabsNumber = 4;
+        float buttonWidth = (float)Gdx.graphics.getWidth() / tabsNumber;
+        float buttonHeight = layer.getHeight();
 
-        for (String label : labels) {
-            table.add(initTab(label, new ClickListener() {
-                @Override
-                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    return true;
-                }
+        // SKILLS
+        layer.add(getButton(skin, "SKILLS", new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                System.out.println("SKILLS");
+            }
+        })).width(buttonWidth).height(buttonHeight);
+        // PLACEHOLDER1
+        layer.add(getButton(skin, "PLACEHOLDER1", new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                System.out.println("PLACEHOLDER1");
+            }
+        })).width(buttonWidth).height(buttonHeight);
+        // PLACEHOLDER2
+        layer.add(getButton(skin, "PLACEHOLDER2", new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                System.out.println("PLACEHOLDER2");
+            }
+        })).width(buttonWidth).height(buttonHeight);
+        // PLACEHOLDER3
+        layer.add(getButton(skin, "PLACEHOLDER3", new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                System.out.println("PLACEHOLDER3");
+            }
+        })).width(buttonWidth).height(buttonHeight);
 
-                @Override
-                public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                    System.out.println("TOUCH " + pointer + " " + event.getButton());
-                    // ManaWars.getInstance().getScreenManager().switchScreenTo();
-                }
-            }))
-                    .width((float)screenWidth / tabsNumber)
-                    .height(table.getHeight());
-        }
-
-        return table;
+        return layer;
     }
 
-    private TextButton initTab(String label, EventListener eventListener) {
-        TextButton skillsTabButton = new TextButton(label, AssetsFactory.getSkin("freezing"));
-        skillsTabButton.addListener(eventListener);
-        return skillsTabButton;
+    private TextButton getButton(Skin skin, String label, ChangeListener eventListener) {
+        TextButton button = new TextButton(label, skin);
+        button.addListener(eventListener);
+        return button;
     }
 
     @Override
     public void show() {
+        stage = new Stage();
         Gdx.input.setInputProcessor(stage);
+        rebuildStage();
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(50.0f/255, 115.0f/255, 220.0f/255, 0.3f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.act(delta);
@@ -121,5 +154,7 @@ public class MainMenuScreen extends com.mana_wars.ui.screens.BaseScreen implemen
     @Override
     public void dispose() {
         stage.dispose();
+        skin.dispose();
     }
+
 }
