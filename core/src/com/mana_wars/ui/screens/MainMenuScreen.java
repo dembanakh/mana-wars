@@ -2,6 +2,7 @@ package com.mana_wars.ui.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -120,15 +121,17 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
         skillCaseWindow.setFillParent(false);
         skillCaseWindow.setMovable(false);
         skillCaseWindow.setResizable(false);
+        // TODO change icon accordingly to obtained skill
+        skillCaseWindow.add(new Image(AssetsFactory.getSkillIcon("image_part", 1))).pad(100).row();
         skillCaseWindow.add(getButton(skin, "GET", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 System.out.println("GET SKILL");
                 onGetSkill();
             }
-        })).bottom().pad(100, 100, 100, 100).row();
+        })).bottom().pad(25, 100, 25, 100).row();
         skillCaseWindow.setVisible(false);
-        skillCaseWindow.setDebug(true);
+        skillCaseWindow.setDebug(false);
         skillCaseWindow.pack();
 
         return skillCaseWindow;
@@ -141,16 +144,20 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
     }
 
     private void onOpenSkillCase() {
+        prepareSkillCaseWindow();
         skillCaseWindow.setVisible(true);
+    }
+
+    private void onGetSkill() {
+        skillCaseWindow.setVisible(false);
+    }
+
+    private void prepareSkillCaseWindow() {
         skillCaseWindow.pack();
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
         skillCaseWindow.setPosition((screenWidth - skillCaseWindow.getWidth()) * 0.5f,
                 (screenHeight - skillCaseWindow.getHeight()) * 0.5f);
-    }
-
-    private void onGetSkill() {
-        skillCaseWindow.setVisible(false);
     }
 
     @Override
