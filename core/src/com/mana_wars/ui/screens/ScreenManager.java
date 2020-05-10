@@ -4,19 +4,34 @@ public class ScreenManager {
 
     private ScreenHandler handler;
 
-    private com.mana_wars.ui.screens.BaseScreen mainMenuScreen;
-
     public ScreenManager(ScreenHandler handler) {
         this.handler = handler;
     }
 
     public void start() {
-        mainMenuScreen = new MainMenuScreen();
-        handler.setScreen(mainMenuScreen);
+        handler.setScreen(ScreenInstance.GREETING.getScreen());
     }
 
     public void dispose() {
-        mainMenuScreen.dispose();
+        for (ScreenInstance screenInstance : ScreenInstance.values()) {
+            screenInstance.getScreen().dispose();
+        }
+    }
+
+    enum ScreenInstance {
+        GREETING(new GreetingScreen()),
+        MAIN_MENU(new MainMenuScreen());
+
+        private final BaseScreen screen;
+        ScreenInstance(BaseScreen screen) {
+            this.screen = screen;
+        }
+
+        public BaseScreen getScreen() { return screen; }
+    }
+
+    void setScreen(ScreenInstance screenInstance) {
+        handler.setScreen(screenInstance.getScreen());
     }
 
 }

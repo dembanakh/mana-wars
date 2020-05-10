@@ -26,10 +26,10 @@ public final class AssetsFactory {
         return result;
     }
 
-    private static HashMap<String, Skin> skins = new HashMap<>();
+    private static final HashMap<String, Skin> skins = new HashMap<>();
 
-    private static TextureAtlas skillsIconsAtlas;
-    private static HashMap<String, TextureAtlas.AtlasRegion> skillsIcons = new HashMap<>();
+    private static final TextureAtlas skillsIconsAtlas;
+    private static final HashMap<String, TextureAtlas.AtlasRegion> skillsIcons = new HashMap<>();
 
     static {
         loadSkin("freezing");

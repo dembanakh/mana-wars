@@ -12,35 +12,42 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mana_wars.ManaWars;
+import com.mana_wars.model.entity.base.Rarity;
+import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.interactor.MainMenuInteractor;
 import com.mana_wars.presentation.presenters.MainMenuPresenter;
 import com.mana_wars.presentation.view.MainMenuView;
 import com.mana_wars.ui.AssetsFactory;
 import com.mana_wars.ui.LocalizedStringsRepository;
+import com.mana_wars.ui.UIElementsFactory;
 
 public class MainMenuScreen extends BaseScreen implements MainMenuView {
 
-    private Stage stage;
-    private Skin skin;
+    private final Stage stage;
+    private final Skin skin;
 
-    private Window skillCaseWindow;
+    private SkillCaseWindow skillCaseWindow;
 
-    private MainMenuPresenter presenter;
+    private final MainMenuPresenter presenter;
 
     MainMenuScreen() {
         //TODO think about rewrite
         presenter = new MainMenuPresenter(this,
                 new MainMenuInteractor(ManaWars.getInstance().getLocalUserDataRepository()));
+
+        stage = new Stage();
+        skin = AssetsFactory.getSkin("freezing");
+        skillCaseWindow = new SkillCaseWindow("NEW SKILL", skin);
     }
 
     private void rebuildStage() {
-        skin = AssetsFactory.getSkin("freezing");
         // layers
         Table layerBackground = buildBackgroundLayer(skin);
         Table layerForeground = buildForegroundLayer(skin);
         Table navigationBar = buildNavigationBar(skin);
-        Table layerSkillCaseWindow = buildSkillCaseWindowLayer(skin);
+        Table layerSkillCaseWindow = skillCaseWindow.rebuild(skin);
 
         // fill stage
         stage.clear();
@@ -63,11 +70,11 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
         Table layer = new Table();
         layer.setFillParent(true);
 
-        TextButton skillCaseButton = getButton(skin, "OPEN SKILL CASE", new ChangeListener() {
+        TextButton skillCaseButton = UIElementsFactory.getButton(skin, "OPEN SKILL CASE", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 System.out.println("OPEN SKILL CASE");
-                onOpenSkillCase();
+                skillCaseWindow.onOpenSkillCase();
             }
         });
         layer.add(skillCaseButton);
@@ -85,28 +92,28 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
         float buttonHeight = layer.getHeight();
 
         // SKILLS
-        layer.add(getButton(skin, "SKILLS", new ChangeListener() {
+        layer.add(UIElementsFactory.getButton(skin, "SKILLS", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 System.out.println("SKILLS");
             }
         })).width(buttonWidth).height(buttonHeight);
         // PLACEHOLDER1
-        layer.add(getButton(skin, "PLACEHOLDER1", new ChangeListener() {
+        layer.add(UIElementsFactory.getButton(skin, "PLACEHOLDER1", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 System.out.println("PLACEHOLDER1");
             }
         })).width(buttonWidth).height(buttonHeight);
         // PLACEHOLDER2
-        layer.add(getButton(skin, "PLACEHOLDER2", new ChangeListener() {
+        layer.add(UIElementsFactory.getButton(skin, "PLACEHOLDER2", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 System.out.println("PLACEHOLDER2");
             }
         })).width(buttonWidth).height(buttonHeight);
         // PLACEHOLDER3
-        layer.add(getButton(skin, "PLACEHOLDER3", new ChangeListener() {
+        layer.add(UIElementsFactory.getButton(skin, "PLACEHOLDER3", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 System.out.println("PLACEHOLDER3");
@@ -116,53 +123,8 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
         return layer;
     }
 
-    private Table buildSkillCaseWindowLayer(Skin skin) {
-        skillCaseWindow = new Window("NEW SKILL", skin);
-        skillCaseWindow.setFillParent(false);
-        skillCaseWindow.setMovable(false);
-        skillCaseWindow.setResizable(false);
-        // TODO change icon accordingly to obtained skill
-        skillCaseWindow.add(new Image(AssetsFactory.getSkillIcon("image_part", 1))).pad(100).row();
-        skillCaseWindow.add(getButton(skin, "GET", new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                System.out.println("GET SKILL");
-                onGetSkill();
-            }
-        })).bottom().pad(25, 100, 25, 100).row();
-        skillCaseWindow.setVisible(false);
-        skillCaseWindow.setDebug(false);
-        skillCaseWindow.pack();
-
-        return skillCaseWindow;
-    }
-
-    private TextButton getButton(Skin skin, String label, ChangeListener eventListener) {
-        TextButton button = new TextButton(label, skin);
-        button.addListener(eventListener);
-        return button;
-    }
-
-    private void onOpenSkillCase() {
-        prepareSkillCaseWindow();
-        skillCaseWindow.setVisible(true);
-    }
-
-    private void onGetSkill() {
-        skillCaseWindow.setVisible(false);
-    }
-
-    private void prepareSkillCaseWindow() {
-        skillCaseWindow.pack();
-        int screenWidth = Gdx.graphics.getWidth();
-        int screenHeight = Gdx.graphics.getHeight();
-        skillCaseWindow.setPosition((screenWidth - skillCaseWindow.getWidth()) * 0.5f,
-                (screenHeight - skillCaseWindow.getHeight()) * 0.5f);
-    }
-
     @Override
     public void show() {
-        stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         rebuildStage();
     }

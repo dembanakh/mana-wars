@@ -24,7 +24,7 @@ public class ManaWars extends Game implements ScreenHandler {
 		return instance;
 	}
 
-	ScreenManager getScreenManager() {
+	public ScreenManager getScreenManager() {
 		return screenManager;
 	}
 	
