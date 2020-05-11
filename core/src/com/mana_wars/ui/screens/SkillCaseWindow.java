@@ -10,12 +10,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.Skill;
+import com.mana_wars.model.entity.skills.SkillFactory;
 import com.mana_wars.ui.AssetsFactory;
 import com.mana_wars.ui.UIElementsFactory;
 
 final class SkillCaseWindow extends Window {
 
     private Image skillIcon;
+    SkillFactory skillFactory= new SkillFactory();
 
     SkillCaseWindow(String title, Skin skin) {
         super(title, skin);
@@ -47,8 +49,7 @@ final class SkillCaseWindow extends Window {
     }
 
     void onOpenSkillCase() {
-        // TODO get random skill from SkillFactory
-        Skill skill = new Skill(0, "image_part", Rarity.COMMON, 10, "Super skill.");
+        Skill skill = skillFactory.getSkill();
         prepareSkillCaseWindow(skill);
         setVisible(true);
     }
