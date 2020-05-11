@@ -12,10 +12,11 @@ public class Skill extends GameItem {
     protected String description;
     protected List <SkillCharacteristic> skillCharacteristics;
 
-    public Skill(int level, String iconPath, Rarity rarity, int manaCost, String description) {
+    public Skill(int level, String iconPath, Rarity rarity, int manaCost, String description, List <SkillCharacteristic> skillCharacteristics) {
         super(level, iconPath, rarity);
         this.manaCost = manaCost;
         this.description = description;
+        this.skillCharacteristics = skillCharacteristics;
     }
 
     //TODO rewrite and add observers
