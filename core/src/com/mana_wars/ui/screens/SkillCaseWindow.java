@@ -14,11 +14,12 @@ import com.mana_wars.ui.UIElementsFactory;
 
 final class SkillCaseWindow extends Window {
 
-    private Image skillIcon = new Image();
+    private Image skillIcon;
     private Label skillName;
 
     SkillCaseWindow(String title, Skin skin) {
         super(title, skin);
+        this.skillIcon = new Image();
         this.skillName = new Label("", skin);
     }
 

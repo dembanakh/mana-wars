@@ -1,6 +1,5 @@
 package com.mana_wars.model.entity.skills;
 
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.mana_wars.model.entity.battle.BattleParticipant;
 import com.mana_wars.model.entity.base.GameItem;
 import com.mana_wars.model.entity.base.Rarity;

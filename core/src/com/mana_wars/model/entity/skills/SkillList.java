@@ -21,7 +21,7 @@ public class SkillList {
                         new ActiveSkill(1, 1, Rarity.COMMON, 10, 4,"Magic spear",
                                 new ArrayList<>(Arrays.asList(new SkillCharacteristic(10, Characteristic.HEALTH, ValueChangeType.DECREASE, SkillCharacteristic.Target.ENEMY)))),
                         new ActiveSkill(2, 1, Rarity.COMMON, 10, 5,"Self-healing",
-                                new ArrayList<>(Arrays.asList(new SkillCharacteristic(5, Characteristic.HEALTH, ValueChangeType.INCREASE, SkillCharacteristic.Target.ENEMY)))),
+                                new ArrayList<>(Arrays.asList(new SkillCharacteristic(5, Characteristic.HEALTH, ValueChangeType.INCREASE, SkillCharacteristic.Target.SELF)))),
                         new PassiveSkill(3, 1, Rarity.COMMON, 50, "Concentration",
                                 new ArrayList<>(Arrays.asList(new SkillCharacteristic(10,Characteristic.COOLDOWN, ValueChangeType.DECREASE,SkillCharacteristic.Target.SELF))))
                         )
