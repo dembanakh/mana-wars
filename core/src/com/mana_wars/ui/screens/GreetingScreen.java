@@ -45,7 +45,7 @@ class GreetingScreen extends BaseScreen {
 
     private Table buildForegroundLayer(Skin skin) {
         Table layer = new Table();
-        Label label = new Label("HELLO, WORLD", skin);
+        Label label = new Label("HELLO, USER", skin);
         label.setFontScale(2);
         layer.add(label).row();
         layer.add(getButton(skin, "START", new ChangeListener() {

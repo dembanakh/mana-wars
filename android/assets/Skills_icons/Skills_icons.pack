@@ -16,14 +16,14 @@ image_part
   size: 65, 65
   orig: 65, 65
   offset: 0, 0
-  index: 3
+  index: 46
 image_part
   rotate: false
   xy: 68, 937
   size: 65, 65
   orig: 65, 65
   offset: 0, 0
-  index: 4
+  index: 72
 image_part
   rotate: false
   xy: 1, 803
@@ -135,7 +135,7 @@ image_part
   size: 65, 65
   orig: 65, 65
   offset: 0, 0
-  index: 46
+  index: 3
 image_part
   rotate: false
   xy: 269, 870
@@ -156,7 +156,7 @@ image_part
   size: 65, 65
   orig: 65, 65
   offset: 0, 0
-  index: 51
+  index: 2
 image_part
   rotate: false
   xy: 68, 602
@@ -212,7 +212,7 @@ image_part
   size: 65, 65
   orig: 65, 65
   offset: 0, 0
-  index: 72
+  index: 4
 image_part
   rotate: false
   xy: 135, 602
@@ -359,7 +359,7 @@ image_part
   size: 64, 65
   orig: 64, 65
   offset: 0, 0
-  index: 2
+  index: 51
 image_part
   rotate: false
   xy: 403, 736

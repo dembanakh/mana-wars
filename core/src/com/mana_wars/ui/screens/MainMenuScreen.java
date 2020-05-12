@@ -2,25 +2,18 @@ package com.mana_wars.ui.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mana_wars.ManaWars;
-import com.mana_wars.model.entity.base.Rarity;
-import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.interactor.MainMenuInteractor;
 import com.mana_wars.presentation.presenters.MainMenuPresenter;
 import com.mana_wars.presentation.view.MainMenuView;
 import com.mana_wars.ui.AssetsFactory;
-import com.mana_wars.ui.LocalizedStringsRepository;
 import com.mana_wars.ui.UIElementsFactory;
 
 public class MainMenuScreen extends BaseScreen implements MainMenuView {
@@ -73,14 +66,15 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
         TextButton skillCaseButton = UIElementsFactory.getButton(skin, "OPEN SKILL CASE", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                System.out.println("OPEN SKILL CASE");
-                skillCaseWindow.onOpenSkillCase();
+                presenter.onOpenSkillCase();
             }
         });
         layer.add(skillCaseButton);
 
         return layer;
     }
+
+
 
     private Table buildNavigationBar(Skin skin) {
         Table layer = new Table(skin);
@@ -138,6 +132,7 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
         stage.draw();
     }
 
+
     @Override
     public void resize(int width, int height) {
         stage.getViewport().setScreenSize(width, height);
@@ -164,4 +159,8 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
         skin.dispose();
     }
 
+    @Override
+    public void showNewSkillWindow(int skillID, String skillName, String description) {
+        skillCaseWindow.showSkill(skillID, skillName, description);
+    }
 }

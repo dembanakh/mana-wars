@@ -1,5 +1,6 @@
 package com.mana_wars.presentation.presenters;
 
+import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.interactor.MainMenuInteractor;
 import com.mana_wars.presentation.view.MainMenuView;
 
@@ -14,4 +15,8 @@ public class MainMenuPresenter {
         this.interactor=interactor;
     }
 
+    public void onOpenSkillCase() {
+        Skill s = interactor.getNewSkill();
+        view.showNewSkillWindow(s.getIconID(), s.getName(), s.getDescription());
+    }
 }

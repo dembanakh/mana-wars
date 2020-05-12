@@ -13,14 +13,16 @@ public final class AssetsFactory {
     public static Skin getSkin(String name) {
         return skins.get(name);
     }
-    public static TextureRegion getSkillIcon(String name, int index) {
+
+    public static TextureRegion getSkillIcon(int index) {
+        final String name = "image_part";
         TextureAtlas.AtlasRegion result = skillsIcons.get(name);
         if (result == null) {
             result = skillsIconsAtlas.findRegion(name, index);
             if (result == null)
                 throw new NoSuchElementException(
                         String.format("There is no textureRegion with such (name, index): (%s, %d)", name, index));
-            skillsIcons.put(name, result);
+            skillsIcons.put(index, result);
         }
 
         return result;
@@ -29,7 +31,7 @@ public final class AssetsFactory {
     private static final HashMap<String, Skin> skins = new HashMap<>();
 
     private static final TextureAtlas skillsIconsAtlas;
-    private static final HashMap<String, TextureAtlas.AtlasRegion> skillsIcons = new HashMap<>();
+    private static final HashMap<Integer, TextureAtlas.AtlasRegion> skillsIcons = new HashMap<>();
 
     static {
         loadSkin("freezing");

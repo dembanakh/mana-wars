@@ -3,25 +3,23 @@ package com.mana_wars.ui.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.mana_wars.model.entity.base.Rarity;
-import com.mana_wars.model.entity.skills.Skill;
-import com.mana_wars.model.entity.skills.SkillFactory;
 import com.mana_wars.ui.AssetsFactory;
 import com.mana_wars.ui.UIElementsFactory;
 
 final class SkillCaseWindow extends Window {
 
-    private Image skillIcon;
-    SkillFactory skillFactory= new SkillFactory();
+    private Image skillIcon = new Image();
+    private Label skillName;
 
     SkillCaseWindow(String title, Skin skin) {
         super(title, skin);
-        skillIcon = new Image(AssetsFactory.getSkillIcon("image_part", 1));
+        this.skillName = new Label("", skin);
     }
 
     Table rebuild(Skin skin) {
@@ -29,12 +27,12 @@ final class SkillCaseWindow extends Window {
         setFillParent(false);
         setMovable(false);
         setResizable(false);
+        add(skillName).pad(10).row();
         add(skillIcon).pad(100).row();
         add(UIElementsFactory.getButton(skin, "GET", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                System.out.println("GET SKILL");
-                onGetSkill();
+                hideSkill();
             }
         })).bottom().pad(25, 100, 25, 100).row();
         setVisible(false);
@@ -44,23 +42,20 @@ final class SkillCaseWindow extends Window {
         return this;
     }
 
-    private void onGetSkill() {
+    private void hideSkill() {
         setVisible(false);
     }
 
-    void onOpenSkillCase() {
-        Skill skill = skillFactory.getSkill();
-        prepareSkillCaseWindow(skill);
-        setVisible(true);
-    }
-
-    private void prepareSkillCaseWindow(Skill skill) {
-        skillIcon.setDrawable(new TextureRegionDrawable(AssetsFactory.getSkillIcon(skill.getIconPath(), 1)));
+    //TODO implement description
+    void showSkill(int skillID, String skillName, String description) {
+        skillIcon.setDrawable(new TextureRegionDrawable(AssetsFactory.getSkillIcon(skillID)));
+        this.skillName.setText(skillName);
         pack();
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
         setPosition((screenWidth - getWidth()) * 0.5f,
                 (screenHeight - getHeight()) * 0.5f);
+        setVisible(true);
     }
 
 }

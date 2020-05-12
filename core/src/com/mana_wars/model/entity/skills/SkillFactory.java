@@ -7,11 +7,11 @@ import java.util.Random;
 public class SkillFactory {
     static SkillList sl = new SkillList();
 
-    public Skill getSkill(){
+    public static Skill getNewSkill(){
         Rarity r = null;
         int rarityLen = Rarity.values().length;
         Random generator = new Random();
-        int rand = generator.nextInt((int)Math.pow(2, rarityLen) -1);
+        int rand = generator.nextInt((int)Math.pow(2, rarityLen));
         int pow = (int)Math.pow(2, rarityLen-1);
         int barrier = pow;
         for(Rarity rar : Rarity.values()) {

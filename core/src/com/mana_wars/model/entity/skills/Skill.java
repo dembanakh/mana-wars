@@ -1,5 +1,6 @@
 package com.mana_wars.model.entity.skills;
 
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.mana_wars.model.entity.battle.BattleParticipant;
 import com.mana_wars.model.entity.base.GameItem;
 import com.mana_wars.model.entity.base.Rarity;
@@ -9,13 +10,13 @@ import java.util.List;
 public class Skill extends GameItem {
 
     protected int manaCost;
-    protected String description;
+    protected String name;
     protected List <SkillCharacteristic> skillCharacteristics;
 
-    public Skill(int level, String iconPath, Rarity rarity, int manaCost, String description, List <SkillCharacteristic> skillCharacteristics) {
-        super(level, iconPath, rarity);
+    public Skill(int id ,int level, Rarity rarity, int manaCost, String name, List <SkillCharacteristic> skillCharacteristics) {
+        super(id, level, rarity);
         this.manaCost = manaCost;
-        this.description = description;
+        this.name = name;
         this.skillCharacteristics = skillCharacteristics;
     }
 
@@ -29,4 +30,12 @@ public class Skill extends GameItem {
         }
     }
 
+    public String getName(){
+        return name;
+    }
+
+    //TODO generate description based on characteristics
+    public String getDescription() {
+        return null;
+    }
 }
