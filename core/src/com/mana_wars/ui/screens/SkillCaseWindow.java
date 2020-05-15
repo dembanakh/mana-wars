@@ -1,6 +1,7 @@
 package com.mana_wars.ui.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -9,18 +10,22 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.mana_wars.ui.AssetsFactory;
-import com.mana_wars.ui.UIElementsFactory;
+import com.mana_wars.ManaWars;
+import com.mana_wars.ui.factory.AssetFactory;
+import com.mana_wars.ui.factory.UIElementFactory;
 
 final class SkillCaseWindow extends Window {
 
     private Image skillIcon;
     private Label skillName;
 
+    private AssetFactory<Integer, TextureRegion> skillIconsFactory;
+
     SkillCaseWindow(String title, Skin skin) {
         super(title, skin);
         this.skillIcon = new Image();
         this.skillName = new Label("", skin);
+        this.skillIconsFactory = ManaWars.getInstance().getScreenManager().getSkillIconFactory();
     }
 
     Table rebuild(Skin skin) {
@@ -30,7 +35,7 @@ final class SkillCaseWindow extends Window {
         setResizable(false);
         add(skillName).pad(10).row();
         add(skillIcon).pad(100).row();
-        add(UIElementsFactory.getButton(skin, "GET", new ChangeListener() {
+        add(UIElementFactory.getButton(skin, "GET", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 hideSkill();
@@ -49,7 +54,7 @@ final class SkillCaseWindow extends Window {
 
     //TODO implement description
     void showSkill(int skillID, String skillName, String description) {
-        skillIcon.setDrawable(new TextureRegionDrawable(AssetsFactory.getSkillIcon(skillID)));
+        skillIcon.setDrawable(new TextureRegionDrawable(skillIconsFactory.getAsset(skillID)));
         this.skillName.setText(skillName);
         pack();
         int screenWidth = Gdx.graphics.getWidth();

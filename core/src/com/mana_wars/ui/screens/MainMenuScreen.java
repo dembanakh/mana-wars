@@ -13,8 +13,7 @@ import com.mana_wars.ManaWars;
 import com.mana_wars.model.interactor.MainMenuInteractor;
 import com.mana_wars.presentation.presenters.MainMenuPresenter;
 import com.mana_wars.presentation.view.MainMenuView;
-import com.mana_wars.ui.AssetsFactory;
-import com.mana_wars.ui.UIElementsFactory;
+import com.mana_wars.ui.factory.UIElementFactory;
 
 public class MainMenuScreen extends BaseScreen implements MainMenuView {
 
@@ -31,7 +30,7 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
                 new MainMenuInteractor(ManaWars.getInstance().getLocalUserDataRepository()));
 
         stage = new Stage();
-        skin = AssetsFactory.getSkin("freezing");
+        skin = ManaWars.getInstance().getScreenManager().getSkinFactory().getAsset("freezing");
         skillCaseWindow = new SkillCaseWindow("NEW SKILL", skin);
     }
 
@@ -63,7 +62,7 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
         Table layer = new Table();
         layer.setFillParent(true);
 
-        TextButton skillCaseButton = UIElementsFactory.getButton(skin, "OPEN SKILL CASE", new ChangeListener() {
+        TextButton skillCaseButton = UIElementFactory.getButton(skin, "OPEN SKILL CASE", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 presenter.onOpenSkillCase();
@@ -73,8 +72,6 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
 
         return layer;
     }
-
-
 
     private Table buildNavigationBar(Skin skin) {
         Table layer = new Table(skin);
@@ -86,28 +83,28 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
         float buttonHeight = layer.getHeight();
 
         // SKILLS
-        layer.add(UIElementsFactory.getButton(skin, "SKILLS", new ChangeListener() {
+        layer.add(UIElementFactory.getButton(skin, "SKILLS", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 System.out.println("SKILLS");
             }
         })).width(buttonWidth).height(buttonHeight);
         // PLACEHOLDER1
-        layer.add(UIElementsFactory.getButton(skin, "PLACEHOLDER1", new ChangeListener() {
+        layer.add(UIElementFactory.getButton(skin, "PLACEHOLDER1", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 System.out.println("PLACEHOLDER1");
             }
         })).width(buttonWidth).height(buttonHeight);
         // PLACEHOLDER2
-        layer.add(UIElementsFactory.getButton(skin, "PLACEHOLDER2", new ChangeListener() {
+        layer.add(UIElementFactory.getButton(skin, "PLACEHOLDER2", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 System.out.println("PLACEHOLDER2");
             }
         })).width(buttonWidth).height(buttonHeight);
         // PLACEHOLDER3
-        layer.add(UIElementsFactory.getButton(skin, "PLACEHOLDER3", new ChangeListener() {
+        layer.add(UIElementFactory.getButton(skin, "PLACEHOLDER3", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 System.out.println("PLACEHOLDER3");

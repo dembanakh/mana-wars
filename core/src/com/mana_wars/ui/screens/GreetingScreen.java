@@ -8,10 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mana_wars.ManaWars;
-import com.mana_wars.ui.AssetsFactory;
+import com.mana_wars.ui.factory.UIElementFactory;
 
 class GreetingScreen extends BaseScreen {
 
@@ -20,7 +19,7 @@ class GreetingScreen extends BaseScreen {
 
     GreetingScreen() {
         stage = new Stage();
-        skin = AssetsFactory.getSkin("freezing");
+        skin = ManaWars.getInstance().getScreenManager().getSkinFactory().getAsset("freezing");
     }
 
     private void rebuildStage() {
@@ -48,7 +47,7 @@ class GreetingScreen extends BaseScreen {
         Label label = new Label("HELLO, USER", skin);
         label.setFontScale(2);
         layer.add(label).row();
-        layer.add(getButton(skin, "START", new ChangeListener() {
+        layer.add(UIElementFactory.getButton(skin, "START", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 System.out.println("START");
@@ -57,12 +56,6 @@ class GreetingScreen extends BaseScreen {
         })).bottom().padBottom(100).padTop(200);
 
         return layer;
-    }
-
-    private TextButton getButton(Skin skin, String label, ChangeListener eventListener) {
-        TextButton button = new TextButton(label, skin);
-        button.addListener(eventListener);
-        return button;
     }
 
     private void onStart() {
