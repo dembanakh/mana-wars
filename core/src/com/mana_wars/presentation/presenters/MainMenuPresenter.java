@@ -17,6 +17,6 @@ public class MainMenuPresenter {
 
     public void onOpenSkillCase() {
         Skill s = interactor.getNewSkill();
-        view.showNewSkillWindow(s.getIconID(), s.getName(), s.getDescription());
+        view.openSkillCaseWindow(s.getIconID(), s.getName(), s.getDescription());
     }
 }

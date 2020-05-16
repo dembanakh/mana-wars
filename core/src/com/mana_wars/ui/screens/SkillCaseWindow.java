@@ -18,6 +18,7 @@ final class SkillCaseWindow extends Window {
 
     private Image skillIcon;
     private Label skillName;
+    private Label skillDescription;
 
     private AssetFactory<Integer, TextureRegion> skillIconsFactory;
 
@@ -25,7 +26,11 @@ final class SkillCaseWindow extends Window {
         super(title, skin);
         this.skillIcon = new Image();
         this.skillName = new Label("", skin);
+        this.skillName.setFontScale(1.5f);
+        this.skillDescription = new Label("", skin);
+        this.skillDescription.setFontScale(1.5f);
         this.skillIconsFactory = ManaWars.getInstance().getScreenManager().getSkillIconFactory();
+        padTop(32);
     }
 
     Table rebuild(Skin skin) {
@@ -33,17 +38,18 @@ final class SkillCaseWindow extends Window {
         setFillParent(false);
         setMovable(false);
         setResizable(false);
-        add(skillName).pad(10).row();
-        add(skillIcon).pad(100).row();
+        add(skillName).padTop(10).row();
+        add(skillIcon).padTop(50).row();
+        add(skillDescription).padTop(50).row();
         add(UIElementFactory.getButton(skin, "GET", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 hideSkill();
             }
-        })).bottom().pad(25, 100, 25, 100).row();
+        })).bottom().pad(50, 100, 25, 100);
+        pack();
         setVisible(false);
         setDebug(false);
-        pack();
 
         return this;
     }
@@ -52,15 +58,15 @@ final class SkillCaseWindow extends Window {
         setVisible(false);
     }
 
-    //TODO implement description
-    void showSkill(int skillID, String skillName, String description) {
+    void open(int skillID, String skillName, String skillDescription) {
         skillIcon.setDrawable(new TextureRegionDrawable(skillIconsFactory.getAsset(skillID)));
         this.skillName.setText(skillName);
-        pack();
+        this.skillDescription.setText(skillDescription);
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
         setPosition((screenWidth - getWidth()) * 0.5f,
                 (screenHeight - getHeight()) * 0.5f);
+        pack();
         setVisible(true);
     }
 

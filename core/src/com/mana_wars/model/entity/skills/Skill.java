@@ -5,6 +5,7 @@ import com.mana_wars.model.entity.base.GameItem;
 import com.mana_wars.model.entity.base.Rarity;
 
 import java.util.List;
+import java.util.Locale;
 
 public class Skill extends GameItem {
 
@@ -35,6 +36,7 @@ public class Skill extends GameItem {
 
     //TODO generate description based on characteristics
     public String getDescription() {
-        return null;
+        return String.valueOf(manaCost);
     }
+
 }

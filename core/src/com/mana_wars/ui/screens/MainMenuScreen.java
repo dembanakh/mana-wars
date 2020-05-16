@@ -20,7 +20,8 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
     private final Stage stage;
     private final Skin skin;
 
-    private SkillCaseWindow skillCaseWindow;
+    private final SkillCaseWindow skillCaseWindow;
+    private final NavigationBar navigationBar;
 
     private final MainMenuPresenter presenter;
 
@@ -32,13 +33,14 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
         stage = new Stage();
         skin = ManaWars.getInstance().getScreenManager().getSkinFactory().getAsset("freezing");
         skillCaseWindow = new SkillCaseWindow("NEW SKILL", skin);
+        navigationBar = ManaWars.getInstance().getScreenManager().getNavigationBar();
     }
 
     private void rebuildStage() {
         // layers
         Table layerBackground = buildBackgroundLayer(skin);
         Table layerForeground = buildForegroundLayer(skin);
-        Table navigationBar = buildNavigationBar(skin);
+        Table layerNavigationBar = navigationBar.rebuild(skin);
         Table layerSkillCaseWindow = skillCaseWindow.rebuild(skin);
 
         // fill stage
@@ -48,8 +50,8 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
         stack.setFillParent(true);
         stack.add(layerBackground);
         stack.add(layerForeground);
-        stack.add(layerSkillCaseWindow);
-        stage.addActor(navigationBar);
+        stage.addActor(layerSkillCaseWindow);
+        stage.addActor(layerNavigationBar);
     }
 
     private Table buildBackgroundLayer(Skin skin) {
@@ -73,45 +75,9 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
         return layer;
     }
 
-    private Table buildNavigationBar(Skin skin) {
-        Table layer = new Table(skin);
-        layer.bottom().setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() * 0.1f);
-        layer.setBackground("white");
-
-        int tabsNumber = 4;
-        float buttonWidth = (float)Gdx.graphics.getWidth() / tabsNumber;
-        float buttonHeight = layer.getHeight();
-
-        // SKILLS
-        layer.add(UIElementFactory.getButton(skin, "SKILLS", new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                System.out.println("SKILLS");
-            }
-        })).width(buttonWidth).height(buttonHeight);
-        // PLACEHOLDER1
-        layer.add(UIElementFactory.getButton(skin, "PLACEHOLDER1", new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                System.out.println("PLACEHOLDER1");
-            }
-        })).width(buttonWidth).height(buttonHeight);
-        // PLACEHOLDER2
-        layer.add(UIElementFactory.getButton(skin, "PLACEHOLDER2", new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                System.out.println("PLACEHOLDER2");
-            }
-        })).width(buttonWidth).height(buttonHeight);
-        // PLACEHOLDER3
-        layer.add(UIElementFactory.getButton(skin, "PLACEHOLDER3", new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                System.out.println("PLACEHOLDER3");
-            }
-        })).width(buttonWidth).height(buttonHeight);
-
-        return layer;
+    @Override
+    public void openSkillCaseWindow(int skillID, String skillName, String description) {
+        skillCaseWindow.open(skillID, skillName, description);
     }
 
     @Override
@@ -128,7 +94,6 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
         stage.act(delta);
         stage.draw();
     }
-
 
     @Override
     public void resize(int width, int height) {
@@ -154,10 +119,5 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
     public void dispose() {
         stage.dispose();
         skin.dispose();
-    }
-
-    @Override
-    public void showNewSkillWindow(int skillID, String skillName, String description) {
-        skillCaseWindow.showSkill(skillID, skillName, description);
     }
 }

@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.mana_wars.ManaWars;
 import com.mana_wars.ui.factory.AssetFactory;
 
 public class ScreenManager {
@@ -13,6 +12,8 @@ public class ScreenManager {
 
     private final AssetFactory<Integer, TextureRegion> skillIconFactory;
     private final AssetFactory<String, Skin> skinFactory;
+
+    private NavigationBar navigationBar;
 
     public ScreenManager(ScreenHandler handler) {
         this.handler = handler;
@@ -38,6 +39,7 @@ public class ScreenManager {
                 }
             }
         };
+        navigationBar = new NavigationBar(this);
     }
 
     public void start() {
@@ -60,9 +62,14 @@ public class ScreenManager {
         return skinFactory;
     }
 
+    NavigationBar getNavigationBar() {
+        return navigationBar;
+    }
+
     enum ScreenInstance {
         GREETING(new GreetingScreen()),
-        MAIN_MENU(new MainMenuScreen());
+        MAIN_MENU(new MainMenuScreen()),
+        SKILLS(new SkillsScreen());
 
         private final BaseScreen screen;
         ScreenInstance(BaseScreen screen) {
