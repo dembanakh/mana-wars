@@ -95,6 +95,7 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         api "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
+        implementation 'io.reactivex.rxjava2:rxjava:2.2.0'
 
         implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
 
