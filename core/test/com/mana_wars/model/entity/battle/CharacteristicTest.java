@@ -10,17 +10,17 @@ public class CharacteristicTest {
     @Test
     public void testChangeValue() {
         Characteristic ch = Characteristic.HEALTH;
-        ch.initValue(100);
-        ch.changeValue(ValueChangeType.INCREASE, 10);
-        assertEquals(110, ch.getValue());
+        int value = 100;
+        int result = ch.changeValue(value,ValueChangeType.INCREASE, 10);
+        assertEquals(110, result);
 
     }
 
     @Test
     public void testValidateValue(){
         Characteristic ch = Characteristic.HEALTH;
-        ch.initValue(100);
-        ch.changeValue(ValueChangeType.DECREASE, 200);
-        assertEquals(0, ch.getValue());
+        int value = 100;
+        int result = ch.changeValue(value,ValueChangeType.DECREASE, 200);
+        assertEquals(0, result);
     }
 }

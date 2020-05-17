@@ -29,6 +29,7 @@ public class BattleParticipantTest {
     public void testApplySkillCharacteristic() {
         BattleParticipant bp = new BattleParticipant(100,200,300,400);
         SkillCharacteristic sc = mock(SkillCharacteristic.class);
+
         when(sc.getCharacteristic()).thenReturn(Characteristic.HEALTH);
         when(sc.getValue()).thenReturn(10);
         when(sc.getChangeType()).thenReturn(ValueChangeType.DECREASE);

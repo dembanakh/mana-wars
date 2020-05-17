@@ -9,6 +9,8 @@ public class SkillCharacteristic {
     private ValueChangeType changeType;
     private Target target;
 
+    private int value;
+
     public enum Target{
         SELF,
         ENEMY
@@ -22,7 +24,7 @@ public class SkillCharacteristic {
 
     public SkillCharacteristic(int value, Characteristic characteristic, ValueChangeType changeType, Target target){
         this.characteristic = characteristic;
-        this.characteristic.initValue(value);
+        this.value = value;
         this.changeType = changeType;
         this.target = target;
     }
@@ -37,5 +39,9 @@ public class SkillCharacteristic {
 
     public Target getTarget() {
         return target;
+    }
+
+    public int getValue(){
+        return value;
     }
 }

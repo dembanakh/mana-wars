@@ -9,34 +9,25 @@ public enum Characteristic {
     COOLDOWN(10,ValueType.PERCENT),
     CAST_TIME(10,ValueType.PERCENT);
 
-    private int value;
+
     private final int lowerBorder;
     private final ValueType type;
-
 
     Characteristic(int lowerBorder, ValueType type) {
         this.lowerBorder = lowerBorder;
         this.type = type;
     }
 
-    public int getValue() {
-        return value;
-    }
-
-    public void initValue(int value){
-        this.value=value;
-    }
-
-    public void changeValue(ValueChangeType type, int diff){
-        this.value += type.getConstant()*diff;
-        validateValue();
+    public int changeValue(int prev, ValueChangeType type, int diff){
+        prev += type.getConstant()*diff;
+        return validateValue(prev);
     }
 
     public ValueType getType() {
         return type;
     }
 
-    private void validateValue(){
-        value = Math.max(value, lowerBorder);
+    private Integer validateValue(int value){
+        return Math.max(value, lowerBorder);
     }
 }

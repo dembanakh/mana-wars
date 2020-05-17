@@ -7,27 +7,28 @@ import java.util.EnumMap;
 
 public class BattleParticipant {
 
-    private EnumMap<Characteristic, Characteristic> characteristics = new EnumMap<>(Characteristic.class);
+    private EnumMap<Characteristic, Integer> characteristics = new EnumMap<>(Characteristic.class);
     {
         for(Characteristic c : Characteristic.values()){
-            characteristics.put(c,c);
+            characteristics.put(c,0);
         }
     }
 
     public BattleParticipant(int healthPoints, int manaPoints, int cooldown, int castTime) {
-        this.characteristics.get(Characteristic.HEALTH).initValue(healthPoints);
-        this.characteristics.get(Characteristic.MANA).initValue(manaPoints);
-        this.characteristics.get(Characteristic.COOLDOWN).initValue(cooldown);
-        this.characteristics.get(Characteristic.CAST_TIME).initValue(castTime);
+        this.characteristics.put(Characteristic.HEALTH, healthPoints);
+        this.characteristics.put(Characteristic.MANA, manaPoints);
+        this.characteristics.put(Characteristic.COOLDOWN, cooldown);
+        this.characteristics.put(Characteristic.CAST_TIME, castTime);
     }
 
     public int getCharacteristicValue(Characteristic type){
-        return characteristics.get(type).getValue();
+        return characteristics.get(type);
     }
 
     public void applySkillCharacteristic(SkillCharacteristic sc){
-        characteristics.get(sc.getCharacteristic())
-                .changeValue(sc.getChangeType(), sc.getCharacteristic().getValue());
+        Characteristic c = sc.getCharacteristic();
+
+        characteristics.put(c, c.changeValue(characteristics.get(c),sc.getChangeType(), sc.getValue()));
     }
 
 }
