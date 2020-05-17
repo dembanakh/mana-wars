@@ -45,6 +45,7 @@ public class ScreenManager {
     public void start() {
         skillIconFactory.loadItems();
         skinFactory.loadItems();
+        //TODO add check isFirstOpen
         handler.setScreen(ScreenInstance.GREETING.getScreen());
     }
 

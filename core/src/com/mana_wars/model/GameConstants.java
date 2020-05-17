@@ -6,4 +6,6 @@ public final class GameConstants {
     public static final int USER_PASSIVE_SKILL_COUNT=5;
 
     private GameConstants(){}
+
+    public static final int DB_VERSION = 1;
 }

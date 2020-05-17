@@ -27,7 +27,7 @@ public class BattleParticipant {
 
     public void applySkillCharacteristic(SkillCharacteristic sc){
         characteristics.get(sc.getCharacteristic())
-                .changeValue(sc.getChangeType(), sc.getValue());
+                .changeValue(sc.getChangeType(), sc.getCharacteristic().getValue());
     }
 
 }

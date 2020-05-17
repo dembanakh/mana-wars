@@ -31,8 +31,9 @@ public class SkillList {
         ArrayList<Skill> rareList = new ArrayList<>(
                 Arrays.asList(
                         new ActiveSkill(4, 1, Rarity.RARE, 20, 10, "Life steal",
-                                new ArrayList<>(Arrays.asList(new SkillCharacteristic(20, Characteristic.HEALTH, ValueChangeType.DECREASE, SkillCharacteristic.Target.ENEMY),
-                                new SkillCharacteristic(10, Characteristic.HEALTH,ValueChangeType.INCREASE, SkillCharacteristic.Target.SELF))))
+                                new ArrayList<>(Arrays.asList(
+                                        new SkillCharacteristic(20, Characteristic.HEALTH, ValueChangeType.DECREASE, SkillCharacteristic.Target.ENEMY),
+                                        new SkillCharacteristic(10, Characteristic.HEALTH,ValueChangeType.INCREASE, SkillCharacteristic.Target.SELF))))
                 )
         );
         result.put(Rarity.RARE, rareList);

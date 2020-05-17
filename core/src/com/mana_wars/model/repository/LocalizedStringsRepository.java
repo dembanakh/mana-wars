@@ -1,4 +1,4 @@
-package com.mana_wars.ui;
+package com.mana_wars.model.repository;
 
 public interface LocalizedStringsRepository {
 

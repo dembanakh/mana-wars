@@ -65,7 +65,23 @@ project(":android") {
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86_64"
         api "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
-        
+
+        implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+
+        implementation 'androidx.appcompat:appcompat:1.1.0'
+
+        implementation 'androidx.room:room-runtime:2.2.5'
+        annotationProcessor 'androidx.room:room-compiler:2.2.5'
+
+        implementation ('android.arch.lifecycle:livedata:1.1.1') {
+            force = true;
+        }
+        implementation ('android.arch.lifecycle:viewmodel:1.1.1') {
+            force = true;
+        }
+
+        androidTestImplementation 'androidx.room:room-testing:2.2.5'
+        //implementation 'androidx.room:room-rxjava2:2.2.0'
     }
 }
 
@@ -79,6 +95,8 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         api "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
+
+        implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
 
         testImplementation "junit:junit:4.12"
         testImplementation "org.mockito:mockito-core:1.+"

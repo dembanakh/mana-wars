@@ -2,12 +2,26 @@ package com.mana_wars.model.entity.skills;
 
 import com.mana_wars.model.entity.base.Rarity;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class SkillFactory {
-    static SkillList sl = new SkillList();
 
-    public static Skill getNewSkill(){
+    public static Skill getNewSkill(List<Skill> skills){
+
+        Map<Rarity, List<Skill>> skillsList = new HashMap<>();
+
+        for(Rarity rarity : Rarity.values()){
+            skillsList.put(rarity, new ArrayList<>());
+        }
+
+        for(Skill s : skills){
+            skillsList.get(s.getRarity()).add(s);
+        }
+
         Rarity r = null;
         int rarityLen = Rarity.values().length;
         Random generator = new Random();
@@ -22,8 +36,8 @@ public class SkillFactory {
             pow/=2;
             barrier+=pow;
         }
-        rand = generator.nextInt(sl.skillsList.get(r).size());
-        return sl.skillsList.get(r).get(rand);
+        rand = generator.nextInt(skillsList.get(r).size());
+        return skillsList.get(r).get(rand);
     }
 
 }

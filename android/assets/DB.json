@@ -1,0 +1,78 @@
+{
+  "skills": [
+    {
+      "id" : 1,
+      "name" : "Magic spear",
+      "rarity" : 1,
+      "manacost" : 10,
+      "is_active" : true,
+      "cooldown": 4
+    },
+    {
+      "id" : 2,
+      "name" : "Self-healing",
+      "rarity" : 1,
+      "manacost" : 10,
+      "is_active" : true,
+      "cooldown": 5
+    },
+    {
+      "id" : 3,
+      "name" : "Concentration",
+      "rarity" : 1,
+      "manacost" : 50,
+      "is_active" : false
+    },
+    {
+      "id" : 4,
+      "name" : "Life steal",
+      "rarity" : 2,
+      "manacost" : 20,
+      "is_active" : true,
+      "cooldown": 10
+    }
+  ],
+  "skill_characteristics" : [
+    {
+      "id" : 1,
+      "skill_id": 1,
+      "value": 10,
+      "characteristic" : 1,
+      "value_change" : -1,
+      "target" : 2
+    },
+    {
+      "id" : 2,
+      "skill_id": 2,
+      "value": 5,
+      "characteristic" : 1,
+      "value_change" : 1,
+      "target" : 1
+    },
+    {
+      "id" : 3,
+      "skill_id": 3,
+      "value": 10,
+      "characteristic" : 3,
+      "value_change" : -1,
+      "target" : 1
+    },
+    {
+      "id" : 4,
+      "skill_id": 4,
+      "value": 20,
+      "characteristic" : 1,
+      "value_change" : -1,
+      "target" : 2
+    },
+    {
+      "id" : 5,
+      "skill_id": 4,
+      "value": 10,
+      "characteristic" : 1,
+      "value_change" : 1,
+      "target" : 1
+    }
+  ],
+  "version" : 1
+}

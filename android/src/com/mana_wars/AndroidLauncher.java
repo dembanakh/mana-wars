@@ -1,14 +1,18 @@
 package com.mana_wars;
 
-import android.app.Application;
+
 import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 
-import model.SharedPreferencesRepository;
+import com.mana_wars.model.repository.DBMapperRepository;
+import com.mana_wars.model.repository.RoomRepository;
+import com.mana_wars.model.repository.SharedPreferencesRepository;
+import com.mana_wars.utils.DBUpdateChecker;
 
-import static com.mana_wars.ui.LocalizedStringsRepository.SKILL_LABEL;
+
+import static com.mana_wars.model.repository.LocalizedStringsRepository.SKILL_LABEL;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override
@@ -23,7 +27,8 @@ public class AndroidLauncher extends AndroidApplication {
 
 		ManaWars app = ManaWars.getInstance();
 		//TODO set android impl classes
-		app.setLocalUserDataRepository(new SharedPreferencesRepository(this));
+
+		//todo replace
 		app.setLocalizedStringsRepository(id->
 		{
 			switch (id) {
@@ -34,6 +39,19 @@ public class AndroidLauncher extends AndroidApplication {
 					return null;
 			}
 		});
+
+		SharedPreferencesRepository sharedPreferencesRepository = new SharedPreferencesRepository(this);
+		RoomRepository roomRepository = RoomRepository.getInstance(this);
+
+
+		app.setLocalUserDataRepository(sharedPreferencesRepository);
+
+		app.setDatabaseRepository(new DBMapperRepository(roomRepository));
+
+
+		//TODO refactor
+		DBUpdateChecker.check(this, sharedPreferencesRepository, roomRepository);
+
 		initialize(app, config);
 
 	}

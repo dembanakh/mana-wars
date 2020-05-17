@@ -28,7 +28,9 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
     MainMenuScreen() {
         //TODO think about rewrite
         presenter = new MainMenuPresenter(this,
-                new MainMenuInteractor(ManaWars.getInstance().getLocalUserDataRepository()));
+                new MainMenuInteractor(
+                        ManaWars.getInstance().getLocalUserDataRepository(),
+                        ManaWars.getInstance().getDatabaseRepository()));
 
         stage = new Stage();
         skin = ManaWars.getInstance().getScreenManager().getSkinFactory().getAsset("freezing");
@@ -119,5 +121,6 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
     public void dispose() {
         stage.dispose();
         skin.dispose();
+        presenter.dispose();
     }
 }

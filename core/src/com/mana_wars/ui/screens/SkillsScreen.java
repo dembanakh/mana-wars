@@ -35,7 +35,8 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
     private final SkillsPresenter presenter;
 
     SkillsScreen() {
-        presenter = new SkillsPresenter(this, new SkillsInteractor());
+        presenter = new SkillsPresenter(this, new SkillsInteractor(
+                ManaWars.getInstance().getDatabaseRepository()));
 
         stage = new Stage();
         skin = ManaWars.getInstance().getScreenManager().getSkinFactory().getAsset("freezing");
