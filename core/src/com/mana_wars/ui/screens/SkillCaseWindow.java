@@ -34,6 +34,8 @@ final class SkillCaseWindow extends Window {
     }
 
     Table rebuild(Skin skin) {
+        this.clear();
+        
         setSkin(skin);
         setFillParent(false);
         setMovable(false);
