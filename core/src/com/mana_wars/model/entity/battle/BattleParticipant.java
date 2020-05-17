@@ -21,6 +21,10 @@ public class BattleParticipant {
         this.characteristics.get(Characteristic.CAST_TIME).initValue(castTime);
     }
 
+    public int getCharacteristicValue(Characteristic type){
+        return characteristics.get(type).getValue();
+    }
+
     public void applySkillCharacteristic(SkillCharacteristic sc){
         characteristics.get(sc.getCharacteristic())
                 .changeValue(sc.getChangeType(), sc.getValue());
