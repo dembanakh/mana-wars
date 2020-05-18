@@ -63,4 +63,14 @@ public class ManaWars extends Game implements ScreenHandler {
 	public void setDatabaseRepository(DatabaseRepository databaseRepository) {
 		this.databaseRepository = databaseRepository;
 	}
+
+	@Override
+	public boolean isFirstOpen() {
+		return localUserDataRepository.getIsFirstOpen();
+	}
+
+	@Override
+	public void setFirstOpened() {
+		localUserDataRepository.setIsFirstOpen(false);
+	}
 }

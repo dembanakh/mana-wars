@@ -45,8 +45,12 @@ public class ScreenManager {
     public void start() {
         skillIconFactory.loadItems();
         skinFactory.loadItems();
-        //TODO add check isFirstOpen
-        handler.setScreen(ScreenInstance.GREETING.getScreen());
+        if (handler.isFirstOpen()) {
+            handler.setFirstOpened();
+            handler.setScreen(ScreenInstance.GREETING.getScreen());
+        } else {
+            handler.setScreen(ScreenInstance.MAIN_MENU.getScreen());
+        }
     }
 
     public void dispose() {

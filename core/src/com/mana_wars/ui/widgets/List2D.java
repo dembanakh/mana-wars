@@ -79,22 +79,22 @@ public abstract class List2D<T extends GameItem> extends Widget implements Culla
                         setSelectedIndex(items.size - 1);
                         return true;
                     case Input.Keys.DOWN:
-                        index = items.indexOf(getSelected(), false) + cols;
+                        index = items.indexOf(getSelectedItem(), false) + cols;
                         if (index >= items.size) index -= items.size;
                         setSelectedIndex(index);
                         return true;
                     case Input.Keys.UP:
-                        index = items.indexOf(getSelected(), false) - cols;
+                        index = items.indexOf(getSelectedItem(), false) - cols;
                         if (index < 0) index += items.size;
                         setSelectedIndex(index);
                         return true;
                     case Input.Keys.LEFT:
-                        index = items.indexOf(getSelected(), false) - 1;
+                        index = items.indexOf(getSelectedItem(), false) - 1;
                         if (index < 0) index = items.size - 1;
                         setSelectedIndex(index);
                         return true;
                     case Input.Keys.RIGHT:
-                        index = items.indexOf(getSelected(), false) + 1;
+                        index = items.indexOf(getSelectedItem(), false) + 1;
                         if (index >= items.size) index = 0;
                         setSelectedIndex(index);
                         return true;
@@ -148,6 +148,9 @@ public abstract class List2D<T extends GameItem> extends Widget implements Culla
     }
 
     public void layout () {
+        // style.selection is null when Unit Testing
+        if (style.selection == null) return;
+
         Drawable selectedDrawable = style.selection;
         Drawable background = style.background;
 
@@ -247,6 +250,10 @@ public abstract class List2D<T extends GameItem> extends Widget implements Culla
         invalidate();
     }
 
+    public int getCols () {
+        return cols;
+    }
+
     public void setStyle (List.ListStyle style) {
         if (style == null) throw new IllegalArgumentException("style cannot be null.");
         this.style = style;
@@ -261,9 +268,11 @@ public abstract class List2D<T extends GameItem> extends Widget implements Culla
         return selection;
     }
 
-    public List2DItem<T> getSelected() { return selection.first(); }
+    public T getSelected() { return getSelectedItem().data; }
 
-    public void setSelected (List2DItem<T> item) {
+    private List2DItem<T> getSelectedItem() { return selection.first(); }
+
+    private void setSelectedItem(List2DItem<T> item) {
         if (items.contains(item, false))
             selection.set(item);
         else if (selection.getRequired() && items.size > 0)

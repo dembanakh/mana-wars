@@ -5,12 +5,15 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.mana_wars.ManaWars;
 import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.entity.skills.Skill;
@@ -97,6 +100,8 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
         stack.add(layerBackground);
         stack.add(layerForeground);
         stage.addActor(layerNavigationBar);
+
+        setupDragAndDrop();
     }
 
     private Table buildBackgroundLayer(Skin skin) {
@@ -124,6 +129,21 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
         layer.add(scrollPane).expandX().height(Gdx.graphics.getHeight() * 0.7f).width(Gdx.graphics.getWidth()).row();
 
         return layer;
+    }
+
+    private void setupDragAndDrop() {
+        DragAndDrop dragAndDrop = new DragAndDrop();
+        dragAndDrop.addSource(new DragAndDrop.Source(skillsTable) {
+            final DragAndDrop.Payload payload = new DragAndDrop.Payload();
+            @Override
+            public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
+                Skill skill = skillsTable.getSelected();
+                payload.setObject(skill);
+                skillsTable.getItems().removeIndex(skillsTable.getSelectedIndex());
+                payload.setDragActor(new Label(skill.getName(), skin));
+                return payload;
+            }
+        });
     }
 
     @Override
