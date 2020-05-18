@@ -5,9 +5,8 @@ import com.mana_wars.model.entity.base.GameItem;
 import com.mana_wars.model.entity.base.Rarity;
 
 import java.util.List;
-import java.util.Locale;
 
-public class Skill extends GameItem {
+public class Skill extends GameItem implements Comparable<Skill> {
 
     protected int manaCost;
     protected String name;
@@ -39,4 +38,10 @@ public class Skill extends GameItem {
         return String.valueOf(manaCost);
     }
 
+    @Override
+    public int compareTo(Skill skill) {
+        if (rarity != skill.rarity) return rarity.getId() - skill.rarity.getId();
+        if (level != skill.level) return level - skill.level;
+        return -name.compareTo(skill.name);
+    }
 }

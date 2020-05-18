@@ -10,11 +10,11 @@ public enum Characteristic {
     CAST_TIME(10,ValueType.PERCENT);
 
 
-    private final int lowerBorder;
+    private final int lowerBound;
     private final ValueType type;
 
-    Characteristic(int lowerBorder, ValueType type) {
-        this.lowerBorder = lowerBorder;
+    Characteristic(int lowerBound, ValueType type) {
+        this.lowerBound = lowerBound;
         this.type = type;
     }
 
@@ -28,6 +28,6 @@ public enum Characteristic {
     }
 
     private Integer validateValue(int value){
-        return Math.max(value, lowerBorder);
+        return Math.max(value, lowerBound);
     }
 }

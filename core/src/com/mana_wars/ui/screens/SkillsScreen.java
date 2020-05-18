@@ -7,17 +7,17 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mana_wars.ManaWars;
 import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.entity.skills.Skill;
-import com.mana_wars.model.entity.skills.SkillFactory;
 import com.mana_wars.model.interactor.SkillsInteractor;
 import com.mana_wars.presentation.presenters.SkillsPresenter;
 import com.mana_wars.presentation.view.SkillsView;
@@ -137,11 +137,42 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
             final DragAndDrop.Payload payload = new DragAndDrop.Payload();
             @Override
             public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
-                Skill skill = skillsTable.getSelected();
+                int itemIndex = skillsTable.getItemIndexAt(x, y);
+                Skill skill = skillsTable.getItems().get(itemIndex);
                 payload.setObject(skill);
-                skillsTable.getItems().removeIndex(skillsTable.getSelectedIndex());
-                payload.setDragActor(new Label(skill.getName(), skin));
+                skillsTable.removeIndex(itemIndex);
+                // TODO: cache SkillIconFactory (or change the payload appearance)
+                payload.setDragActor(new Image(ManaWars.getInstance().getScreenManager()
+                        .getSkillIconFactory().getAsset(skill.getIconID())));
                 return payload;
+            }
+
+            @Override
+            public void dragStop(InputEvent event, float x, float y, int pointer,
+                                 DragAndDrop.Payload payload, DragAndDrop.Target target) {
+                if (target == null) {
+                    skillsTable.add((Skill) payload.getObject(), true);
+                    skillsTable.getSelection().clear();
+                }
+            }
+        });
+
+        dragAndDrop.addTarget(new DragAndDrop.Target(skillsTable) {
+            @Override
+            public boolean drag(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
+                Skill from = (Skill)payload.getObject();
+                Skill to = skillsTable.getItemAt(x, y);
+                // TODO: add merge comparison method
+                return to != null && from.getName().equals(to.getName()) && from.getLevel() == to.getLevel();
+            }
+
+            @Override
+            public void drop(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
+                // TODO: merge skills in DB
+                Skill skill = (Skill)payload.getObject();
+                int itemIndex = skillsTable.getItemIndexAt(x, y);
+                skillsTable.getItems().get(itemIndex).setLevel(skill.getLevel() + 1);
+                skillsTable.setSelectedIndex(itemIndex);
             }
         });
     }
@@ -186,6 +217,7 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
     @Override
     public void hide() {
         Gdx.input.setInputProcessor(null);
+        skillsTable.setSelectedIndex(-1);
     }
 
     @Override

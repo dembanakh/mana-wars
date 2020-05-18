@@ -27,7 +27,7 @@ import com.mana_wars.ui.factory.AssetFactory;
  * Texture-oriented 2-dimensional list based on the original List implementation in Libgdx.
  * @param <T>
  */
-public abstract class List2D<T extends GameItem> extends Widget implements Cullable {
+public abstract class List2D<T extends GameItem & Comparable<T>> extends Widget implements Cullable {
 
     List.ListStyle style;
     final Array<List2DItem<T>> items = new Array<>();
@@ -272,6 +272,25 @@ public abstract class List2D<T extends GameItem> extends Widget implements Culla
 
     private List2DItem<T> getSelectedItem() { return selection.first(); }
 
+    public void add(T item, boolean sorted) {
+        // TODO: handle null
+        if (item == null) return;
+        // TODO: optimize index usage
+        if (!sorted) {
+            items.add(new List2DItem<>(items.size, item));
+        } else {
+            int indexToInsert = 0;
+            boolean found = false;
+            int availableID = -1;
+            for (List2DItem<T> listItem : items) {
+                if (listItem.index > availableID) availableID = listItem.index;
+                if (listItem.data.compareTo(item) <= 0) found = true;
+                if (!found) indexToInsert++;
+            }
+            items.insert(indexToInsert, new List2DItem<>(availableID + 1, item));
+        }
+    }
+
     private void setSelectedItem(List2DItem<T> item) {
         if (items.contains(item, false))
             selection.set(item);
@@ -296,6 +315,12 @@ public abstract class List2D<T extends GameItem> extends Widget implements Culla
         }
     }
 
+    public void removeIndex(int index) {
+        if (index < 0 || index >= items.size)
+            throw new IllegalArgumentException("index must be >= 0 and < " + items.size + ": " + index);
+        items.removeIndex(index);
+    }
+
     public List2DItem<T> getOverItem () {
         return overIndex == -1 ? null : items.get(overIndex);
     }
@@ -304,7 +329,12 @@ public abstract class List2D<T extends GameItem> extends Widget implements Culla
         return pressedIndex == -1 ? null : items.get(pressedIndex);
     }
 
-    public List2DItem<T> getItemAt (float x, float y) {
+    public T getItemAt(float x, float y) {
+        List2DItem<T> item = getListItemAt(x, y);
+        return item == null ? null : item.data;
+    }
+
+    private List2DItem<T> getListItemAt (float x, float y) {
         int index = getItemIndexAt(x, y);
         if (index == -1) return null;
         return items.get(index);
@@ -402,7 +432,7 @@ public abstract class List2D<T extends GameItem> extends Widget implements Culla
 
     public Rectangle getCullingArea() { return cullingArea; }
 
-    private static class List2DItem<T> {
+    private static class List2DItem<T extends Comparable<T>> implements Comparable<List2DItem<T>> {
         int index;
         T data;
 
@@ -425,6 +455,10 @@ public abstract class List2D<T extends GameItem> extends Widget implements Culla
             return index;
         }
 
+        @Override
+        public int compareTo(List2DItem<T> item) {
+            return data.compareTo(item.data);
+        }
     }
 
 }

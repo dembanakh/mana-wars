@@ -22,7 +22,7 @@ public abstract class UserSkillsDAO extends BaseDAO<UserSkill>{
     public abstract List<UserSkill> getAllEntities();
 
     @Transaction
-    @Query("SELECT * FROM user_skills JOIN skills s ON skill_ref_id=s.skill_id ORDER BY s.rarity DESC, s.name")
+    @Query("SELECT * FROM user_skills JOIN skills s ON skill_ref_id=s.skill_id ORDER BY s.rarity DESC, lvl DESC, s.name")
     public abstract List<CompleteUserSkill> getUserSkills();
 
 }

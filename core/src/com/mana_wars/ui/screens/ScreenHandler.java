@@ -4,6 +4,7 @@ import com.badlogic.gdx.Screen;
 
 public interface ScreenHandler {
     void setScreen(Screen screen);
+    // TODO: change
     boolean isFirstOpen();
     void setFirstOpened();
 }

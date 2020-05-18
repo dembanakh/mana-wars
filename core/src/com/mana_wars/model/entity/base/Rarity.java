@@ -19,6 +19,10 @@ public enum Rarity {
         this.id = id;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public static Rarity getRarityByID(int id){
         Rarity res = null;
         for(Rarity r : values()){
