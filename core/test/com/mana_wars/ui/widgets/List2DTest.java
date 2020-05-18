@@ -19,9 +19,9 @@ public class List2DTest {
 
     @Test
     public void getSelected() {
-        List2D<GameItem> list = new List2D<GameItem>(new List.ListStyle(), 5, null) {
+        List2D<Skill> list = new List2D<Skill>(new List.ListStyle(), 5, null) {
             @Override
-            protected void drawItem(Batch batch, BitmapFont font, int index, GameItem item, float x, float y, float width, float height) {
+            protected void drawItem(Batch batch, BitmapFont font, int index, Skill item, float x, float y, float width, float height) {
 
             }
         };
@@ -35,9 +35,9 @@ public class List2DTest {
 
     @Test
     public void setSelectedIndex_minus1() {
-        List2D<GameItem> list = new List2D<GameItem>(new List.ListStyle(), 5, null) {
+        List2D<Skill> list = new List2D<Skill>(new List.ListStyle(), 5, null) {
             @Override
-            protected void drawItem(Batch batch, BitmapFont font, int index, GameItem item, float x, float y, float width, float height) {
+            protected void drawItem(Batch batch, BitmapFont font, int index, Skill item, float x, float y, float width, float height) {
 
             }
         };
@@ -52,9 +52,9 @@ public class List2DTest {
 
     @Test
     public void setSelectedIndex_simple() {
-        List2D<GameItem> list = new List2D<GameItem>(new List.ListStyle(), 5, null) {
+        List2D<Skill> list = new List2D<Skill>(new List.ListStyle(), 5, null) {
             @Override
-            protected void drawItem(Batch batch, BitmapFont font, int index, GameItem item, float x, float y, float width, float height) {
+            protected void drawItem(Batch batch, BitmapFont font, int index, Skill item, float x, float y, float width, float height) {
 
             }
         };
@@ -68,9 +68,9 @@ public class List2DTest {
 
     @Test
     public void clearItems() {
-        List2D<GameItem> list = new List2D<GameItem>(new List.ListStyle(), 5, null) {
+        List2D<Skill> list = new List2D<Skill>(new List.ListStyle(), 5, null) {
             @Override
-            protected void drawItem(Batch batch, BitmapFont font, int index, GameItem item, float x, float y, float width, float height) {
+            protected void drawItem(Batch batch, BitmapFont font, int index, Skill item, float x, float y, float width, float height) {
 
             }
         };
@@ -84,9 +84,9 @@ public class List2DTest {
 
     @Test
     public void testSetItems() {
-        List2D<GameItem> list = new List2D<GameItem>(new List.ListStyle(), 5, null) {
+        List2D<Skill> list = new List2D<Skill>(new List.ListStyle(), 5, null) {
             @Override
-            protected void drawItem(Batch batch, BitmapFont font, int index, GameItem item, float x, float y, float width, float height) {
+            protected void drawItem(Batch batch, BitmapFont font, int index, Skill item, float x, float y, float width, float height) {
 
             }
         };
@@ -99,9 +99,9 @@ public class List2DTest {
 
     @Test
     public void testGetItems_empty() {
-        List2D<GameItem> list = new List2D<GameItem>(new List.ListStyle(), 5, null) {
+        List2D<Skill> list = new List2D<Skill>(new List.ListStyle(), 5, null) {
             @Override
-            protected void drawItem(Batch batch, BitmapFont font, int index, GameItem item, float x, float y, float width, float height) {
+            protected void drawItem(Batch batch, BitmapFont font, int index, Skill item, float x, float y, float width, float height) {
 
             }
         };

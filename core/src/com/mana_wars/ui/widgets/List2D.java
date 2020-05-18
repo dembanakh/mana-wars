@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
-import com.badlogic.gdx.scenes.scene2d.utils.ArraySelection;
 import com.badlogic.gdx.scenes.scene2d.utils.Cullable;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.Selection;
@@ -182,7 +181,7 @@ public abstract class List2D<T extends GameItem & Comparable<T>> extends Widget 
         Color color = getColor();
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
-        float x = getX(), y = getY(), width = getWidth(), height = getHeight();
+        float x = getX(), y = getY(), height = getHeight();
         float itemX = 0;
         float itemY = height;
 
@@ -191,7 +190,6 @@ public abstract class List2D<T extends GameItem & Comparable<T>> extends Widget 
             float leftWidth = background.getLeftWidth();
             x += leftWidth;
             itemY -= background.getTopHeight();
-            width -= leftWidth + background.getRightWidth();
         }
 
         font.setColor(fontColorUnselected.r, fontColorUnselected.g, fontColorUnselected.b, fontColorUnselected.a * parentAlpha);
@@ -356,7 +354,8 @@ public abstract class List2D<T extends GameItem & Comparable<T>> extends Widget 
         return index;
     }
 
-    public void setItems (T... newItems) {
+    @SafeVarargs
+    public final void setItems(T... newItems) {
         if (newItems == null) throw new IllegalArgumentException("newItems cannot be null.");
         float oldPrefWidth = getPrefWidth(), oldPrefHeight = getPrefHeight();
 
