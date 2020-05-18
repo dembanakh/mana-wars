@@ -289,6 +289,45 @@ public abstract class List2D<T extends GameItem & Comparable<T>> extends Widget 
         }
     }
 
+    /*
+     * Restore elements order in the list providing that items[index] is the only item out of order.
+     * Returns the index of the element after realignment.
+     */
+    public int realignItemAt(int index) {
+        List2DItem<T> item = items.get(index);
+        boolean goDown;
+        if (index == 0) {
+            if (item.compareTo(items.get(1)) >= 0) return index;
+            else goDown = true;
+        } else if (index == items.size - 1) {
+            if (item.compareTo(items.get(items.size - 2)) <= 0) return index;
+            else goDown = false;
+        } else {
+            if (item.compareTo(items.get(index + 1)) < 0) goDown = true;
+            else if (item.compareTo(items.get(index - 1)) > 0) goDown = false;
+            else return index;
+        }
+
+        if (goDown) {
+            int indexEnd = index + 1;
+            for (List2DItem<T> current = items.get(indexEnd);
+                 indexEnd < items.size && item.compareTo(current) < 0;
+                 indexEnd++, current = items.get(indexEnd));
+            System.arraycopy(items.items, index + 1, items.items, index, indexEnd - index);
+            items.set(indexEnd, item);
+            return indexEnd;
+        } else {
+            int indexStart = index - 1;
+            for (List2DItem<T> current = items.get(indexStart);
+                 indexStart >= 0 && item.compareTo(current) > 0;
+                 indexStart--, current = items.get(indexStart));
+            indexStart++;
+            System.arraycopy(items.items, indexStart, items.items, indexStart + 1, index - indexStart);
+            items.set(indexStart, item);
+            return indexStart;
+        }
+    }
+
     private void setSelectedItem(List2DItem<T> item) {
         if (items.contains(item, false))
             selection.set(item);

@@ -138,6 +138,8 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
             @Override
             public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
                 int itemIndex = skillsTable.getItemIndexAt(x, y);
+                if (itemIndex < 0) return null;
+
                 Skill skill = skillsTable.getItems().get(itemIndex);
                 payload.setObject(skill);
                 skillsTable.removeIndex(itemIndex);
@@ -172,6 +174,7 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
                 Skill skill = (Skill)payload.getObject();
                 int itemIndex = skillsTable.getItemIndexAt(x, y);
                 skillsTable.getItems().get(itemIndex).setLevel(skill.getLevel() + 1);
+                itemIndex = skillsTable.realignItemAt(itemIndex);
                 skillsTable.setSelectedIndex(itemIndex);
             }
         });
@@ -181,6 +184,7 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
     public void setSkillsList(List<Skill> skills) {
         skillsTable.setItems(skills);
         //TODO: modify active/passive skills table appropriately
+        for (Skill skill : skills) System.out.println(skill.getRarity());
     }
 
     @Override
