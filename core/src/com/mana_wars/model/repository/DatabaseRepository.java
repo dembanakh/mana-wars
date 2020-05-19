@@ -12,4 +12,5 @@ public interface DatabaseRepository {
     Single<List<Skill>> getSkillsList();
     Single<List<Skill>> getUserSkills();
     Completable insertUserSkill(Skill s);
+    Completable mergeSkills(Skill toUpdate, Skill toDelete);
 }

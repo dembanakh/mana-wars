@@ -5,6 +5,7 @@ import com.mana_wars.model.repository.DatabaseRepository;
 
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
 public class SkillsInteractor {
@@ -19,4 +20,7 @@ public class SkillsInteractor {
         return databaseRepository.getUserSkills();
     }
 
+    public Completable mergeSkills(Skill toUpdate, Skill toDelete){
+        return databaseRepository.mergeSkills(toUpdate, toDelete);
+    }
 }

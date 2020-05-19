@@ -318,9 +318,7 @@ public abstract class List2D<T extends GameItem & Comparable<T>> extends Widget 
             return indexEnd;
         } else {
             int indexStart = index - 1;
-            for (List2DItem<T> current = items.get(indexStart);
-                 indexStart >= 0 && item.compareTo(current) > 0;
-                 indexStart--, current = items.get(indexStart));
+            for (; indexStart >= 0 && item.compareTo(items.get(indexStart)) > 0; indexStart--);
             indexStart++;
             System.arraycopy(items.items, indexStart, items.items, indexStart + 1, index - indexStart);
             items.set(indexStart, item);

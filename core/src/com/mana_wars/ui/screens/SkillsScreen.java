@@ -1,6 +1,7 @@
 package com.mana_wars.ui.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -37,6 +38,7 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
 
     private final SkillsPresenter presenter;
 
+    //TODO add constraints for SkillsTable
     SkillsScreen() {
         presenter = new SkillsPresenter(this, new SkillsInteractor(
                 ManaWars.getInstance().getDatabaseRepository()));
@@ -54,6 +56,8 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
                 float texOffsetX = (width - texture.getRegionWidth()) / 2;
                 float texOffsetY = (height - texture.getRegionHeight()) / 2;
                 batch.draw(texture, x + texOffsetX, y + texOffsetY);
+                font.setColor(Color.BLACK);
+                font.getData().setScale(2);
                 font.draw(batch, text, x + width / 2, y + texOffsetY, 0, text.length(),
                         width, alignment, false, "");
             }
@@ -114,10 +118,12 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
         Table layer = new Table();
         layer.setFillParent(true);
 
-        ScrollPane scrollPane = new ScrollPane(skillsTable, skin);
+
         skillsTable.setFillParent(true);
         skillsTable.getSelection().setMultiple(false);
         skillsTable.getSelection().setRequired(false);
+        ScrollPane scrollPane = new ScrollPane(skillsTable, skin);
+
         activeSkills.getSelection().setMultiple(false);
         activeSkills.getSelection().setRequired(false);
         passiveSkills.getSelection().setMultiple(false);
@@ -170,9 +176,13 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
 
             @Override
             public void drop(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
-                // TODO: merge skills in DB
+
+                //TODO @Demian please check it check
+
                 Skill skill = (Skill)payload.getObject();
                 int itemIndex = skillsTable.getItemIndexAt(x, y);
+                presenter.mergeSkills(skillsTable.getItems().get(itemIndex), skill);
+
                 skillsTable.getItems().get(itemIndex).setLevel(skill.getLevel() + 1);
                 itemIndex = skillsTable.realignItemAt(itemIndex);
                 skillsTable.setSelectedIndex(itemIndex);
@@ -184,7 +194,7 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
     public void setSkillsList(List<Skill> skills) {
         skillsTable.setItems(skills);
         //TODO: modify active/passive skills table appropriately
-        for (Skill skill : skills) System.out.println(skill.getRarity());
+        //for (Skill skill : skills) System.out.println(skill.getRarity());
     }
 
     @Override
@@ -228,6 +238,7 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
     public void dispose() {
         stage.dispose();
         skin.dispose();
+        presenter.dispose();
     }
 
 }

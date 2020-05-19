@@ -27,6 +27,12 @@ public class SkillsPresenter {
         }, Throwable::printStackTrace));
     }
 
+    public void mergeSkills(Skill toUpdate, Skill toDelete){
+        disposable.add(interactor.mergeSkills(toUpdate,toDelete).subscribe(()->{
+            System.out.println("Skills merged");
+        }, Throwable::printStackTrace));
+    }
+
     public void dispose(){
         disposable.dispose();
     }

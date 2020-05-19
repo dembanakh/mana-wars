@@ -41,7 +41,7 @@ public class Skill extends GameItem implements Comparable<Skill> {
     @Override
     public int compareTo(Skill skill) {
         if (rarity != skill.rarity) return rarity.getId() - skill.rarity.getId();
-        if (level != skill.level) return level - skill.level;
-        return -name.compareTo(skill.name);
+        if(!name.equals(skill.name)) return -name.compareTo(skill.name);
+        return level - skill.level;
     }
 }

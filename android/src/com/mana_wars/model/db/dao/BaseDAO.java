@@ -22,8 +22,8 @@ public abstract class BaseDAO <T> {
     public abstract Long insertEntity(T entity);
 
     @Delete
-    public abstract void deleteEntity(T entity);
+    public abstract int deleteEntity(T entity);
 
     @Update
-    public abstract void updateEntity(T entity);
+    public abstract int updateEntity(T entity);
 }

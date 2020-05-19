@@ -7,6 +7,7 @@ import com.mana_wars.model.db.entity.UserSkill;
 import com.mana_wars.model.entity.skills.Skill;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import io.reactivex.Completable;
@@ -20,27 +21,41 @@ public class DBMapperRepository implements DatabaseRepository {
         this.room = room;
     }
 
+
     @Override
     public Single<List<Skill>> getSkillsList() {
         return room.getSkillsWithCharacteristics().map(dbSkills -> {
             List<Skill> result = new ArrayList<>();
             for(DBSkillWithCharacteristics skill : dbSkills){
-                result.add(SkillConverter.toSkill(skill));
+                Skill convertedSkill = SkillConverter.toSkill(skill);
+                result.add(convertedSkill);
+            }
+            return result;
+        });
+    }
+
+    private final HashMap<Skill, UserSkill> lastUserSkillsMap = new HashMap<>();
+
+    @Override
+    public Single<List<Skill>> getUserSkills() {
+        return room.getCompleteUserSkills().map(completeUserSkills -> {
+            lastUserSkillsMap.clear();
+            List<Skill> result = new ArrayList<>();
+            for(CompleteUserSkill skill : completeUserSkills){
+                Skill convertedSkill = SkillConverter.toSkill(skill);
+                lastUserSkillsMap.put(convertedSkill, skill.userSkill);
+                result.add(convertedSkill);
             }
             return result;
         });
     }
 
     @Override
-    public Single<List<Skill>> getUserSkills() {
-        return room.getCompleteUserSkills().map(completeUserSkills -> {
+    public Completable mergeSkills(Skill toUpdate, Skill toDelete) {
 
-            List<Skill> result = new ArrayList<>();
-            for(CompleteUserSkill skill : completeUserSkills){
-                result.add(SkillConverter.toSkill(skill));
-            }
-            return result;
-        });
+        UserSkill userSkill = lastUserSkillsMap.get(toUpdate);
+        userSkill.setLvl(userSkill.getLvl()+1);
+        return room.mergeSkills(userSkill, lastUserSkillsMap.get(toDelete));
     }
 
     @Override

@@ -11,6 +11,8 @@ import com.mana_wars.model.db.dao.UserSkillsDAO;
 import com.mana_wars.model.db.entity.CompleteUserSkill;
 import com.mana_wars.model.db.entity.DBSkill;
 import com.mana_wars.model.db.entity.DBSkillWithCharacteristics;
+import com.mana_wars.model.db.entity.UserSkill;
+import com.mana_wars.model.entity.skills.Skill;
 
 import java.util.List;
 
@@ -88,6 +90,12 @@ public class RoomRepository {
     public <T> Completable insertEntity(final T entity, final BaseDAO<T> dao){
         return multithreading(Completable.fromAction(
                 () -> dao.insertEntity(entity)
+        ));
+    }
+
+    public Completable mergeSkills(UserSkill toUpdate, UserSkill toDelete){
+        return multithreading(Completable.fromAction(
+                ()-> userSkillsDAO.mergeUserSkills(toUpdate,toDelete)
         ));
     }
 

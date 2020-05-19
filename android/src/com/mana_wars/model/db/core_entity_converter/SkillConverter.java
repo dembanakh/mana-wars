@@ -16,7 +16,7 @@ public class SkillConverter {
 
             return new ActiveSkill(
                     skill.skill.getId(),
-                    0,
+                    1,
                     Rarity.getRarityByID(skill.skill.getRarity()),
                     skill.skill.getManaCost(),
                     skill.skill.getCooldown(),
@@ -27,7 +27,7 @@ public class SkillConverter {
         }else {
             return new PassiveSkill(
                     skill.skill.getId(),
-                    0,
+                    1,
                     Rarity.getRarityByID(skill.skill.getRarity()),
                     skill.skill.getManaCost(),
                     skill.skill.getName(),
