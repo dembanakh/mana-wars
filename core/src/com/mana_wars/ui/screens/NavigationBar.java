@@ -1,62 +1,58 @@
 package com.mana_wars.ui.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.mana_wars.ManaWars;
+import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.factory.UIElementFactory;
 
-class NavigationBar {
+import static com.mana_wars.ui.screens.UIElementsSize.NAVIGATION_BAR.*;
+
+public class NavigationBar {
 
     private Table bar;
 
     private final ScreenManager screenManager;
 
-    NavigationBar(ScreenManager screenManager) {
+    private NavigationBar(ScreenManager screenManager) {
         this.screenManager = screenManager;
     }
 
-    Table rebuild(Skin skin) {
-        bar = new Table(skin);
-        bar.bottom().setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() * 0.1f);
-        bar.setBackground("white");
+    public void start() { bar = new Table(); }
 
-        int tabsNumber = 4;
-        float buttonWidth = (float)Gdx.graphics.getWidth() / tabsNumber;
-        float buttonHeight = bar.getHeight();
+    Table rebuild(Skin skin) {
+        bar.clear();
+        bar.setSkin(skin);
+        bar.bottom().setSize(TAB_WIDTH * TABS_NUMBER, TAB_HEIGHT);
+        bar.setBackground(UIStringConstants.NAVIGATION_BAR.BG_COLOR);
 
         // SKILLS
         bar.add(UIElementFactory.getButton(skin, "MAIN", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                System.out.println("MAIN");
                 onMain();
             }
-        })).width(buttonWidth).height(buttonHeight);
+        })).width(TAB_WIDTH).height(TAB_HEIGHT);
         // SKILLS
         bar.add(UIElementFactory.getButton(skin, "SKILLS", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                System.out.println("SKILLS");
                 onSkills();
             }
-        })).width(buttonWidth).height(buttonHeight);
+        })).width(TAB_WIDTH).height(TAB_HEIGHT);
         // PLACEHOLDER2
         bar.add(UIElementFactory.getButton(skin, "PLACEHOLDER2", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                System.out.println("PLACEHOLDER2");
             }
-        })).width(buttonWidth).height(buttonHeight);
+        })).width(TAB_WIDTH).height(TAB_HEIGHT);
         // PLACEHOLDER3
         bar.add(UIElementFactory.getButton(skin, "PLACEHOLDER3", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                System.out.println("PLACEHOLDER3");
             }
-        })).width(buttonWidth).height(buttonHeight);
+        })).width(TAB_WIDTH).height(TAB_HEIGHT);
 
         return bar;
     }
@@ -67,6 +63,10 @@ class NavigationBar {
 
     private void onSkills() {
         screenManager.setScreen(ScreenManager.ScreenInstance.SKILLS);
+    }
+
+    public static NavigationBar create(ScreenManager screenManager) {
+        return new NavigationBar(screenManager);
     }
 
 }

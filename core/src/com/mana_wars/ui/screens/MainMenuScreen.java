@@ -1,9 +1,6 @@
 package com.mana_wars.ui.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -11,13 +8,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mana_wars.ManaWars;
 import com.mana_wars.model.interactor.MainMenuInteractor;
+import com.mana_wars.model.repository.DatabaseRepository;
+import com.mana_wars.model.repository.LocalUserDataRepository;
 import com.mana_wars.presentation.presenters.MainMenuPresenter;
 import com.mana_wars.presentation.view.MainMenuView;
 import com.mana_wars.ui.factory.UIElementFactory;
 
+import static com.mana_wars.ui.UIStringConstants.*;
+
 public class MainMenuScreen extends BaseScreen implements MainMenuView {
 
-    private final Stage stage;
     private final Skin skin;
 
     private final SkillCaseWindow skillCaseWindow;
@@ -25,20 +25,19 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
 
     private final MainMenuPresenter presenter;
 
-    MainMenuScreen() {
-        //TODO think about rewrite
+    MainMenuScreen(FactoryStorage factoryStorage, ScreenManager screenManager,
+                   LocalUserDataRepository localUserDataRepository, DatabaseRepository databaseRepository) {
+        super(factoryStorage, screenManager);
         presenter = new MainMenuPresenter(this,
-                new MainMenuInteractor(
-                        ManaWars.getInstance().getLocalUserDataRepository(),
-                        ManaWars.getInstance().getDatabaseRepository()));
+                new MainMenuInteractor(localUserDataRepository, databaseRepository));
 
-        stage = new Stage();
-        skin = ManaWars.getInstance().getScreenManager().getSkinFactory().getAsset("freezing");
-        skillCaseWindow = new SkillCaseWindow("NEW SKILL", skin);
-        navigationBar = ManaWars.getInstance().getScreenManager().getNavigationBar();
+        skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
+        skillCaseWindow = new SkillCaseWindow(SKILL_CASE_WINDOW.TITLE, skin, factoryStorage.getSkillIconFactory());
+        navigationBar = screenManager.getNavigationBar();
     }
 
-    private void rebuildStage() {
+    @Override
+    protected void rebuildStage() {
         // layers
         Table layerBackground = buildBackgroundLayer(skin);
         Table layerForeground = buildForegroundLayer(skin);
@@ -56,17 +55,20 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
         stage.addActor(layerNavigationBar);
     }
 
-    private Table buildBackgroundLayer(Skin skin) {
+    @Override
+    protected Table buildBackgroundLayer(Skin skin) {
         Table layer = new Table();
 
         return layer;
     }
 
-    private Table buildForegroundLayer(Skin skin) {
+    @Override
+    protected Table buildForegroundLayer(Skin skin) {
         Table layer = new Table();
         layer.setFillParent(true);
 
-        TextButton skillCaseButton = UIElementFactory.getButton(skin, "OPEN SKILL CASE", new ChangeListener() {
+        TextButton skillCaseButton = UIElementFactory.getButton(skin, MAIN_MENU_SCREEN.OPEN_SKILL_CASE_BUTTON_TEXT,
+                new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 presenter.onOpenSkillCase();
@@ -83,43 +85,8 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
     }
 
     @Override
-    public void show() {
-        Gdx.input.setInputProcessor(stage);
-        rebuildStage();
-    }
-
-    @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(50.0f/255, 115.0f/255, 220.0f/255, 0.3f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        stage.act(delta);
-        stage.draw();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        stage.getViewport().setScreenSize(width, height);
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-        Gdx.input.setInputProcessor(null);
-    }
-
-    @Override
     public void dispose() {
-        stage.dispose();
+        super.dispose();
         skin.dispose();
         presenter.dispose();
     }

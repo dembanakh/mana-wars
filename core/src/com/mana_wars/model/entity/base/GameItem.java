@@ -1,16 +1,18 @@
 package com.mana_wars.model.entity.base;
 
 
-public abstract class GameItem {
+public abstract class GameItem implements Comparable<GameItem> {
 
     protected int iconID;
     protected int level;
     protected Rarity rarity;
+    protected String name;
 
-    public GameItem(int iconID, int level, Rarity rarity) {
+    public GameItem(int iconID, int level, Rarity rarity, String name) {
         this.iconID = iconID;
         this.level = level;
         this.rarity = rarity;
+        this.name = name;
     }
 
     public int getIconID() {
@@ -32,4 +34,20 @@ public abstract class GameItem {
     public void setRarity(Rarity rarity) {
         this.rarity = rarity;
     }
+
+    public String getName(){
+        return name;
+    }
+
+    public void upgradeLevel() {
+        level++;
+    }
+
+    @Override
+    public int compareTo(GameItem gameItem) {
+        if (rarity != gameItem.rarity) return rarity.getId() - gameItem.rarity.getId();
+        if(!name.equals(gameItem.name)) return -name.compareTo(gameItem.name);
+        return level - gameItem.level;
+    }
+
 }

@@ -4,21 +4,23 @@ import com.badlogic.gdx.Game;
 import com.mana_wars.model.repository.DatabaseRepository;
 import com.mana_wars.model.repository.LocalUserDataRepository;
 import com.mana_wars.model.repository.LocalizedStringsRepository;
-import com.mana_wars.ui.screens.ScreenHandler;
-import com.mana_wars.ui.screens.ScreenManager;
+import com.mana_wars.ui.FirstOpenFlag;
+import com.mana_wars.ui.ScreenHandler;
+import com.mana_wars.ui.ScreenManagerImpl;
 
 public class ManaWars extends Game implements ScreenHandler {
 
 	private static ManaWars instance;
-	private ScreenManager screenManager;
+	private ScreenManagerImpl screenManager;
 
 	//platform repos
 	private LocalUserDataRepository localUserDataRepository;
 	private LocalizedStringsRepository localizedStringsRepository;
 	private DatabaseRepository databaseRepository;
+	private FirstOpenFlag firstOpenFlag;
 
 	private ManaWars() {
-		screenManager = new ScreenManager(this);
+		screenManager = new ScreenManagerImpl(this);
 	}
 
 	public static ManaWars getInstance() {
@@ -26,13 +28,13 @@ public class ManaWars extends Game implements ScreenHandler {
 		return instance;
 	}
 
-	public ScreenManager getScreenManager() {
+	public ScreenManagerImpl getScreenManager() {
 		return screenManager;
 	}
 	
 	@Override
 	public void create () {
-		screenManager.start();
+		screenManager.start(firstOpenFlag);
 	}
 	
 	@Override
@@ -64,13 +66,8 @@ public class ManaWars extends Game implements ScreenHandler {
 		this.databaseRepository = databaseRepository;
 	}
 
-	@Override
-	public boolean isFirstOpen() {
-		return localUserDataRepository.getIsFirstOpen();
+	public void setFirstOpenFlag(FirstOpenFlag firstOpenFlag) {
+		this.firstOpenFlag = firstOpenFlag;
 	}
 
-	@Override
-	public void setFirstOpened() {
-		localUserDataRepository.setIsFirstOpen(false);
-	}
 }

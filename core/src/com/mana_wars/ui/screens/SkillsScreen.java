@@ -1,96 +1,66 @@
 package com.mana_wars.ui.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 import com.mana_wars.ManaWars;
 import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.interactor.SkillsInteractor;
+import com.mana_wars.model.repository.DatabaseRepository;
 import com.mana_wars.presentation.presenters.SkillsPresenter;
 import com.mana_wars.presentation.view.SkillsView;
+import com.mana_wars.model.SkillsOperations;
+import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.widgets.List2D;
+import com.mana_wars.ui.widgets.SkillsList2D;
+import com.mana_wars.ui.widgets.TimeoutDragAndDrop;
 
 import java.util.List;
 
+import static com.mana_wars.ui.screens.UIElementsSize.SKILLS_SCREEN.*;
+import static com.mana_wars.ui.UIStringConstants.*;
+
 public class SkillsScreen extends BaseScreen implements SkillsView {
 
-    private final Stage stage;
     private final Skin skin;
 
+    private final List2D<Skill> mainSkillsTable;
+    private final List2D<Skill> activeSkillsTable;
+    private final List2D<Skill> passiveSkillsTable;
     private final NavigationBar navigationBar;
-    private final List2D<Skill> activeSkills;
-    private final List2D<Skill> passiveSkills;
-    private final List2D<Skill> skillsTable;
+    private final SkillsDragAndDrop dragAndDrop;
+    private final ScrollPane scrollPane;
 
     private final SkillsPresenter presenter;
 
-    //TODO add constraints for SkillsTable
-    SkillsScreen() {
-        presenter = new SkillsPresenter(this, new SkillsInteractor(
-                ManaWars.getInstance().getDatabaseRepository()));
+    SkillsScreen(FactoryStorage factoryStorage, ScreenManager screenManager,
+                 DatabaseRepository databaseRepository) {
+        super(factoryStorage, screenManager);
+        presenter = new SkillsPresenter(this, new SkillsInteractor(databaseRepository));
 
-        stage = new Stage();
-        skin = ManaWars.getInstance().getScreenManager().getSkinFactory().getAsset("freezing");
-        navigationBar = ManaWars.getInstance().getScreenManager().getNavigationBar();
-        skillsTable = new List2D<Skill>(skin, 5, ManaWars.getInstance()
-                .getScreenManager().getSkillIconFactory()) {
-            @Override
-            protected void drawItem(Batch batch, BitmapFont font, int index, Skill item,
-                                    float x, float y, float width, float height) {
-                TextureRegion texture = textureFactory.getAsset(item.getIconID());
-                String text = String.valueOf(item.getLevel());
-                float texOffsetX = (width - texture.getRegionWidth()) / 2;
-                float texOffsetY = (height - texture.getRegionHeight()) / 2;
-                batch.draw(texture, x + texOffsetX, y + texOffsetY);
-                font.setColor(Color.BLACK);
-                font.getData().setScale(2);
-                font.draw(batch, text, x + width / 2, y + texOffsetY, 0, text.length(),
-                        width, alignment, false, "");
-            }
-        };
-        activeSkills = new List2D<Skill>(skin, GameConstants.USER_ACTIVE_SKILL_COUNT, ManaWars.getInstance().getScreenManager().getSkillIconFactory()) {
-            @Override
-            protected void drawItem(Batch batch, BitmapFont font, int index, Skill item,
-                                    float x, float y, float width, float height) {
-                TextureRegion texture = textureFactory.getAsset(item.getIconID());
-                String text = String.valueOf(item.getLevel());
-                float texOffsetX = (width - texture.getRegionWidth()) / 2;
-                float texOffsetY = (height - texture.getRegionHeight()) / 2;
-                batch.draw(texture, x + texOffsetX, y + texOffsetY);
-                font.draw(batch, text, x + width / 2, y + texOffsetY, 0, text.length(),
-                        width, alignment, false, "");
-            }
-        };
-        passiveSkills = new List2D<Skill>(skin, GameConstants.USER_PASSIVE_SKILL_COUNT, ManaWars.getInstance().getScreenManager().getSkillIconFactory()) {
-            @Override
-            protected void drawItem(Batch batch, BitmapFont font, int index, Skill item,
-                                    float x, float y, float width, float height) {
-                TextureRegion texture = textureFactory.getAsset(item.getIconID());
-                String text = String.valueOf(item.getLevel());
-                float texOffsetX = (width - texture.getRegionWidth()) / 2;
-                float texOffsetY = (height - texture.getRegionHeight()) / 2;
-                batch.draw(texture, x + texOffsetX, y + texOffsetY);
-                font.draw(batch, text, x + width / 2, y + texOffsetY, 0, text.length(),
-                        width, alignment, false, "");
-            }
-        };
+        skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
+        navigationBar = screenManager.getNavigationBar();
+        mainSkillsTable = new SkillsList2D(getEmptyBackgroundStyle(), COLUMNS_NUMBER,
+                factoryStorage.getSkillIconFactory(), true);
+        mainSkillsTable.setUserObject(SkillsOperations.Table.ALL_SKILLS);
+        activeSkillsTable = new SkillsList2D(skin, GameConstants.USER_ACTIVE_SKILL_COUNT,
+                factoryStorage.getSkillIconFactory(), false);
+        activeSkillsTable.setUserObject(SkillsOperations.Table.ACTIVE_SKILLS);
+        passiveSkillsTable = new SkillsList2D(skin, GameConstants.USER_PASSIVE_SKILL_COUNT,
+                factoryStorage.getSkillIconFactory(), false);
+        passiveSkillsTable.setUserObject(SkillsOperations.Table.PASSIVE_SKILLS);
+        scrollPane = new ScrollPane(mainSkillsTable, skin);
+        dragAndDrop = new SkillsDragAndDrop();
     }
 
-    private void rebuildStage() {
+    @Override
+    protected void rebuildStage() {
         // layers
         Table layerBackground = buildBackgroundLayer(skin);
         Table layerForeground = buildForegroundLayer(skin);
@@ -105,140 +75,201 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
         stack.add(layerForeground);
         stage.addActor(layerNavigationBar);
 
-        setupDragAndDrop();
-    }
-
-    private Table buildBackgroundLayer(Skin skin) {
-        Table layer = new Table();
-
-        return layer;
-    }
-
-    private Table buildForegroundLayer(Skin skin) {
-        Table layer = new Table();
-        layer.setFillParent(true);
-
-
-        skillsTable.setFillParent(true);
-        skillsTable.getSelection().setMultiple(false);
-        skillsTable.getSelection().setRequired(false);
-        ScrollPane scrollPane = new ScrollPane(skillsTable, skin);
-
-        activeSkills.getSelection().setMultiple(false);
-        activeSkills.getSelection().setRequired(false);
-        passiveSkills.getSelection().setMultiple(false);
-        passiveSkills.getSelection().setRequired(false);
-
-        //TODO: remove constants
-        layer.add(activeSkills).expandX().height(Gdx.graphics.getHeight() * 0.1f).width(Gdx.graphics.getWidth()).row();
-        layer.add(passiveSkills).expandX().height(Gdx.graphics.getHeight() * 0.1f).width(Gdx.graphics.getWidth()).row();
-        layer.add(scrollPane).expandX().height(Gdx.graphics.getHeight() * 0.7f).width(Gdx.graphics.getWidth()).row();
-
-        return layer;
-    }
-
-    private void setupDragAndDrop() {
-        DragAndDrop dragAndDrop = new DragAndDrop();
-        dragAndDrop.addSource(new DragAndDrop.Source(skillsTable) {
-            final DragAndDrop.Payload payload = new DragAndDrop.Payload();
-            @Override
-            public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
-                int itemIndex = skillsTable.getItemIndexAt(x, y);
-                if (itemIndex < 0) return null;
-
-                Skill skill = skillsTable.getItems().get(itemIndex);
-                payload.setObject(skill);
-                skillsTable.removeIndex(itemIndex);
-                // TODO: cache SkillIconFactory (or change the payload appearance)
-                payload.setDragActor(new Image(ManaWars.getInstance().getScreenManager()
-                        .getSkillIconFactory().getAsset(skill.getIconID())));
-                return payload;
-            }
-
-            @Override
-            public void dragStop(InputEvent event, float x, float y, int pointer,
-                                 DragAndDrop.Payload payload, DragAndDrop.Target target) {
-                if (target == null) {
-                    skillsTable.add((Skill) payload.getObject(), true);
-                    skillsTable.getSelection().clear();
-                }
-            }
-        });
-
-        dragAndDrop.addTarget(new DragAndDrop.Target(skillsTable) {
-            @Override
-            public boolean drag(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
-                Skill from = (Skill)payload.getObject();
-                Skill to = skillsTable.getItemAt(x, y);
-                // TODO: add merge comparison method
-                return to != null && from.getName().equals(to.getName()) && from.getLevel() == to.getLevel();
-            }
-
-            @Override
-            public void drop(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
-
-                //TODO @Demian please check it check
-
-                Skill skill = (Skill)payload.getObject();
-                int itemIndex = skillsTable.getItemIndexAt(x, y);
-                presenter.mergeSkills(skillsTable.getItems().get(itemIndex), skill);
-
-                skillsTable.getItems().get(itemIndex).setLevel(skill.getLevel() + 1);
-                itemIndex = skillsTable.realignItemAt(itemIndex);
-                skillsTable.setSelectedIndex(itemIndex);
-            }
-        });
+        dragAndDrop.setup(factoryStorage.getSkillIconFactory());
     }
 
     @Override
-    public void setSkillsList(List<Skill> skills) {
-        skillsTable.setItems(skills);
-        //TODO: modify active/passive skills table appropriately
-        //for (Skill skill : skills) System.out.println(skill.getRarity());
+    protected Table buildBackgroundLayer(Skin skin) {
+        Table layer = new Table();
+
+        return layer;
+    }
+
+    @Override
+    protected Table buildForegroundLayer(Skin skin) {
+        Table layer = new Table().top();
+
+        mainSkillsTable.getSelection().setMultiple(false);
+        mainSkillsTable.getSelection().setRequired(false);
+        Table scrollPaneCont = new Table(skin);
+        scrollPaneCont.setBackground("list");
+        scrollPaneCont.add(scrollPane).height(MAIN_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH);
+
+        activeSkillsTable.getSelection().setMultiple(false);
+        activeSkillsTable.getSelection().setRequired(false);
+        passiveSkillsTable.getSelection().setMultiple(false);
+        passiveSkillsTable.getSelection().setRequired(false);
+
+        layer.add(activeSkillsTable).top().expandX().height(ACTIVE_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH).row();
+        layer.add(passiveSkillsTable).top().expandX().height(PASSIVE_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH).row();
+        layer.add(scrollPaneCont).top().expandX().height(MAIN_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH);
+
+        return layer;
+    }
+
+    @Override
+    public void setSkillsList(List<Skill> activeSkills, List<Skill> passiveSkills, List<Skill> skills) {
+        mainSkillsTable.setItems(skills);
+        activeSkillsTable.setItems(activeSkills);
+        passiveSkillsTable.setItems(passiveSkills);
+        scrollPane.layout();
+    }
+
+    @Override
+    public void finishMerge(SkillsOperations.Table table, int index, Skill skill) {
+        //System.out.println("MERGE");
+        List2D<Skill> listTarget = getList2D(table);
+        listTarget.removeIndex(index);
+        index = listTarget.insert(index, skill);
+        listTarget.setSelectedIndex(index);
+    }
+
+    @Override
+    public void finishSwap(SkillsOperations.Table tableSource, SkillsOperations.Table tableTarget,
+                           int skillSourceIndex, int skillTargetIndex, Skill skillSource, Skill skillTarget) {
+        //System.out.println("SWAP");
+        List2D<Skill> listSource = getList2D(tableSource);
+        List2D<Skill> listTarget = getList2D(tableTarget);
+        listTarget.removeIndex(skillTargetIndex);
+        listTarget.setSelectedIndex(listTarget.insert(skillTargetIndex, skillSource));
+        listSource.insert(skillSourceIndex, skillTarget);
+    }
+
+    @Override
+    public void finishMove(SkillsOperations.Table tableTarget, int skillTargetIndex, Skill skillSource) {
+        //System.out.println("MOVE");
+        List2D<Skill> listTarget = getList2D(tableTarget);
+        if (tableTarget == SkillsOperations.Table.ALL_SKILLS) {
+            listTarget.insert(skillTargetIndex, skillSource);
+        } else {
+            listTarget.setItem(skillTargetIndex, skillSource);
+        }
+    }
+
+    private List2D<Skill> getList2D(SkillsOperations.Table table) {
+        switch (table) {
+            case ALL_SKILLS:
+                return mainSkillsTable;
+            case ACTIVE_SKILLS:
+                return activeSkillsTable;
+            case PASSIVE_SKILLS:
+                return passiveSkillsTable;
+        }
+        // TODO: think
+        return mainSkillsTable;
     }
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(stage);
+        super.show();
         presenter.refreshSkillsList();
-        rebuildStage();
-    }
-
-    @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(50.0f/255, 115.0f/255, 220.0f/255, 0.3f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        stage.act(delta);
-        stage.draw();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        stage.getViewport().setScreenSize(width, height);
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
     }
 
     @Override
     public void hide() {
-        Gdx.input.setInputProcessor(null);
-        skillsTable.setSelectedIndex(-1);
+        super.hide();
+        activeSkillsTable.setSelectedIndex(-1);
+        passiveSkillsTable.setSelectedIndex(-1);
+        mainSkillsTable.setSelectedIndex(-1);
     }
 
     @Override
     public void dispose() {
-        stage.dispose();
+        super.dispose();
         skin.dispose();
         presenter.dispose();
+    }
+
+    @SuppressWarnings("unchecked")
+    private class SkillsDragAndDrop {
+
+        private final TimeoutDragAndDrop dragAndDrop;
+
+        SkillsDragAndDrop() {
+            this.dragAndDrop = new TimeoutDragAndDrop(400);
+        }
+
+        void setup(AssetFactory<Integer, TextureRegion> skillIconFactory) {
+            dragAndDrop.clear();
+            setupSources(skillIconFactory);
+            setupTargets();
+        }
+
+        private void setupSources(AssetFactory<Integer, TextureRegion> skillIconFactory) {
+            setupSource(mainSkillsTable, skillIconFactory);
+            setupSource(activeSkillsTable, skillIconFactory);
+            setupSource(passiveSkillsTable, skillIconFactory);
+        }
+
+        private void setupTargets() {
+            setupTarget(mainSkillsTable);
+            setupTarget(activeSkillsTable);
+            setupTarget(passiveSkillsTable);
+        }
+
+        private void setupSource(List2D<Skill> table, AssetFactory<Integer, TextureRegion> skillIconFactory) {
+            dragAndDrop.addSource(new TimeoutDragAndDrop.Source(table) {
+                final TimeoutDragAndDrop.Payload payload = new TimeoutDragAndDrop.Payload();
+                @Override
+                public TimeoutDragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
+                    int itemIndex = table.getItemIndexAt(x, y);
+                    if (itemIndex == -1) return null;
+
+                    Skill skill = table.getItem(itemIndex);
+                    if (skill == Skill.Empty) return null;
+                    payload.setObject1(skill);
+                    payload.setObject2(itemIndex);
+                    table.removeIndex(itemIndex);
+                    payload.setDragActor(new Image(skillIconFactory.getAsset(skill.getIconID())));
+                    return payload;
+                }
+
+                @Override
+                public void dragStop(InputEvent event, float x, float y, int pointer,
+                                     TimeoutDragAndDrop.Payload payload, TimeoutDragAndDrop.Target target) {
+                    if (target == null) {
+                        table.insert((int)payload.getObject2(), (Skill)payload.getObject1());
+                        table.getSelection().clear();
+                    }
+                }
+            });
+        }
+
+        private void setupTarget(List2D<Skill> table) {
+            dragAndDrop.addTarget(new TimeoutDragAndDrop.Target(table) {
+                @Override
+                public boolean drag(TimeoutDragAndDrop.Source source, TimeoutDragAndDrop.Payload payload,
+                                    float x, float y, int pointer) {
+                    Skill from = (Skill) payload.getObject1();
+                    Skill to = table.getItemAt(x, y);
+                    return presenter.validateOperation((SkillsOperations.Table)source.getActor().getUserObject(),
+                                                        (SkillsOperations.Table)getActor().getUserObject(),
+                                                        from, to);
+                }
+
+                @Override
+                public void drop(TimeoutDragAndDrop.Source source, TimeoutDragAndDrop.Payload payload,
+                                 float x, float y, int pointer) {
+                    int fromIndex = (int) payload.getObject2();
+                    Skill from = (Skill) payload.getObject1();
+                    int toIndex = table.getItemIndexAt(x, y);
+                    Skill to = (toIndex == -1) ? null : table.getItem(toIndex);
+
+                    presenter.performOperation((SkillsOperations.Table)source.getActor().getUserObject(),
+                                                (SkillsOperations.Table)getActor().getUserObject(),
+                                                from, to, fromIndex, toIndex);
+                }
+            });
+        }
+
+    }
+
+    private com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle getEmptyBackgroundStyle() {
+        com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle style =
+                new com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle(
+                        skin.get(com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle.class));
+        style.background = new BaseDrawable(style.background);
+        return style;
     }
 
 }

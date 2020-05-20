@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class SharedPreferencesRepository implements LocalUserDataRepository {
+import com.mana_wars.ui.FirstOpenFlag;
+
+public class SharedPreferencesRepository implements LocalUserDataRepository, FirstOpenFlag {
 
     private Activity hostActivity;
 

@@ -52,9 +52,8 @@ public class DBMapperRepository implements DatabaseRepository {
 
     @Override
     public Completable mergeSkills(Skill toUpdate, Skill toDelete) {
-
         UserSkill userSkill = lastUserSkillsMap.get(toUpdate);
-        userSkill.setLvl(userSkill.getLvl()+1);
+        userSkill.setLvl(toUpdate.getLevel());
         return room.mergeSkills(userSkill, lastUserSkillsMap.get(toDelete));
     }
 

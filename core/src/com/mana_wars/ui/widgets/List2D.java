@@ -19,14 +19,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.UIUtils;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectSet;
-import com.mana_wars.model.entity.base.GameItem;
 import com.mana_wars.ui.factory.AssetFactory;
 
 /**
  * Texture-oriented 2-dimensional list based on the original List implementation in Libgdx.
  * @param <T>
  */
-public abstract class List2D<T extends GameItem & Comparable<T>> extends Widget implements Cullable {
+public abstract class List2D<T> extends Widget implements Cullable {
 
     List.ListStyle style;
     final Array<List2DItem<T>> items = new Array<>();
@@ -233,15 +232,6 @@ public abstract class List2D<T extends GameItem & Comparable<T>> extends Widget 
     protected abstract void drawItem(Batch batch, BitmapFont font, int index, T item,
                                      float x, float y, float width, float height);
 
-    /*
-    protected void drawItem (Batch batch, BitmapFont font, List2DItem<T> item, float x, float y, float width, float height) {
-        TextureRegion texture = textureFactory.getAsset(item.data.getIconID());
-        String text = String.valueOf(item.data.getLevel());
-        batch.draw(texture, x, y);
-        font.draw(batch, text, x + width / 2, y + height / 2, 0, text.length(), width, alignment, false, "...");
-    }
-    */
-
     public void setCols (int cols) {
         if (cols <= 0) throw new IllegalArgumentException("cols cannot be <= 0.");
         this.cols = cols;
@@ -270,60 +260,23 @@ public abstract class List2D<T extends GameItem & Comparable<T>> extends Widget 
 
     private List2DItem<T> getSelectedItem() { return selection.first(); }
 
-    public void add(T item, boolean sorted) {
-        // TODO: handle null
-        if (item == null) return;
-        // TODO: optimize index usage
-        if (!sorted) {
-            items.add(new List2DItem<>(items.size, item));
-        } else {
-            int indexToInsert = 0;
-            boolean found = false;
-            int availableID = -1;
-            for (List2DItem<T> listItem : items) {
-                if (listItem.index > availableID) availableID = listItem.index;
-                if (listItem.data.compareTo(item) <= 0) found = true;
-                if (!found) indexToInsert++;
-            }
-            items.insert(indexToInsert, new List2DItem<>(availableID + 1, item));
-        }
+    public int add(T item) {
+        if (item == null) throw new IllegalArgumentException("List2D.add: item cannot be null");
+        items.add(new List2DItem<>(items.size, item));
+        return items.size - 1;
     }
 
-    /*
-     * Restore elements order in the list providing that items[index] is the only item out of order.
-     * Returns the index of the element after realignment.
-     */
-    public int realignItemAt(int index) {
-        List2DItem<T> item = items.get(index);
-        boolean goDown;
-        if (index == 0) {
-            if (item.compareTo(items.get(1)) >= 0) return index;
-            else goDown = true;
-        } else if (index == items.size - 1) {
-            if (item.compareTo(items.get(items.size - 2)) <= 0) return index;
-            else goDown = false;
-        } else {
-            if (item.compareTo(items.get(index + 1)) < 0) goDown = true;
-            else if (item.compareTo(items.get(index - 1)) > 0) goDown = false;
-            else return index;
-        }
+    public void setItem(int index, T item) {
+        items.get(index).data = item;
+    }
 
-        if (goDown) {
-            int indexEnd = index + 1;
-            for (List2DItem<T> current = items.get(indexEnd);
-                 indexEnd < items.size && item.compareTo(current) < 0;
-                 indexEnd++, current = items.get(indexEnd));
-            System.arraycopy(items.items, index + 1, items.items, index, indexEnd - index);
-            items.set(indexEnd, item);
-            return indexEnd;
-        } else {
-            int indexStart = index - 1;
-            for (; indexStart >= 0 && item.compareTo(items.get(indexStart)) > 0; indexStart--);
-            indexStart++;
-            System.arraycopy(items.items, indexStart, items.items, indexStart + 1, index - indexStart);
-            items.set(indexStart, item);
-            return indexStart;
-        }
+    public int insert(int index, T item) {
+        if (item == null) throw new IllegalArgumentException("List2D.insert: item cannot be null");
+        if (index < 0) throw new IllegalArgumentException("List2D.insert: index cannot be < 0");
+        if (index >= items.size) throw new IllegalArgumentException("List2D.insert: item cannot be > itemsSize");
+
+        items.insert(index, new List2DItem<>(items.size, item));
+        return index;
     }
 
     private void setSelectedItem(List2DItem<T> item) {
@@ -333,6 +286,10 @@ public abstract class List2D<T extends GameItem & Comparable<T>> extends Widget 
             selection.set(items.first());
         else
             selection.clear();
+    }
+
+    public int getItemsSize() {
+        return items.size;
     }
 
     public int getSelectedIndex () {
@@ -350,10 +307,10 @@ public abstract class List2D<T extends GameItem & Comparable<T>> extends Widget 
         }
     }
 
-    public void removeIndex(int index) {
+    public T removeIndex(int index) {
         if (index < 0 || index >= items.size)
             throw new IllegalArgumentException("index must be >= 0 and < " + items.size + ": " + index);
-        items.removeIndex(index);
+        return items.removeIndex(index).data;
     }
 
     public List2DItem<T> getOverItem () {
@@ -370,9 +327,12 @@ public abstract class List2D<T extends GameItem & Comparable<T>> extends Widget 
     }
 
     private List2DItem<T> getListItemAt (float x, float y) {
-        int index = getItemIndexAt(x, y);
-        if (index == -1) return null;
-        return items.get(index);
+        try {
+            int index = getItemIndexAt(x, y);
+            return items.get(index);
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
     }
 
     public int getItemIndexAt (float x, float y) {
@@ -429,7 +389,12 @@ public abstract class List2D<T extends GameItem & Comparable<T>> extends Widget 
         invalidateHierarchy();
     }
 
-    public Array<T> getItems() {
+    public T getItem(int index) {
+        List2DItem<T> item = items.get(index);
+        return item == null ? null : item.data;
+    }
+
+    private Array<T> getItems() {
         Array<T> itemsArr = new Array<>(items.size);
         for (List2DItem<T> item : items) itemsArr.add(item.data);
         return itemsArr;
@@ -468,7 +433,7 @@ public abstract class List2D<T extends GameItem & Comparable<T>> extends Widget 
 
     public Rectangle getCullingArea() { return cullingArea; }
 
-    private static class List2DItem<T extends Comparable<T>> implements Comparable<List2DItem<T>> {
+    static class List2DItem<T> {
         int index;
         T data;
 
@@ -489,11 +454,6 @@ public abstract class List2D<T extends GameItem & Comparable<T>> extends Widget 
         @Override
         public int hashCode() {
             return index;
-        }
-
-        @Override
-        public int compareTo(List2DItem<T> item) {
-            return data.compareTo(item.data);
         }
     }
 

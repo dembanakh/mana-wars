@@ -23,7 +23,7 @@ public class SkillTest {
         List<SkillCharacteristic> scList = new ArrayList<>();
         scList.add(sc1);
         scList.add(sc2);
-        Skill sk = new Skill(1,1, Rarity.COMMON,10,"name",scList);
+        Skill sk = new Skill(1,1, Rarity.COMMON,"name", 10, scList);
         BattleParticipant self = mock(BattleParticipant.class);
         BattleParticipant enemy = mock(BattleParticipant.class);
         sk.activate(self,enemy);

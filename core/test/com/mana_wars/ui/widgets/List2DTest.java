@@ -3,15 +3,9 @@ package com.mana_wars.ui.widgets;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
-import com.mana_wars.model.entity.base.GameItem;
-import com.mana_wars.model.entity.base.Rarity;
-import com.mana_wars.model.entity.skills.Skill;
 
 import org.junit.Test;
-
-import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
@@ -19,31 +13,31 @@ public class List2DTest {
 
     @Test
     public void getSelected() {
-        List2D<Skill> list = new List2D<Skill>(new List.ListStyle(), 5, null) {
+        List2D<Integer> list = new List2D<Integer>(new List.ListStyle(), 5, null) {
             @Override
-            protected void drawItem(Batch batch, BitmapFont font, int index, Skill item, float x, float y, float width, float height) {
+            protected void drawItem(Batch batch, BitmapFont font, int index, Integer item, float x, float y, float width, float height) {
 
             }
         };
-        Skill skill1 = new Skill(1, 1, Rarity.COMMON, 1, "item1", new ArrayList<>());
-        Skill skill2 = new Skill(2, 1, Rarity.COMMON, 1, "item2", new ArrayList<>());
-        list.setItems(skill1, skill2);
+        Integer item1 = 1;
+        Integer item2 = 2;
+        list.setItems(item1, item2);
 
         list.setSelectedIndex(0);
-        assertEquals(skill1, list.getSelected());
+        assertEquals(item1, list.getSelected());
     }
 
     @Test
     public void setSelectedIndex_minus1() {
-        List2D<Skill> list = new List2D<Skill>(new List.ListStyle(), 5, null) {
+        List2D<Integer> list = new List2D<Integer>(new List.ListStyle(), 5, null) {
             @Override
-            protected void drawItem(Batch batch, BitmapFont font, int index, Skill item, float x, float y, float width, float height) {
+            protected void drawItem(Batch batch, BitmapFont font, int index, Integer item, float x, float y, float width, float height) {
 
             }
         };
-        Skill skill1 = new Skill(1, 1, Rarity.COMMON, 1, "item1", new ArrayList<>());
-        Skill skill2 = new Skill(2, 1, Rarity.COMMON, 1, "item2", new ArrayList<>());
-        list.setItems(skill1, skill2);
+        Integer item1 = 1;
+        Integer item2 = 2;
+        list.setItems(item1, item2);
 
         list.setSelectedIndex(0);
         list.setSelectedIndex(-1);
@@ -52,15 +46,15 @@ public class List2DTest {
 
     @Test
     public void setSelectedIndex_simple() {
-        List2D<Skill> list = new List2D<Skill>(new List.ListStyle(), 5, null) {
+        List2D<Integer> list = new List2D<Integer>(new List.ListStyle(), 5, null) {
             @Override
-            protected void drawItem(Batch batch, BitmapFont font, int index, Skill item, float x, float y, float width, float height) {
+            protected void drawItem(Batch batch, BitmapFont font, int index, Integer item, float x, float y, float width, float height) {
 
             }
         };
-        Skill skill1 = new Skill(1, 1, Rarity.COMMON, 1, "item1", new ArrayList<>());
-        Skill skill2 = new Skill(2, 1, Rarity.COMMON, 1, "item2", new ArrayList<>());
-        list.setItems(skill1, skill2);
+        Integer item1 = 1;
+        Integer item2 = 2;
+        list.setItems(item1, item2);
 
         list.setSelectedIndex(0);
         assertEquals(0, list.getSelectedIndex());
@@ -68,44 +62,45 @@ public class List2DTest {
 
     @Test
     public void clearItems() {
-        List2D<Skill> list = new List2D<Skill>(new List.ListStyle(), 5, null) {
+        List2D<Integer> list = new List2D<Integer>(new List.ListStyle(), 5, null) {
             @Override
-            protected void drawItem(Batch batch, BitmapFont font, int index, Skill item, float x, float y, float width, float height) {
+            protected void drawItem(Batch batch, BitmapFont font, int index, Integer item, float x, float y, float width, float height) {
 
             }
         };
-        Skill skill1 = new Skill(1, 1, Rarity.COMMON, 1, "item1", new ArrayList<>());
-        Skill skill2 = new Skill(2, 1, Rarity.COMMON, 1, "item2", new ArrayList<>());
-        list.setItems(skill1, skill2);
+        Integer item1 = 1;
+        Integer item2 = 2;
+        list.setItems(item1, item2);
         list.clearItems();
 
-        assertEquals(0, list.getItems().size);
+        assertEquals(0, list.getItemsSize());
     }
 
     @Test
     public void testSetItems() {
-        List2D<Skill> list = new List2D<Skill>(new List.ListStyle(), 5, null) {
+        List2D<Integer> list = new List2D<Integer>(new List.ListStyle(), 5, null) {
             @Override
-            protected void drawItem(Batch batch, BitmapFont font, int index, Skill item, float x, float y, float width, float height) {
+            protected void drawItem(Batch batch, BitmapFont font, int index, Integer item, float x, float y, float width, float height) {
 
             }
         };
-        Skill skill1 = new Skill(1, 1, Rarity.COMMON, 1, "item1", new ArrayList<>());
-        Skill skill2 = new Skill(2, 1, Rarity.COMMON, 1, "item2", new ArrayList<>());
-        list.setItems(skill1, skill2);
+        Integer item1 = 1;
+        Integer item2 = 2;
+        list.setItems(item1, item2);
 
-        assertEquals(new Array<>(new Skill[] {skill1, skill2}), list.getItems());
+        assertEquals(item1, list.getItem(0));
+        assertEquals(item2, list.getItem(1));
     }
 
     @Test
     public void testGetItems_empty() {
-        List2D<Skill> list = new List2D<Skill>(new List.ListStyle(), 5, null) {
+        List2D<Integer> list = new List2D<Integer>(new List.ListStyle(), 5, null) {
             @Override
-            protected void drawItem(Batch batch, BitmapFont font, int index, Skill item, float x, float y, float width, float height) {
+            protected void drawItem(Batch batch, BitmapFont font, int index, Integer item, float x, float y, float width, float height) {
 
             }
         };
 
-        assertEquals(0, list.getItems().size);
+        assertEquals(0, list.getItemsSize());
     }
 }
