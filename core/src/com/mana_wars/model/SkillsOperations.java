@@ -43,7 +43,7 @@ public enum SkillsOperations {
             if (query.source == null || query.target == null) return false;
             if (query.tableQuery.source == query.tableQuery.target)
                 return query.source != Skill.Empty && query.target != Skill.Empty;
-            return (query.target instanceof ActiveSkill && query.source instanceof PassiveSkill) ||
+            return (query.target instanceof ActiveSkill && query.source instanceof ActiveSkill) ||
                     (query.target instanceof PassiveSkill && query.source instanceof PassiveSkill);
         }
         @Override
@@ -115,6 +115,8 @@ public enum SkillsOperations {
 
         private boolean invalid = false;
 
+        public boolean isValid(){return !invalid;}
+
         private SkillOperationQuery(TableOperationQuery tableQuery) {
             this.tableQuery = tableQuery;
         }
@@ -125,7 +127,7 @@ public enum SkillsOperations {
         private SkillOperationQuery() {
             this.invalid = true;
         }
-
+//SkillsOperations.TableOperationQuery tableQuery = mock(SkillsOperations.TableOperationQuery.class);
         public SkillOperationQuery from(Skill source) {
             this.source = source;
             return this;
