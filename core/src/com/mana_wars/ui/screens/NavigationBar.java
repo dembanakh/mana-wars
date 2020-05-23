@@ -27,24 +27,25 @@ public class NavigationBar {
         bar.bottom().setSize(TAB_WIDTH * TABS_NUMBER, TAB_HEIGHT);
         bar.setBackground(UIStringConstants.NAVIGATION_BAR.BG_COLOR);
 
-        // SKILLS
+
         bar.add(UIElementFactory.getButton(skin, "MAIN", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 onMain();
             }
         })).width(TAB_WIDTH).height(TAB_HEIGHT);
-        // SKILLS
+
         bar.add(UIElementFactory.getButton(skin, "SKILLS", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 onSkills();
             }
         })).width(TAB_WIDTH).height(TAB_HEIGHT);
-        // PLACEHOLDER2
-        bar.add(UIElementFactory.getButton(skin, "PLACEHOLDER2", new ChangeListener() {
+
+        bar.add(UIElementFactory.getButton(skin, "BATTLE", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                onBattle();
             }
         })).width(TAB_WIDTH).height(TAB_HEIGHT);
         // PLACEHOLDER3
@@ -63,6 +64,10 @@ public class NavigationBar {
 
     private void onSkills() {
         screenManager.setScreen(ScreenManager.ScreenInstance.SKILLS);
+    }
+
+    private void onBattle() {
+        screenManager.setScreen(ScreenManager.ScreenInstance.TEST_BATTLE);
     }
 
     public static NavigationBar create(ScreenManager screenManager) {

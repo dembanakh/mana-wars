@@ -16,6 +16,10 @@ public interface ScreenManager {
                                     ManaWars.getInstance().getDatabaseRepository())),
         SKILLS(new SkillsScreen(ManaWars.getInstance().getScreenManager(),
                                 ManaWars.getInstance().getScreenManager(),
+                                ManaWars.getInstance().getDatabaseRepository())),
+        TEST_BATTLE(new TestBattleScreen(ManaWars.getInstance().getScreenManager(),
+                                ManaWars.getInstance().getScreenManager(),
+                                ManaWars.getInstance().getLocalUserDataRepository(),
                                 ManaWars.getInstance().getDatabaseRepository()));
 
         private final BaseScreen screen;
