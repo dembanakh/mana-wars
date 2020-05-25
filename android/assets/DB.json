@@ -2,7 +2,7 @@
   "skills": [
     {
       "id" : 1,
-      "name" : "Magic spear",
+      "name" : "Magic storm",
       "rarity" : 1,
       "manacost" : 10,
       "is_active" : true,
@@ -10,11 +10,10 @@
     },
     {
       "id" : 2,
-      "name" : "Self-healing",
+      "name" : "Planetary accuracy",
       "rarity" : 1,
       "manacost" : 10,
-      "is_active" : true,
-      "cooldown": 5
+      "is_active" : false
     },
     {
       "id" : 3,
@@ -30,6 +29,36 @@
       "manacost" : 20,
       "is_active" : true,
       "cooldown": 10
+    },
+    {
+      "id" : 5,
+      "name" : "Blood-lust",
+      "rarity" : 3,
+      "manacost" : 30,
+      "is_active" : false
+    },
+    {
+      "id" : 6,
+      "name" : "Self-healing",
+      "rarity" : 4,
+      "manacost" : 40,
+      "is_active" : true,
+      "cooldown" : 12
+    },
+    {
+      "id" : 46,
+      "name" : "Ice shield",
+      "rarity" : 5,
+      "manacost" : 100,
+      "is_active" : false
+    },
+    {
+      "id" : 8,
+      "name" : "Magic strike",
+      "rarity" : 6,
+      "manacost" : 20,
+      "is_active" : true,
+      "cooldown" : 4
     }
   ],
   "skill_characteristics" : [
@@ -43,8 +72,8 @@
     },
     {
       "id" : 2,
-      "skill_id": 2,
-      "value": 5,
+      "skill_id": 6,
+      "value": 40,
       "characteristic" : 1,
       "value_change" : 1,
       "target" : 1

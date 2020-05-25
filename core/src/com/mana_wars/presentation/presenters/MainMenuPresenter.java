@@ -21,7 +21,8 @@ public class MainMenuPresenter {
 
     public void onOpenSkillCase() {
         disposable.add(interactor.getNewSkill().subscribe(s -> {
-                Gdx.app.postRunnable( ()->view.openSkillCaseWindow(s.getIconID(), s.getName(), s.getDescription()));
+                Gdx.app.postRunnable( ()->view.openSkillCaseWindow(s.getIconID(),
+                        s.getName(), s.getRarity(), s.getDescription()));
         }, Throwable::printStackTrace));
     }
 

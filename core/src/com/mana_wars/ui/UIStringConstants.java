@@ -6,6 +6,7 @@ public final class UIStringConstants {
     static final String REGION_NAME = "image_part";
 
     static final String SKILLS_ICONS_FILENAME = "Skills_icons";
+    static final String SKILLS_FRAMES_FILENAME = "Skills_frames";
 
     public static class UI_SKIN {
         static final String FORMAT = "skins/%s/skin/%<s-ui.json";

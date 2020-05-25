@@ -39,18 +39,16 @@ public abstract class List2D<T> extends Widget implements Cullable {
     boolean typeToSelect;
 
     private int cols;
-    protected AssetFactory<Integer, TextureRegion> textureFactory;
 
-    public List2D(Skin skin, int cols, AssetFactory<Integer, TextureRegion> textureFactory) {
-        this(skin.get(List.ListStyle.class), cols, textureFactory);
+    public List2D(Skin skin, int cols) {
+        this(skin.get(List.ListStyle.class), cols);
     }
 
-    public List2D(Skin skin, String styleName, int cols, AssetFactory<Integer, TextureRegion> textureFactory) {
-        this(skin.get(styleName, List.ListStyle.class), cols, textureFactory);
+    public List2D(Skin skin, String styleName, int cols) {
+        this(skin.get(styleName, List.ListStyle.class), cols);
     }
 
-    public List2D(List.ListStyle style, int cols, AssetFactory<Integer, TextureRegion> textureFactory) {
-        this.textureFactory = textureFactory;
+    public List2D(List.ListStyle style, int cols) {
         selection.setActor(this);
         selection.setRequired(true);
 
@@ -298,6 +296,7 @@ public abstract class List2D<T> extends Widget implements Cullable {
     }
 
     public void setSelectedIndex (int index) {
+        if (selection.isDisabled()) return;
         if (index < -1 || index >= items.size)
             throw new IllegalArgumentException("index must be >= -1 and < " + items.size + ": " + index);
         if (index == -1) {

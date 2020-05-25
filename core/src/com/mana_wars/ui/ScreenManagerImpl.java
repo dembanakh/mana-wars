@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.screens.FactoryStorage;
 import com.mana_wars.ui.screens.NavigationBar;
@@ -17,6 +18,7 @@ public class ScreenManagerImpl implements FactoryStorage, ScreenManager {
 
     private final AssetFactory<Integer, TextureRegion> skillIconFactory;
     private final AssetFactory<String, Skin> skinFactory;
+    private final AssetFactory<Rarity, TextureRegion> rarityFrameFactory;
 
     private final NavigationBar navigationBar;
 
@@ -41,12 +43,23 @@ public class ScreenManagerImpl implements FactoryStorage, ScreenManager {
                 }
             }
         };
+        rarityFrameFactory = new AssetFactory<Rarity, TextureRegion>(SKILLS_FRAMES_FILENAME) {
+            @Override
+            public void loadItems() {
+                final TextureAtlas textureAtlas =
+                        new TextureAtlas(String.format(TEXTURE_ATLAS_FORMAT, fileNames[0]));
+                for (TextureAtlas.AtlasRegion region : textureAtlas.getRegions()) {
+                    items.put(Rarity.valueOf(region.name), region);
+                }
+            }
+        };
         navigationBar = NavigationBar.create(this);
     }
 
     public void start(FirstOpenFlag firstOpenFlag) {
         skillIconFactory.loadItems();
         skinFactory.loadItems();
+        rarityFrameFactory.loadItems();
         navigationBar.start();
         if (firstOpenFlag.getIsFirstOpen()) {
             firstOpenFlag.setIsFirstOpen(false);
@@ -70,6 +83,11 @@ public class ScreenManagerImpl implements FactoryStorage, ScreenManager {
     @Override
     public AssetFactory<String, Skin> getSkinFactory() {
         return skinFactory;
+    }
+
+    @Override
+    public AssetFactory<Rarity, TextureRegion> getRarityFrameFactory() {
+        return rarityFrameFactory;
     }
 
     @Override

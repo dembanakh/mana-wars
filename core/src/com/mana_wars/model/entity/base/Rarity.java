@@ -1,17 +1,16 @@
 package com.mana_wars.model.entity.base;
 
 public enum Rarity {
+    EMPTY(0),
     COMMON(1),
     RARE(2),
-    /*ARCANE,
-    HEROIC,
-    UNIQUE,
-    CELESTIAL,
-    DIVINE,
-    EPIC,
-    LEGENDARY,
-    MYTHIC*/
+    ARCANE(3),
+    HEROIC(4),
+    EPIC(5),
+    LEGENDARY(6),
+    //MYTHIC(7)
     ;
+
 
     private final int id;
 

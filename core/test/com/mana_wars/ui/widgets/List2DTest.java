@@ -3,7 +3,6 @@ package com.mana_wars.ui.widgets;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
-import com.badlogic.gdx.utils.Array;
 
 import org.junit.Test;
 
@@ -13,7 +12,7 @@ public class List2DTest {
 
     @Test
     public void getSelected() {
-        List2D<Integer> list = new List2D<Integer>(new List.ListStyle(), 5, null) {
+        List2D<Integer> list = new List2D<Integer>(new List.ListStyle(), 5) {
             @Override
             protected void drawItem(Batch batch, BitmapFont font, int index, Integer item, float x, float y, float width, float height) {
 
@@ -29,7 +28,7 @@ public class List2DTest {
 
     @Test
     public void setSelectedIndex_minus1() {
-        List2D<Integer> list = new List2D<Integer>(new List.ListStyle(), 5, null) {
+        List2D<Integer> list = new List2D<Integer>(new List.ListStyle(), 5) {
             @Override
             protected void drawItem(Batch batch, BitmapFont font, int index, Integer item, float x, float y, float width, float height) {
 
@@ -46,7 +45,7 @@ public class List2DTest {
 
     @Test
     public void setSelectedIndex_simple() {
-        List2D<Integer> list = new List2D<Integer>(new List.ListStyle(), 5, null) {
+        List2D<Integer> list = new List2D<Integer>(new List.ListStyle(), 5) {
             @Override
             protected void drawItem(Batch batch, BitmapFont font, int index, Integer item, float x, float y, float width, float height) {
 
@@ -62,7 +61,7 @@ public class List2DTest {
 
     @Test
     public void clearItems() {
-        List2D<Integer> list = new List2D<Integer>(new List.ListStyle(), 5, null) {
+        List2D<Integer> list = new List2D<Integer>(new List.ListStyle(), 5) {
             @Override
             protected void drawItem(Batch batch, BitmapFont font, int index, Integer item, float x, float y, float width, float height) {
 
@@ -78,7 +77,7 @@ public class List2DTest {
 
     @Test
     public void testSetItems() {
-        List2D<Integer> list = new List2D<Integer>(new List.ListStyle(), 5, null) {
+        List2D<Integer> list = new List2D<Integer>(new List.ListStyle(), 5) {
             @Override
             protected void drawItem(Batch batch, BitmapFont font, int index, Integer item, float x, float y, float width, float height) {
 
@@ -94,7 +93,7 @@ public class List2DTest {
 
     @Test
     public void testGetItems_empty() {
-        List2D<Integer> list = new List2D<Integer>(new List.ListStyle(), 5, null) {
+        List2D<Integer> list = new List2D<Integer>(new List.ListStyle(), 5) {
             @Override
             protected void drawItem(Batch batch, BitmapFont font, int index, Integer item, float x, float y, float width, float height) {
 

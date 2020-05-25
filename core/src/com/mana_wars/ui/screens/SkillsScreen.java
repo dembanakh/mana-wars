@@ -8,8 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
-import com.mana_wars.ManaWars;
 import com.mana_wars.model.GameConstants;
+import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.interactor.SkillsInteractor;
 import com.mana_wars.model.repository.DatabaseRepository;
@@ -47,13 +47,13 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
         skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
         navigationBar = screenManager.getNavigationBar();
         mainSkillsTable = new SkillsList2D(getEmptyBackgroundStyle(), COLUMNS_NUMBER,
-                factoryStorage.getSkillIconFactory(), true);
+                factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(), true);
         mainSkillsTable.setUserObject(SkillsOperations.Table.ALL_SKILLS);
         activeSkillsTable = new SkillsList2D(skin, GameConstants.USER_ACTIVE_SKILL_COUNT,
-                factoryStorage.getSkillIconFactory(), false);
+                factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(), false);
         activeSkillsTable.setUserObject(SkillsOperations.Table.ACTIVE_SKILLS);
         passiveSkillsTable = new SkillsList2D(skin, GameConstants.USER_PASSIVE_SKILL_COUNT,
-                factoryStorage.getSkillIconFactory(), false);
+                factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(), false);
         passiveSkillsTable.setUserObject(SkillsOperations.Table.PASSIVE_SKILLS);
         scrollPane = new ScrollPane(mainSkillsTable, skin);
         dragAndDrop = new SkillsDragAndDrop();
@@ -75,7 +75,7 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
         stack.add(layerForeground);
         stage.addActor(layerNavigationBar);
 
-        dragAndDrop.setup(factoryStorage.getSkillIconFactory());
+        dragAndDrop.setup(factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
     }
 
     @Override
@@ -121,7 +121,7 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
         List2D<Skill> listTarget = getList2D(table);
         listTarget.removeIndex(index);
         index = listTarget.insert(index, skill);
-        listTarget.setSelectedIndex(index);
+        //listTarget.setSelectedIndex(index);
     }
 
     @Override
@@ -131,7 +131,7 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
         List2D<Skill> listSource = getList2D(tableSource);
         List2D<Skill> listTarget = getList2D(tableTarget);
         listTarget.removeIndex(skillTargetIndex);
-        listTarget.setSelectedIndex(listTarget.insert(skillTargetIndex, skillSource));
+        //listTarget.setSelectedIndex(listTarget.insert(skillTargetIndex, skillSource));
         listSource.insert(skillSourceIndex, skillTarget);
     }
 
@@ -157,6 +157,12 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
         }
         // TODO: think
         return mainSkillsTable;
+    }
+
+    @Override
+    public void render(float delta) {
+        super.render(delta);
+        dragAndDrop.dragAndDrop.update(delta);
     }
 
     @Override
@@ -186,19 +192,21 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
         private final TimeoutDragAndDrop dragAndDrop;
 
         SkillsDragAndDrop() {
-            this.dragAndDrop = new TimeoutDragAndDrop(400);
+            this.dragAndDrop = new TimeoutDragAndDrop(1);
         }
 
-        void setup(AssetFactory<Integer, TextureRegion> skillIconFactory) {
+        void setup(AssetFactory<Integer, TextureRegion> skillIconFactory,
+                   AssetFactory<Rarity, TextureRegion> skillFrameFactory) {
             dragAndDrop.clear();
-            setupSources(skillIconFactory);
+            setupSources(skillIconFactory, skillFrameFactory);
             setupTargets();
         }
 
-        private void setupSources(AssetFactory<Integer, TextureRegion> skillIconFactory) {
-            setupSource(mainSkillsTable, skillIconFactory);
-            setupSource(activeSkillsTable, skillIconFactory);
-            setupSource(passiveSkillsTable, skillIconFactory);
+        private void setupSources(AssetFactory<Integer, TextureRegion> skillIconFactory,
+                                  AssetFactory<Rarity, TextureRegion> skillFrameFactory) {
+            setupSource(mainSkillsTable, skillIconFactory, skillFrameFactory);
+            setupSource(activeSkillsTable, skillIconFactory, skillFrameFactory);
+            setupSource(passiveSkillsTable, skillIconFactory, skillFrameFactory);
         }
 
         private void setupTargets() {
@@ -207,7 +215,9 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
             setupTarget(passiveSkillsTable);
         }
 
-        private void setupSource(List2D<Skill> table, AssetFactory<Integer, TextureRegion> skillIconFactory) {
+        private void setupSource(List2D<Skill> table,
+                                 AssetFactory<Integer, TextureRegion> skillIconFactory,
+                                 AssetFactory<Rarity, TextureRegion> skillFrameFactory) {
             dragAndDrop.addSource(new TimeoutDragAndDrop.Source(table) {
                 final TimeoutDragAndDrop.Payload payload = new TimeoutDragAndDrop.Payload();
                 @Override
@@ -220,7 +230,10 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
                     payload.setObject1(skill);
                     payload.setObject2(itemIndex);
                     table.removeIndex(itemIndex);
-                    payload.setDragActor(new Image(skillIconFactory.getAsset(skill.getIconID())));
+                    Stack stack = new Stack();
+                    stack.add(new Image(skillIconFactory.getAsset(skill.getIconID())));
+                    stack.add(new Image(skillFrameFactory.getAsset(skill.getRarity())));
+                    payload.setDragActor(stack);
                     return payload;
                 }
 

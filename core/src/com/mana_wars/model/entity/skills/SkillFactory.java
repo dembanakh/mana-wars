@@ -15,7 +15,7 @@ public class SkillFactory {
         Map<Rarity, List<Skill>> skillsList = new HashMap<>();
 
         for(Rarity rarity : Rarity.values()){
-            skillsList.put(rarity, new ArrayList<>());
+            if (rarity != Rarity.EMPTY) skillsList.put(rarity, new ArrayList<>());
         }
 
         for(Skill s : skills){
@@ -23,13 +23,13 @@ public class SkillFactory {
         }
 
         Rarity r = null;
-        int rarityLen = Rarity.values().length;
+        int rarityLen = Rarity.values().length - 1;
         Random generator = new Random();
         int rand = generator.nextInt((int)Math.pow(2, rarityLen));
         int pow = (int)Math.pow(2, rarityLen-1);
         int barrier = pow;
-        for(Rarity rar : Rarity.values()) {
-            if (rand <= barrier){
+        for(Rarity rar : skillsList.keySet()) {
+            if (rand <= barrier) {
                 r = rar;
                 break;
             }

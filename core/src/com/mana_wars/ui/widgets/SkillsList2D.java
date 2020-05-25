@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.mana_wars.model.entity.skills.ActiveSkill;
+import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.ui.factory.AssetFactory;
 
@@ -14,26 +14,40 @@ public class SkillsList2D extends List2D<Skill> {
 
     private final boolean ordered;
 
-    public SkillsList2D(Skin skin, int cols, AssetFactory<Integer, TextureRegion> textureFactory, boolean ordered) {
-        super(skin, cols, textureFactory);
-        this.ordered = ordered;
+    private AssetFactory<Integer, TextureRegion> iconFactory;
+    private AssetFactory<Rarity, TextureRegion> frameFactory;
+
+    public SkillsList2D(Skin skin, int cols, AssetFactory<Integer, TextureRegion> iconFactory,
+                        AssetFactory<Rarity, TextureRegion> frameFactory, boolean ordered) {
+        this(skin.get(List.ListStyle.class), cols, iconFactory, frameFactory, ordered);
     }
 
-    public SkillsList2D(List.ListStyle style, int cols, AssetFactory<Integer, TextureRegion> textureFactory, boolean ordered) {
-        super(style, cols, textureFactory);
+    public SkillsList2D(List.ListStyle style, int cols, AssetFactory<Integer, TextureRegion> iconFactory,
+                        AssetFactory<Rarity, TextureRegion> frameFactory, boolean ordered) {
+        super(style, cols);
         this.ordered = ordered;
+        this.iconFactory = iconFactory;
+        this.frameFactory = frameFactory;
+        this.selection.setDisabled(true);
     }
 
     @Override
     protected void drawItem(Batch batch, BitmapFont font, int index, Skill item, float x, float y, float width, float height) {
-        TextureRegion texture = textureFactory.getAsset(item.getIconID());
+        TextureRegion icon = iconFactory.getAsset(item.getIconID());
+        TextureRegion frame = frameFactory.getAsset(item.getRarity());
         String text = String.valueOf(item.getLevel());
-        float texOffsetX = (width - texture.getRegionWidth()) / 2;
-        float texOffsetY = (height - texture.getRegionHeight()) / 2;
-        batch.draw(texture, x + texOffsetX, y + texOffsetY);
+
+        float iconOffsetX = (width - icon.getRegionWidth()) / 2;
+        float iconOffsetY = (height - icon.getRegionHeight()) / 2;
+        float frameOffsetX = (width - frame.getRegionWidth()) / 2;
+        float frameOffsetY = (height - frame.getRegionHeight()) / 2;
+
+        batch.draw(icon, x + iconOffsetX, y + iconOffsetY);
+        batch.draw(frame, x + frameOffsetX, y + frameOffsetY);
+
         font.setColor(Color.BLACK);
         font.getData().setScale(2);
-        font.draw(batch, text, x + width / 2, y + texOffsetY, 0, text.length(),
+        font.draw(batch, text, x + width / 2, y + frameOffsetY, 0, text.length(),
                 width, alignment, false, "");
     }
 

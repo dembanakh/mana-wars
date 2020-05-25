@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mana_wars.ManaWars;
+import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.interactor.MainMenuInteractor;
 import com.mana_wars.model.repository.DatabaseRepository;
 import com.mana_wars.model.repository.LocalUserDataRepository;
@@ -32,7 +33,8 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
                 new MainMenuInteractor(localUserDataRepository, databaseRepository));
 
         skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
-        skillCaseWindow = new SkillCaseWindow(SKILL_CASE_WINDOW.TITLE, skin, factoryStorage.getSkillIconFactory());
+        skillCaseWindow = new SkillCaseWindow(SKILL_CASE_WINDOW.TITLE, skin,
+                factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
         navigationBar = screenManager.getNavigationBar();
     }
 
@@ -80,8 +82,8 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
     }
 
     @Override
-    public void openSkillCaseWindow(int skillID, String skillName, String description) {
-        skillCaseWindow.open(skillID, skillName, description);
+    public void openSkillCaseWindow(int skillID, String skillName, Rarity skillRarity, String description) {
+        skillCaseWindow.open(skillID, skillName, skillRarity, description);
     }
 
     @Override

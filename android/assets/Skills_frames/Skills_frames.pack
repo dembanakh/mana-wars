@@ -1,0 +1,54 @@
+
+Skills_frames.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+ARCANE
+  rotate: false
+  xy: 1, 1
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+COMMON
+  rotate: false
+  xy: 103, 1
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+EMPTY
+  rotate: false
+  xy: 205, 1
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+EPIC
+  rotate: false
+  xy: 307, 1
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+HEROIC
+  rotate: false
+  xy: 409, 1
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+LEGENDARY
+  rotate: false
+  xy: 511, 1
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+RARE
+  rotate: false
+  xy: 613, 1
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1

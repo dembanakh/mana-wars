@@ -32,12 +32,27 @@ public class TimeoutDragAndDrop {
     int activePointer = -1;
     boolean cancelTouchFocus = true;
     boolean keepWithinStage = true;
-    
-    private int touchDownTimeout;
-    private long touchDownTimer;
-    
-    public TimeoutDragAndDrop(int touchDownTimeout) {
+
+    private float touchDownTimeout;
+
+    /*
+     * touchDownTimeout - time in seconds for the user to keep finger down until the drag starts
+     */
+    public TimeoutDragAndDrop(float touchDownTimeout) {
         this.touchDownTimeout = touchDownTimeout;
+    }
+
+    public void update(float delta) {
+        for (Source source : sourceListeners.keys()) {
+            if (source.touchedDown) {
+                source.timeSinceTouchDown += delta;
+                if (source.timeSinceTouchDown >= touchDownTimeout) {
+                    source.touchedDown = false;
+                    source.timeSinceTouchDown = 0f;
+                    sourceListeners.get(source).dragStart(new InputEvent(), 0f, 0f, source.touchDownPointer);
+                }
+            }
+        }
     }
 
     public void addSource (final TimeoutDragAndDrop.Source source) {
@@ -45,7 +60,9 @@ public class TimeoutDragAndDrop {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 boolean result = super.touchDown(event, x, y, pointer, button);
                 if (!result) return false;
-                touchDownTimer = System.currentTimeMillis() + touchDownTimeout;
+                source.touchedDown = true;
+                source.timeSinceTouchDown = 0f;
+                source.touchDownPointer = pointer;
                 return true;
             }
             
@@ -54,8 +71,9 @@ public class TimeoutDragAndDrop {
                     event.stop();
                     return;
                 }
-                
-                if (System.currentTimeMillis() < touchDownTimer) {
+                if (source.touchedDown) {
+                    source.touchedDown = false;
+                    source.timeSinceTouchDown = 0f;
                     event.stop();
                     return;
                 }
@@ -71,11 +89,23 @@ public class TimeoutDragAndDrop {
                     Stage stage = source.getActor().getStage();
                     if (stage != null) stage.cancelTouchFocusExcept(this, source.getActor());
                 }
+
+                if (payload != null) {
+                    // Add and position the drag actor.
+                    Stage stage = event.getStage();
+                    event.setStage(source.getActor().getStage());
+                    event.setStageX(getStageTouchDownX());
+                    event.setStageY(getStageTouchDownY());
+                    drag(event, getTouchDownX(), getTouchDownY(), pointer);
+                    if (stage == null) source.forceDragStarted = true;
+                }
             }
 
             public void drag (InputEvent event, float x, float y, int pointer) {
                 if (payload == null) return;
                 if (pointer != activePointer) return;
+
+                if (source.forceDragStarted) source.forceDragStarted = false;
 
                 source.drag(event, x, y, pointer);
 
@@ -146,6 +176,12 @@ public class TimeoutDragAndDrop {
                 target = null;
                 isValidTarget = false;
                 dragActor = null;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                super.touchUp(event, x, y, pointer, button);
+                if (source.forceDragStarted) dragStop(event, x, y, source.touchDownPointer);
             }
         };
         listener.setTapSquareSize(tapSquareSize);
@@ -254,6 +290,11 @@ public class TimeoutDragAndDrop {
      * @author Nathan Sweet */
     static abstract public class Source {
         final Actor actor;
+
+        private boolean forceDragStarted = false;
+        private boolean touchedDown = false;
+        private float timeSinceTouchDown = 0;
+        private int touchDownPointer;
 
         public Source (Actor actor) {
             if (actor == null) throw new IllegalArgumentException("actor cannot be null.");
