@@ -17,6 +17,7 @@ import static com.mana_wars.model.repository.LocalizedStringsRepository.SKILL_LA
 public class AndroidLauncher extends AndroidApplication {
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
+
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		config.useCompass = false;
@@ -55,4 +56,6 @@ public class AndroidLauncher extends AndroidApplication {
 		initialize(app, config);
 
 	}
+
+
 }

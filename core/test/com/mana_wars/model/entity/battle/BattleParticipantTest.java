@@ -17,17 +17,15 @@ public class BattleParticipantTest {
 
     @Test
     public void testGetCharacteristicValue(){
-        BattleParticipant bp = new BattleParticipant(100,200,300,400);
+        BattleParticipant bp = new BattleParticipant(100,200);
         assertEquals(100, bp.getCharacteristicValue(Characteristic.HEALTH));
         assertEquals(200, bp.getCharacteristicValue(Characteristic.MANA));
-        assertEquals(300, bp.getCharacteristicValue(Characteristic.COOLDOWN));
-        assertEquals(400, bp.getCharacteristicValue(Characteristic.CAST_TIME));
     }
 
 
     @Test
     public void testApplySkillCharacteristic() {
-        BattleParticipant bp = new BattleParticipant(100,200,300,400);
+        BattleParticipant bp = new BattleParticipant(100,200);
         SkillCharacteristic sc = mock(SkillCharacteristic.class);
 
         when(sc.getCharacteristic()).thenReturn(Characteristic.HEALTH);
@@ -37,9 +35,6 @@ public class BattleParticipantTest {
 
         assertEquals(90, bp.getCharacteristicValue(Characteristic.HEALTH));
         assertEquals(200, bp.getCharacteristicValue(Characteristic.MANA));
-        assertEquals(300, bp.getCharacteristicValue(Characteristic.COOLDOWN));
-        assertEquals(400, bp.getCharacteristicValue(Characteristic.CAST_TIME));
-
 
         verify(sc).getCharacteristic();
         verify(sc).getValue();

@@ -7,15 +7,20 @@ import java.util.List;
 
 public class ActiveSkill extends Skill {
 
-    protected int cooldown;
+    protected double cooldown;
+    protected double castTime;
 
-    public ActiveSkill(int id, int level, Rarity rarity, int manaCost, int cooldown,String name, List<SkillCharacteristic> skillCharacteristics) {
+    public ActiveSkill(int id, int level, Rarity rarity, int manaCost, double castTime, double cooldown,String name, List<SkillCharacteristic> skillCharacteristics) {
         super(id, level, rarity, name, manaCost, skillCharacteristics);
+        this.castTime = castTime;
         this.cooldown = cooldown;
     }
 
-    public int getCooldown() {
+    public double getCooldown() {
         return cooldown;
     }
 
+    public double getCastTime() {
+        return castTime;
+    }
 }

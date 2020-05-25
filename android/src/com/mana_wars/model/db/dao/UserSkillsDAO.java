@@ -29,9 +29,6 @@ public abstract class UserSkillsDAO extends BaseDAO<UserSkill>{
 
     @Transaction
     public boolean mergeUserSkills(UserSkill toUpdate, UserSkill toDelete){
-
-        Log.i("UserSkillDao", "toUpdate=" +toUpdate.getLvl()+ "; toD="+toDelete.getLvl());
-
         return (deleteEntity(toDelete)>0)&(updateEntity(toUpdate)>0);
     }
 }

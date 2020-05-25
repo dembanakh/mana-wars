@@ -1,6 +1,8 @@
 package com.mana_wars.model.interactor;
 
 import com.mana_wars.model.skills_operations.SkillsOperations;
+import com.mana_wars.model.entity.SkillTable;
+
 import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.repository.DatabaseRepository;
 
@@ -24,7 +26,7 @@ public class SkillsInteractor {
         userLevelObservable = PublishSubject.create();
     }
 
-    public Single<Map<SkillsOperations.Table,List<Skill>>> getUserSkills() {
+    public Single<Map<SkillTable,List<Skill>>> getUserSkills() {
         return databaseRepository.getUserSkills();
     }
 
@@ -40,7 +42,7 @@ public class SkillsInteractor {
         return databaseRepository.swapSkills(skillSource, skillTarget);
     }
 
-    public boolean validateAnyOperation(SkillsOperations.Table tableSource, SkillsOperations.Table tableTarget,
+    public boolean validateAnyOperation(SkillTable tableSource, SkillTable tableTarget,
                                         Skill skillSource, Skill skillTarget) {
         for (SkillsOperations operation : SkillsOperations.values()) {
             if (validateOperation(operation, tableSource, tableTarget, skillSource, skillTarget))
@@ -49,7 +51,7 @@ public class SkillsInteractor {
         return false;
     }
 
-    public boolean validateOperation(SkillsOperations operation, SkillsOperations.Table tableSource, SkillsOperations.Table tableTarget,
+    public boolean validateOperation(SkillsOperations operation, SkillTable tableSource, SkillTable tableTarget,
                                      Skill skillSource, Skill skillTarget) {
         return SkillsOperations.can(operation)
                                 .from(tableSource)

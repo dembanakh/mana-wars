@@ -14,7 +14,7 @@ public interface ScreenManager {
         GREETING,
         MAIN_MENU,
         SKILLS,
-        TEST_BATTLE;
+        BATTLE;
 
         private BaseScreen screen;
 
@@ -27,7 +27,7 @@ public interface ScreenManager {
                     overlayUIFactory.getMenuOverlayUI(), overlayUIFactory.getMenuOverlayUI());
             SKILLS.screen = new SkillsScreen(screenManager, factoryStorage, repositoryStorage,
                     overlayUIFactory.getMenuOverlayUI(), overlayUIFactory.getMenuOverlayUI());
-            TEST_BATTLE.screen = new TestBattleScreen(screenManager, factoryStorage, repositoryStorage,
+            BATTLE.screen = new BattleScreen(screenManager, factoryStorage, repositoryStorage,
                     overlayUIFactory.getEmptyOverlayUI());
         }
 

@@ -11,7 +11,6 @@ public enum Rarity {
     //MYTHIC(7)
     ;
 
-
     private final int id;
 
     Rarity(int id){

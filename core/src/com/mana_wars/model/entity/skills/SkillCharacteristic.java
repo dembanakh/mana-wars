@@ -16,12 +16,6 @@ public class SkillCharacteristic {
         ENEMY
     }
 
-    public SkillCharacteristic(Characteristic characteristic, ValueChangeType changeType, Target target){
-        this.characteristic = characteristic;
-        this.changeType = changeType;
-        this.target = target;
-    }
-
     public SkillCharacteristic(int value, Characteristic characteristic, ValueChangeType changeType, Target target){
         this.characteristic = characteristic;
         this.value = value;

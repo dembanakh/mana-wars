@@ -1,11 +1,12 @@
 package com.mana_wars.model.skills_operations;
 
+import com.mana_wars.model.entity.SkillTable;
 import com.mana_wars.model.entity.skills.Skill;
 
-class TableOperationQuery implements OperationQuery<SkillsOperations.Table, OperationQuery<Skill, Boolean>> {
+class TableOperationQuery implements OperationQuery<SkillTable, OperationQuery<Skill, Boolean>> {
     final SkillsOperations operation;
-    SkillsOperations.Table source;
-    SkillsOperations.Table target;
+    SkillTable source;
+    SkillTable target;
 
     private boolean sourceSet = false;
     private boolean targetSet = false;
@@ -14,14 +15,14 @@ class TableOperationQuery implements OperationQuery<SkillsOperations.Table, Oper
         this.operation = operation;
     }
 
-    public OperationQuery<SkillsOperations.Table, OperationQuery<Skill, Boolean>> from(SkillsOperations.Table source) {
+    public OperationQuery<SkillTable, OperationQuery<Skill, Boolean>> from(SkillTable source) {
         if (this.sourceSet) throw new IllegalStateException("TableOperationQuery cannot have 2 sources");
         this.source = source;
         this.sourceSet = true;
         return this;
     }
 
-    public OperationQuery<SkillsOperations.Table, OperationQuery<Skill, Boolean>> to(SkillsOperations.Table target) {
+    public OperationQuery<SkillTable, OperationQuery<Skill, Boolean>> to(SkillTable target) {
         if (!this.sourceSet) throw new IllegalStateException("TableOperationQuery has no source");
         if (this.targetSet) throw new IllegalStateException("TableOperationQuery cannot have 2 targets");
         this.target = target;

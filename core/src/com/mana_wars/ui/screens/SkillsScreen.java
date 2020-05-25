@@ -1,5 +1,6 @@
 package com.mana_wars.ui.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -9,12 +10,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 import com.mana_wars.model.GameConstants;
+import com.mana_wars.model.entity.SkillTable;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.interactor.SkillsInteractor;
 import com.mana_wars.presentation.presenters.SkillsPresenter;
 import com.mana_wars.presentation.view.SkillsView;
-import com.mana_wars.model.skills_operations.SkillsOperations;
 import com.mana_wars.ui.callback.MenuOverlayUICallbacks;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
@@ -44,19 +45,20 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
                  RepositoryStorage repositoryStorage, OverlayUI overlayUI,
                  MenuOverlayUICallbacks callbacks) {
         super(screenManager, factoryStorage, repositoryStorage, overlayUI);
-        presenter = new SkillsPresenter(this, new SkillsInteractor(repositoryStorage.getDatabaseRepository()));
+        presenter = new SkillsPresenter(this, Gdx.app::postRunnable, new SkillsInteractor(repositoryStorage.getDatabaseRepository()));
         presenter.initCallbacks(callbacks.getManaAmountCallback(), callbacks.getUserLevelCallback());
 
+
         skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
-        mainSkillsTable = new SkillsList2D(getEmptyBackgroundStyle(), COLUMNS_NUMBER,
+        mainSkillsTable = new SkillsList2D<>(getEmptyBackgroundStyle(), COLUMNS_NUMBER,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(), true);
-        mainSkillsTable.setUserObject(SkillsOperations.Table.ALL_SKILLS);
-        activeSkillsTable = new SkillsList2D(skin, GameConstants.USER_ACTIVE_SKILL_COUNT,
+        mainSkillsTable.setUserObject(SkillTable.ALL_SKILLS);
+        activeSkillsTable = new SkillsList2D<>(skin, GameConstants.USER_ACTIVE_SKILL_COUNT,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(), false);
-        activeSkillsTable.setUserObject(SkillsOperations.Table.ACTIVE_SKILLS);
-        passiveSkillsTable = new SkillsList2D(skin, GameConstants.USER_PASSIVE_SKILL_COUNT,
+        activeSkillsTable.setUserObject(SkillTable.ACTIVE_SKILLS);
+        passiveSkillsTable = new SkillsList2D<>(skin, GameConstants.USER_PASSIVE_SKILL_COUNT,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(), false);
-        passiveSkillsTable.setUserObject(SkillsOperations.Table.PASSIVE_SKILLS);
+        passiveSkillsTable.setUserObject(SkillTable.PASSIVE_SKILLS);
         scrollPane = new ScrollPane(mainSkillsTable, skin);
         dragAndDrop = new SkillsDragAndDrop();
     }
@@ -121,7 +123,7 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
     }
 
     @Override
-    public void finishMerge(SkillsOperations.Table table, int index, Skill skill) {
+    public void finishMerge(SkillTable table, int index, Skill skill) {
         //System.out.println("MERGE");
         List2D<Skill> listTarget = getList2D(table);
         listTarget.removeIndex(index);
@@ -130,7 +132,7 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
     }
 
     @Override
-    public void finishSwap(SkillsOperations.Table tableSource, SkillsOperations.Table tableTarget,
+    public void finishSwap(SkillTable tableSource, SkillTable tableTarget,
                            int skillSourceIndex, int skillTargetIndex, Skill skillSource, Skill skillTarget) {
         //System.out.println("SWAP");
         List2D<Skill> listSource = getList2D(tableSource);
@@ -142,17 +144,17 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
     }
 
     @Override
-    public void finishMove(SkillsOperations.Table tableTarget, int skillTargetIndex, Skill skillSource) {
+    public void finishMove(SkillTable tableTarget, int skillTargetIndex, Skill skillSource) {
         //System.out.println("MOVE");
         List2D<Skill> listTarget = getList2D(tableTarget);
-        if (tableTarget == SkillsOperations.Table.ALL_SKILLS) {
+        if (tableTarget == SkillTable.ALL_SKILLS) {
             listTarget.insert(skillTargetIndex, skillSource);
         } else {
             listTarget.setItem(skillTargetIndex, skillSource);
         }
     }
 
-    private List2D<Skill> getList2D(SkillsOperations.Table table) {
+    private List2D<Skill> getList2D(SkillTable table) {
         switch (table) {
             case ALL_SKILLS:
                 return mainSkillsTable;
@@ -261,8 +263,8 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
                                     float x, float y, int pointer) {
                     Skill from = (Skill) payload.getObject1();
                     Skill to = table.getItemAt(x, y);
-                    return presenter.validateOperation((SkillsOperations.Table)source.getActor().getUserObject(),
-                                                        (SkillsOperations.Table)getActor().getUserObject(),
+                    return presenter.validateOperation((SkillTable)source.getActor().getUserObject(),
+                                                        (SkillTable)getActor().getUserObject(),
                                                         from, to);
                 }
 
@@ -274,8 +276,8 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
                     int toIndex = table.getItemIndexAt(x, y);
                     Skill to = (toIndex == -1) ? null : table.getItem(toIndex);
 
-                    presenter.performOperation((SkillsOperations.Table)source.getActor().getUserObject(),
-                                                (SkillsOperations.Table)getActor().getUserObject(),
+                    presenter.performOperation((SkillTable)source.getActor().getUserObject(),
+                                                (SkillTable)getActor().getUserObject(),
                                                 from, to, fromIndex, toIndex);
                 }
             });

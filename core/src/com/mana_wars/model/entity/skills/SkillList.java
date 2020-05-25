@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public class SkillList {
-    static Map<Rarity,List<Skill>> skillsList = createList();
+    /*static Map<Rarity,List<Skill>> skillsList = createList();
 
     private static Map<Rarity, List<Skill>> createList(){
         Map<Rarity, List<Skill>> result = new HashMap<>();
@@ -40,5 +40,5 @@ public class SkillList {
 
         return result;
     }
-
+    */
 }

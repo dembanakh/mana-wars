@@ -1,14 +1,14 @@
 package com.mana_wars.presentation.view;
 
-import com.mana_wars.model.skills_operations.SkillsOperations;
+import com.mana_wars.model.entity.SkillTable;
 import com.mana_wars.model.entity.skills.Skill;
 
 import java.util.List;
 
 public interface SkillsView {
     void setSkillsList(List<Skill> activeSkills, List<Skill> passiveSkills, List<Skill> skills);
-    void finishMerge(SkillsOperations.Table table, int index, Skill skill);
-    void finishSwap(SkillsOperations.Table tableSource, SkillsOperations.Table tableTarget,
+    void finishMerge(SkillTable table, int index, Skill skill);
+    void finishSwap(SkillTable tableSource, SkillTable tableTarget,
                     int skillSourceIndex, int skillTargetIndex, Skill skillSource, Skill skillTarget);
-    void finishMove(SkillsOperations.Table tableTarget, int skillTargetIndex, Skill skillSource);
+    void finishMove(SkillTable tableTarget, int skillTargetIndex, Skill skillSource);
 }

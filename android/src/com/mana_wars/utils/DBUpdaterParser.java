@@ -45,7 +45,7 @@ public class DBUpdaterParser {
 
         JSONArray characteristicsJSON = dbjson.getJSONArray("skill_characteristics");
         List<DBSkillCharacteristic> characteristics = new ArrayList<>();
-        for(int i=0; i<skillsJSON.length();i++){
+        for(int i=0; i<characteristicsJSON.length();i++){
             characteristics.add(DBSkillCharacteristic.fromJSON(characteristicsJSON.getJSONObject(i)));
         }
         updater.insertCharacteristics(characteristics);

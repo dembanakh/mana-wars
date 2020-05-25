@@ -6,6 +6,7 @@
       "rarity" : 1,
       "manacost" : 10,
       "is_active" : true,
+      "cast_time" : 1.0,
       "cooldown": 4
     },
     {
@@ -28,6 +29,7 @@
       "rarity" : 2,
       "manacost" : 20,
       "is_active" : true,
+      "cast_time" : 2.0,
       "cooldown": 10
     },
     {
@@ -43,6 +45,7 @@
       "rarity" : 4,
       "manacost" : 40,
       "is_active" : true,
+      "cast_time" : 3.5,
       "cooldown" : 12
     },
     {
@@ -58,6 +61,7 @@
       "rarity" : 6,
       "manacost" : 20,
       "is_active" : true,
+      "cast_time" : 1.0,
       "cooldown" : 4
     }
   ],

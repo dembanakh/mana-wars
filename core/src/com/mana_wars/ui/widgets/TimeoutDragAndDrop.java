@@ -182,6 +182,8 @@ public class TimeoutDragAndDrop {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 super.touchUp(event, x, y, pointer, button);
                 if (source.forceDragStarted) dragStop(event, x, y, source.touchDownPointer);
+                source.forceDragStarted = false;
+                source.touchedDown = false;
             }
         };
         listener.setTapSquareSize(tapSquareSize);

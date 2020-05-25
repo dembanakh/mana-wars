@@ -1,11 +1,11 @@
 package com.mana_wars.model.repository;
 
 import com.mana_wars.model.GameConstants;
-import com.mana_wars.model.skills_operations.SkillsOperations;
 import com.mana_wars.model.db.core_entity_converter.SkillConverter;
 import com.mana_wars.model.db.entity.CompleteUserSkill;
 import com.mana_wars.model.db.entity.DBSkillWithCharacteristics;
 import com.mana_wars.model.db.entity.UserSkill;
+import com.mana_wars.model.entity.SkillTable;
 import com.mana_wars.model.entity.skills.Skill;
 
 import java.util.ArrayList;
@@ -42,21 +42,19 @@ public class DBMapperRepository implements DatabaseRepository {
     private final HashMap<Skill, UserSkill> lastUserSkillsMap = new HashMap<>();
 
     @Override
-    public Single<Map<SkillsOperations.Table,List<Skill>>> getUserSkills() {
+    public Single<Map<SkillTable,List<Skill>>> getUserSkills() {
         return room.getCompleteUserSkills().map(completeUserSkills -> {
-
             lastUserSkillsMap.clear();
 
-            EnumMap<SkillsOperations.Table, List<Skill>> result = new EnumMap<>(SkillsOperations.Table.class);
-            for (SkillsOperations.Table table : SkillsOperations.Table.values()){
+            EnumMap<SkillTable, List<Skill>> result = new EnumMap<>(SkillTable.class);
+            for (SkillTable table : SkillTable.values()){
                 result.put(table, new ArrayList<>());
             }
 
-            for (int i = 0; i < GameConstants.USER_ACTIVE_SKILL_COUNT;i++)
-                result.get(SkillsOperations.Table.ACTIVE_SKILLS).add(Skill.Empty);
-            for (int i = 0; i < GameConstants.USER_PASSIVE_SKILL_COUNT;i++)
-                result.get(SkillsOperations.Table.PASSIVE_SKILLS).add(Skill.Empty);
-
+            for (int i =0; i < GameConstants.USER_ACTIVE_SKILL_COUNT;i++)
+                result.get(SkillTable.ACTIVE_SKILLS).add(Skill.Empty);
+            for (int i =0; i < GameConstants.USER_PASSIVE_SKILL_COUNT;i++)
+                result.get(SkillTable.PASSIVE_SKILLS).add(Skill.Empty);
 
             for(CompleteUserSkill skill : completeUserSkills){
 
@@ -64,12 +62,12 @@ public class DBMapperRepository implements DatabaseRepository {
                 lastUserSkillsMap.put(convertedSkill, skill.userSkill);
 
                 if (skill.userSkill.getChosen_id()>0){
-                    result.get(skill.skill.isActive() ? SkillsOperations.Table.ACTIVE_SKILLS:
-                                                        SkillsOperations.Table.PASSIVE_SKILLS)
+                    result.get(skill.skill.isActive() ? SkillTable.ACTIVE_SKILLS:
+                                                        SkillTable.PASSIVE_SKILLS)
                             .set(skill.userSkill.getChosen_id()-1, convertedSkill);
                 }
                 else {
-                    result.get(SkillsOperations.Table.ALL_SKILLS).add(convertedSkill);
+                    result.get(SkillTable.ALL_SKILLS).add(convertedSkill);
                 }
             }
             return result;

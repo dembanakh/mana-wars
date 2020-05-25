@@ -28,7 +28,8 @@ public class SkillFactory {
         int rand = generator.nextInt((int)Math.pow(2, rarityLen));
         int pow = (int)Math.pow(2, rarityLen-1);
         int barrier = pow;
-        for(Rarity rar : skillsList.keySet()) {
+        for(Rarity rar : Rarity.values()) {
+            if (rar==Rarity.EMPTY) continue;
             if (rand <= barrier) {
                 r = rar;
                 break;

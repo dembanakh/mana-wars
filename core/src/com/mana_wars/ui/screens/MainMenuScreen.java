@@ -1,5 +1,6 @@
 package com.mana_wars.ui.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
@@ -32,6 +33,7 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
                    MenuOverlayUICallbacks callbacks) {
         super(screenManager, factoryStorage, repositoryStorage, overlayUI);
         presenter = new MainMenuPresenter(this,
+                Gdx.app::postRunnable,
                 new MainMenuInteractor(repositoryStorage.getLocalUserDataRepository(),
                         repositoryStorage.getDatabaseRepository(),
                         new ManaBonusImpl(1, 20, 4,

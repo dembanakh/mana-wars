@@ -73,7 +73,7 @@ class NavigationBar implements BuildableUI {
     }
 
     private void onBattle() {
-        screenManager.setScreen(ScreenManager.ScreenInstance.TEST_BATTLE);
+        screenManager.setScreen(ScreenManager.ScreenInstance.BATTLE);
     }
 
 }

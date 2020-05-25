@@ -26,8 +26,11 @@ public class DBSkill {
     @ColumnInfo(name = "is_active")
     private boolean isActive;
 
+    @ColumnInfo(name = "cast_time", defaultValue = "0")
+    private double castTime; //only for active skills
+
     @ColumnInfo(name = "cooldown", defaultValue = "0")
-    private int cooldown; //only for active skills
+    private double cooldown; //only for active skills
 
 
     public int getId() {
@@ -50,7 +53,11 @@ public class DBSkill {
         return isActive;
     }
 
-    public int getCooldown() {
+    public double getCastTime() {
+        return castTime;
+    }
+
+    public double getCooldown() {
         return cooldown;
     }
 
@@ -74,7 +81,11 @@ public class DBSkill {
         isActive = active;
     }
 
-    public void setCooldown(int cooldown) {
+    public void setCastTime(double castTime) {
+        this.castTime = castTime;
+    }
+
+    public void setCooldown(double cooldown) {
         this.cooldown = cooldown;
     }
 
@@ -85,7 +96,8 @@ public class DBSkill {
         result.setRarity(json.getInt("rarity"));
         result.setManaCost(json.getInt("manacost"));
         result.setActive(json.getBoolean("is_active"));
-        result.setCooldown(result.isActive?json.getInt("cooldown"):0);
+        result.setCastTime(result.isActive?json.getDouble("cast_time"):0);
+        result.setCooldown(result.isActive?json.getDouble("cooldown"):0);
         return result;
     }
 }
