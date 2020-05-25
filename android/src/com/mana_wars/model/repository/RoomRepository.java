@@ -93,6 +93,18 @@ public class RoomRepository {
         ));
     }
 
+    public <T> Completable updateEntities(final List<T> entities, final BaseDAO<T> dao){
+        return multithreading(Completable.fromAction(
+                () -> dao.updateEntities(entities)
+        ));
+    }
+
+    public <T> Completable updateEntity(final T entity, final BaseDAO<T> dao){
+        return multithreading(Completable.fromAction(
+                () -> dao.updateEntity(entity)
+        ));
+    }
+
     public Completable mergeSkills(UserSkill toUpdate, UserSkill toDelete){
         return multithreading(Completable.fromAction(
                 ()-> userSkillsDAO.mergeUserSkills(toUpdate,toDelete)

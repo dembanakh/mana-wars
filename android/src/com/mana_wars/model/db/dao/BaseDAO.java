@@ -15,15 +15,18 @@ public abstract class BaseDAO <T> {
 
     public abstract List<T> getAllEntities();
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public abstract List<Long> insertEntities(List<T> entities);
-
     @Insert
     public abstract Long insertEntity(T entity);
 
-    @Delete
-    public abstract int deleteEntity(T entity);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    public abstract List<Long> insertEntities(List<T> entities);
 
     @Update
     public abstract int updateEntity(T entity);
+
+    @Update
+    public abstract int updateEntities(List<T> entities);
+
+    @Delete
+    public abstract int deleteEntity(T entity);
 }

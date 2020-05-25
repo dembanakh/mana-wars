@@ -1,5 +1,7 @@
 package com.mana_wars.model.repository;
 
+import com.mana_wars.model.GameConstants;
+import com.mana_wars.model.SkillsOperations;
 import com.mana_wars.model.db.core_entity_converter.SkillConverter;
 import com.mana_wars.model.db.entity.CompleteUserSkill;
 import com.mana_wars.model.db.entity.DBSkillWithCharacteristics;
@@ -7,8 +9,11 @@ import com.mana_wars.model.db.entity.UserSkill;
 import com.mana_wars.model.entity.skills.Skill;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
@@ -37,14 +42,34 @@ public class DBMapperRepository implements DatabaseRepository {
     private final HashMap<Skill, UserSkill> lastUserSkillsMap = new HashMap<>();
 
     @Override
-    public Single<List<Skill>> getUserSkills() {
+    public Single<Map<SkillsOperations.Table,List<Skill>>> getUserSkills() {
         return room.getCompleteUserSkills().map(completeUserSkills -> {
+
             lastUserSkillsMap.clear();
-            List<Skill> result = new ArrayList<>();
+
+            EnumMap<SkillsOperations.Table, List<Skill>> result = new EnumMap<>(SkillsOperations.Table.class);
+            for (SkillsOperations.Table table : SkillsOperations.Table.values()){
+                result.put(table, new ArrayList<>());
+            }
+
+            for (int i =0; i < GameConstants.USER_ACTIVE_SKILL_COUNT;i++)
+                result.get(SkillsOperations.Table.ACTIVE_SKILLS).add(Skill.Empty);
+            for (int i =0; i < GameConstants.USER_PASSIVE_SKILL_COUNT;i++)
+                result.get(SkillsOperations.Table.PASSIVE_SKILLS).add(Skill.Empty);
+
+
             for(CompleteUserSkill skill : completeUserSkills){
+
                 Skill convertedSkill = SkillConverter.toSkill(skill);
                 lastUserSkillsMap.put(convertedSkill, skill.userSkill);
-                result.add(convertedSkill);
+
+                if (skill.userSkill.getChosen_id()>0){
+                    result.get(skill.skill.isActive()? SkillsOperations.Table.ACTIVE_SKILLS: SkillsOperations.Table.PASSIVE_SKILLS)
+                            .set(skill.userSkill.getChosen_id()-1, convertedSkill);
+                }
+                else {
+                    result.get(SkillsOperations.Table.ALL_SKILLS).add(convertedSkill);
+                }
             }
             return result;
         });
@@ -55,6 +80,26 @@ public class DBMapperRepository implements DatabaseRepository {
         UserSkill userSkill = lastUserSkillsMap.get(toUpdate);
         userSkill.setLvl(toUpdate.getLevel());
         return room.mergeSkills(userSkill, lastUserSkillsMap.get(toDelete));
+    }
+
+    @Override
+    public Completable moveSkill(Skill toUpdate, int index) {
+        UserSkill userSkill = lastUserSkillsMap.get(toUpdate);
+        userSkill.setChosen_id(index+1);
+
+        return room.updateEntity(userSkill, room.userSkillsDAO);
+    }
+
+    @Override
+    public Completable swapSkills(Skill skillSource, Skill skillTarget) {
+        UserSkill source = lastUserSkillsMap.get(skillSource);
+        UserSkill target = lastUserSkillsMap.get(skillTarget);
+
+        int swap = source.getChosen_id();
+        source.setChosen_id(target.getChosen_id());
+        target.setChosen_id(swap);
+
+        return room.updateEntities(Arrays.asList(source, target), room.userSkillsDAO);
     }
 
     @Override

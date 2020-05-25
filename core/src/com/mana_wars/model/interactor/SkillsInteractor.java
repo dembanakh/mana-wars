@@ -5,8 +5,10 @@ import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.repository.DatabaseRepository;
 
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Completable;
+import io.reactivex.Maybe;
 import io.reactivex.Single;
 
 public class SkillsInteractor {
@@ -17,12 +19,20 @@ public class SkillsInteractor {
         this.databaseRepository = databaseRepository;
     }
 
-    public Single<List<Skill>> getUserSkills() {
+    public Single<Map<SkillsOperations.Table,List<Skill>>> getUserSkills() {
         return databaseRepository.getUserSkills();
     }
 
     public Completable mergeSkills(Skill toUpdate, Skill toDelete){
         return databaseRepository.mergeSkills(toUpdate, toDelete);
+    }
+
+    public Completable moveSkill(Skill toUpdate, int index){
+        return databaseRepository.moveSkill(toUpdate, index);
+    }
+
+    public Completable swapSkills(Skill skillSource, Skill skillTarget) {
+        return databaseRepository.swapSkills(skillSource, skillTarget);
     }
 
     public boolean validateAnyOperation(SkillsOperations.Table tableSource, SkillsOperations.Table tableTarget,
@@ -38,4 +48,5 @@ public class SkillsInteractor {
                                      Skill skillSource, Skill skillTarget) {
         return SkillsOperations.can(operation).from(tableSource).to(tableTarget).from(skillSource).to(skillTarget);
     }
+
 }

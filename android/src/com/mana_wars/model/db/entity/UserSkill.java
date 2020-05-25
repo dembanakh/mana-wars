@@ -1,7 +1,6 @@
 package com.mana_wars.model.db.entity;
 
 import androidx.room.ColumnInfo;
-import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -18,6 +17,9 @@ public class UserSkill {
 
     @ColumnInfo(name = "skill_ref_id")
     private int skillID;
+
+    @ColumnInfo(name = "chosen_id", defaultValue = "0")
+    private int chosen_id;
 
     public UserSkill(){}
 
@@ -39,6 +41,10 @@ public class UserSkill {
         return skillID;
     }
 
+    public int getChosen_id() {
+        return chosen_id;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -50,4 +56,9 @@ public class UserSkill {
     public void setSkillID(int skillID) {
         this.skillID = skillID;
     }
+
+    public void setChosen_id(int chosen_id) {
+        this.chosen_id = chosen_id;
+    }
+
 }

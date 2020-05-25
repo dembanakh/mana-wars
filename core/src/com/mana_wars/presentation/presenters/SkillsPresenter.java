@@ -6,8 +6,6 @@ import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.interactor.SkillsInteractor;
 import com.mana_wars.presentation.view.SkillsView;
 
-import java.util.Arrays;
-
 import io.reactivex.disposables.CompositeDisposable;
 
 public class SkillsPresenter {
@@ -24,28 +22,30 @@ public class SkillsPresenter {
 
     public void refreshSkillsList() {
         disposable.add(interactor.getUserSkills().subscribe(skills -> {
-            Gdx.app.postRunnable( ()-> view.setSkillsList(
-                    Arrays.asList(Skill.Empty, Skill.Empty, Skill.Empty, Skill.Empty, Skill.Empty),
-                    Arrays.asList(Skill.Empty, Skill.Empty, Skill.Empty, Skill.Empty, Skill.Empty),
-                    skills));
+            Gdx.app.postRunnable(() -> view.setSkillsList(
+                    skills.get(SkillsOperations.Table.ACTIVE_SKILLS),
+                    skills.get(SkillsOperations.Table.PASSIVE_SKILLS),
+                    skills.get(SkillsOperations.Table.ALL_SKILLS)));
         }, Throwable::printStackTrace));
     }
 
     private void mergeSkills(Skill toUpdate, Skill toDelete) {
-        disposable.add(interactor.mergeSkills(toUpdate, toDelete).subscribe(()->{
+        disposable.add(interactor.mergeSkills(toUpdate, toDelete).subscribe(() -> {
             System.out.println("Skills merged");
         }, Throwable::printStackTrace));
     }
 
-    private void swapSkills(SkillsOperations.Table tableSource, SkillsOperations.Table tableTarget,
-                            int skillSourceIndex, int skillTargetIndex,
-                            Skill skillSource, Skill skillTarget) {
+    private void swapSkills(Skill skillSource, Skill skillTarget) {
         // TODO: @Artur write
+        disposable.add(interactor.swapSkills(skillSource, skillTarget).subscribe(() -> {
+            System.out.println("Skills swaped");
+        }, Throwable::printStackTrace));
     }
 
     private void moveSkill(Skill skill, int index) {
-        // TODO: @Artur write
-        System.out.println(skill + " " + index);
+        disposable.add(interactor.moveSkill(skill, index).subscribe(() -> {
+            System.out.println("Skills moved");
+        }, Throwable::printStackTrace));
     }
 
     public boolean validateOperation(SkillsOperations.Table tableSource, SkillsOperations.Table tableTarget,
@@ -64,7 +64,7 @@ public class SkillsPresenter {
         }
         if (interactor.validateOperation(SkillsOperations.SWAP, tableSource, tableTarget,
                 skillSource, skillTarget)) {
-            swapSkills(tableSource, tableTarget, skillSourceIndex, skillTargetIndex, skillSource, skillTarget);
+            swapSkills(skillSource, skillTarget);
             view.finishSwap(tableSource, tableTarget, skillSourceIndex, skillTargetIndex, skillSource, skillTarget);
             return;
         }
@@ -75,7 +75,7 @@ public class SkillsPresenter {
         }
     }
 
-    public void dispose(){
+    public void dispose() {
         disposable.dispose();
     }
 }
