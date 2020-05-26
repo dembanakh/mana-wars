@@ -1,6 +1,6 @@
 package com.mana_wars.model.interactor;
 
-import com.mana_wars.model.SkillsOperations;
+import com.mana_wars.model.skills_operations.SkillsOperations;
 import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.repository.DatabaseRepository;
 
@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Completable;
-import io.reactivex.Maybe;
 import io.reactivex.Single;
 
 public class SkillsInteractor {
@@ -46,7 +45,13 @@ public class SkillsInteractor {
 
     public boolean validateOperation(SkillsOperations operation, SkillsOperations.Table tableSource, SkillsOperations.Table tableTarget,
                                      Skill skillSource, Skill skillTarget) {
-        return SkillsOperations.can(operation).from(tableSource).to(tableTarget).from(skillSource).to(skillTarget);
+        return SkillsOperations.can(operation)
+                                .from(tableSource)
+                                .to(tableTarget)
+                                .validate()
+                                .from(skillSource)
+                                .to(skillTarget)
+                                .validate();
     }
 
 }

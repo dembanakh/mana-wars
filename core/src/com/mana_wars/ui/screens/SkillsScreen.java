@@ -15,7 +15,7 @@ import com.mana_wars.model.interactor.SkillsInteractor;
 import com.mana_wars.model.repository.DatabaseRepository;
 import com.mana_wars.presentation.presenters.SkillsPresenter;
 import com.mana_wars.presentation.view.SkillsView;
-import com.mana_wars.model.SkillsOperations;
+import com.mana_wars.model.skills_operations.SkillsOperations;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.widgets.List2D;
 import com.mana_wars.ui.widgets.SkillsList2D;

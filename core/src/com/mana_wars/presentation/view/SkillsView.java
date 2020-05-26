@@ -1,6 +1,6 @@
 package com.mana_wars.presentation.view;
 
-import com.mana_wars.model.SkillsOperations;
+import com.mana_wars.model.skills_operations.SkillsOperations;
 import com.mana_wars.model.entity.skills.Skill;
 
 import java.util.List;

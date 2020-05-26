@@ -1,4 +1,4 @@
-package com.mana_wars.model;
+package com.mana_wars.model.skills_operations;
 
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
@@ -21,25 +21,26 @@ import com.mana_wars.model.entity.skills.Skill;
  * PAS | ME,SW,MO |          | ME,SW,MO |
  *
  * Usage example:
- * if (SkillsOperations.can(MERGE).from(ALL_SKILLS).to(PASSIVE_SKILLS).from(skillSource).to(skillTarget)) {}
+ * if (SkillsOperations.can(MERGE).from(ALL_SKILLS).to(PASSIVE_SKILLS).validate()
+ *                                  .from(skillSource).to(skillTarget).validate()) {}
  */
 public enum SkillsOperations {
     MERGE {
         @Override
-        protected boolean validate(SkillOperationQuery query) {
+        protected Boolean validate(SkillOperationQuery query) {
             return query.source != null && query.target != null &&
                     query.source.getName().equals(query.target.getName()) &&
                     query.source.getLevel() == query.target.getLevel();
         }
 
         @Override
-        protected SkillOperationQuery validate(TableOperationQuery query) {
-            SkillOperationQuery resultQuery = super.validate(query);
+        protected OperationQuery<Skill, Boolean> validate(TableOperationQuery query) {
+            OperationQuery<Skill, Boolean> resultQuery = super.validate(query);
             return (resultQuery == null) ? new SkillOperationQuery(query) : resultQuery;
         }
     }, SWAP {
         @Override
-        protected boolean validate(SkillOperationQuery query) {
+        protected Boolean validate(SkillOperationQuery query) {
             if (query.source == null || query.target == null) return false;
             if (query.tableQuery.source == query.tableQuery.target)
                 return query.source != Skill.Empty && query.target != Skill.Empty;
@@ -47,17 +48,17 @@ public enum SkillsOperations {
                     (query.target instanceof PassiveSkill && query.source instanceof PassiveSkill);
         }
         @Override
-        protected SkillOperationQuery validate(TableOperationQuery query) {
-            SkillOperationQuery resultQuery = super.validate(query);
+        protected OperationQuery<Skill, Boolean> validate(TableOperationQuery query) {
+            OperationQuery<Skill, Boolean> resultQuery = super.validate(query);
             if (resultQuery == null) {
                 if (query.source == Table.ALL_SKILLS && query.target == Table.ALL_SKILLS)
-                    return new SkillOperationQuery();
+                    return new EmptySkillOperationQuery();
                 return new SkillOperationQuery(query);
             } else return resultQuery;
         }
     }, MOVE {
         @Override
-        protected boolean validate(SkillOperationQuery query) {
+        protected Boolean validate(SkillOperationQuery query) {
             if (query.tableQuery.source == query.tableQuery.target) return true;
             if (query.tableQuery.source == Table.ALL_SKILLS) {
                 if (query.tableQuery.target == Table.ACTIVE_SKILLS)
@@ -69,11 +70,11 @@ public enum SkillsOperations {
         }
 
         @Override
-        protected SkillOperationQuery validate(TableOperationQuery query) {
-            SkillOperationQuery resultQuery = super.validate(query);
+        protected OperationQuery<Skill, Boolean> validate(TableOperationQuery query) {
+            OperationQuery<Skill, Boolean> resultQuery = super.validate(query);
             if (resultQuery == null) {
                 if (query.source == query.target && query.source == Table.ALL_SKILLS)
-                    return new SkillOperationQuery();
+                    return new EmptySkillOperationQuery();
                 return new SkillOperationQuery(query);
             } else return resultQuery;
         }
@@ -83,70 +84,16 @@ public enum SkillsOperations {
         ALL_SKILLS, ACTIVE_SKILLS, PASSIVE_SKILLS
     }
 
-    public static TableOperationQuery can(SkillsOperations op) {
+    public static OperationQuery<Table, OperationQuery<Skill, Boolean>> can(SkillsOperations op) {
         return new TableOperationQuery(op);
     }
 
-    public static class TableOperationQuery {
-        private final SkillsOperations operation;
-        private Table source;
-        private Table target;
-
-        private TableOperationQuery(SkillsOperations operation) {
-            this.operation = operation;
-        }
-
-        public TableOperationQuery from(Table source) {
-            this.source = source;
-            return this;
-        }
-
-        public SkillOperationQuery to(Table target) {
-            if (this.source == null) throw new IllegalStateException("TableOperationQuery has no source");
-            this.target = target;
-            return operation.validate(this);
-        }
-    }
-
-    public static class SkillOperationQuery {
-        private TableOperationQuery tableQuery;
-        private Skill source;
-        private Skill target;
-
-        private boolean invalid = false;
-
-        boolean isValid() { return !invalid; }
-
-        private SkillOperationQuery(TableOperationQuery tableQuery) {
-            this.tableQuery = tableQuery;
-        }
-
-        /*
-         * Creates an invalid query.
-         */
-        private SkillOperationQuery() {
-            this.invalid = true;
-        }
-
-        public SkillOperationQuery from(Skill source) {
-            this.source = source;
-            return this;
-        }
-
-        public boolean to(Skill target) {
-            if (this.source == null) throw new IllegalStateException("SkillOperationQuery has no source");
-            if (invalid) return false;
-            this.target = target;
-            return tableQuery.operation.validate(this);
-        }
-    }
-
-    protected abstract boolean validate(SkillOperationQuery query);
-    protected SkillOperationQuery validate(TableOperationQuery query) {
+    protected abstract Boolean validate(SkillOperationQuery query);
+    protected OperationQuery<Skill, Boolean> validate(TableOperationQuery query) {
         if (query.source == Table.ACTIVE_SKILLS && query.target == Table.PASSIVE_SKILLS)
-            return new SkillOperationQuery();
+            return new EmptySkillOperationQuery();
         if (query.source == Table.PASSIVE_SKILLS && query.target == Table.ACTIVE_SKILLS)
-            return new SkillOperationQuery();
+            return new EmptySkillOperationQuery();
         return null;
     }
 

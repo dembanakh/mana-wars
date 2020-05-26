@@ -1,7 +1,7 @@
 package com.mana_wars.model.repository;
 
 import com.mana_wars.model.GameConstants;
-import com.mana_wars.model.SkillsOperations;
+import com.mana_wars.model.skills_operations.SkillsOperations;
 import com.mana_wars.model.db.core_entity_converter.SkillConverter;
 import com.mana_wars.model.db.entity.CompleteUserSkill;
 import com.mana_wars.model.db.entity.DBSkillWithCharacteristics;

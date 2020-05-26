@@ -1,7 +1,7 @@
 package com.mana_wars.presentation.presenters;
 
 import com.badlogic.gdx.Gdx;
-import com.mana_wars.model.SkillsOperations;
+import com.mana_wars.model.skills_operations.SkillsOperations;
 import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.interactor.SkillsInteractor;
 import com.mana_wars.presentation.view.SkillsView;
