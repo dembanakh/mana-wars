@@ -1,6 +1,5 @@
 package com.mana_wars.model;
 
-
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.entity.skills.Skill;
@@ -11,7 +10,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
 
 public class SkillsOperationsTest {
 

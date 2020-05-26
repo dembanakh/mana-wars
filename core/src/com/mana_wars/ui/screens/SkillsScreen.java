@@ -131,7 +131,8 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
         List2D<Skill> listSource = getList2D(tableSource);
         List2D<Skill> listTarget = getList2D(tableTarget);
         listTarget.removeIndex(skillTargetIndex);
-        //listTarget.setSelectedIndex(listTarget.insert(skillTargetIndex, skillSource));
+        int index = listTarget.insert(skillTargetIndex, skillSource);
+        //listTarget.setSelectedIndex(index);
         listSource.insert(skillSourceIndex, skillTarget);
     }
 

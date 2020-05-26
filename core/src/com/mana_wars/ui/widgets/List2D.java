@@ -19,7 +19,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.UIUtils;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectSet;
-import com.mana_wars.ui.factory.AssetFactory;
 
 /**
  * Texture-oriented 2-dimensional list based on the original List implementation in Libgdx.

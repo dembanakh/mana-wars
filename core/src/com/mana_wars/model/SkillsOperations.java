@@ -115,7 +115,7 @@ public enum SkillsOperations {
 
         private boolean invalid = false;
 
-        public boolean isValid(){return !invalid;}
+        boolean isValid() { return !invalid; }
 
         private SkillOperationQuery(TableOperationQuery tableQuery) {
             this.tableQuery = tableQuery;
@@ -127,7 +127,7 @@ public enum SkillsOperations {
         private SkillOperationQuery() {
             this.invalid = true;
         }
-//SkillsOperations.TableOperationQuery tableQuery = mock(SkillsOperations.TableOperationQuery.class);
+
         public SkillOperationQuery from(Skill source) {
             this.source = source;
             return this;

@@ -10,9 +10,10 @@ import io.reactivex.disposables.CompositeDisposable;
 //todo add implements MainMenuPresenterCallback
 public class MainMenuPresenter {
 
-    private MainMenuView view;
-    private MainMenuInteractor interactor;
-    private CompositeDisposable disposable = new CompositeDisposable();
+    private final MainMenuView view;
+    private final MainMenuInteractor interactor;
+
+    private final CompositeDisposable disposable = new CompositeDisposable();
 
     public MainMenuPresenter(MainMenuView view, MainMenuInteractor interactor){
         this.view = view;

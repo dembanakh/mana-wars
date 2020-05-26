@@ -8,9 +8,10 @@ import io.reactivex.disposables.CompositeDisposable;
 
 public class TestBattlePresenter {
 
-    private TestBattleView view;
-    private TestBattleInteractor interactor;
-    private CompositeDisposable disposable = new CompositeDisposable();
+    private final TestBattleView view;
+    private final TestBattleInteractor interactor;
+
+    private final CompositeDisposable disposable = new CompositeDisposable();
 
     public TestBattlePresenter(TestBattleView view, TestBattleInteractor interactor){
         this.view = view;

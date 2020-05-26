@@ -25,7 +25,7 @@ final class UIElementsSize {
     }
 
     static class GREETING_SCREEN {
-        static final int BUTTON_PADDING_TOP    = 200;
+        static final int BUTTON_PADDING_TOP    = 100;
         static final int BUTTON_PADDING_BOTTOM = 100;
     }
 

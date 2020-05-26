@@ -63,9 +63,9 @@ public class ScreenManagerImpl implements FactoryStorage, ScreenManager {
         navigationBar.start();
         if (firstOpenFlag.getIsFirstOpen()) {
             firstOpenFlag.setIsFirstOpen(false);
-            handler.setScreen(ScreenInstance.GREETING.getScreen());
+            setScreen(ScreenInstance.GREETING);
         } else {
-            handler.setScreen(ScreenInstance.MAIN_MENU.getScreen());
+            setScreen(ScreenInstance.MAIN_MENU);
         }
     }
 

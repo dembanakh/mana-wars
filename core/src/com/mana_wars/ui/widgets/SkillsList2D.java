@@ -32,7 +32,8 @@ public class SkillsList2D extends List2D<Skill> {
     }
 
     @Override
-    protected void drawItem(Batch batch, BitmapFont font, int index, Skill item, float x, float y, float width, float height) {
+    protected void drawItem(Batch batch, BitmapFont font, int index, Skill item, float x, float y,
+                            float width, float height) {
         TextureRegion icon = iconFactory.getAsset(item.getIconID());
         TextureRegion frame = frameFactory.getAsset(item.getRarity());
         String text = String.valueOf(item.getLevel());
@@ -45,10 +46,12 @@ public class SkillsList2D extends List2D<Skill> {
         batch.draw(icon, x + iconOffsetX, y + iconOffsetY);
         batch.draw(frame, x + frameOffsetX, y + frameOffsetY);
 
-        font.setColor(Color.BLACK);
-        font.getData().setScale(2);
-        font.draw(batch, text, x + width / 2, y + frameOffsetY, 0, text.length(),
-                width, alignment, false, "");
+        if (item.getRarity() != Rarity.EMPTY) {
+            font.setColor(Color.BLACK);
+            font.getData().setScale(2);
+            font.draw(batch, text, x + width / 2, y + frameOffsetY, 0, text.length(),
+                    width, alignment, false, "");
+        }
     }
 
     @Override

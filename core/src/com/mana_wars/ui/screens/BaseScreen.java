@@ -7,16 +7,32 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
+import java.util.Map;
+
 abstract class BaseScreen implements Screen {
 
     final Stage stage;
     final FactoryStorage factoryStorage;
     final ScreenManager screenManager;
 
+    Map<String, Object> arguments;
+
     BaseScreen(FactoryStorage factoryStorage, ScreenManager screenManager) {
-        this.stage = new Stage();
+        this.stage = new Stage() {
+            @Override
+            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+                unfocusAll();
+                Gdx.input.setOnscreenKeyboardVisible(false);
+                return super.touchDown(screenX, screenY, pointer, button);
+            }
+        };
         this.factoryStorage = factoryStorage;
         this.screenManager = screenManager;
+    }
+
+    BaseScreen setArguments(Map<String, Object> arguments) {
+        this.arguments = arguments;
+        return this;
     }
 
     protected abstract void rebuildStage();

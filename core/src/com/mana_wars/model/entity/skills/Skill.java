@@ -34,7 +34,7 @@ public class Skill extends GameItem {
         return String.valueOf(manaCost);
     }
 
-    public static Skill Empty = new Skill(50, -1, Rarity.EMPTY, "EMPTY",
-            -1, new ArrayList<>());
+    public static Skill Empty = new Skill(50, 0, Rarity.EMPTY, "EMPTY",
+            0, new ArrayList<>());
 
 }

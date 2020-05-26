@@ -10,10 +10,10 @@ import io.reactivex.disposables.CompositeDisposable;
 
 public class SkillsPresenter {
 
-    private SkillsView view;
-    private SkillsInteractor interactor;
+    private final SkillsView view;
+    private final SkillsInteractor interactor;
 
-    private CompositeDisposable disposable = new CompositeDisposable();
+    private final CompositeDisposable disposable = new CompositeDisposable();
 
     public SkillsPresenter(SkillsView view, SkillsInteractor interactor) {
         this.view = view;
