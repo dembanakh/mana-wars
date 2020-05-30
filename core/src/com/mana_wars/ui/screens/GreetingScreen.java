@@ -8,10 +8,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mana_wars.model.interactor.GreetingInteractor;
-import com.mana_wars.model.repository.DatabaseRepository;
-import com.mana_wars.model.repository.UsernameRepository;
 import com.mana_wars.presentation.presenters.GreetingPresenter;
 import com.mana_wars.presentation.view.GreetingView;
+import com.mana_wars.ui.screens.util.OverlayUIFactory;
+import com.mana_wars.ui.storage.FactoryStorage;
+import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.ui.factory.UIElementFactory;
 
 import static com.mana_wars.ui.screens.util.UIElementsSize.GREETING_SCREEN.*;
@@ -23,13 +24,14 @@ class GreetingScreen extends BaseScreen implements GreetingView {
 
     @Override
     void init(ScreenManager screenManager, FactoryStorage factoryStorage,
-              RepositoryStorage repositoryStorage, OverlayUI overlayUI) {
-        super.init(screenManager, factoryStorage, repositoryStorage, overlayUI);
+              RepositoryStorage repositoryStorage, OverlayUIFactory overlayUIFactory) {
+        super.init(screenManager, factoryStorage, repositoryStorage, overlayUIFactory);
         presenter = new GreetingPresenter(this,
                 new GreetingInteractor(repositoryStorage.getLocalUserDataRepository(),
                         repositoryStorage.getDatabaseRepository()));
 
         skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
+        overlayUI = overlayUIFactory.getEmptyOverlayUI();
     }
 
     @Override

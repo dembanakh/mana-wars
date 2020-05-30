@@ -1,5 +1,7 @@
 package com.mana_wars.ui.screens;
 
+import com.mana_wars.ui.storage.FactoryStorage;
+import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.ui.screens.util.OverlayUIFactory;
 
 import java.util.Map;
@@ -20,10 +22,11 @@ public interface ScreenManager {
         }
 
         public static void init(ScreenManager screenManager, FactoryStorage factoryStorage,
-                                RepositoryStorage repositoryStorage, OverlayUIFactory overlayUIFactory) {
+                                RepositoryStorage repositoryStorage,
+                                OverlayUIFactory overlayUIFactory) {
             for (ScreenInstance instance : values()) {
                 instance.screen.init(screenManager, factoryStorage, repositoryStorage,
-                        overlayUIFactory.getOverlayUI(instance));
+                                    overlayUIFactory);
             }
         }
 

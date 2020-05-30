@@ -4,7 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.mana_wars.model.interactor.MainMenuInteractor;
 import com.mana_wars.presentation.view.MainMenuView;
 
+import java.util.Random;
+
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
 
 //todo add implements MainMenuPresenterCallback
 public class MainMenuPresenter {
@@ -14,9 +17,20 @@ public class MainMenuPresenter {
 
     private final CompositeDisposable disposable = new CompositeDisposable();
 
-    public MainMenuPresenter(MainMenuView view, MainMenuInteractor interactor){
+    public MainMenuPresenter(MainMenuView view, MainMenuInteractor interactor) {
         this.view = view;
         this.interactor = interactor;
+    }
+
+    public void initCallbacks(Consumer<? super Integer> manaAmountCallback,
+                              Consumer<? super Integer> userLevelCallback) {
+        disposable.add(interactor.getManaAmountObservable().subscribe(manaAmountCallback, Throwable::printStackTrace));
+        disposable.add(interactor.getUserLevelObservable().subscribe(userLevelCallback, Throwable::printStackTrace));
+    }
+
+    public void test_resetFields() {
+        interactor.test_updateLevel(new Random().nextInt(100));
+        interactor.test_updateManaAmount(new Random().nextInt(100));
     }
 
     public void onOpenSkillCase() {
@@ -30,4 +44,5 @@ public class MainMenuPresenter {
         disposable.dispose();
         interactor.dispose();
     }
+
 }

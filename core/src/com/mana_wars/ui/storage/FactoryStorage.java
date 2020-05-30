@@ -1,4 +1,4 @@
-package com.mana_wars.ui.screens;
+package com.mana_wars.ui.storage;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;

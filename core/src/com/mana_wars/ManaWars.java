@@ -6,7 +6,7 @@ import com.mana_wars.model.repository.LocalUserDataRepository;
 import com.mana_wars.model.repository.LocalizedStringsRepository;
 import com.mana_wars.ui.ScreenHandler;
 import com.mana_wars.ui.ScreenManagerImpl;
-import com.mana_wars.ui.screens.RepositoryStorage;
+import com.mana_wars.ui.storage.RepositoryStorage;
 
 public class ManaWars extends Game implements ScreenHandler, RepositoryStorage {
 

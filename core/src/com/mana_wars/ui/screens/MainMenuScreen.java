@@ -10,7 +10,11 @@ import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.interactor.MainMenuInteractor;
 import com.mana_wars.presentation.presenters.MainMenuPresenter;
 import com.mana_wars.presentation.view.MainMenuView;
+import com.mana_wars.ui.observer.MenuOverlayUICallbacks;
+import com.mana_wars.ui.storage.FactoryStorage;
+import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.ui.factory.UIElementFactory;
+import com.mana_wars.ui.screens.util.OverlayUIFactory;
 
 import static com.mana_wars.ui.UIStringConstants.*;
 
@@ -22,15 +26,19 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
 
     @Override
     void init(ScreenManager screenManager, FactoryStorage factoryStorage,
-              RepositoryStorage repositoryStorage, OverlayUI overlayUI) {
-        super.init(screenManager, factoryStorage, repositoryStorage, overlayUI);
+              RepositoryStorage repositoryStorage, OverlayUIFactory overlayUIFactory) {
+        super.init(screenManager, factoryStorage, repositoryStorage, overlayUIFactory);
         presenter = new MainMenuPresenter(this,
                 new MainMenuInteractor(repositoryStorage.getLocalUserDataRepository(),
                         repositoryStorage.getDatabaseRepository()));
+        MenuOverlayUICallbacks callbacks = overlayUIFactory.getMenuOverlayUI();
+        presenter.initCallbacks(callbacks.getManaAmountCallback(),
+                                callbacks.getUserLevelCallback());
 
         skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
         skillCaseWindow = new SkillCaseWindow(SKILL_CASE_WINDOW.TITLE, skin,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
+        overlayUI = overlayUIFactory.getMenuOverlayUI();
     }
 
     @Override
@@ -80,9 +88,17 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
     }
 
     @Override
+    public void show() {
+        super.show();
+        //TODO: remove
+        presenter.test_resetFields();
+    }
+
+    @Override
     public void dispose() {
         super.dispose();
         skin.dispose();
         presenter.dispose();
     }
+
 }

@@ -7,8 +7,8 @@ class TableOperationQuery implements OperationQuery<SkillsOperations.Table, Oper
     SkillsOperations.Table source;
     SkillsOperations.Table target;
 
-    boolean sourceSet = false;
-    boolean targetSet = false;
+    private boolean sourceSet = false;
+    private boolean targetSet = false;
 
     TableOperationQuery(SkillsOperations operation) {
         this.operation = operation;

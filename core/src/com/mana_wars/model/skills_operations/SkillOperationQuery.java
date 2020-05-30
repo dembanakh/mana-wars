@@ -7,8 +7,8 @@ class SkillOperationQuery implements OperationQuery<Skill, Boolean> {
     Skill source;
     Skill target;
 
-    boolean sourceSet = false;
-    boolean targetSet = false;
+    private boolean sourceSet = false;
+    private boolean targetSet = false;
 
     SkillOperationQuery(TableOperationQuery tableQuery) {
         this.tableQuery = tableQuery;
@@ -34,4 +34,5 @@ class SkillOperationQuery implements OperationQuery<Skill, Boolean> {
             throw new IllegalStateException("SkillOperationQuery is not ready for validation");
         return tableQuery.operation.validate(this);
     }
+
 }

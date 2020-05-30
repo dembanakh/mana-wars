@@ -5,17 +5,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mana_wars.ui.screens.OverlayUI;
 import com.mana_wars.ui.screens.ScreenManager;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class OverlayUIFactory {
 
-    private final Map<ScreenManager.ScreenInstance, OverlayUI> overlayUIMap;
+    private final MenuOverlayUI menuOverlayUI;
+    private final OverlayUI emptyOverlayUI;
 
     public OverlayUIFactory(ScreenManager screenManager) {
-        overlayUIMap = new HashMap<>();
-        OverlayUI menuOverlayUI = new MenuOverlayUI(screenManager);
-        OverlayUI emptyOverlayUI = new OverlayUI() {
+        menuOverlayUI = new MenuOverlayUI(screenManager);
+        emptyOverlayUI = new OverlayUI() {
             @Override
             public void init() {
 
@@ -26,19 +23,18 @@ public class OverlayUIFactory {
 
             }
         };
-        overlayUIMap.put(ScreenManager.ScreenInstance.GREETING, emptyOverlayUI);
-        overlayUIMap.put(ScreenManager.ScreenInstance.MAIN_MENU, menuOverlayUI);
-        overlayUIMap.put(ScreenManager.ScreenInstance.SKILLS, menuOverlayUI);
-        overlayUIMap.put(ScreenManager.ScreenInstance.TEST_BATTLE, emptyOverlayUI);
     }
 
     public void init() {
-        for (OverlayUI overlayUI : overlayUIMap.values())
-            overlayUI.init();
+        menuOverlayUI.init();
     }
 
-    public OverlayUI getOverlayUI(ScreenManager.ScreenInstance instance) {
-        return overlayUIMap.get(instance);
+    public MenuOverlayUI getMenuOverlayUI() {
+        return menuOverlayUI;
+    }
+
+    public OverlayUI getEmptyOverlayUI() {
+        return emptyOverlayUI;
     }
 
 }

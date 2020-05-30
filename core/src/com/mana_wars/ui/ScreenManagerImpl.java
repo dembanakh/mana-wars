@@ -7,9 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mana_wars.ManaWars;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.ui.factory.AssetFactory;
-import com.mana_wars.ui.screens.FactoryStorage;
 import com.mana_wars.ui.screens.util.OverlayUIFactory;
 import com.mana_wars.ui.screens.ScreenManager;
+import com.mana_wars.ui.storage.FactoryStorage;
 
 import static com.mana_wars.ui.UIStringConstants.*;
 
@@ -62,7 +62,8 @@ public class ScreenManagerImpl implements FactoryStorage, ScreenManager {
         skinFactory.loadItems();
         rarityFrameFactory.loadItems();
         overlayUIFactory.init();
-        ScreenInstance.init(this, this, ManaWars.getInstance(), overlayUIFactory);
+        ScreenInstance.init(this, this, ManaWars.getInstance(),
+                overlayUIFactory);
         setScreen(ScreenInstance.GREETING);
     }
 

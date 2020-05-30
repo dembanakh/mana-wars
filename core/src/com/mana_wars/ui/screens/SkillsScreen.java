@@ -15,6 +15,9 @@ import com.mana_wars.model.interactor.SkillsInteractor;
 import com.mana_wars.presentation.presenters.SkillsPresenter;
 import com.mana_wars.presentation.view.SkillsView;
 import com.mana_wars.model.skills_operations.SkillsOperations;
+import com.mana_wars.ui.screens.util.OverlayUIFactory;
+import com.mana_wars.ui.storage.FactoryStorage;
+import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.widgets.List2D;
 import com.mana_wars.ui.widgets.SkillsList2D;
@@ -37,9 +40,10 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
 
     @Override
     void init(ScreenManager screenManager, FactoryStorage factoryStorage,
-              RepositoryStorage repositoryStorage, OverlayUI overlayUI) {
-        super.init(screenManager, factoryStorage, repositoryStorage, overlayUI);
+              RepositoryStorage repositoryStorage, OverlayUIFactory overlayUIFactory) {
+        super.init(screenManager, factoryStorage, repositoryStorage, overlayUIFactory);
         presenter = new SkillsPresenter(this, new SkillsInteractor(repositoryStorage.getDatabaseRepository()));
+        overlayUI = overlayUIFactory.getMenuOverlayUI();
 
         skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
         mainSkillsTable = new SkillsList2D(getEmptyBackgroundStyle(), COLUMNS_NUMBER,
