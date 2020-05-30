@@ -45,7 +45,6 @@ public class AndroidLauncher extends AndroidApplication {
 
 
 		app.setLocalUserDataRepository(sharedPreferencesRepository);
-		app.setFirstOpenFlag(sharedPreferencesRepository);
 
 		app.setDatabaseRepository(new DBMapperRepository(roomRepository));
 

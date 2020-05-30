@@ -12,7 +12,6 @@ import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.interactor.SkillsInteractor;
-import com.mana_wars.model.repository.DatabaseRepository;
 import com.mana_wars.presentation.presenters.SkillsPresenter;
 import com.mana_wars.presentation.view.SkillsView;
 import com.mana_wars.model.skills_operations.SkillsOperations;
@@ -23,29 +22,26 @@ import com.mana_wars.ui.widgets.TimeoutDragAndDrop;
 
 import java.util.List;
 
-import static com.mana_wars.ui.screens.UIElementsSize.SKILLS_SCREEN.*;
+import static com.mana_wars.ui.screens.util.UIElementsSize.SKILLS_SCREEN.*;
 import static com.mana_wars.ui.UIStringConstants.*;
 
 public class SkillsScreen extends BaseScreen implements SkillsView {
 
-    private final Skin skin;
+    private List2D<Skill> mainSkillsTable;
+    private List2D<Skill> activeSkillsTable;
+    private List2D<Skill> passiveSkillsTable;
+    private SkillsDragAndDrop dragAndDrop;
+    private ScrollPane scrollPane;
 
-    private final List2D<Skill> mainSkillsTable;
-    private final List2D<Skill> activeSkillsTable;
-    private final List2D<Skill> passiveSkillsTable;
-    private final NavigationBar navigationBar;
-    private final SkillsDragAndDrop dragAndDrop;
-    private final ScrollPane scrollPane;
+    private SkillsPresenter presenter;
 
-    private final SkillsPresenter presenter;
-
-    SkillsScreen(FactoryStorage factoryStorage, ScreenManager screenManager,
-                 DatabaseRepository databaseRepository) {
-        super(factoryStorage, screenManager);
-        presenter = new SkillsPresenter(this, new SkillsInteractor(databaseRepository));
+    @Override
+    void init(ScreenManager screenManager, FactoryStorage factoryStorage,
+              RepositoryStorage repositoryStorage, OverlayUI overlayUI) {
+        super.init(screenManager, factoryStorage, repositoryStorage, overlayUI);
+        presenter = new SkillsPresenter(this, new SkillsInteractor(repositoryStorage.getDatabaseRepository()));
 
         skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
-        navigationBar = screenManager.getNavigationBar();
         mainSkillsTable = new SkillsList2D(getEmptyBackgroundStyle(), COLUMNS_NUMBER,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(), true);
         mainSkillsTable.setUserObject(SkillsOperations.Table.ALL_SKILLS);
@@ -64,7 +60,6 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
         // layers
         Table layerBackground = buildBackgroundLayer(skin);
         Table layerForeground = buildForegroundLayer(skin);
-        Table layerNavigationBar = navigationBar.rebuild(skin);
 
         // fill stage
         stage.clear();
@@ -73,7 +68,6 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
         stack.setFillParent(true);
         stack.add(layerBackground);
         stack.add(layerForeground);
-        stage.addActor(layerNavigationBar);
 
         dragAndDrop.setup(factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
     }

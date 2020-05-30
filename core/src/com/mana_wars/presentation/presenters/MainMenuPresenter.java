@@ -1,7 +1,6 @@
 package com.mana_wars.presentation.presenters;
 
 import com.badlogic.gdx.Gdx;
-import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.interactor.MainMenuInteractor;
 import com.mana_wars.presentation.view.MainMenuView;
 
@@ -17,7 +16,7 @@ public class MainMenuPresenter {
 
     public MainMenuPresenter(MainMenuView view, MainMenuInteractor interactor){
         this.view = view;
-        this.interactor=interactor;
+        this.interactor = interactor;
     }
 
     public void onOpenSkillCase() {

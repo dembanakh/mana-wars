@@ -4,15 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.mana_wars.ui.FirstOpenFlag;
-
-public class SharedPreferencesRepository implements LocalUserDataRepository, FirstOpenFlag {
+public class SharedPreferencesRepository implements LocalUserDataRepository {
 
     private Activity hostActivity;
 
     //Constants
-    private final String IS_FIRST_OPEN = "IS_FIRST_OPEN";
     private final String DB_VERSION = "DB_VERSION";
+    private final String USERNAME = "USERNAME";
 
     public SharedPreferencesRepository(Activity hostActivity){
         this.hostActivity = hostActivity;
@@ -27,16 +25,6 @@ public class SharedPreferencesRepository implements LocalUserDataRepository, Fir
     }
 
     @Override
-    public boolean getIsFirstOpen() {
-        return getDefaultManager().getBoolean(IS_FIRST_OPEN, true);
-    }
-
-    @Override
-    public void setIsFirstOpen(boolean flag) {
-        getPrefsEditor().putBoolean(IS_FIRST_OPEN, flag).apply();
-    }
-
-    @Override
     public int getDBversion() {
         return getDefaultManager().getInt(DB_VERSION,0);
     }
@@ -44,5 +32,20 @@ public class SharedPreferencesRepository implements LocalUserDataRepository, Fir
     @Override
     public void setDBversion(int version) {
         getPrefsEditor().putInt(DB_VERSION, version).apply();
+    }
+
+    @Override
+    public boolean hasUsername() {
+        return getUsername() != null;
+    }
+
+    @Override
+    public String getUsername() {
+        return getDefaultManager().getString(USERNAME, null);
+    }
+
+    @Override
+    public void setUsername(String username) {
+        getPrefsEditor().putString(USERNAME, username).apply();
     }
 }

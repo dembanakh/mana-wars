@@ -1,34 +1,30 @@
 package com.mana_wars.ui.screens;
 
-import com.mana_wars.ManaWars;
+import com.mana_wars.ui.screens.util.OverlayUIFactory;
 
 import java.util.Map;
 
 public interface ScreenManager {
 
-    NavigationBar getNavigationBar();
     void setScreen(ScreenInstance screenInstance);
 
     enum ScreenInstance {
-        GREETING(new GreetingScreen(ManaWars.getInstance().getScreenManager(),
-                                    ManaWars.getInstance().getScreenManager(),
-                                    ManaWars.getInstance().getLocalUserDataRepository(),
-                                    ManaWars.getInstance().getDatabaseRepository())),
-        MAIN_MENU(new MainMenuScreen(ManaWars.getInstance().getScreenManager(),
-                                    ManaWars.getInstance().getScreenManager(),
-                                    ManaWars.getInstance().getLocalUserDataRepository(),
-                                    ManaWars.getInstance().getDatabaseRepository())),
-        SKILLS(new SkillsScreen(ManaWars.getInstance().getScreenManager(),
-                                ManaWars.getInstance().getScreenManager(),
-                                ManaWars.getInstance().getDatabaseRepository())),
-        TEST_BATTLE(new TestBattleScreen(ManaWars.getInstance().getScreenManager(),
-                                ManaWars.getInstance().getScreenManager(),
-                                ManaWars.getInstance().getLocalUserDataRepository(),
-                                ManaWars.getInstance().getDatabaseRepository()));
+        GREETING(new GreetingScreen()),
+        MAIN_MENU(new MainMenuScreen()),
+        SKILLS(new SkillsScreen()),
+        TEST_BATTLE(new TestBattleScreen());
 
         private final BaseScreen screen;
         ScreenInstance(BaseScreen screen) {
             this.screen = screen;
+        }
+
+        public static void init(ScreenManager screenManager, FactoryStorage factoryStorage,
+                                RepositoryStorage repositoryStorage, OverlayUIFactory overlayUIFactory) {
+            for (ScreenInstance instance : values()) {
+                instance.screen.init(screenManager, factoryStorage, repositoryStorage,
+                        overlayUIFactory.getOverlayUI(instance));
+            }
         }
 
         private Map<String, Object> arguments;

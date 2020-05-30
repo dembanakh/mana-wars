@@ -4,11 +4,11 @@ import com.badlogic.gdx.Game;
 import com.mana_wars.model.repository.DatabaseRepository;
 import com.mana_wars.model.repository.LocalUserDataRepository;
 import com.mana_wars.model.repository.LocalizedStringsRepository;
-import com.mana_wars.ui.FirstOpenFlag;
 import com.mana_wars.ui.ScreenHandler;
 import com.mana_wars.ui.ScreenManagerImpl;
+import com.mana_wars.ui.screens.RepositoryStorage;
 
-public class ManaWars extends Game implements ScreenHandler {
+public class ManaWars extends Game implements ScreenHandler, RepositoryStorage {
 
 	private static ManaWars instance;
 	private ScreenManagerImpl screenManager;
@@ -17,7 +17,6 @@ public class ManaWars extends Game implements ScreenHandler {
 	private LocalUserDataRepository localUserDataRepository;
 	private LocalizedStringsRepository localizedStringsRepository;
 	private DatabaseRepository databaseRepository;
-	private FirstOpenFlag firstOpenFlag;
 
 	private ManaWars() {
 		screenManager = new ScreenManagerImpl(this);
@@ -34,7 +33,7 @@ public class ManaWars extends Game implements ScreenHandler {
 	
 	@Override
 	public void create () {
-		screenManager.start(firstOpenFlag);
+		screenManager.start();
 	}
 	
 	@Override
@@ -46,6 +45,7 @@ public class ManaWars extends Game implements ScreenHandler {
 		this.localUserDataRepository = localUserDataRepository;
 	}
 
+	@Override
 	public LocalUserDataRepository getLocalUserDataRepository() {
 		return localUserDataRepository;
 	}
@@ -58,16 +58,13 @@ public class ManaWars extends Game implements ScreenHandler {
 		this.localizedStringsRepository = localizedStringsRepository;
 	}
 
+	@Override
 	public DatabaseRepository getDatabaseRepository() {
 		return databaseRepository;
 	}
 
 	public void setDatabaseRepository(DatabaseRepository databaseRepository) {
 		this.databaseRepository = databaseRepository;
-	}
-
-	public void setFirstOpenFlag(FirstOpenFlag firstOpenFlag) {
-		this.firstOpenFlag = firstOpenFlag;
 	}
 
 }

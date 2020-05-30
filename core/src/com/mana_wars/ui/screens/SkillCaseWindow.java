@@ -14,8 +14,11 @@ import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.factory.UIElementFactory;
+import com.mana_wars.ui.screens.util.UIElementsSize;
 
-import static com.mana_wars.ui.screens.UIElementsSize.SKILL_CASE_WINDOW.*;
+import static com.mana_wars.ui.screens.util.UIElementsSize.SCREEN_HEIGHT;
+import static com.mana_wars.ui.screens.util.UIElementsSize.SCREEN_WIDTH;
+import static com.mana_wars.ui.screens.util.UIElementsSize.SKILL_CASE_WINDOW.*;
 
 final class SkillCaseWindow extends Window {
 
@@ -77,8 +80,8 @@ final class SkillCaseWindow extends Window {
         skillFrame.setDrawable(new TextureRegionDrawable(frameFactory.getAsset(skillRarity)));
         this.skillName.setText(skillName);
         this.skillDescription.setText(skillDescription);
-        setPosition((UIElementsSize.SCREEN_WIDTH - getWidth()) * 0.5f,
-                (UIElementsSize.SCREEN_HEIGHT - getHeight()) * 0.5f);
+        setPosition((SCREEN_WIDTH - getWidth()) * 0.5f,
+                (SCREEN_HEIGHT - getHeight()) * 0.5f);
         pack();
         setVisible(true);
     }

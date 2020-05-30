@@ -1,4 +1,4 @@
-package com.mana_wars.ui.screens;
+package com.mana_wars.ui.screens.util;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -6,27 +6,31 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.factory.UIElementFactory;
+import com.mana_wars.ui.screens.ScreenManager;
 
-import static com.mana_wars.ui.screens.UIElementsSize.NAVIGATION_BAR.*;
+import static com.mana_wars.ui.screens.util.UIElementsSize.NAVIGATION_BAR.*;
 
-public class NavigationBar {
+class NavigationBar implements BuildableUI {
 
     private Table bar;
 
     private final ScreenManager screenManager;
 
-    private NavigationBar(ScreenManager screenManager) {
+    NavigationBar(ScreenManager screenManager) {
         this.screenManager = screenManager;
     }
 
-    public void start() { bar = new Table(); }
+    @Override
+    public void init() {
+        if (bar == null) bar = new Table();
+    }
 
-    Table rebuild(Skin skin) {
+    @Override
+    public Actor build(Skin skin) {
         bar.clear();
         bar.setSkin(skin);
         bar.bottom().setSize(TAB_WIDTH * TABS_NUMBER, TAB_HEIGHT);
         bar.setBackground(UIStringConstants.NAVIGATION_BAR.BG_COLOR);
-
 
         bar.add(UIElementFactory.getButton(skin, "MAIN", new ChangeListener() {
             @Override
@@ -68,10 +72,6 @@ public class NavigationBar {
 
     private void onBattle() {
         screenManager.setScreen(ScreenManager.ScreenInstance.TEST_BATTLE);
-    }
-
-    public static NavigationBar create(ScreenManager screenManager) {
-        return new NavigationBar(screenManager);
     }
 
 }

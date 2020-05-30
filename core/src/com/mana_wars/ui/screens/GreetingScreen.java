@@ -1,40 +1,33 @@
 package com.mana_wars.ui.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.FocusListener;
 import com.mana_wars.model.interactor.GreetingInteractor;
 import com.mana_wars.model.repository.DatabaseRepository;
-import com.mana_wars.model.repository.LocalUserDataRepository;
+import com.mana_wars.model.repository.UsernameRepository;
 import com.mana_wars.presentation.presenters.GreetingPresenter;
 import com.mana_wars.presentation.view.GreetingView;
 import com.mana_wars.ui.factory.UIElementFactory;
 
-import java.awt.event.FocusEvent;
-
-import static com.mana_wars.ui.screens.UIElementsSize.GREETING_SCREEN.*;
+import static com.mana_wars.ui.screens.util.UIElementsSize.GREETING_SCREEN.*;
 import static com.mana_wars.ui.UIStringConstants.*;
 
 class GreetingScreen extends BaseScreen implements GreetingView {
 
-    private final Skin skin;
+    private GreetingPresenter presenter;
 
-    private final GreetingPresenter presenter;
-
-    GreetingScreen(FactoryStorage factoryStorage, ScreenManager screenManager,
-                   LocalUserDataRepository localUserDataRepository, DatabaseRepository databaseRepository) {
-        super(factoryStorage, screenManager);
+    @Override
+    void init(ScreenManager screenManager, FactoryStorage factoryStorage,
+              RepositoryStorage repositoryStorage, OverlayUI overlayUI) {
+        super.init(screenManager, factoryStorage, repositoryStorage, overlayUI);
         presenter = new GreetingPresenter(this,
-                new GreetingInteractor(localUserDataRepository, databaseRepository));
+                new GreetingInteractor(repositoryStorage.getLocalUserDataRepository(),
+                        repositoryStorage.getDatabaseRepository()));
 
         skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
     }
@@ -83,6 +76,12 @@ class GreetingScreen extends BaseScreen implements GreetingView {
         })).bottom().padTop(BUTTON_PADDING_TOP).padBottom(BUTTON_PADDING_BOTTOM);
 
         return layer;
+    }
+
+    @Override
+    public void show() {
+        super.show();
+        if (!presenter.isFirstTimeAppOpen()) onStart();
     }
 
     @Override

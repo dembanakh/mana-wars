@@ -6,11 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.mana_wars.ManaWars;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.interactor.MainMenuInteractor;
-import com.mana_wars.model.repository.DatabaseRepository;
-import com.mana_wars.model.repository.LocalUserDataRepository;
 import com.mana_wars.presentation.presenters.MainMenuPresenter;
 import com.mana_wars.presentation.view.MainMenuView;
 import com.mana_wars.ui.factory.UIElementFactory;
@@ -19,23 +16,21 @@ import static com.mana_wars.ui.UIStringConstants.*;
 
 public class MainMenuScreen extends BaseScreen implements MainMenuView {
 
-    private final Skin skin;
+    private SkillCaseWindow skillCaseWindow;
 
-    private final SkillCaseWindow skillCaseWindow;
-    private final NavigationBar navigationBar;
+    private MainMenuPresenter presenter;
 
-    private final MainMenuPresenter presenter;
-
-    MainMenuScreen(FactoryStorage factoryStorage, ScreenManager screenManager,
-                   LocalUserDataRepository localUserDataRepository, DatabaseRepository databaseRepository) {
-        super(factoryStorage, screenManager);
+    @Override
+    void init(ScreenManager screenManager, FactoryStorage factoryStorage,
+              RepositoryStorage repositoryStorage, OverlayUI overlayUI) {
+        super.init(screenManager, factoryStorage, repositoryStorage, overlayUI);
         presenter = new MainMenuPresenter(this,
-                new MainMenuInteractor(localUserDataRepository, databaseRepository));
+                new MainMenuInteractor(repositoryStorage.getLocalUserDataRepository(),
+                        repositoryStorage.getDatabaseRepository()));
 
         skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
         skillCaseWindow = new SkillCaseWindow(SKILL_CASE_WINDOW.TITLE, skin,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
-        navigationBar = screenManager.getNavigationBar();
     }
 
     @Override
@@ -43,7 +38,6 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
         // layers
         Table layerBackground = buildBackgroundLayer(skin);
         Table layerForeground = buildForegroundLayer(skin);
-        Table layerNavigationBar = navigationBar.rebuild(skin);
         Table layerSkillCaseWindow = skillCaseWindow.rebuild(skin);
 
         // fill stage
@@ -54,7 +48,6 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
         stack.add(layerBackground);
         stack.add(layerForeground);
         stage.addActor(layerSkillCaseWindow);
-        stage.addActor(layerNavigationBar);
     }
 
     @Override

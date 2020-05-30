@@ -11,13 +11,18 @@ import java.util.Map;
 
 abstract class BaseScreen implements Screen {
 
-    final Stage stage;
-    final FactoryStorage factoryStorage;
-    final ScreenManager screenManager;
+    Skin skin;
+    Stage stage;
+
+    ScreenManager screenManager;
+    FactoryStorage factoryStorage;
+    RepositoryStorage repositoryStorage;
+    OverlayUI overlayUI;
 
     Map<String, Object> arguments;
 
-    BaseScreen(FactoryStorage factoryStorage, ScreenManager screenManager) {
+    void init(ScreenManager screenManager, FactoryStorage factoryStorage,
+              RepositoryStorage repositoryStorage, OverlayUI overlayUI) {
         this.stage = new Stage() {
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
@@ -28,6 +33,8 @@ abstract class BaseScreen implements Screen {
         };
         this.factoryStorage = factoryStorage;
         this.screenManager = screenManager;
+        this.repositoryStorage = repositoryStorage;
+        this.overlayUI = overlayUI;
     }
 
     BaseScreen setArguments(Map<String, Object> arguments) {
@@ -44,6 +51,7 @@ abstract class BaseScreen implements Screen {
     public void show() {
         Gdx.input.setInputProcessor(stage);
         rebuildStage();
+        overlayUI.overlay(stage, skin);
     }
 
     @Override
@@ -69,6 +77,7 @@ abstract class BaseScreen implements Screen {
     public void resume() {
         Gdx.input.setInputProcessor(stage);
         rebuildStage();
+        overlayUI.overlay(stage, skin);
     }
 
     @Override

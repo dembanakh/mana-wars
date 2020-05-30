@@ -22,4 +22,7 @@ public class GreetingPresenter {
         interactor.dispose();
     }
 
+    public boolean isFirstTimeAppOpen() {
+        return !interactor.hasUsername();
+    }
 }

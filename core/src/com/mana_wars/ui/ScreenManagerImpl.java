@@ -4,26 +4,28 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.mana_wars.ManaWars;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.screens.FactoryStorage;
-import com.mana_wars.ui.screens.NavigationBar;
+import com.mana_wars.ui.screens.util.OverlayUIFactory;
 import com.mana_wars.ui.screens.ScreenManager;
 
 import static com.mana_wars.ui.UIStringConstants.*;
 
 public class ScreenManagerImpl implements FactoryStorage, ScreenManager {
 
-    private ScreenHandler handler;
+    private final ScreenHandler handler;
 
     private final AssetFactory<Integer, TextureRegion> skillIconFactory;
     private final AssetFactory<String, Skin> skinFactory;
     private final AssetFactory<Rarity, TextureRegion> rarityFrameFactory;
 
-    private final NavigationBar navigationBar;
+    private final OverlayUIFactory overlayUIFactory;
 
     public ScreenManagerImpl(ScreenHandler handler) {
         this.handler = handler;
+        this.overlayUIFactory = new OverlayUIFactory(this);
         skillIconFactory = new AssetFactory<Integer, TextureRegion>(SKILLS_ICONS_FILENAME) {
             @Override
             public void loadItems() {
@@ -53,20 +55,15 @@ public class ScreenManagerImpl implements FactoryStorage, ScreenManager {
                 }
             }
         };
-        navigationBar = NavigationBar.create(this);
     }
 
-    public void start(FirstOpenFlag firstOpenFlag) {
+    public void start() {
         skillIconFactory.loadItems();
         skinFactory.loadItems();
         rarityFrameFactory.loadItems();
-        navigationBar.start();
-        if (firstOpenFlag.getIsFirstOpen()) {
-            firstOpenFlag.setIsFirstOpen(false);
-            setScreen(ScreenInstance.GREETING);
-        } else {
-            setScreen(ScreenInstance.MAIN_MENU);
-        }
+        overlayUIFactory.init();
+        ScreenInstance.init(this, this, ManaWars.getInstance(), overlayUIFactory);
+        setScreen(ScreenInstance.GREETING);
     }
 
     public void dispose() {
@@ -88,11 +85,6 @@ public class ScreenManagerImpl implements FactoryStorage, ScreenManager {
     @Override
     public AssetFactory<Rarity, TextureRegion> getRarityFrameFactory() {
         return rarityFrameFactory;
-    }
-
-    @Override
-    public NavigationBar getNavigationBar() {
-        return navigationBar;
     }
 
     @Override
