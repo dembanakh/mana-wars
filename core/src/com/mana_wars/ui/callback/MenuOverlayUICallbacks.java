@@ -1,4 +1,4 @@
-package com.mana_wars.ui.observer;
+package com.mana_wars.ui.callback;
 
 import io.reactivex.functions.Consumer;
 

@@ -14,18 +14,17 @@ import java.util.Map;
 
 abstract class BaseScreen implements Screen {
 
-    protected Skin skin;
-    protected Stage stage;
+    protected final Stage stage;
 
-    protected ScreenManager screenManager;
-    protected FactoryStorage factoryStorage;
-    protected RepositoryStorage repositoryStorage;
-    protected OverlayUI overlayUI;
+    protected final ScreenManager screenManager;
+    protected final FactoryStorage factoryStorage;
+    protected final RepositoryStorage repositoryStorage;
+    protected final OverlayUI overlayUI;
 
-    Map<String, Object> arguments;
+    protected Map<String, Object> arguments;
 
-    void init(ScreenManager screenManager, FactoryStorage factoryStorage,
-              RepositoryStorage repositoryStorage, OverlayUIFactory overlayUIFactory) {
+    BaseScreen(ScreenManager screenManager, FactoryStorage factoryStorage,
+              RepositoryStorage repositoryStorage, OverlayUI overlayUI) {
         this.stage = new Stage() {
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
@@ -37,12 +36,15 @@ abstract class BaseScreen implements Screen {
         this.factoryStorage = factoryStorage;
         this.screenManager = screenManager;
         this.repositoryStorage = repositoryStorage;
+        this.overlayUI = overlayUI;
     }
 
     BaseScreen setArguments(Map<String, Object> arguments) {
         this.arguments = arguments;
         return this;
     }
+
+    protected abstract Skin getSkin();
 
     protected abstract void rebuildStage();
 
@@ -53,7 +55,7 @@ abstract class BaseScreen implements Screen {
     public void show() {
         Gdx.input.setInputProcessor(stage);
         rebuildStage();
-        overlayUI.overlay(stage, skin);
+        overlayUI.overlay(stage, getSkin());
     }
 
     @Override
@@ -79,7 +81,7 @@ abstract class BaseScreen implements Screen {
     public void resume() {
         Gdx.input.setInputProcessor(stage);
         rebuildStage();
-        overlayUI.overlay(stage, skin);
+        overlayUI.overlay(stage, getSkin());
     }
 
     @Override

@@ -11,7 +11,7 @@ import com.mana_wars.ui.storage.RepositoryStorage;
 public class ManaWars extends Game implements ScreenHandler, RepositoryStorage {
 
 	private static ManaWars instance;
-	private ScreenManagerImpl screenManager;
+	private final ScreenManagerImpl screenManager;
 
 	//platform repos
 	private LocalUserDataRepository localUserDataRepository;
@@ -26,10 +26,6 @@ public class ManaWars extends Game implements ScreenHandler, RepositoryStorage {
 		if (instance == null) instance = new ManaWars();
 		return instance;
 	}
-
-	public ScreenManagerImpl getScreenManager() {
-		return screenManager;
-	}
 	
 	@Override
 	public void create () {
@@ -41,7 +37,7 @@ public class ManaWars extends Game implements ScreenHandler, RepositoryStorage {
 		screenManager.dispose();
 	}
 
-	public void setLocalUserDataRepository(LocalUserDataRepository localUserDataRepository) {
+	public void setLocalUserDataRepository(final LocalUserDataRepository localUserDataRepository) {
 		this.localUserDataRepository = localUserDataRepository;
 	}
 
@@ -54,7 +50,7 @@ public class ManaWars extends Game implements ScreenHandler, RepositoryStorage {
 		return localizedStringsRepository;
 	}
 
-	public void setLocalizedStringsRepository(LocalizedStringsRepository localizedStringsRepository) {
+	public void setLocalizedStringsRepository(final LocalizedStringsRepository localizedStringsRepository) {
 		this.localizedStringsRepository = localizedStringsRepository;
 	}
 
@@ -63,7 +59,7 @@ public class ManaWars extends Game implements ScreenHandler, RepositoryStorage {
 		return databaseRepository;
 	}
 
-	public void setDatabaseRepository(DatabaseRepository databaseRepository) {
+	public void setDatabaseRepository(final DatabaseRepository databaseRepository) {
 		this.databaseRepository = databaseRepository;
 	}
 

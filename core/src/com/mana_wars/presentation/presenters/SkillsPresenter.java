@@ -7,6 +7,7 @@ import com.mana_wars.model.interactor.SkillsInteractor;
 import com.mana_wars.presentation.view.SkillsView;
 
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
 
 public class SkillsPresenter {
 
@@ -18,6 +19,12 @@ public class SkillsPresenter {
     public SkillsPresenter(SkillsView view, SkillsInteractor interactor) {
         this.view = view;
         this.interactor = interactor;
+    }
+
+    public void initCallbacks(Consumer<? super Integer> manaAmountCallback,
+                              Consumer<? super Integer> userLevelCallback) {
+        disposable.add(interactor.getManaAmountObservable().subscribe(manaAmountCallback, Throwable::printStackTrace));
+        disposable.add(interactor.getUserLevelObservable().subscribe(userLevelCallback, Throwable::printStackTrace));
     }
 
     public void refreshSkillsList() {
@@ -36,9 +43,8 @@ public class SkillsPresenter {
     }
 
     private void swapSkills(Skill skillSource, Skill skillTarget) {
-        // TODO: @Artur write
         disposable.add(interactor.swapSkills(skillSource, skillTarget).subscribe(() -> {
-            System.out.println("Skills swaped");
+            System.out.println("Skills swapped");
         }, Throwable::printStackTrace));
     }
 

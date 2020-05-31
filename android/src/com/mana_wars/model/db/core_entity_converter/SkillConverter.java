@@ -40,7 +40,7 @@ public class SkillConverter {
         return userSkill.skill.isActive()?toActiveSkill(userSkill):toPassiveSkill(userSkill);
     }
 
-    public static ActiveSkill toActiveSkill(CompleteUserSkill userSkill){
+    private static ActiveSkill toActiveSkill(CompleteUserSkill userSkill){
         return new ActiveSkill(
                 userSkill.skill.getId(),
                 userSkill.userSkill.getLvl(),
@@ -53,7 +53,7 @@ public class SkillConverter {
     }
 
 
-    public static PassiveSkill toPassiveSkill(CompleteUserSkill userSkill) {
+    private static PassiveSkill toPassiveSkill(CompleteUserSkill userSkill) {
         return new PassiveSkill(
                 userSkill.skill.getId(),
                 userSkill.userSkill.getLvl(),

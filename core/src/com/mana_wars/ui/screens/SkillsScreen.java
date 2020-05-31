@@ -15,7 +15,7 @@ import com.mana_wars.model.interactor.SkillsInteractor;
 import com.mana_wars.presentation.presenters.SkillsPresenter;
 import com.mana_wars.presentation.view.SkillsView;
 import com.mana_wars.model.skills_operations.SkillsOperations;
-import com.mana_wars.ui.screens.util.OverlayUIFactory;
+import com.mana_wars.ui.callback.MenuOverlayUICallbacks;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.ui.factory.AssetFactory;
@@ -30,20 +30,22 @@ import static com.mana_wars.ui.UIStringConstants.*;
 
 public class SkillsScreen extends BaseScreen implements SkillsView {
 
-    private List2D<Skill> mainSkillsTable;
-    private List2D<Skill> activeSkillsTable;
-    private List2D<Skill> passiveSkillsTable;
-    private SkillsDragAndDrop dragAndDrop;
-    private ScrollPane scrollPane;
+    private final Skin skin;
 
-    private SkillsPresenter presenter;
+    private final List2D<Skill> mainSkillsTable;
+    private final List2D<Skill> activeSkillsTable;
+    private final List2D<Skill> passiveSkillsTable;
+    private final SkillsDragAndDrop dragAndDrop;
+    private final ScrollPane scrollPane;
 
-    @Override
-    void init(ScreenManager screenManager, FactoryStorage factoryStorage,
-              RepositoryStorage repositoryStorage, OverlayUIFactory overlayUIFactory) {
-        super.init(screenManager, factoryStorage, repositoryStorage, overlayUIFactory);
+    private final SkillsPresenter presenter;
+
+    SkillsScreen(ScreenManager screenManager, FactoryStorage factoryStorage,
+                 RepositoryStorage repositoryStorage, OverlayUI overlayUI,
+                 MenuOverlayUICallbacks callbacks) {
+        super(screenManager, factoryStorage, repositoryStorage, overlayUI);
         presenter = new SkillsPresenter(this, new SkillsInteractor(repositoryStorage.getDatabaseRepository()));
-        overlayUI = overlayUIFactory.getMenuOverlayUI();
+        presenter.initCallbacks(callbacks.getManaAmountCallback(), callbacks.getUserLevelCallback());
 
         skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
         mainSkillsTable = new SkillsList2D(getEmptyBackgroundStyle(), COLUMNS_NUMBER,
@@ -57,6 +59,11 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
         passiveSkillsTable.setUserObject(SkillsOperations.Table.PASSIVE_SKILLS);
         scrollPane = new ScrollPane(mainSkillsTable, skin);
         dragAndDrop = new SkillsDragAndDrop();
+    }
+
+    @Override
+    protected Skin getSkin() {
+        return skin;
     }
 
     @Override

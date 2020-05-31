@@ -9,13 +9,19 @@ import java.util.Map;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
+import io.reactivex.subjects.PublishSubject;
 
 public class SkillsInteractor {
 
     private DatabaseRepository databaseRepository;
 
+    private final PublishSubject<Integer> manaAmountObservable;
+    private final PublishSubject<Integer> userLevelObservable;
+
     public SkillsInteractor(DatabaseRepository databaseRepository){
         this.databaseRepository = databaseRepository;
+        manaAmountObservable = PublishSubject.create();
+        userLevelObservable = PublishSubject.create();
     }
 
     public Single<Map<SkillsOperations.Table,List<Skill>>> getUserSkills() {
@@ -52,6 +58,14 @@ public class SkillsInteractor {
                                 .from(skillSource)
                                 .to(skillTarget)
                                 .validate();
+    }
+
+    public PublishSubject<Integer> getManaAmountObservable() {
+        return manaAmountObservable;
+    }
+
+    public PublishSubject<Integer> getUserLevelObservable() {
+        return userLevelObservable;
     }
 
 }

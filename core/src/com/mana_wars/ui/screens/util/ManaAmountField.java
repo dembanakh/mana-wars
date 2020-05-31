@@ -8,25 +8,26 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import static com.mana_wars.ui.screens.util.UIElementsSize.SCREEN_HEIGHT;
+import static com.mana_wars.ui.screens.util.UIElementsSize.SCREEN_WIDTH;
 
-class UserLevelField implements BuildableUI {
+class ManaAmountField implements BuildableUI {
 
     private Table field;
-    private Label userLevelLabel;
+    private Label manaAmountLabel;
 
     @Override
     public void init() {
         if (field == null) {
             field = new Table();
             field.setTransform(true);
-            field.setPosition(0, SCREEN_HEIGHT - 50);
+            field.setPosition(SCREEN_WIDTH - 100, SCREEN_HEIGHT - 50);
             field.setSize(100, 50);
 
-            userLevelLabel = new Label("", new Label.LabelStyle(new BitmapFont(), new Color()));
-            userLevelLabel.setFillParent(true);
-            userLevelLabel.setColor(Color.BLACK);
-            userLevelLabel.setFontScale(2);
-            field.add(userLevelLabel).center();
+            manaAmountLabel = new Label("", new Label.LabelStyle(new BitmapFont(), new Color()));
+            manaAmountLabel.setFillParent(true);
+            manaAmountLabel.setColor(Color.BLACK);
+            manaAmountLabel.setFontScale(2);
+            field.add(manaAmountLabel).center();
         }
     }
 
@@ -35,13 +36,13 @@ class UserLevelField implements BuildableUI {
         field.setSkin(skin);
         field.setBackground("white");
 
-        userLevelLabel.setStyle(skin.get(Label.LabelStyle.class));
+        manaAmountLabel.setStyle(skin.get(Label.LabelStyle.class));
 
         return field;
     }
 
-    void setUserLevel(final int userLevel) {
-        userLevelLabel.setText(userLevel);
+    void setManaAmount(final int manaAmount) {
+        manaAmountLabel.setText(manaAmount);
     }
 
 }

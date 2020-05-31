@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mana_wars.model.interactor.TestBattleInteractor;
 import com.mana_wars.presentation.presenters.TestBattlePresenter;
 import com.mana_wars.presentation.view.TestBattleView;
-import com.mana_wars.ui.screens.util.OverlayUIFactory;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.ui.factory.UIElementFactory;
@@ -19,21 +18,26 @@ import static com.mana_wars.ui.UIStringConstants.*;
 
 class TestBattleScreen extends BaseScreen implements TestBattleView {
 
-    private Label testLabel;
+    private final Skin skin;
 
-    private TestBattlePresenter presenter;
+    private final Label testLabel;
 
-    @Override
-    void init(ScreenManager screenManager, FactoryStorage factoryStorage,
-              RepositoryStorage repositoryStorage, OverlayUIFactory overlayUIFactory) {
-        super.init(screenManager, factoryStorage, repositoryStorage, overlayUIFactory);
+    private final TestBattlePresenter presenter;
+
+    TestBattleScreen(ScreenManager screenManager, FactoryStorage factoryStorage,
+              RepositoryStorage repositoryStorage, OverlayUI overlayUI) {
+        super(screenManager, factoryStorage, repositoryStorage, overlayUI);
         presenter = new TestBattlePresenter(this,
                 new TestBattleInteractor(repositoryStorage.getLocalUserDataRepository(),
                         repositoryStorage.getDatabaseRepository()));
 
         skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
         testLabel = new Label("TEXT", skin);
-        overlayUI = overlayUIFactory.getEmptyOverlayUI();
+    }
+
+    @Override
+    protected Skin getSkin() {
+        return skin;
     }
 
     @Override

@@ -11,7 +11,7 @@ public class SkillCharacteristic {
 
     private int value;
 
-    public enum Target{
+    public enum Target {
         SELF,
         ENEMY
     }

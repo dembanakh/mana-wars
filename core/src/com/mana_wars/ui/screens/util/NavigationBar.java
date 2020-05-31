@@ -16,20 +16,22 @@ class NavigationBar implements BuildableUI {
 
     private final ScreenManager screenManager;
 
-    NavigationBar(ScreenManager screenManager) {
+    NavigationBar(final ScreenManager screenManager) {
         this.screenManager = screenManager;
     }
 
     @Override
     public void init() {
-        if (bar == null) bar = new Table();
+        if (bar == null) {
+            bar = new Table();
+            bar.bottom().setSize(TAB_WIDTH * TABS_NUMBER, TAB_HEIGHT);
+        }
     }
 
     @Override
-    public Actor build(Skin skin) {
+    public Actor build(final Skin skin) {
         bar.clear();
         bar.setSkin(skin);
-        bar.bottom().setSize(TAB_WIDTH * TABS_NUMBER, TAB_HEIGHT);
         bar.setBackground(UIStringConstants.NAVIGATION_BAR.BG_COLOR);
 
         bar.add(UIElementFactory.getButton(skin, "MAIN", new ChangeListener() {

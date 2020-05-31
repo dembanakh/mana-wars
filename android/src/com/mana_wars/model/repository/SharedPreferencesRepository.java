@@ -11,6 +11,9 @@ public class SharedPreferencesRepository implements LocalUserDataRepository {
     //Constants
     private final String DB_VERSION = "DB_VERSION";
     private final String USERNAME = "USERNAME";
+    private final String USER_LEVEL = "USER_LEVEL";
+    private final String USER_MANA = "USER_MANA";
+    private final String LAST_MANA_BONUS_TIME = "LAST_MANA_BONUS_TIME";
 
     public SharedPreferencesRepository(Activity hostActivity){
         this.hostActivity = hostActivity;
@@ -47,5 +50,40 @@ public class SharedPreferencesRepository implements LocalUserDataRepository {
     @Override
     public void setUsername(String username) {
         getPrefsEditor().putString(USERNAME, username).apply();
+    }
+
+    @Override
+    public int getUserLevel() {
+        return getDefaultManager().getInt(USER_LEVEL, 1);
+    }
+
+    @Override
+    public void setUserLevel(int level) {
+        getPrefsEditor().putInt(USER_LEVEL, level).apply();
+    }
+
+    @Override
+    public int getUserMana() {
+        return getDefaultManager().getInt(USER_MANA, 0);
+    }
+
+    @Override
+    public void setUserMana(int mana) {
+        getPrefsEditor().putInt(USER_MANA, mana).apply();
+    }
+
+    @Override
+    public boolean wasBonusEverClaimed() {
+        return getLastTimeBonusClaimed() != 0;
+    }
+
+    @Override
+    public long getLastTimeBonusClaimed() {
+        return getDefaultManager().getLong(LAST_MANA_BONUS_TIME, 0);
+    }
+
+    @Override
+    public void setLastTimeBonusClaimed(long time) {
+        getPrefsEditor().putLong(LAST_MANA_BONUS_TIME, time).apply();
     }
 }

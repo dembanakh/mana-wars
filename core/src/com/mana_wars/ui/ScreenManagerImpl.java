@@ -23,7 +23,7 @@ public class ScreenManagerImpl implements FactoryStorage, ScreenManager {
 
     private final OverlayUIFactory overlayUIFactory;
 
-    public ScreenManagerImpl(ScreenHandler handler) {
+    public ScreenManagerImpl(final ScreenHandler handler) {
         this.handler = handler;
         this.overlayUIFactory = new OverlayUIFactory(this);
         skillIconFactory = new AssetFactory<Integer, TextureRegion>(SKILLS_ICONS_FILENAME) {
@@ -41,7 +41,9 @@ public class ScreenManagerImpl implements FactoryStorage, ScreenManager {
             public void loadItems() {
                 for (String fileName : fileNames) {
                     final String path = String.format(UI_SKIN.FORMAT, fileName);
-                    items.put(fileName, new Skin(Gdx.files.internal(path)));
+                    Skin skin = new Skin(Gdx.files.internal(path));
+                    items.put(fileName, skin);
+                    skin.getFont("font").getData().setScale(1.5f);
                 }
             }
         };
@@ -61,16 +63,14 @@ public class ScreenManagerImpl implements FactoryStorage, ScreenManager {
         skillIconFactory.loadItems();
         skinFactory.loadItems();
         rarityFrameFactory.loadItems();
-        overlayUIFactory.init();
+        overlayUIFactory.init(ManaWars.getInstance().getLocalUserDataRepository());
         ScreenInstance.init(this, this, ManaWars.getInstance(),
                 overlayUIFactory);
         setScreen(ScreenInstance.GREETING);
     }
 
     public void dispose() {
-        for (ScreenInstance screenInstance : ScreenInstance.values()) {
-            screenInstance.dispose();
-        }
+        ScreenInstance.dispose();
     }
 
     @Override
@@ -89,7 +89,7 @@ public class ScreenManagerImpl implements FactoryStorage, ScreenManager {
     }
 
     @Override
-    public void setScreen(ScreenInstance screenInstance) {
+    public void setScreen(final ScreenInstance screenInstance) {
         handler.setScreen(screenInstance.getScreen());
     }
 

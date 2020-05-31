@@ -67,7 +67,7 @@ public class DBSkillCharacteristic {
         this.type = type;
     }
 
-    public boolean isChangeType() {
+    public boolean getChangeType() {
         return changeType;
     }
 

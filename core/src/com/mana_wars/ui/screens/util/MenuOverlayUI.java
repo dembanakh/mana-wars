@@ -2,45 +2,59 @@ package com.mana_wars.ui.screens.util;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.mana_wars.ui.observer.MenuOverlayUICallbacks;
+import com.mana_wars.model.repository.UserLevelRepository;
+import com.mana_wars.model.repository.UserManaRepository;
+import com.mana_wars.model.repository.UsernameRepository;
+import com.mana_wars.ui.callback.MenuOverlayUICallbacks;
 import com.mana_wars.ui.screens.OverlayUI;
 import com.mana_wars.ui.screens.ScreenManager;
 
+import java.util.Arrays;
+import java.util.List;
+
 import io.reactivex.functions.Consumer;
 
-class MenuOverlayUI implements OverlayUI, MenuOverlayUICallbacks {
+class MenuOverlayUI extends OverlayUI implements MenuOverlayUICallbacks {
 
-    private final NavigationBar navigationBar;
-    private final ManaField manaField;
-    private final UserLevelField userLevelField;
+    private final Consumer<? super Integer> manaAmountCallback;
+    private final Consumer<? super Integer> userLevelCallback;
+    private final Consumer<? super String> usernameCallback;
 
-    MenuOverlayUI(ScreenManager screenManager) {
-        manaField = new ManaField(screenManager);
-        userLevelField = new UserLevelField(screenManager);
-        navigationBar = new NavigationBar(screenManager);
+    MenuOverlayUI(final ScreenManager screenManager) {
+        super();
+        ManaAmountField manaAmountField = new ManaAmountField();
+        manaAmountCallback = manaAmountField::setManaAmount;
+        UserLevelField userLevelField = new UserLevelField();
+        userLevelCallback = userLevelField::setUserLevel;
+        UsernameField usernameField = new UsernameField();
+        usernameCallback = usernameField::setUsername;
+        BuildableUI navigationBar = new NavigationBar(screenManager);
+
+        elements.addAll(Arrays.asList(navigationBar, manaAmountField, userLevelField, usernameField));
     }
 
-    @Override
-    public void init() {
-        navigationBar.init();
-        manaField.init();
-        userLevelField.init();
-    }
+    void init(final UserManaRepository userManaRepository,
+              final UserLevelRepository userLevelRepository,
+              final UsernameRepository usernameRepository) {
+        for (BuildableUI element : elements)
+            element.init();
 
-    @Override
-    public void overlay(Stage stage, Skin skin) {
-        stage.addActor(navigationBar.build(skin));
-        stage.addActor(manaField.build(skin));
-        stage.addActor(userLevelField.build(skin));
+        try {
+            usernameCallback.accept(usernameRepository.getUsername());
+            manaAmountCallback.accept(userManaRepository.getUserMana());
+            userLevelCallback.accept(userLevelRepository.getUserLevel());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public Consumer<? super Integer> getUserLevelCallback() {
-        return userLevelField::setUserLevel;
+        return userLevelCallback;
     }
 
     @Override
     public Consumer<? super Integer> getManaAmountCallback() {
-        return manaField::setManaAmount;
+        return manaAmountCallback;
     }
 }

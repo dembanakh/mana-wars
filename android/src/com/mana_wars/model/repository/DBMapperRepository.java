@@ -52,9 +52,9 @@ public class DBMapperRepository implements DatabaseRepository {
                 result.put(table, new ArrayList<>());
             }
 
-            for (int i =0; i < GameConstants.USER_ACTIVE_SKILL_COUNT;i++)
+            for (int i = 0; i < GameConstants.USER_ACTIVE_SKILL_COUNT;i++)
                 result.get(SkillsOperations.Table.ACTIVE_SKILLS).add(Skill.Empty);
-            for (int i =0; i < GameConstants.USER_PASSIVE_SKILL_COUNT;i++)
+            for (int i = 0; i < GameConstants.USER_PASSIVE_SKILL_COUNT;i++)
                 result.get(SkillsOperations.Table.PASSIVE_SKILLS).add(Skill.Empty);
 
 
@@ -64,7 +64,8 @@ public class DBMapperRepository implements DatabaseRepository {
                 lastUserSkillsMap.put(convertedSkill, skill.userSkill);
 
                 if (skill.userSkill.getChosen_id()>0){
-                    result.get(skill.skill.isActive()? SkillsOperations.Table.ACTIVE_SKILLS: SkillsOperations.Table.PASSIVE_SKILLS)
+                    result.get(skill.skill.isActive() ? SkillsOperations.Table.ACTIVE_SKILLS:
+                                                        SkillsOperations.Table.PASSIVE_SKILLS)
                             .set(skill.userSkill.getChosen_id()-1, convertedSkill);
                 }
                 else {

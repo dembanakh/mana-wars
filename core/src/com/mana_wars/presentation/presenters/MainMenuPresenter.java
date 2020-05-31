@@ -2,14 +2,12 @@ package com.mana_wars.presentation.presenters;
 
 import com.badlogic.gdx.Gdx;
 import com.mana_wars.model.interactor.MainMenuInteractor;
+import com.mana_wars.model.mana_bonus.ManaBonus;
 import com.mana_wars.presentation.view.MainMenuView;
-
-import java.util.Random;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 
-//todo add implements MainMenuPresenterCallback
 public class MainMenuPresenter {
 
     private final MainMenuView view;
@@ -17,20 +15,19 @@ public class MainMenuPresenter {
 
     private final CompositeDisposable disposable = new CompositeDisposable();
 
-    public MainMenuPresenter(MainMenuView view, MainMenuInteractor interactor) {
+    public MainMenuPresenter(final MainMenuView view, final MainMenuInteractor interactor) {
         this.view = view;
         this.interactor = interactor;
     }
 
-    public void initCallbacks(Consumer<? super Integer> manaAmountCallback,
-                              Consumer<? super Integer> userLevelCallback) {
-        disposable.add(interactor.getManaAmountObservable().subscribe(manaAmountCallback, Throwable::printStackTrace));
-        disposable.add(interactor.getUserLevelObservable().subscribe(userLevelCallback, Throwable::printStackTrace));
+    public void init() {
+        interactor.init();
     }
 
-    public void test_resetFields() {
-        interactor.test_updateLevel(new Random().nextInt(100));
-        interactor.test_updateManaAmount(new Random().nextInt(100));
+    public void initCallbacks(final Consumer<? super Integer> manaAmountCallback,
+                              final Consumer<? super Integer> userLevelCallback) {
+        disposable.add(interactor.getManaAmountObservable().subscribe(manaAmountCallback, Throwable::printStackTrace));
+        disposable.add(interactor.getUserLevelObservable().subscribe(userLevelCallback, Throwable::printStackTrace));
     }
 
     public void onOpenSkillCase() {
@@ -38,6 +35,19 @@ public class MainMenuPresenter {
                 Gdx.app.postRunnable( ()->view.openSkillCaseWindow(s.getIconID(),
                         s.getName(), s.getRarity(), s.getDescription()));
         }, Throwable::printStackTrace));
+    }
+
+    public int getFullManaBonusTimeout() {
+        return interactor.getFullManaBonusTimeout();
+    }
+
+    public void claimBonus() {
+        interactor.claimBonus();
+    }
+
+    public void synchronizeManaBonusTime() {
+        view.setTimeSinceLastManaBonusClaimed(interactor.getTimeSinceLastManaBonusClaim());
+        if (interactor.isBonusAvailable()) view.onManaBonusReady();
     }
 
     public void dispose(){

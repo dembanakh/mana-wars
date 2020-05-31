@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -14,13 +13,12 @@ import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.factory.UIElementFactory;
-import com.mana_wars.ui.screens.util.UIElementsSize;
 
 import static com.mana_wars.ui.screens.util.UIElementsSize.SCREEN_HEIGHT;
 import static com.mana_wars.ui.screens.util.UIElementsSize.SCREEN_WIDTH;
 import static com.mana_wars.ui.screens.util.UIElementsSize.SKILL_CASE_WINDOW.*;
 
-final class SkillCaseWindow extends Window {
+class SkillCaseWindow extends Window {
 
     private final Image skillIcon;
     private final Image skillFrame;
@@ -43,7 +41,7 @@ final class SkillCaseWindow extends Window {
         padTop(32);
     }
 
-    Table rebuild(Skin skin) {
+    Actor rebuild(Skin skin) {
         this.clear();
         
         setSkin(skin);
