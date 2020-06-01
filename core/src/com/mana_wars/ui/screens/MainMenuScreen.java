@@ -13,14 +13,12 @@ import com.mana_wars.model.mana_bonus.ManaBonusImpl;
 import com.mana_wars.presentation.presenters.MainMenuPresenter;
 import com.mana_wars.presentation.view.MainMenuView;
 import com.mana_wars.ui.management.ScreenManager;
-import com.mana_wars.ui.callback.MenuOverlayUICallbacks;
-import com.mana_wars.ui.overlays.OverlayUI;
+import com.mana_wars.ui.overlays.MenuOverlayUI;
 import com.mana_wars.ui.widgets.ManaBonusProgressBar;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.ui.factory.UIElementFactory;
-
-import java.util.List;
+import com.mana_wars.ui.widgets.SkillCaseWindow;
 
 import static com.mana_wars.ui.UIStringConstants.*;
 
@@ -34,8 +32,7 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
     private final MainMenuPresenter presenter;
 
     public MainMenuScreen(ScreenManager screenManager, FactoryStorage factoryStorage,
-                   RepositoryStorage repositoryStorage, OverlayUI overlayUI,
-                   MenuOverlayUICallbacks callbacks) {
+                   RepositoryStorage repositoryStorage, MenuOverlayUI overlayUI) {
         super(screenManager, factoryStorage, repositoryStorage, overlayUI);
         presenter = new MainMenuPresenter(this,
                 Gdx.app::postRunnable,
@@ -44,8 +41,8 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
                         new ManaBonusImpl(1, 20, 4,
                                             System::currentTimeMillis,
                                             repositoryStorage.getLocalUserDataRepository())));
-        presenter.initCallbacks(callbacks.getManaAmountCallback(),
-                                callbacks.getUserLevelCallback());
+        presenter.initCallbacks(overlayUI.getManaAmountCallback(),
+                                overlayUI.getUserLevelCallback());
 
         skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
         skillCaseWindow = new SkillCaseWindow(SKILL_CASE_WINDOW.TITLE, skin,
@@ -96,7 +93,7 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
     }
 
     @Override
-    public void openSkillCaseWindow(int skillID, String skillName, Rarity skillRarity, List<String> description) {
+    public void openSkillCaseWindow(int skillID, String skillName, Rarity skillRarity, String description) {
         skillCaseWindow.open(skillID, skillName, skillRarity, description);
     }
 

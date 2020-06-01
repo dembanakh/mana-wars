@@ -3,7 +3,6 @@ package com.mana_wars.ui.overlays;
 import com.mana_wars.model.repository.UserLevelRepository;
 import com.mana_wars.model.repository.UserManaRepository;
 import com.mana_wars.model.repository.UsernameRepository;
-import com.mana_wars.ui.callback.MenuOverlayUICallbacks;
 import com.mana_wars.ui.management.ScreenManager;
 import com.mana_wars.ui.screens.util.BuildableUI;
 import com.mana_wars.ui.screens.util.ManaAmountField;
@@ -14,7 +13,7 @@ import java.util.Arrays;
 
 import io.reactivex.functions.Consumer;
 
-public class MenuOverlayUI extends OverlayUI implements MenuOverlayUICallbacks {
+public class MenuOverlayUI extends OverlayUI {
 
     private final Consumer<? super Integer> manaAmountCallback;
     private final Consumer<? super Integer> userLevelCallback;
@@ -48,12 +47,10 @@ public class MenuOverlayUI extends OverlayUI implements MenuOverlayUICallbacks {
         }
     }
 
-    @Override
     public Consumer<? super Integer> getUserLevelCallback() {
         return userLevelCallback;
     }
 
-    @Override
     public Consumer<? super Integer> getManaAmountCallback() {
         return manaAmountCallback;
     }

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface MainMenuView {
 
-    void openSkillCaseWindow(int skillID, String skillName, Rarity skillRarity, List<String> description);
+    void openSkillCaseWindow(int skillID, String skillName, Rarity skillRarity, String description);
     void setTimeSinceLastManaBonusClaimed(long time);
     void onManaBonusReady();
 

@@ -6,6 +6,7 @@ import com.mana_wars.model.entity.base.Rarity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Skill extends GameItem {
 
@@ -30,13 +31,13 @@ public class Skill extends GameItem {
     }
 
     //TODO generate description based on characteristics
-    public List<String> getDescription() {
-        List<String> result= new ArrayList<>();
+    public String getDescription() {
+        StringBuilder result = new StringBuilder();
         for(SkillCharacteristic sc : skillCharacteristics){
-            result.add( String.valueOf(sc.getDescription()));
-            System.out.println(sc.getDescription());
+            result.append(sc.getDescription());
+            result.append('\n');
         }
-        return result;
+        return result.toString();
     }
 
     public static Skill Empty = new Skill(50, 0, Rarity.EMPTY, "EMPTY",

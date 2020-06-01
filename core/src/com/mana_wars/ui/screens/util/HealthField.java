@@ -10,10 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import static com.mana_wars.ui.UIElementsSize.SCREEN_HEIGHT;
 import static com.mana_wars.ui.UIElementsSize.SCREEN_WIDTH;
 
-public class HealthField implements BuildableUI{
+public class HealthField implements BuildableUI {
     private Table field;
     private Label userHealthLabel;
-
 
     private final int widthOffset;
     private final int heightOffset;

@@ -1,4 +1,4 @@
-package com.mana_wars.ui.screens;
+package com.mana_wars.ui.widgets;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -9,12 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.factory.UIElementFactory;
 
-import java.util.List;
 import static com.mana_wars.ui.UIElementsSize.SCREEN_HEIGHT;
 import static com.mana_wars.ui.UIElementsSize.SCREEN_WIDTH;
 import static com.mana_wars.ui.UIElementsSize.SKILL_CASE_WINDOW.*;
@@ -29,20 +29,21 @@ public class SkillCaseWindow extends Window {
     private final AssetFactory<Integer, TextureRegion> iconFactory;
     private final AssetFactory<Rarity, TextureRegion> frameFactory;
 
-    SkillCaseWindow(String title, Skin skin, AssetFactory<Integer, TextureRegion> iconFactory,
+    public SkillCaseWindow(String title, Skin skin, AssetFactory<Integer, TextureRegion> iconFactory,
                     AssetFactory<Rarity, TextureRegion> frameFactory) {
         super(title, skin);
         this.skillIcon = new Image();
         this.skillFrame = new Image();
         this.skillName = new Label("", skin);
         this.skillDescription = new Label("", skin);
+        this.skillDescription.setAlignment(Align.center | Align.right);
         this.skillDescription.setFontScale(1.5f);
         this.iconFactory = iconFactory;
         this.frameFactory = frameFactory;
         padTop(32);
     }
 
-    Actor rebuild(Skin skin) {
+    public Actor rebuild(Skin skin) {
         this.clear();
         
         setSkin(skin);
@@ -74,11 +75,11 @@ public class SkillCaseWindow extends Window {
         setVisible(false);
     }
 
-    void open(int skillID, String skillName, Rarity skillRarity, List<String> skillDescription) {
+    public void open(int skillID, String skillName, Rarity skillRarity, String skillDescription) {
         skillIcon.setDrawable(new TextureRegionDrawable(iconFactory.getAsset(skillID)));
         skillFrame.setDrawable(new TextureRegionDrawable(frameFactory.getAsset(skillRarity)));
         this.skillName.setText(skillName);
-        this.skillDescription.setText(skillDescription.get(0));
+        this.skillDescription.setText(skillDescription);
         setPosition((SCREEN_WIDTH - getWidth()) * 0.5f,
                 (SCREEN_HEIGHT - getHeight()) * 0.5f);
         pack();

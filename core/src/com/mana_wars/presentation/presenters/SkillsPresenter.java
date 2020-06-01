@@ -66,6 +66,7 @@ public class SkillsPresenter {
 
     public void performOperation(SkillTable tableSource, SkillTable tableTarget,
                                  Skill skillSource, Skill skillTarget, int skillSourceIndex, int skillTargetIndex) {
+        System.out.println(tableSource + " " + tableTarget + " " + skillSource + " " + skillTarget);
         if (interactor.validateOperation(SkillsOperations.MERGE, tableSource, tableTarget,
                 skillSource, skillTarget)) {
             skillTarget.upgradeLevel();

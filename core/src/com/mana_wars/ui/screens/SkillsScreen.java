@@ -17,8 +17,7 @@ import com.mana_wars.model.interactor.SkillsInteractor;
 import com.mana_wars.presentation.presenters.SkillsPresenter;
 import com.mana_wars.presentation.view.SkillsView;
 import com.mana_wars.ui.management.ScreenManager;
-import com.mana_wars.ui.callback.MenuOverlayUICallbacks;
-import com.mana_wars.ui.overlays.OverlayUI;
+import com.mana_wars.ui.overlays.MenuOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.ui.factory.AssetFactory;
@@ -44,12 +43,11 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
     private final SkillsPresenter presenter;
 
     public SkillsScreen(ScreenManager screenManager, FactoryStorage factoryStorage,
-                 RepositoryStorage repositoryStorage, OverlayUI overlayUI,
-                 MenuOverlayUICallbacks callbacks) {
+                 RepositoryStorage repositoryStorage, MenuOverlayUI overlayUI) {
         super(screenManager, factoryStorage, repositoryStorage, overlayUI);
         presenter = new SkillsPresenter(this, Gdx.app::postRunnable, new SkillsInteractor(repositoryStorage.getDatabaseRepository()));
-        presenter.initCallbacks(callbacks.getManaAmountCallback(), callbacks.getUserLevelCallback());
-
+        presenter.initCallbacks(overlayUI.getManaAmountCallback(),
+                                overlayUI.getUserLevelCallback());
 
         skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
         mainSkillsTable = new SkillsList2D(getEmptyBackgroundStyle(), COLUMNS_NUMBER,

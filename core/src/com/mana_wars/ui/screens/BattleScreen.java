@@ -72,7 +72,7 @@ public class BattleScreen extends BaseScreen implements BattleView {
 
             @Override
             protected void onSkillClick(ActiveSkill skill) {
-                if (isBattle.get()){
+                if (isBattle.get()) {
                     presenter.applySkill(skill);
                 }
             }
@@ -123,13 +123,10 @@ public class BattleScreen extends BaseScreen implements BattleView {
         userHealthField.init();
         enemyHealthField.init();
         super.show();
-        presenter.initBattle(new PvEBattle(new User(),new FirstDungeonEnemyFactory()), userHealthField::setHealth, enemyHealthField::setHealth); // start Battle as OnComplete initBattle
-        //presenter.initCallbacks(HealthField::setUserHealth);
+        presenter.initBattle(new PvEBattle(new User(),new FirstDungeonEnemyFactory()),
+                userHealthField::setHealth, enemyHealthField::setHealth); // start Battle as OnComplete initBattle
 
         List<Consumer<? super Integer>> tt = Arrays.asList(userHealthField::setHealth, userHealthField::setHealth);
-
-
-
     }
 
     @Override
