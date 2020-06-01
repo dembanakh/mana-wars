@@ -1,6 +1,7 @@
 package com.mana_wars.model.skills_operations;
 
 import com.mana_wars.model.entity.SkillTable;
+import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.entity.skills.Skill;
@@ -42,9 +43,9 @@ public enum SkillsOperations {
     }, SWAP {
         @Override
         protected Boolean validate(SkillOperationQuery query) {
-            if (query.source == null || query.target == null) return false;
+            if (query.source == null || query.target == null || query.target.getRarity() == Rarity.EMPTY) return false;
             if (query.tableQuery.source == query.tableQuery.target)
-                return query.source != Skill.Empty && query.target != Skill.Empty;
+                return query.source.getRarity() != Rarity.EMPTY && query.target.getRarity() != Rarity.EMPTY;
             return (query.target instanceof ActiveSkill && query.source instanceof ActiveSkill) ||
                     (query.target instanceof PassiveSkill && query.source instanceof PassiveSkill);
         }
@@ -63,9 +64,9 @@ public enum SkillsOperations {
             if (query.tableQuery.source == query.tableQuery.target) return true;
             if (query.tableQuery.source == SkillTable.ALL_SKILLS) {
                 if (query.tableQuery.target == SkillTable.ACTIVE_SKILLS)
-                    return (query.source instanceof ActiveSkill) && (query.target == Skill.Empty);
+                    return (query.source instanceof ActiveSkill) && (query.target.getRarity() == Rarity.EMPTY);
                 if (query.tableQuery.target == SkillTable.PASSIVE_SKILLS)
-                    return (query.source instanceof PassiveSkill) && (query.target == Skill.Empty);
+                    return (query.source instanceof PassiveSkill) && (query.target.getRarity() == Rarity.EMPTY);
             }
             return query.target == null;
         }

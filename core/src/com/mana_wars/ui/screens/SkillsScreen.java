@@ -234,7 +234,7 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
                     if (itemIndex == -1) return null;
 
                     Skill skill = table.getItem(itemIndex);
-                    if (skill == Skill.Empty) return null;
+                    if (skill.getRarity() == Rarity.EMPTY) return null;
                     payload.setObject1(skill);
                     payload.setObject2(itemIndex);
                     table.removeIndex(itemIndex);

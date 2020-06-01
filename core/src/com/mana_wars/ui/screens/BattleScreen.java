@@ -68,7 +68,8 @@ class BattleScreen extends BaseScreen implements BattleView {
         userActiveSkills = new BattleSkillsList2D(skin, GameConstants.USER_ACTIVE_SKILL_COUNT,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory()) {
 
-            protected void callSkillClickCallback(ActiveSkill skill) {
+            @Override
+            protected void onSkillClick(ActiveSkill skill) {
                 if (isBattle.get()){
                     presenter.applySkill(skill);
                 }

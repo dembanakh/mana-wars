@@ -105,7 +105,7 @@ public abstract class Battle {
         boolean result = true;
         for (BattleParticipant participant : enemySide){
             if (participant.getCharacteristicValue(Characteristic.HEALTH)>0) {
-                System.out.println("Enemy Health " + participant.getCharacteristicValue(Characteristic.HEALTH));
+                //System.out.println("Enemy Health " + participant.getCharacteristicValue(Characteristic.HEALTH));
                 result = false;
                 break;
             }
@@ -116,7 +116,7 @@ public abstract class Battle {
         }
 
         for (BattleParticipant participant : userSide){
-            System.out.println("user Health " + participant.getCharacteristicValue(Characteristic.HEALTH));
+            //System.out.println("user Health " + participant.getCharacteristicValue(Characteristic.HEALTH));
             if (participant.getCharacteristicValue(Characteristic.HEALTH)>0){
                 return false;
             }

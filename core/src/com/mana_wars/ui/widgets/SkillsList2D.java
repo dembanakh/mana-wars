@@ -72,7 +72,7 @@ public class SkillsList2D extends List2D<Skill> {
             items.insert(indexToInsert, new List2DItem<>(availableID + 1, item));
             return indexToInsert;
         } else {
-            if (items.get(index).data == Skill.Empty) items.get(index).data = item;
+            if (items.get(index).data.getRarity() == Rarity.EMPTY) items.get(index).data = item;
             else super.insert(index, item);
             return index;
         }
