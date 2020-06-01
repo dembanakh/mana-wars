@@ -6,6 +6,7 @@ import com.mana_wars.model.db.entity.CompleteUserSkill;
 import com.mana_wars.model.db.entity.DBSkillWithCharacteristics;
 import com.mana_wars.model.db.entity.UserSkill;
 import com.mana_wars.model.entity.SkillTable;
+import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.Skill;
 
 import java.util.ArrayList;
@@ -52,7 +53,8 @@ public class DBMapperRepository implements DatabaseRepository {
             }
 
             for (int i =0; i < GameConstants.USER_ACTIVE_SKILL_COUNT;i++)
-                result.get(SkillTable.ACTIVE_SKILLS).add(Skill.Empty);
+                //TODO refactor
+                result.get(SkillTable.ACTIVE_SKILLS).add(ActiveSkill.EmptyActive);
             for (int i =0; i < GameConstants.USER_PASSIVE_SKILL_COUNT;i++)
                 result.get(SkillTable.PASSIVE_SKILLS).add(Skill.Empty);
 

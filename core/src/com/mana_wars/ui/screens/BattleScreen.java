@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import com.mana_wars.model.GameConstants;
+import com.mana_wars.ui.screens.util.HealthField;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.model.entity.User;
@@ -25,8 +26,11 @@ import com.mana_wars.ui.widgets.BattleSkillsList2D;
 import com.mana_wars.ui.widgets.List2D;
 
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import io.reactivex.functions.Consumer;
 
 import static com.mana_wars.ui.UIStringConstants.*;
 import static com.mana_wars.ui.screens.util.UIElementsSize.SKILLS_SCREEN.ACTIVE_SKILLS_TABLE_HEIGHT;
@@ -36,9 +40,13 @@ class BattleScreen extends BaseScreen implements BattleView {
 
     private final Skin skin;
 
-    private final Label testLabel;
+    private final Label userHealthLabel;
 
     private final BattlePresenter presenter;
+
+    //TODO temporary
+    private HealthField userHealthField;
+    private HealthField enemyHealthField;
 
     private final List2D<ActiveSkill> userActiveSkills;
 
@@ -51,13 +59,19 @@ class BattleScreen extends BaseScreen implements BattleView {
                 Gdx.app::postRunnable);
 
         skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
-        testLabel = new Label("TEXT", skin);
-        testLabel.setFontScale(2);
+        userHealthLabel = new Label("TEXT", skin);
+        userHealthLabel.setFontScale(2);
+
+        userHealthField = new HealthField(100,50);
+        enemyHealthField = new HealthField(100,100);
+
         userActiveSkills = new BattleSkillsList2D(skin, GameConstants.USER_ACTIVE_SKILL_COUNT,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory()) {
-            @Override
-            protected void onSkillClick(ActiveSkill skill) {
-                presenter.applySkill(skill);
+
+            protected void callSkillClickCallback(ActiveSkill skill) {
+                if (isBattle.get()){
+                    presenter.applySkill(skill);
+                }
             }
         };
     }
@@ -96,13 +110,23 @@ class BattleScreen extends BaseScreen implements BattleView {
         stack.setFillParent(true);
         stack.add(layerBackground);
         stack.add(layerForeground);
+        stage.addActor(userHealthField.build(skin));
+        stage.addActor(enemyHealthField.build(skin));
     }
     
 
     @Override
     public void show() {
+        userHealthField.init();
+        enemyHealthField.init();
         super.show();
-        presenter.initBattle(new PvEBattle(new User(),new FirstDungeonEnemyFactory())); // start Battle as OnComplete initBattle
+        presenter.initBattle(new PvEBattle(new User(),new FirstDungeonEnemyFactory()), userHealthField::setHealth, enemyHealthField::setHealth); // start Battle as OnComplete initBattle
+        //presenter.initCallbacks(HealthField::setUserHealth);
+
+        List<Consumer<? super Integer>> tt = Arrays.asList(userHealthField::setHealth, userHealthField::setHealth);
+
+
+
     }
 
     @Override
@@ -111,9 +135,6 @@ class BattleScreen extends BaseScreen implements BattleView {
 
         return layer;
     }
-
-    //TODO delete , only for the temporary use
-    ActiveSkill userSkill;
 
 
 
@@ -127,7 +148,6 @@ class BattleScreen extends BaseScreen implements BattleView {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
                         if (isBattle.get()){
-                            presenter.applySkill(userSkill);
                         }
                     }
                 });
@@ -143,7 +163,7 @@ class BattleScreen extends BaseScreen implements BattleView {
         userActiveSkills.getSelection().setRequired(false);
 
         layer.add(testButton).pad(100).row();
-        layer.add(testLabel).pad(100).row();
+        layer.add(userHealthLabel).pad(100).row();
         layer.add(backButton).pad(100).row();
         layer.add(userActiveSkills).bottom().expandX().height(ACTIVE_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH).row();
         return layer;
@@ -158,19 +178,17 @@ class BattleScreen extends BaseScreen implements BattleView {
 
     @Override
     public void setLabelText(String text) {
-        testLabel.setText(text);
+        userHealthLabel.setText(text);
     }
 
     @Override
     public void setSkills(List<ActiveSkill> activeSkills, List<Skill> passiveSkills) {
         userActiveSkills.setItems(activeSkills);
-
-        this.userSkill = activeSkills.get(0);
     }
 
     @Override
     public void finishBattle() {
         isBattle.set(false);
-        testLabel.setText("Battle ended");
+        userHealthLabel.setText("Battle ended");
     }
 }

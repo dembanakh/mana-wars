@@ -7,7 +7,6 @@ import com.mana_wars.model.entity.battle.Characteristic;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.SkillCharacteristic;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,15 +15,11 @@ public class Mob extends BattleParticipant {
 
     public Mob(int healthPoints, int manaPoints) {
         super(healthPoints, manaPoints);
-        this.passive_skills = new ArrayList<>();
+        this.passiveSkills = new ArrayList<>();
     }
 
     public List<ActiveSkill> getInitialAutoSkills(){
-        return Arrays.asList(
-                new ActiveSkill(1, 1, Rarity.COMMON, 0, 1, 2, "",
-                        Arrays.asList(
-                                new SkillCharacteristic(10, Characteristic.HEALTH,
-                                        ValueChangeType.DECREASE, SkillCharacteristic.Target.ENEMY))
-                ));
+        return Arrays.asList(new ActiveSkill(1, 1, Rarity.COMMON, 0, 1, 2, "",
+                Arrays.asList(new SkillCharacteristic(10, Characteristic.HEALTH, ValueChangeType.DECREASE, SkillCharacteristic.Target.ENEMY))));
     }
 }

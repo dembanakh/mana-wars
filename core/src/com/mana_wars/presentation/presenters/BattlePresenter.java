@@ -5,7 +5,6 @@ import com.mana_wars.model.entity.User;
 import com.mana_wars.model.entity.battle.Battle;
 import com.mana_wars.model.entity.battle.BattleParticipant;
 import com.mana_wars.model.entity.battle.Characteristic;
-import com.mana_wars.model.entity.enemy.EnemyFactory;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.interactor.BattleInteractor;
@@ -16,6 +15,7 @@ import com.mana_wars.presentation.view.BattleView;
 import java.util.List;
 
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
 
 public class BattlePresenter implements BattlePresenterCallback {
 
@@ -30,12 +30,13 @@ public class BattlePresenter implements BattlePresenterCallback {
         this.interactor = interactor;
     }
 
-    public void initBattle(Battle battle) {
-        interactor.init(this, battle);
+    public void initBattle(Battle battle, Consumer<? super Integer> userHealthOnChanged, Consumer<? super Integer> enemyHealthOnChanged) {
+        interactor.init(this, battle, userHealthOnChanged, enemyHealthOnChanged);
     }
 
     public void applySkill(ActiveSkill skill)
     {
+        //TODO handle empty
         interactor.applySkill(skill);
         view.setLabelText("Skill user " + skill.getName());
     }
@@ -53,6 +54,7 @@ public class BattlePresenter implements BattlePresenterCallback {
 
     @Override
     public void startBattle() {
+
         view.startBattle();
     }
 

@@ -6,10 +6,16 @@ import com.mana_wars.model.entity.skills.SkillCharacteristic;
 import java.util.EnumMap;
 import java.util.List;
 
+import io.reactivex.subjects.BehaviorSubject;
+import io.reactivex.subjects.PublishSubject;
+
 
 public class BattleParticipant {
 
-    protected List<Skill> passive_skills;
+    protected List<Skill> passiveSkills;
+
+    private final BehaviorSubject<Integer> healthObservable;
+
 
     private EnumMap<Characteristic, Integer> characteristics = new EnumMap<>(Characteristic.class);
     {
@@ -23,22 +29,32 @@ public class BattleParticipant {
         this.characteristics.put(Characteristic.MANA, manaPoints);
         this.characteristics.put(Characteristic.COOLDOWN, 100);
         this.characteristics.put(Characteristic.CAST_TIME,100);
+        this.healthObservable = BehaviorSubject.create();
+        this.healthObservable.onNext(healthPoints);
+    }
+
+    public BehaviorSubject<Integer> getHealthObservable() {
+        return healthObservable;
     }
 
     public int getCharacteristicValue(Characteristic type){
         return characteristics.get(type);
     }
 
-    public void applySkillCharacteristic(SkillCharacteristic sc){
+    public void applySkillCharacteristic(SkillCharacteristic sc) {
         Characteristic c = sc.getCharacteristic();
-        characteristics.put(c, c.changeValue(characteristics.get(c),sc.getChangeType(), sc.getValue()));
+        int changedValue = c.changeValue(characteristics.get(c), sc.getChangeType(), sc.getValue());
+        characteristics.put(c, changedValue);
+        if (c == Characteristic.HEALTH) {
+            healthObservable.onNext(changedValue);
+        }
     }
 
-    public void setPassive_skills(List<Skill> passive_skills) {
-        this.passive_skills = passive_skills;
+    public void setPassiveSkills(List<Skill> passiveSkills) {
+        this.passiveSkills = passiveSkills;
     }
 
-    public List<Skill> getPassive_skills() {
-        return passive_skills;
+    public List<Skill> getPassiveSkills() {
+        return passiveSkills;
     }
 }

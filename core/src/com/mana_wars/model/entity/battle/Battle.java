@@ -65,12 +65,12 @@ public abstract class Battle {
 
     public void init(){
         for (BattleParticipant participant : userSide){
-            for (Skill s : participant.getPassive_skills()){
+            for (Skill s : participant.getPassiveSkills()){
                 s.activate(participant, getOpponents(participant).get(0));
             }
         }
         for (BattleParticipant participant : enemySide){
-            for (Skill s : participant.getPassive_skills()){
+            for (Skill s : participant.getPassiveSkills()){
                 s.activate(participant, getOpponents(participant).get(0));
             }
         }

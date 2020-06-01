@@ -27,7 +27,6 @@ public class AndroidLauncher extends AndroidApplication {
 
 
 		ManaWars app = ManaWars.getInstance();
-		//TODO set android impl classes
 
 		//todo replace
 		app.setLocalizedStringsRepository(id->
@@ -48,7 +47,6 @@ public class AndroidLauncher extends AndroidApplication {
 		app.setLocalUserDataRepository(sharedPreferencesRepository);
 
 		app.setDatabaseRepository(new DBMapperRepository(roomRepository));
-
 
 		//TODO refactor
 		DBUpdateChecker.check(this, sharedPreferencesRepository, roomRepository);

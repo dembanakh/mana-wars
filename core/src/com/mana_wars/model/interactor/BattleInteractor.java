@@ -1,20 +1,17 @@
 package com.mana_wars.model.interactor;
 
 import com.mana_wars.model.entity.SkillTable;
-import com.mana_wars.model.entity.User;
 import com.mana_wars.model.entity.battle.Battle;
-import com.mana_wars.model.entity.battle.BattleParticipant;
-import com.mana_wars.model.entity.battle.PvEBattle;
-import com.mana_wars.model.entity.enemy.EnemyFactory;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.repository.DatabaseRepository;
 import com.mana_wars.model.repository.LocalUserDataRepository;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
 
 public class BattleInteractor {
 
@@ -31,16 +28,26 @@ public class BattleInteractor {
     }
 
 
-    public void init(BattlePresenterCallback callback, Battle battle) {
+    public void init(BattlePresenterCallback callback, Battle battle, Consumer<? super Integer> userHealthOnChanged,
+                     Consumer<? super Integer> enemyHealthOnChanged) {
         this.battle = battle;
         disposable.add(databaseRepository.getUserSkills().subscribe(skills -> {
             List<Skill> passiveSkills = skills.get(SkillTable.PASSIVE_SKILLS);
             List<Skill> activeSkills = skills.get(SkillTable.ACTIVE_SKILLS);
-            battle.getUser().setPassive_skills(passiveSkills);
+            battle.getUser().setPassiveSkills(passiveSkills);
             //TODO refactor
             callback.setSkills((List<ActiveSkill>)(List<?>)activeSkills, passiveSkills);
             battle.init();
             callback.setOpponents(battle.getUserSide(), battle.getEnemySide());
+
+            disposable.add(battle.getUser().getHealthObservable().subscribe(userHealthOnChanged,
+                    Throwable::printStackTrace
+            ));
+
+            disposable.add(battle.getEnemySide().get(0).getHealthObservable().subscribe(enemyHealthOnChanged,
+                    Throwable::printStackTrace
+            ));
+
             battle.start();
             callback.startBattle();
         }, Throwable::printStackTrace));

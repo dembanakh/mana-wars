@@ -23,4 +23,7 @@ public class ActiveSkill extends Skill {
     public double getCastTime() {
         return castTime;
     }
+
+    public static ActiveSkill EmptyActive = new ActiveSkill(50, 0, Rarity.EMPTY, 0, 0,0, "EMPTY",
+             new ArrayList<>());
 }
