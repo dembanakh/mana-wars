@@ -17,6 +17,8 @@ import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.ui.factory.UIElementFactory;
 
+import java.util.List;
+
 import static com.mana_wars.ui.UIStringConstants.*;
 
 public class MainMenuScreen extends BaseScreen implements MainMenuView {
@@ -91,7 +93,7 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
     }
 
     @Override
-    public void openSkillCaseWindow(int skillID, String skillName, Rarity skillRarity, String description) {
+    public void openSkillCaseWindow(int skillID, String skillName, Rarity skillRarity, List<String> description) {
         skillCaseWindow.open(skillID, skillName, skillRarity, description);
     }
 

@@ -23,6 +23,15 @@ public class SkillCharacteristic {
         this.target = target;
     }
 
+    public String getDescription(){
+        String result = String.valueOf(target);
+        result += " ";
+        result += String.valueOf(characteristic);
+        result += (changeType == ValueChangeType.DECREASE) ? " -" : " +";
+        result += String.valueOf(value);
+        return result;
+    }
+
     public Characteristic getCharacteristic() {
         return characteristic;
     }

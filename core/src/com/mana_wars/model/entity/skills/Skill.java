@@ -30,8 +30,13 @@ public class Skill extends GameItem {
     }
 
     //TODO generate description based on characteristics
-    public String getDescription() {
-        return String.valueOf(manaCost);
+    public List<String> getDescription() {
+        List<String> result= new ArrayList<>();
+        for(SkillCharacteristic sc : skillCharacteristics){
+            result.add( String.valueOf(sc.getDescription()));
+            System.out.println(sc.getDescription());
+        }
+        return result;
     }
 
     public static Skill Empty = new Skill(50, 0, Rarity.EMPTY, "EMPTY",

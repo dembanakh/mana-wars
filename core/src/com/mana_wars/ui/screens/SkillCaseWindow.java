@@ -14,6 +14,8 @@ import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.factory.UIElementFactory;
 
+import java.util.List;
+
 import static com.mana_wars.ui.screens.util.UIElementsSize.SCREEN_HEIGHT;
 import static com.mana_wars.ui.screens.util.UIElementsSize.SCREEN_WIDTH;
 import static com.mana_wars.ui.screens.util.UIElementsSize.SKILL_CASE_WINDOW.*;
@@ -73,11 +75,11 @@ class SkillCaseWindow extends Window {
         setVisible(false);
     }
 
-    void open(int skillID, String skillName, Rarity skillRarity, String skillDescription) {
+    void open(int skillID, String skillName, Rarity skillRarity, List<String> skillDescription) {
         skillIcon.setDrawable(new TextureRegionDrawable(iconFactory.getAsset(skillID)));
         skillFrame.setDrawable(new TextureRegionDrawable(frameFactory.getAsset(skillRarity)));
         this.skillName.setText(skillName);
-        this.skillDescription.setText(skillDescription);
+        this.skillDescription.setText(skillDescription.get(0));
         setPosition((SCREEN_WIDTH - getWidth()) * 0.5f,
                 (SCREEN_HEIGHT - getHeight()) * 0.5f);
         pack();
