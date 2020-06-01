@@ -10,21 +10,23 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mana_wars.model.interactor.GreetingInteractor;
 import com.mana_wars.presentation.presenters.GreetingPresenter;
 import com.mana_wars.presentation.view.GreetingView;
+import com.mana_wars.ui.management.ScreenManager;
+import com.mana_wars.ui.overlays.OverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.ui.factory.UIElementFactory;
 
-import static com.mana_wars.ui.screens.util.UIElementsSize.GREETING_SCREEN.*;
+import static com.mana_wars.ui.UIElementsSize.GREETING_SCREEN.*;
 import static com.mana_wars.ui.UIStringConstants.*;
 
-class GreetingScreen extends BaseScreen implements GreetingView {
+public class GreetingScreen extends BaseScreen implements GreetingView {
 
     private final Skin skin;
 
     private final GreetingPresenter presenter;
 
-    GreetingScreen(ScreenManager screenManager, FactoryStorage factoryStorage,
-                   RepositoryStorage repositoryStorage, OverlayUI overlayUI) {
+    public GreetingScreen(ScreenManager screenManager, FactoryStorage factoryStorage,
+                          RepositoryStorage repositoryStorage, OverlayUI overlayUI) {
         super(screenManager, factoryStorage, repositoryStorage, overlayUI);
         presenter = new GreetingPresenter(this,
                 new GreetingInteractor(repositoryStorage.getLocalUserDataRepository(),

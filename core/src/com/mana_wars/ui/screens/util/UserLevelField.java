@@ -7,9 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
-import static com.mana_wars.ui.screens.util.UIElementsSize.SCREEN_HEIGHT;
+import static com.mana_wars.ui.UIElementsSize.SCREEN_HEIGHT;
 
-class UserLevelField implements BuildableUI {
+public class UserLevelField implements BuildableUI {
 
     private Table field;
     private Label userLevelLabel;
@@ -40,7 +40,7 @@ class UserLevelField implements BuildableUI {
         return field;
     }
 
-    void setUserLevel(final int userLevel) {
+    public void setUserLevel(final int userLevel) {
         userLevelLabel.setText(userLevel);
     }
 

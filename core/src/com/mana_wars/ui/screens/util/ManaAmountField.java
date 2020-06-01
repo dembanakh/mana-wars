@@ -7,10 +7,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
-import static com.mana_wars.ui.screens.util.UIElementsSize.SCREEN_HEIGHT;
-import static com.mana_wars.ui.screens.util.UIElementsSize.SCREEN_WIDTH;
+import static com.mana_wars.ui.UIElementsSize.SCREEN_HEIGHT;
+import static com.mana_wars.ui.UIElementsSize.SCREEN_WIDTH;
 
-class ManaAmountField implements BuildableUI {
+public class ManaAmountField implements BuildableUI {
 
     private Table field;
     private Label manaAmountLabel;
@@ -41,7 +41,7 @@ class ManaAmountField implements BuildableUI {
         return field;
     }
 
-    void setManaAmount(final int manaAmount) {
+    public void setManaAmount(final int manaAmount) {
         manaAmountLabel.setText(manaAmount);
     }
 

@@ -2,14 +2,14 @@ package com.mana_wars.ui;
 
 public final class UIStringConstants {
 
-    static final String TEXTURE_ATLAS_FORMAT = "%s/%<s.pack";
-    static final String REGION_NAME = "image_part";
+    public static final String TEXTURE_ATLAS_FORMAT = "%s/%<s.pack";
+    public static final String REGION_NAME = "image_part";
 
-    static final String SKILLS_ICONS_FILENAME = "Skills_icons";
-    static final String SKILLS_FRAMES_FILENAME = "Skills_frames";
+    public static final String SKILLS_ICONS_FILENAME = "Skills_icons";
+    public static final String SKILLS_FRAMES_FILENAME = "Skills_frames";
 
     public static class UI_SKIN {
-        static final String FORMAT = "skins/%s/skin/%<s-ui.json";
+        public static final String FORMAT = "skins/%s/skin/%<s-ui.json";
 
         public static final String FREEZING = "freezing";
     }

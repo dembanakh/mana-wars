@@ -1,4 +1,4 @@
-package com.mana_wars.ui.screens.util;
+package com.mana_wars.ui.widgets;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -6,17 +6,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.factory.UIElementFactory;
-import com.mana_wars.ui.screens.ScreenManager;
+import com.mana_wars.ui.management.ScreenManager;
+import com.mana_wars.ui.screens.util.BuildableUI;
 
-import static com.mana_wars.ui.screens.util.UIElementsSize.NAVIGATION_BAR.*;
+import static com.mana_wars.ui.UIElementsSize.NAVIGATION_BAR.*;
 
-class NavigationBar implements BuildableUI {
+public class NavigationBar implements BuildableUI {
 
     private Table bar;
 
     private final ScreenManager screenManager;
 
-    NavigationBar(final ScreenManager screenManager) {
+    public NavigationBar(final ScreenManager screenManager) {
         this.screenManager = screenManager;
     }
 

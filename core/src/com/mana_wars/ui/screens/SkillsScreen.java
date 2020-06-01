@@ -16,7 +16,9 @@ import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.interactor.SkillsInteractor;
 import com.mana_wars.presentation.presenters.SkillsPresenter;
 import com.mana_wars.presentation.view.SkillsView;
+import com.mana_wars.ui.management.ScreenManager;
 import com.mana_wars.ui.callback.MenuOverlayUICallbacks;
+import com.mana_wars.ui.overlays.OverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.ui.factory.AssetFactory;
@@ -26,7 +28,7 @@ import com.mana_wars.ui.widgets.TimeoutDragAndDrop;
 
 import java.util.List;
 
-import static com.mana_wars.ui.screens.util.UIElementsSize.SKILLS_SCREEN.*;
+import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.*;
 import static com.mana_wars.ui.UIStringConstants.*;
 
 public class SkillsScreen extends BaseScreen implements SkillsView {
@@ -41,7 +43,7 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
 
     private final SkillsPresenter presenter;
 
-    SkillsScreen(ScreenManager screenManager, FactoryStorage factoryStorage,
+    public SkillsScreen(ScreenManager screenManager, FactoryStorage factoryStorage,
                  RepositoryStorage repositoryStorage, OverlayUI overlayUI,
                  MenuOverlayUICallbacks callbacks) {
         super(screenManager, factoryStorage, repositoryStorage, overlayUI);

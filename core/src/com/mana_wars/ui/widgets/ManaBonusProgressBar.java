@@ -1,4 +1,4 @@
-package com.mana_wars.ui.screens;
+package com.mana_wars.ui.widgets;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -9,9 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mana_wars.ui.factory.UIElementFactory;
 
-import static com.mana_wars.ui.screens.util.UIElementsSize.SCREEN_WIDTH;
+import static com.mana_wars.ui.UIElementsSize.SCREEN_WIDTH;
 
-class ManaBonusProgressBar extends ProgressBar {
+public class ManaBonusProgressBar extends ProgressBar {
 
     private static final float GRANULARITY = 1f / 60;
     private static final float SYNC_EVERY_FRAMES = 60;
@@ -26,7 +26,7 @@ class ManaBonusProgressBar extends ProgressBar {
     /*
      * @param bonusTimeout - bonus is available every bonusTimeout minutes
      */
-    ManaBonusProgressBar(int fullBonusTimeout, Skin skin, Runnable claimCallback) {
+    public ManaBonusProgressBar(int fullBonusTimeout, Skin skin, Runnable claimCallback) {
         super(0f, fullBonusTimeout, GRANULARITY, false, skin);
         getStyle().background.setMinHeight(200);
         getStyle().knobBefore.setMinHeight(200);
@@ -49,7 +49,7 @@ class ManaBonusProgressBar extends ProgressBar {
         currentValue = 0;
     }
 
-    Actor rebuild(Skin skin) {
+    public Actor rebuild(Skin skin) {
         Table barCont = new Table();
         barCont.add(this).padTop(600).width(SCREEN_WIDTH);
 
@@ -69,7 +69,7 @@ class ManaBonusProgressBar extends ProgressBar {
         setValue((float) currentValue);
     }
 
-    boolean shouldSynchronizeNow() {
+    public boolean shouldSynchronizeNow() {
         boolean result = frameCounter == 0 && currentValue < getMaxValue();
         frameCounter++;
         frameCounter %= SYNC_EVERY_FRAMES;
@@ -77,15 +77,15 @@ class ManaBonusProgressBar extends ProgressBar {
         return result;
     }
 
-    void update(float delta) {
+    public void update(float delta) {
         currentValue += (double) delta / 60;
     }
 
-    void setTimeSinceLastBonusClaim(long time) {
+    public void setTimeSinceLastBonusClaim(long time) {
         this.currentValue = time / (1000.0 * 60);
     }
 
-    void onBonusReady() {
+    public void onBonusReady() {
         claimButton.setVisible(true);
     }
 

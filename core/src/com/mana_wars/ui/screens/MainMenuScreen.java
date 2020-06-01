@@ -12,7 +12,10 @@ import com.mana_wars.model.interactor.MainMenuInteractor;
 import com.mana_wars.model.mana_bonus.ManaBonusImpl;
 import com.mana_wars.presentation.presenters.MainMenuPresenter;
 import com.mana_wars.presentation.view.MainMenuView;
+import com.mana_wars.ui.management.ScreenManager;
 import com.mana_wars.ui.callback.MenuOverlayUICallbacks;
+import com.mana_wars.ui.overlays.OverlayUI;
+import com.mana_wars.ui.widgets.ManaBonusProgressBar;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.ui.factory.UIElementFactory;
@@ -30,8 +33,8 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
 
     private final MainMenuPresenter presenter;
 
-    MainMenuScreen(ScreenManager screenManager, FactoryStorage factoryStorage,
-              RepositoryStorage repositoryStorage, OverlayUI overlayUI,
+    public MainMenuScreen(ScreenManager screenManager, FactoryStorage factoryStorage,
+                   RepositoryStorage repositoryStorage, OverlayUI overlayUI,
                    MenuOverlayUICallbacks callbacks) {
         super(screenManager, factoryStorage, repositoryStorage, overlayUI);
         presenter = new MainMenuPresenter(this,

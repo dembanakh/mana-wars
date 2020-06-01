@@ -15,12 +15,11 @@ import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.factory.UIElementFactory;
 
 import java.util.List;
+import static com.mana_wars.ui.UIElementsSize.SCREEN_HEIGHT;
+import static com.mana_wars.ui.UIElementsSize.SCREEN_WIDTH;
+import static com.mana_wars.ui.UIElementsSize.SKILL_CASE_WINDOW.*;
 
-import static com.mana_wars.ui.screens.util.UIElementsSize.SCREEN_HEIGHT;
-import static com.mana_wars.ui.screens.util.UIElementsSize.SCREEN_WIDTH;
-import static com.mana_wars.ui.screens.util.UIElementsSize.SKILL_CASE_WINDOW.*;
-
-class SkillCaseWindow extends Window {
+public class SkillCaseWindow extends Window {
 
     private final Image skillIcon;
     private final Image skillFrame;

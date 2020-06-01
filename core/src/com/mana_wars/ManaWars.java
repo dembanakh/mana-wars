@@ -4,8 +4,8 @@ import com.badlogic.gdx.Game;
 import com.mana_wars.model.repository.DatabaseRepository;
 import com.mana_wars.model.repository.LocalUserDataRepository;
 import com.mana_wars.model.repository.LocalizedStringsRepository;
-import com.mana_wars.ui.ScreenHandler;
-import com.mana_wars.ui.ScreenManagerImpl;
+import com.mana_wars.ui.management.ScreenHandler;
+import com.mana_wars.ui.management.ScreenManagerImpl;
 import com.mana_wars.ui.storage.RepositoryStorage;
 
 public class ManaWars extends Game implements ScreenHandler, RepositoryStorage {

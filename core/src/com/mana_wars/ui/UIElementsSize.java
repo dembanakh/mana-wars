@@ -1,4 +1,4 @@
-package com.mana_wars.ui.screens.util;
+package com.mana_wars.ui;
 
 import com.badlogic.gdx.Gdx;
 
@@ -31,10 +31,10 @@ public final class UIElementsSize {
         public static final float SKILLS_TABLES_WIDTH = SCREEN_WIDTH;
     }
 
-    static class NAVIGATION_BAR {
-        static final int TABS_NUMBER = 4;
-        static final float TAB_HEIGHT = SCREEN_HEIGHT * 0.1f;
-        static final float TAB_WIDTH  = (float) SCREEN_WIDTH / TABS_NUMBER;
+    public static class NAVIGATION_BAR {
+        public static final int TABS_NUMBER = 4;
+        public static final float TAB_HEIGHT = SCREEN_HEIGHT * 0.1f;
+        public static final float TAB_WIDTH  = (float) SCREEN_WIDTH / TABS_NUMBER;
     }
 
 

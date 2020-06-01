@@ -6,25 +6,26 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.mana_wars.ui.management.ScreenManager;
+import com.mana_wars.ui.overlays.OverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
-import com.mana_wars.ui.screens.util.OverlayUIFactory;
 
 import java.util.Map;
 
-abstract class BaseScreen implements Screen {
+public abstract class BaseScreen implements Screen {
 
     protected final Stage stage;
 
     protected final ScreenManager screenManager;
     protected final FactoryStorage factoryStorage;
     protected final RepositoryStorage repositoryStorage;
-    protected final OverlayUI overlayUI;
+    protected final com.mana_wars.ui.overlays.OverlayUI overlayUI;
 
     protected Map<String, Object> arguments;
 
     BaseScreen(ScreenManager screenManager, FactoryStorage factoryStorage,
-              RepositoryStorage repositoryStorage, OverlayUI overlayUI) {
+               RepositoryStorage repositoryStorage, OverlayUI overlayUI) {
         this.stage = new Stage() {
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
@@ -39,7 +40,7 @@ abstract class BaseScreen implements Screen {
         this.overlayUI = overlayUI;
     }
 
-    BaseScreen setArguments(Map<String, Object> arguments) {
+    public BaseScreen setArguments(Map<String, Object> arguments) {
         this.arguments = arguments;
         return this;
     }

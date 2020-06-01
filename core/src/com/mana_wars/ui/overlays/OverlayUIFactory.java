@@ -1,8 +1,7 @@
-package com.mana_wars.ui.screens.util;
+package com.mana_wars.ui.overlays;
 
 import com.mana_wars.model.repository.LocalUserDataRepository;
-import com.mana_wars.ui.screens.OverlayUI;
-import com.mana_wars.ui.screens.ScreenManager;
+import com.mana_wars.ui.management.ScreenManager;
 
 public class OverlayUIFactory {
 

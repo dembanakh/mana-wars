@@ -1,8 +1,13 @@
-package com.mana_wars.ui.screens;
+package com.mana_wars.ui.management;
 
+import com.mana_wars.ui.screens.BaseScreen;
+import com.mana_wars.ui.screens.BattleScreen;
+import com.mana_wars.ui.screens.GreetingScreen;
+import com.mana_wars.ui.screens.MainMenuScreen;
+import com.mana_wars.ui.screens.SkillsScreen;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
-import com.mana_wars.ui.screens.util.OverlayUIFactory;
+import com.mana_wars.ui.overlays.OverlayUIFactory;
 
 import java.util.Map;
 

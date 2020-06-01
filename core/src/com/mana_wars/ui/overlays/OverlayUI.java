@@ -1,4 +1,4 @@
-package com.mana_wars.ui.screens;
+package com.mana_wars.ui.overlays;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -15,7 +15,7 @@ public class OverlayUI {
         this.elements = new ArrayList<>();
     }
 
-    void overlay(Stage stage, Skin skin) {
+    public void overlay(Stage stage, Skin skin) {
         for (BuildableUI element : elements)
             stage.addActor(element.build(skin));
     }

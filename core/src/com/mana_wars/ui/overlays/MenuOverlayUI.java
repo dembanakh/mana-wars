@@ -1,23 +1,26 @@
-package com.mana_wars.ui.screens.util;
+package com.mana_wars.ui.overlays;
 
 import com.mana_wars.model.repository.UserLevelRepository;
 import com.mana_wars.model.repository.UserManaRepository;
 import com.mana_wars.model.repository.UsernameRepository;
 import com.mana_wars.ui.callback.MenuOverlayUICallbacks;
-import com.mana_wars.ui.screens.OverlayUI;
-import com.mana_wars.ui.screens.ScreenManager;
+import com.mana_wars.ui.management.ScreenManager;
+import com.mana_wars.ui.screens.util.BuildableUI;
+import com.mana_wars.ui.screens.util.ManaAmountField;
+import com.mana_wars.ui.screens.util.UserLevelField;
+import com.mana_wars.ui.screens.util.UsernameField;
 
 import java.util.Arrays;
 
 import io.reactivex.functions.Consumer;
 
-class MenuOverlayUI extends OverlayUI implements MenuOverlayUICallbacks {
+public class MenuOverlayUI extends OverlayUI implements MenuOverlayUICallbacks {
 
     private final Consumer<? super Integer> manaAmountCallback;
     private final Consumer<? super Integer> userLevelCallback;
     private final Consumer<? super String> usernameCallback;
 
-    MenuOverlayUI(final ScreenManager screenManager) {
+    public MenuOverlayUI(final ScreenManager screenManager) {
         super();
         ManaAmountField manaAmountField = new ManaAmountField();
         manaAmountCallback = manaAmountField::setManaAmount;
@@ -25,7 +28,7 @@ class MenuOverlayUI extends OverlayUI implements MenuOverlayUICallbacks {
         userLevelCallback = userLevelField::setUserLevel;
         UsernameField usernameField = new UsernameField();
         usernameCallback = usernameField::setUsername;
-        BuildableUI navigationBar = new NavigationBar(screenManager);
+        BuildableUI navigationBar = new com.mana_wars.ui.widgets.NavigationBar(screenManager);
 
         elements.addAll(Arrays.asList(navigationBar, manaAmountField, userLevelField, usernameField));
     }

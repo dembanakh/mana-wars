@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import com.mana_wars.model.GameConstants;
+import com.mana_wars.ui.management.ScreenManager;
+import com.mana_wars.ui.overlays.OverlayUI;
 import com.mana_wars.ui.screens.util.HealthField;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
@@ -33,10 +35,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import io.reactivex.functions.Consumer;
 
 import static com.mana_wars.ui.UIStringConstants.*;
-import static com.mana_wars.ui.screens.util.UIElementsSize.SKILLS_SCREEN.ACTIVE_SKILLS_TABLE_HEIGHT;
-import static com.mana_wars.ui.screens.util.UIElementsSize.SKILLS_SCREEN.SKILLS_TABLES_WIDTH;
+import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.ACTIVE_SKILLS_TABLE_HEIGHT;
+import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.SKILLS_TABLES_WIDTH;
 
-class BattleScreen extends BaseScreen implements BattleView {
+public class BattleScreen extends BaseScreen implements BattleView {
 
     private final Skin skin;
 
@@ -50,8 +52,8 @@ class BattleScreen extends BaseScreen implements BattleView {
 
     private final List2D<ActiveSkill> userActiveSkills;
 
-    BattleScreen(ScreenManager screenManager, FactoryStorage factoryStorage,
-              RepositoryStorage repositoryStorage, OverlayUI overlayUI) {
+    public BattleScreen(ScreenManager screenManager, FactoryStorage factoryStorage,
+                        RepositoryStorage repositoryStorage, OverlayUI overlayUI) {
         super(screenManager, factoryStorage, repositoryStorage, overlayUI);
         presenter = new BattlePresenter(this,
                 new BattleInteractor(repositoryStorage.getLocalUserDataRepository(),
