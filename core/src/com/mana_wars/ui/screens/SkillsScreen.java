@@ -50,13 +50,13 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
 
 
         skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
-        mainSkillsTable = new SkillsList2D<>(getEmptyBackgroundStyle(), COLUMNS_NUMBER,
+        mainSkillsTable = new SkillsList2D(getEmptyBackgroundStyle(), COLUMNS_NUMBER,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(), true);
         mainSkillsTable.setUserObject(SkillTable.ALL_SKILLS);
-        activeSkillsTable = new SkillsList2D<>(skin, GameConstants.USER_ACTIVE_SKILL_COUNT,
+        activeSkillsTable = new SkillsList2D(skin, GameConstants.USER_ACTIVE_SKILL_COUNT,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(), false);
         activeSkillsTable.setUserObject(SkillTable.ACTIVE_SKILLS);
-        passiveSkillsTable = new SkillsList2D<>(skin, GameConstants.USER_PASSIVE_SKILL_COUNT,
+        passiveSkillsTable = new SkillsList2D(skin, GameConstants.USER_PASSIVE_SKILL_COUNT,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(), false);
         passiveSkillsTable.setUserObject(SkillTable.PASSIVE_SKILLS);
         scrollPane = new ScrollPane(mainSkillsTable, skin);

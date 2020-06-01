@@ -1,7 +1,5 @@
 package com.mana_wars.ui.screens.util;
 
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mana_wars.model.repository.UserLevelRepository;
 import com.mana_wars.model.repository.UserManaRepository;
 import com.mana_wars.model.repository.UsernameRepository;
@@ -10,7 +8,6 @@ import com.mana_wars.ui.screens.OverlayUI;
 import com.mana_wars.ui.screens.ScreenManager;
 
 import java.util.Arrays;
-import java.util.List;
 
 import io.reactivex.functions.Consumer;
 

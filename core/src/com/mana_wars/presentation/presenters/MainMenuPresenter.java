@@ -31,6 +31,7 @@ public class MainMenuPresenter {
     }
 
     public void onOpenSkillCase() {
+        System.out.println("ON OPEN");
         disposable.add(interactor.getNewSkill().subscribe(s -> {
             uiThreadHandler.postRunnable( ()->view.openSkillCaseWindow(s.getIconID(),
                         s.getName(), s.getRarity(), s.getDescription()));

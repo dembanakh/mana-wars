@@ -20,11 +20,11 @@ public class Mob extends BattleParticipant {
     }
 
     public List<ActiveSkill> getInitialAutoSkills(){
-        return Arrays.asList(new ActiveSkill[]{
+        return Arrays.asList(
                 new ActiveSkill(1, 1, Rarity.COMMON, 0, 1, 2, "",
-                        Arrays.asList(new SkillCharacteristic[]{
-                                new SkillCharacteristic(10, Characteristic.HEALTH, ValueChangeType.DECREASE, SkillCharacteristic.Target.ENEMY)
-                        }))
-        });
+                        Arrays.asList(
+                                new SkillCharacteristic(10, Characteristic.HEALTH,
+                                        ValueChangeType.DECREASE, SkillCharacteristic.Target.ENEMY))
+                ));
     }
 }

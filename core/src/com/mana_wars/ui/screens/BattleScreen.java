@@ -2,7 +2,6 @@ package com.mana_wars.ui.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
@@ -22,8 +21,8 @@ import com.mana_wars.model.interactor.BattleInteractor;
 import com.mana_wars.presentation.presenters.BattlePresenter;
 import com.mana_wars.presentation.view.BattleView;
 import com.mana_wars.ui.factory.UIElementFactory;
+import com.mana_wars.ui.widgets.BattleSkillsList2D;
 import com.mana_wars.ui.widgets.List2D;
-import com.mana_wars.ui.widgets.SkillsList2D;
 
 
 import java.util.List;
@@ -54,8 +53,13 @@ class BattleScreen extends BaseScreen implements BattleView {
         skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
         testLabel = new Label("TEXT", skin);
         testLabel.setFontScale(2);
-        userActiveSkills = new SkillsList2D<>(skin, GameConstants.USER_ACTIVE_SKILL_COUNT,
-                factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(), false);
+        userActiveSkills = new BattleSkillsList2D(skin, GameConstants.USER_ACTIVE_SKILL_COUNT,
+                factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory()) {
+            @Override
+            protected void onSkillClick(ActiveSkill skill) {
+                presenter.applySkill(skill);
+            }
+        };
     }
 
     private AtomicBoolean isBattle = new AtomicBoolean(false);
@@ -71,7 +75,6 @@ class BattleScreen extends BaseScreen implements BattleView {
 
         if(isBattle.get()){
             presenter.updateBattle(delta);
-
         }
     }
 
@@ -94,7 +97,6 @@ class BattleScreen extends BaseScreen implements BattleView {
         stack.add(layerBackground);
         stack.add(layerForeground);
     }
-
     
 
     @Override

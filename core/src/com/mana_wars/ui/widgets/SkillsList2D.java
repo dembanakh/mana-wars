@@ -10,7 +10,7 @@ import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.ui.factory.AssetFactory;
 
-public class SkillsList2D<T extends Skill> extends List2D<T> {
+public class SkillsList2D extends List2D<Skill> {
 
     private final boolean ordered;
 
@@ -32,7 +32,7 @@ public class SkillsList2D<T extends Skill> extends List2D<T> {
     }
 
     @Override
-    protected void drawItem(Batch batch, BitmapFont font, int index, T item, float x, float y,
+    protected void drawItem(Batch batch, BitmapFont font, int index, Skill item, float x, float y,
                             float width, float height) {
         TextureRegion icon = iconFactory.getAsset(item.getIconID());
         TextureRegion frame = frameFactory.getAsset(item.getRarity());
@@ -55,7 +55,7 @@ public class SkillsList2D<T extends Skill> extends List2D<T> {
     }
 
     @Override
-    public int insert(int index, T item) {
+    public int insert(int index, Skill item) {
         if (item == null) throw new IllegalArgumentException("SkillsList2D.insert: item cannot be null");
         if (!ordered && (index < 0 || index >= items.size))
             throw new IllegalArgumentException("SkillsList2D.insert: index is not legal");
@@ -64,7 +64,7 @@ public class SkillsList2D<T extends Skill> extends List2D<T> {
             int indexToInsert = 0;
             boolean found = false;
             int availableID = -1;
-            for (List2DItem<T> listItem : items) {
+            for (List2DItem<Skill> listItem : items) {
                 if (listItem.index > availableID) availableID = listItem.index;
                 if (listItem.data.compareTo(item) <= 0) found = true;
                 if (!found) indexToInsert++;
@@ -79,13 +79,12 @@ public class SkillsList2D<T extends Skill> extends List2D<T> {
     }
 
     @Override
-    public T removeIndex(int index) {
+    public Skill removeIndex(int index) {
         if (ordered) {
             return super.removeIndex(index);
         } else {
-            T result = items.get(index).data;
-            //TODO refactore
-            items.get(index).data = (T) Skill.Empty;
+            Skill result = items.get(index).data;
+            items.get(index).data = Skill.Empty;
             return result;
         }
     }

@@ -13,7 +13,7 @@ public class BattleParticipant {
 
     private EnumMap<Characteristic, Integer> characteristics = new EnumMap<>(Characteristic.class);
     {
-        for(Characteristic c : Characteristic.values()){
+        for(Characteristic c : Characteristic.values()) {
             characteristics.put(c,0);
         }
     }

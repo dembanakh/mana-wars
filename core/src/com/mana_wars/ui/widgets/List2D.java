@@ -55,6 +55,11 @@ public abstract class List2D<T> extends Widget implements Cullable {
         setStyle(style);
         setSize(getPrefWidth(), getPrefHeight());
 
+        addKeyboardListeners();
+        addTouchListeners();
+    }
+
+    protected void addKeyboardListeners() {
         addListener(keyListener = new InputListener() {
             public boolean keyDown (InputEvent event, int keycode) {
                 if (items.isEmpty()) return false;
@@ -104,7 +109,9 @@ public abstract class List2D<T> extends Widget implements Cullable {
                 return false;
             }
         });
+    }
 
+    protected void addTouchListeners() {
         addListener(new InputListener() {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 if (pointer != 0 || button != 0) return true;
