@@ -14,7 +14,8 @@ public class List2DTest {
     public void getSelected() {
         List2D<Integer> list = new List2D<Integer>(new List.ListStyle(), 5) {
             @Override
-            protected void drawItem(Batch batch, BitmapFont font, int index, Integer item, float x, float y, float width, float height) {
+            protected void drawItem(Batch batch, BitmapFont font, int index, Integer item,
+                                    float x, float y, float width, float height) {
 
             }
         };

@@ -27,6 +27,8 @@ import com.mana_wars.ui.widgets.TimeoutDragAndDrop;
 
 import java.util.List;
 
+import io.reactivex.annotations.NonNull;
+
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.*;
 import static com.mana_wars.ui.UIStringConstants.*;
 
@@ -124,7 +126,6 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
 
     @Override
     public void finishMerge(SkillTable table, int index, Skill skill) {
-        //System.out.println("MERGE");
         List2D<Skill> listTarget = getList2D(table);
         listTarget.removeIndex(index);
         index = listTarget.insert(index, skill);
@@ -163,7 +164,6 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
             case PASSIVE_SKILLS:
                 return passiveSkillsTable;
         }
-        // TODO: think
         return mainSkillsTable;
     }
 

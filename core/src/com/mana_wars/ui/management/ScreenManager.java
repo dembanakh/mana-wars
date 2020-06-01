@@ -29,9 +29,9 @@ public interface ScreenManager {
             GREETING.screen = new GreetingScreen(screenManager, factoryStorage, repositoryStorage,
                     overlayUIFactory.getEmptyOverlayUI());
             MAIN_MENU.screen = new MainMenuScreen(screenManager, factoryStorage, repositoryStorage,
-                    overlayUIFactory.getMenuOverlayUI(), overlayUIFactory.getMenuOverlayUI());
+                    overlayUIFactory.getMenuOverlayUI());
             SKILLS.screen = new SkillsScreen(screenManager, factoryStorage, repositoryStorage,
-                    overlayUIFactory.getMenuOverlayUI(), overlayUIFactory.getMenuOverlayUI());
+                    overlayUIFactory.getMenuOverlayUI());
             BATTLE.screen = new BattleScreen(screenManager, factoryStorage, repositoryStorage,
                     overlayUIFactory.getEmptyOverlayUI());
         }

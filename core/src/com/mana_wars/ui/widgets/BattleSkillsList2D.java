@@ -23,7 +23,7 @@ public class BattleSkillsList2D extends List2D<ActiveSkill> {
         this(skin.get(List.ListStyle.class), cols, iconFactory, frameFactory);
     }
 
-    public BattleSkillsList2D(List.ListStyle style, int cols, AssetFactory<Integer, TextureRegion> iconFactory,
+    private BattleSkillsList2D(List.ListStyle style, int cols, AssetFactory<Integer, TextureRegion> iconFactory,
                         AssetFactory<Rarity, TextureRegion> frameFactory) {
         super(style, cols);
         this.iconFactory = iconFactory;

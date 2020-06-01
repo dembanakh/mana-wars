@@ -1,11 +1,13 @@
 package com.mana_wars.ui.widgets;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mana_wars.ui.factory.UIElementFactory;
 
@@ -14,7 +16,7 @@ import static com.mana_wars.ui.UIElementsSize.SCREEN_WIDTH;
 public class ManaBonusProgressBar extends ProgressBar {
 
     private static final float GRANULARITY = 1f / 60;
-    private static final float SYNC_EVERY_FRAMES = 60;
+    static final float SYNC_EVERY_FRAMES = 60;
 
     private double currentValue = 0;
     private int frameCounter = 0;
@@ -26,19 +28,27 @@ public class ManaBonusProgressBar extends ProgressBar {
     /*
      * @param bonusTimeout - bonus is available every bonusTimeout minutes
      */
-    public ManaBonusProgressBar(int fullBonusTimeout, Skin skin, Runnable claimCallback) {
-        super(0f, fullBonusTimeout, GRANULARITY, false, skin);
+    public ManaBonusProgressBar(int fullBonusTimeout, Runnable claimCallback, Skin skin) {
+        this(fullBonusTimeout, claimCallback, skin.get("default-horizontal", ProgressBarStyle.class),
+                skin.get(TextButton.TextButtonStyle.class));
+    }
+
+    ManaBonusProgressBar(int fullBonusTimeout, Runnable claimCallback, ProgressBarStyle pbStyle,
+                         TextButton.TextButtonStyle tbStyle) {
+        super(0f, fullBonusTimeout, GRANULARITY, false, pbStyle);
         getStyle().background.setMinHeight(200);
         getStyle().knobBefore.setMinHeight(200);
         setAnimateDuration(0.25f);
 
-        claimButton = UIElementFactory.getButton(skin, "CLAIM", new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                onClaim();
-            }
-        });
-        claimButton.setVisible(false);
+        if (tbStyle != null && Gdx.graphics != null) {
+            claimButton = UIElementFactory.getButton(tbStyle, "CLAIM", new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    onClaim();
+                }
+            });
+            claimButton.setVisible(false);
+        }
 
         this.claimCallback = claimCallback;
     }
@@ -87,6 +97,10 @@ public class ManaBonusProgressBar extends ProgressBar {
 
     public void onBonusReady() {
         claimButton.setVisible(true);
+    }
+
+    double getCurrentValue() {
+        return currentValue;
     }
 
 }

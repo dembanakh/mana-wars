@@ -13,8 +13,8 @@ import com.mana_wars.model.entity.skills.Skill;
  * move 1 skill.
  * Generally, the rules are:
  * merge 2 skills iff they have the same name and the same level (Skill.Empty excluded);
- * swap 2 skills iff both are instanceof the same Skill subclass and merge is not possible (Skill.Empty excluded);
- * move 1 skill iff it is not Skill.Empty and "second" is null or Skill.Empty.
+ * swap 2 skills iff both are instanceof the same Skill subclass {{and merge is not possible}} (Skill.Empty excluded);
+ * move 1 skill iff it is of a proper subclass and "second" is null or Skill.Empty.
  * Speaking of the table-level restrictions:
  *     |    ALL   |    ACT   |    PAS   |
  * --------------------------------------
@@ -61,7 +61,8 @@ public enum SkillsOperations {
     }, MOVE {
         @Override
         protected Boolean validate(SkillOperationQuery query) {
-            if (query.tableQuery.source == query.tableQuery.target) return true;
+            if (query.tableQuery.source == query.tableQuery.target)
+                return query.target.getRarity() == Rarity.EMPTY;
             if (query.tableQuery.source == SkillTable.ALL_SKILLS) {
                 if (query.tableQuery.target == SkillTable.ACTIVE_SKILLS)
                     return (query.source instanceof ActiveSkill) && (query.target.getRarity() == Rarity.EMPTY);

@@ -47,8 +47,8 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
         skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
         skillCaseWindow = new SkillCaseWindow(SKILL_CASE_WINDOW.TITLE, skin,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
-        manaBonusProgressBar = new ManaBonusProgressBar(presenter.getFullManaBonusTimeout(), skin,
-                presenter::claimBonus);
+        manaBonusProgressBar = new ManaBonusProgressBar(presenter.getFullManaBonusTimeout(),
+                presenter::claimBonus, skin);
     }
 
     @Override

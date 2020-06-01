@@ -30,7 +30,6 @@ public class Skill extends GameItem {
         }
     }
 
-    //TODO generate description based on characteristics
     public String getDescription() {
         StringBuilder result = new StringBuilder();
         for(SkillCharacteristic sc : skillCharacteristics){

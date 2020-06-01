@@ -20,6 +20,8 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectSet;
 
+import java.util.ArrayList;
+
 /**
  * Texture-oriented 2-dimensional list based on the original List implementation in Libgdx.
  * @param <T>
@@ -401,6 +403,12 @@ public abstract class List2D<T> extends Widget implements Cullable {
 
     private Array<T> getItems() {
         Array<T> itemsArr = new Array<>(items.size);
+        for (List2DItem<T> item : items) itemsArr.add(item.data);
+        return itemsArr;
+    }
+
+    java.util.List<T> getItemsCopy() {
+        java.util.List<T> itemsArr = new ArrayList<T>();
         for (List2DItem<T> item : items) itemsArr.add(item.data);
         return itemsArr;
     }
