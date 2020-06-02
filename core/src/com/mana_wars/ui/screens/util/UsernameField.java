@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import static com.mana_wars.ui.UIElementsSize.SCREEN_HEIGHT;
 import static com.mana_wars.ui.UIElementsSize.SCREEN_WIDTH;
 
-public class UsernameField implements BuildableUI {
+public class UsernameField implements ValueField<String> {
 
     private Table field;
     private Label usernameLabel;
@@ -40,8 +40,8 @@ public class UsernameField implements BuildableUI {
         return field;
     }
 
-    public void setUsername(String username) {
+    @Override
+    public void accept(String username) {
         usernameLabel.setText(username);
     }
-
 }

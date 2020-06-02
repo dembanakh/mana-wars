@@ -3,29 +3,25 @@ package com.mana_wars.ui.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.mana_wars.ui.management.ScreenManager;
 import com.mana_wars.ui.overlays.OverlayUI;
-import com.mana_wars.ui.storage.FactoryStorage;
-import com.mana_wars.ui.storage.RepositoryStorage;
 
 import java.util.Map;
 
 public abstract class BaseScreen implements Screen {
 
-    protected final Stage stage;
+    private final Stage stage;
 
-    protected final ScreenManager screenManager;
-    protected final FactoryStorage factoryStorage;
-    protected final RepositoryStorage repositoryStorage;
-    protected final com.mana_wars.ui.overlays.OverlayUI overlayUI;
+    private final ScreenManager screenManager;
 
-    protected Map<String, Object> arguments;
+    private Map<String, Object> arguments;
 
-    BaseScreen(ScreenManager screenManager, FactoryStorage factoryStorage,
-               RepositoryStorage repositoryStorage, OverlayUI overlayUI) {
+    BaseScreen(ScreenManager screenManager) {
         this.stage = new Stage() {
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
@@ -34,10 +30,7 @@ public abstract class BaseScreen implements Screen {
                 return super.touchDown(screenX, screenY, pointer, button);
             }
         };
-        this.factoryStorage = factoryStorage;
         this.screenManager = screenManager;
-        this.repositoryStorage = repositoryStorage;
-        this.overlayUI = overlayUI;
     }
 
     public BaseScreen setArguments(Map<String, Object> arguments) {
@@ -45,18 +38,42 @@ public abstract class BaseScreen implements Screen {
         return this;
     }
 
-    protected abstract Skin getSkin();
+    @SuppressWarnings("unchecked")
+    public <T> T getArgument(String key) {
+        if (!arguments.containsKey(key)) return null;
+        return (T)arguments.get(key);
+    }
 
-    protected abstract void rebuildStage();
+    public abstract void init();
+
+    protected abstract Skin getSkin();
+    protected abstract OverlayUI getOverlayUI();
+
+    protected void rebuildStage() {
+        stage.clear();
+        Stack stack = new Stack();
+        stage.addActor(stack);
+        stack.setFillParent(true);
+        stack.add(buildBackgroundLayer(getSkin()));
+        stack.add(buildForegroundLayer(getSkin()));
+    }
+
+    protected void addActor(Actor actor) {
+        stage.addActor(actor);
+    }
 
     protected abstract Table buildBackgroundLayer(Skin skin);
     protected abstract Table buildForegroundLayer(Skin skin);
+
+    protected void setScreen(ScreenManager.ScreenInstance instance) {
+        screenManager.setScreen(instance);
+    }
 
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
         rebuildStage();
-        overlayUI.overlay(stage, getSkin());
+        getOverlayUI().overlay(stage, getSkin());
     }
 
     @Override
@@ -82,7 +99,7 @@ public abstract class BaseScreen implements Screen {
     public void resume() {
         Gdx.input.setInputProcessor(stage);
         rebuildStage();
-        overlayUI.overlay(stage, getSkin());
+        getOverlayUI().overlay(stage, getSkin());
     }
 
     @Override

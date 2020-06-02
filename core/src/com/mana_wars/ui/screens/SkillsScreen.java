@@ -18,6 +18,7 @@ import com.mana_wars.presentation.presenters.SkillsPresenter;
 import com.mana_wars.presentation.view.SkillsView;
 import com.mana_wars.ui.management.ScreenManager;
 import com.mana_wars.ui.overlays.MenuOverlayUI;
+import com.mana_wars.ui.overlays.OverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.ui.factory.AssetFactory;
@@ -27,7 +28,8 @@ import com.mana_wars.ui.widgets.TimeoutDragAndDrop;
 
 import java.util.List;
 
-import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.subjects.Subject;
 
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.*;
 import static com.mana_wars.ui.UIStringConstants.*;
@@ -35,6 +37,7 @@ import static com.mana_wars.ui.UIStringConstants.*;
 public class SkillsScreen extends BaseScreen implements SkillsView {
 
     private final Skin skin;
+    private final MenuOverlayUI overlayUI;
 
     private final List2D<Skill> mainSkillsTable;
     private final List2D<Skill> activeSkillsTable;
@@ -46,10 +49,10 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
 
     public SkillsScreen(ScreenManager screenManager, FactoryStorage factoryStorage,
                  RepositoryStorage repositoryStorage, MenuOverlayUI overlayUI) {
-        super(screenManager, factoryStorage, repositoryStorage, overlayUI);
+        super(screenManager);
+        this.overlayUI = overlayUI;
+
         presenter = new SkillsPresenter(this, Gdx.app::postRunnable, new SkillsInteractor(repositoryStorage.getDatabaseRepository()));
-        presenter.initCallbacks(overlayUI.getManaAmountCallback(),
-                                overlayUI.getUserLevelCallback());
 
         skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
         mainSkillsTable = new SkillsList2D(getEmptyBackgroundStyle(), COLUMNS_NUMBER,
@@ -62,7 +65,12 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(), false);
         passiveSkillsTable.setUserObject(SkillTable.PASSIVE_SKILLS);
         scrollPane = new ScrollPane(mainSkillsTable, skin);
-        dragAndDrop = new SkillsDragAndDrop();
+        dragAndDrop = new SkillsDragAndDrop(factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
+    }
+
+    @Override
+    public void init() {
+        presenter.init();
     }
 
     @Override
@@ -71,20 +79,14 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
     }
 
     @Override
+    protected OverlayUI getOverlayUI() {
+        return overlayUI;
+    }
+
+    @Override
     protected void rebuildStage() {
-        // layers
-        Table layerBackground = buildBackgroundLayer(skin);
-        Table layerForeground = buildForegroundLayer(skin);
-
-        // fill stage
-        stage.clear();
-        Stack stack = new Stack();
-        stage.addActor(stack);
-        stack.setFillParent(true);
-        stack.add(layerBackground);
-        stack.add(layerForeground);
-
-        dragAndDrop.setup(factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
+        super.rebuildStage();
+        dragAndDrop.setup();
     }
 
     @Override
@@ -114,6 +116,12 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
         layer.add(scrollPaneCont).top().expandX().height(MAIN_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH);
 
         return layer;
+    }
+
+    @Override
+    public void initObservers(CompositeDisposable disposable, Subject<Integer> manaAmountObservable,
+                              Subject<Integer> userLevelObservable, Subject<String> usernameObservable) {
+        overlayUI.addObservers(disposable, manaAmountObservable, userLevelObservable, usernameObservable);
     }
 
     @Override
@@ -198,23 +206,26 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
     private class SkillsDragAndDrop {
 
         private final TimeoutDragAndDrop dragAndDrop;
+        private final AssetFactory<Integer, TextureRegion> skillIconFactory;
+        private final AssetFactory<Rarity, TextureRegion> skillFrameFactory;
 
-        SkillsDragAndDrop() {
+        SkillsDragAndDrop(AssetFactory<Integer, TextureRegion> skillIconFactory,
+                          AssetFactory<Rarity, TextureRegion> skillFrameFactory) {
             this.dragAndDrop = new TimeoutDragAndDrop(1);
+            this.skillIconFactory = skillIconFactory;
+            this.skillFrameFactory = skillFrameFactory;
         }
 
-        void setup(AssetFactory<Integer, TextureRegion> skillIconFactory,
-                   AssetFactory<Rarity, TextureRegion> skillFrameFactory) {
+        void setup() {
             dragAndDrop.clear();
-            setupSources(skillIconFactory, skillFrameFactory);
+            setupSources();
             setupTargets();
         }
 
-        private void setupSources(AssetFactory<Integer, TextureRegion> skillIconFactory,
-                                  AssetFactory<Rarity, TextureRegion> skillFrameFactory) {
-            setupSource(mainSkillsTable, skillIconFactory, skillFrameFactory);
-            setupSource(activeSkillsTable, skillIconFactory, skillFrameFactory);
-            setupSource(passiveSkillsTable, skillIconFactory, skillFrameFactory);
+        private void setupSources() {
+            setupSource(mainSkillsTable);
+            setupSource(activeSkillsTable);
+            setupSource(passiveSkillsTable);
         }
 
         private void setupTargets() {
@@ -223,9 +234,7 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
             setupTarget(passiveSkillsTable);
         }
 
-        private void setupSource(List2D<Skill> table,
-                                 AssetFactory<Integer, TextureRegion> skillIconFactory,
-                                 AssetFactory<Rarity, TextureRegion> skillFrameFactory) {
+        private void setupSource(List2D<Skill> table) {
             dragAndDrop.addSource(new TimeoutDragAndDrop.Source(table) {
                 final TimeoutDragAndDrop.Payload payload = new TimeoutDragAndDrop.Payload();
                 @Override

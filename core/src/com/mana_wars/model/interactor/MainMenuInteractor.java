@@ -8,15 +8,17 @@ import com.mana_wars.model.repository.LocalUserDataRepository;
 
 import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.BehaviorSubject;
+import io.reactivex.subjects.Subject;
 
 public class MainMenuInteractor {
 
     private final LocalUserDataRepository localUserDataRepository;
     private final DatabaseRepository databaseRepository;
 
-    private final PublishSubject<Integer> manaAmountObservable;
-    private final PublishSubject<Integer> userLevelObservable;
+    private final Subject<Integer> manaAmountObservable;
+    private final Subject<Integer> userLevelObservable;
+    private final Subject<String> usernameObservable;
 
     private final ManaBonus manaBonus;
 
@@ -26,12 +28,13 @@ public class MainMenuInteractor {
                               ManaBonus manaBonus) {
         this.localUserDataRepository = ludr;
         this.databaseRepository = databaseRepository;
-        this.manaAmountObservable = PublishSubject.create();
-        this.userLevelObservable = PublishSubject.create();
+        this.manaAmountObservable = BehaviorSubject.createDefault(ludr.getUserMana());
+        this.userLevelObservable = BehaviorSubject.createDefault(ludr.getUserLevel());
+        this.usernameObservable = BehaviorSubject.createDefault(ludr.getUsername());
         this.manaBonus = manaBonus;
     }
 
-    public void init() {
+    public void initManaBonus() {
         manaBonus.init();
     }
 
@@ -48,12 +51,16 @@ public class MainMenuInteractor {
         });
     }
 
-    public PublishSubject<Integer> getManaAmountObservable() {
+    public Subject<Integer> getManaAmountObservable() {
         return manaAmountObservable;
     }
 
-    public PublishSubject<Integer> getUserLevelObservable() {
+    public Subject<Integer> getUserLevelObservable() {
         return userLevelObservable;
+    }
+
+    public Subject<String> getUsernameObservable() {
+        return usernameObservable;
     }
 
     public void updateManaAmount(int delta) {

@@ -1,7 +1,9 @@
 package com.mana_wars.ui.overlays;
 
-import com.mana_wars.model.repository.LocalUserDataRepository;
 import com.mana_wars.ui.management.ScreenManager;
+import com.mana_wars.ui.screens.util.BuildableUI;
+
+import java.util.Collections;
 
 public class OverlayUIFactory {
 
@@ -10,11 +12,17 @@ public class OverlayUIFactory {
 
     public OverlayUIFactory(ScreenManager screenManager) {
         menuOverlayUI = new MenuOverlayUI(screenManager);
-        emptyOverlayUI = new OverlayUI();
+        emptyOverlayUI = new OverlayUI() {
+            @Override
+            protected Iterable<BuildableUI> getElements() {
+                return Collections.emptyList();
+            }
+        };
     }
 
-    public void init(LocalUserDataRepository localUserDataRepository) {
-        menuOverlayUI.init(localUserDataRepository, localUserDataRepository, localUserDataRepository);
+    public void init() {
+        menuOverlayUI.init();
+        emptyOverlayUI.init();
     }
 
     public MenuOverlayUI getMenuOverlayUI() {

@@ -62,9 +62,10 @@ public class ScreenManagerImpl implements FactoryStorage, ScreenManager {
         skillIconFactory.loadItems();
         skinFactory.loadItems();
         rarityFrameFactory.loadItems();
-        overlayUIFactory.init(ManaWars.getInstance().getLocalUserDataRepository());
-        ScreenInstance.init(this, this, ManaWars.getInstance(),
+        overlayUIFactory.init();
+        ScreenInstance.construct(this, this, ManaWars.getInstance(),
                 overlayUIFactory);
+        ScreenInstance.init();
         setScreen(ScreenInstance.GREETING);
     }
 

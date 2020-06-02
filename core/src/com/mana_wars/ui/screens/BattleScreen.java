@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -41,6 +40,7 @@ import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.SKILLS_TABLES_WIDTH;
 public class BattleScreen extends BaseScreen implements BattleView {
 
     private final Skin skin;
+    private final OverlayUI overlayUI;
 
     private final Label userHealthLabel;
 
@@ -54,7 +54,9 @@ public class BattleScreen extends BaseScreen implements BattleView {
 
     public BattleScreen(ScreenManager screenManager, FactoryStorage factoryStorage,
                         RepositoryStorage repositoryStorage, OverlayUI overlayUI) {
-        super(screenManager, factoryStorage, repositoryStorage, overlayUI);
+        super(screenManager);
+        this.overlayUI = overlayUI;
+
         presenter = new BattlePresenter(this,
                 new BattleInteractor(repositoryStorage.getLocalUserDataRepository(),
                         repositoryStorage.getDatabaseRepository()),
@@ -69,7 +71,6 @@ public class BattleScreen extends BaseScreen implements BattleView {
 
         userActiveSkills = new BattleSkillsList2D(skin, GameConstants.USER_ACTIVE_SKILL_COUNT,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory()) {
-
             @Override
             protected void onSkillClick(ActiveSkill skill) {
                 if (isBattle.get()) {
@@ -96,25 +97,25 @@ public class BattleScreen extends BaseScreen implements BattleView {
     }
 
     @Override
+    public void init() {
+
+    }
+
+    @Override
     protected Skin getSkin() {
         return skin;
     }
 
     @Override
-    protected void rebuildStage() {
-        // layers
-        Table layerBackground = buildBackgroundLayer(skin);
-        Table layerForeground = buildForegroundLayer(skin);
+    protected OverlayUI getOverlayUI() {
+        return overlayUI;
+    }
 
-        // fill stage
-        stage.clear();
-        Stack stack = new Stack();
-        stage.addActor(stack);
-        stack.setFillParent(true);
-        stack.add(layerBackground);
-        stack.add(layerForeground);
-        stage.addActor(userHealthField.build(skin));
-        stage.addActor(enemyHealthField.build(skin));
+    @Override
+    protected void rebuildStage() {
+        super.rebuildStage();
+        addActor(userHealthField.build(skin));
+        addActor(enemyHealthField.build(skin));
     }
     
 
@@ -124,9 +125,7 @@ public class BattleScreen extends BaseScreen implements BattleView {
         enemyHealthField.init();
         super.show();
         presenter.initBattle(new PvEBattle(new User(),new FirstDungeonEnemyFactory()),
-                userHealthField::setHealth, enemyHealthField::setHealth); // start Battle as OnComplete initBattle
-
-        List<Consumer<? super Integer>> tt = Arrays.asList(userHealthField::setHealth, userHealthField::setHealth);
+                userHealthField, enemyHealthField); // start Battle as OnComplete initBattle
     }
 
     @Override
@@ -135,8 +134,6 @@ public class BattleScreen extends BaseScreen implements BattleView {
 
         return layer;
     }
-
-
 
     @Override
     protected Table buildForegroundLayer(Skin skin) {
@@ -155,7 +152,7 @@ public class BattleScreen extends BaseScreen implements BattleView {
                 new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
-                        screenManager.setScreen(ScreenManager.ScreenInstance.MAIN_MENU);
+                        setScreen(ScreenManager.ScreenInstance.MAIN_MENU);
                     }
                 });
 

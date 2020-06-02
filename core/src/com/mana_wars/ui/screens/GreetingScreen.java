@@ -3,7 +3,6 @@ package com.mana_wars.ui.screens;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -22,12 +21,15 @@ import static com.mana_wars.ui.UIStringConstants.*;
 public class GreetingScreen extends BaseScreen implements GreetingView {
 
     private final Skin skin;
+    private final OverlayUI overlayUI;
 
     private final GreetingPresenter presenter;
 
     public GreetingScreen(ScreenManager screenManager, FactoryStorage factoryStorage,
                           RepositoryStorage repositoryStorage, OverlayUI overlayUI) {
-        super(screenManager, factoryStorage, repositoryStorage, overlayUI);
+        super(screenManager);
+        this.overlayUI = overlayUI;
+
         presenter = new GreetingPresenter(this,
                 new GreetingInteractor(repositoryStorage.getLocalUserDataRepository(),
                         repositoryStorage.getDatabaseRepository()));
@@ -36,23 +38,23 @@ public class GreetingScreen extends BaseScreen implements GreetingView {
     }
 
     @Override
+    public void init() {
+
+    }
+
+    @Override
     protected Skin getSkin() {
         return skin;
     }
 
     @Override
-    protected void rebuildStage() {
-        // layers
-        Table layerBackground = buildBackgroundLayer(skin);
-        Table layerForeground = buildForegroundLayer(skin);
+    protected OverlayUI getOverlayUI() {
+        return overlayUI;
+    }
 
-        // fill stage
-        stage.clear();
-        Stack stack = new Stack();
-        stage.addActor(stack);
-        stack.setFillParent(true);
-        stack.add(layerBackground);
-        stack.add(layerForeground);
+    @Override
+    protected void rebuildStage() {
+        super.rebuildStage();
     }
 
     @Override
@@ -94,7 +96,7 @@ public class GreetingScreen extends BaseScreen implements GreetingView {
 
     @Override
     public void onStart() {
-        screenManager.setScreen(ScreenManager.ScreenInstance.MAIN_MENU);
+        setScreen(ScreenManager.ScreenInstance.MAIN_MENU);
     }
 
     @Override

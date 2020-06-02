@@ -10,10 +10,8 @@ import com.mana_wars.presentation.util.UIThreadHandler;
 import com.mana_wars.presentation.view.SkillsView;
 
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
 
 public class SkillsPresenter {
-
 
     private SkillsView view;
     private SkillsInteractor interactor;
@@ -26,10 +24,9 @@ public class SkillsPresenter {
         this.interactor = interactor;
     }
 
-    public void initCallbacks(Consumer<? super Integer> manaAmountCallback,
-                              Consumer<? super Integer> userLevelCallback) {
-        disposable.add(interactor.getManaAmountObservable().subscribe(manaAmountCallback, Throwable::printStackTrace));
-        disposable.add(interactor.getUserLevelObservable().subscribe(userLevelCallback, Throwable::printStackTrace));
+    public void init() {
+        view.initObservers(disposable, interactor.getManaAmountObservable(),
+                interactor.getUserLevelObservable(), interactor.getUsernameObservable());
     }
 
     public void refreshSkillsList() {

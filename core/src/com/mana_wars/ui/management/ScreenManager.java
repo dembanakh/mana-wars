@@ -23,9 +23,9 @@ public interface ScreenManager {
 
         private BaseScreen screen;
 
-        public static void init(final ScreenManager screenManager, final FactoryStorage factoryStorage,
-                                final RepositoryStorage repositoryStorage,
-                                final OverlayUIFactory overlayUIFactory) {
+        public static void construct(final ScreenManager screenManager, final FactoryStorage factoryStorage,
+                                     final RepositoryStorage repositoryStorage,
+                                     final OverlayUIFactory overlayUIFactory) {
             GREETING.screen = new GreetingScreen(screenManager, factoryStorage, repositoryStorage,
                     overlayUIFactory.getEmptyOverlayUI());
             MAIN_MENU.screen = new MainMenuScreen(screenManager, factoryStorage, repositoryStorage,
@@ -34,6 +34,12 @@ public interface ScreenManager {
                     overlayUIFactory.getMenuOverlayUI());
             BATTLE.screen = new BattleScreen(screenManager, factoryStorage, repositoryStorage,
                     overlayUIFactory.getEmptyOverlayUI());
+        }
+
+        public static void init() {
+            for (ScreenInstance screenInstance : ScreenInstance.values()) {
+                screenInstance.screen.init();
+            }
         }
 
         public static void dispose() {

@@ -5,7 +5,6 @@ import com.mana_wars.model.interactor.MainMenuInteractor;
 import com.mana_wars.presentation.util.UIThreadHandler;
 import com.mana_wars.presentation.view.MainMenuView;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
 
 public class MainMenuPresenter {
 
@@ -17,17 +16,16 @@ public class MainMenuPresenter {
     public MainMenuPresenter(MainMenuView view, UIThreadHandler uiThreadHandler, MainMenuInteractor interactor){
         this.view = view;
         this.uiThreadHandler = uiThreadHandler;
-        this.interactor=interactor;
+        this.interactor = interactor;
     }
 
     public void init() {
-        interactor.init();
+        view.initObservers(disposable, interactor.getManaAmountObservable(),
+                interactor.getUserLevelObservable(), interactor.getUsernameObservable());
     }
 
-    public void initCallbacks(final Consumer<? super Integer> manaAmountCallback,
-                              final Consumer<? super Integer> userLevelCallback) {
-        disposable.add(interactor.getManaAmountObservable().subscribe(manaAmountCallback, Throwable::printStackTrace));
-        disposable.add(interactor.getUserLevelObservable().subscribe(userLevelCallback, Throwable::printStackTrace));
+    public void onScreenShow() {
+        interactor.initManaBonus();
     }
 
     public void onOpenSkillCase() {

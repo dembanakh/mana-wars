@@ -11,19 +11,23 @@ import java.util.Map;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
+import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.Subject;
 
 public class SkillsInteractor {
 
     private DatabaseRepository databaseRepository;
 
-    private final PublishSubject<Integer> manaAmountObservable;
-    private final PublishSubject<Integer> userLevelObservable;
+    private final Subject<Integer> manaAmountObservable;
+    private final Subject<Integer> userLevelObservable;
+    private final Subject<String> usernameObservable;
 
     public SkillsInteractor(DatabaseRepository databaseRepository){
         this.databaseRepository = databaseRepository;
-        manaAmountObservable = PublishSubject.create();
-        userLevelObservable = PublishSubject.create();
+        manaAmountObservable = BehaviorSubject.create();
+        userLevelObservable = BehaviorSubject.create();
+        usernameObservable = BehaviorSubject.create();
     }
 
     public Single<Map<SkillTable,List<Skill>>> getUserSkills() {
@@ -62,12 +66,16 @@ public class SkillsInteractor {
                                 .validate();
     }
 
-    public PublishSubject<Integer> getManaAmountObservable() {
+    public Subject<Integer> getManaAmountObservable() {
         return manaAmountObservable;
     }
 
-    public PublishSubject<Integer> getUserLevelObservable() {
+    public Subject<Integer> getUserLevelObservable() {
         return userLevelObservable;
+    }
+
+    public Subject<String> getUsernameObservable() {
+        return usernameObservable;
     }
 
 }

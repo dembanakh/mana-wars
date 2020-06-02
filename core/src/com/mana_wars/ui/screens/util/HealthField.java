@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import static com.mana_wars.ui.UIElementsSize.SCREEN_HEIGHT;
 import static com.mana_wars.ui.UIElementsSize.SCREEN_WIDTH;
 
-public class HealthField implements BuildableUI {
+public class HealthField implements ValueField<Integer> {
     private Table field;
     private Label userHealthLabel;
 
@@ -50,7 +50,8 @@ public class HealthField implements BuildableUI {
         return field;
     }
 
-    public void setHealth(final int health) {
+    @Override
+    public void accept(Integer health) {
         userHealthLabel.setText(health);
     }
 }
