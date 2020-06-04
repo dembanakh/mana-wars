@@ -3,10 +3,10 @@ package com.mana_wars.model.entity.base;
 
 public abstract class GameItem implements Comparable<GameItem> {
 
-    protected int iconID;
-    protected int level;
-    protected Rarity rarity;
-    protected String name;
+    private int iconID;
+    private int level;
+    private Rarity rarity;
+    private String name;
 
     public GameItem(int iconID, int level, Rarity rarity, String name) {
         this.iconID = iconID;

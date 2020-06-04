@@ -13,13 +13,17 @@ import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.ui.factory.AssetFactory;
 
+import io.reactivex.functions.Consumer;
+
 public class BattleSkillsList2D extends List2D<ActiveSkill> {
 
-    private AssetFactory<Integer, TextureRegion> iconFactory;
-    private AssetFactory<Rarity, TextureRegion> frameFactory;
+    private final AssetFactory<Integer, TextureRegion> iconFactory;
+    private final AssetFactory<Rarity, TextureRegion> frameFactory;
+
+    private Consumer<? super ActiveSkill> onSkillClick;
 
     public BattleSkillsList2D(Skin skin, int cols, AssetFactory<Integer, TextureRegion> iconFactory,
-                        AssetFactory<Rarity, TextureRegion> frameFactory) {
+                              AssetFactory<Rarity, TextureRegion> frameFactory) {
         this(skin.get(List.ListStyle.class), cols, iconFactory, frameFactory);
     }
 
@@ -31,8 +35,9 @@ public class BattleSkillsList2D extends List2D<ActiveSkill> {
         this.selection.setDisabled(true);
     }
 
-    protected void onSkillClick(ActiveSkill skill) {
-
+    public List2D<ActiveSkill> setOnSkillClick(Consumer<? super ActiveSkill> onSkillClick) {
+        this.onSkillClick = onSkillClick;
+        return this;
     }
 
     @Override
@@ -46,7 +51,13 @@ public class BattleSkillsList2D extends List2D<ActiveSkill> {
                 pressedIndex = index;
 
                 ActiveSkill skill = getItem(index);
-                if (skill != null) onSkillClick(skill);
+                if (skill != null && onSkillClick != null) {
+                    try {
+                        onSkillClick.accept(skill);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
 
                 return true;
             }

@@ -19,7 +19,7 @@ import static com.mana_wars.ui.UIElementsSize.SCREEN_HEIGHT;
 import static com.mana_wars.ui.UIElementsSize.SCREEN_WIDTH;
 import static com.mana_wars.ui.UIElementsSize.SKILL_CASE_WINDOW.*;
 
-public class SkillCaseWindow extends Window {
+public class SkillCaseWindow extends Window implements BuildableUI {
 
     private final Image skillIcon;
     private final Image skillFrame;
@@ -43,7 +43,13 @@ public class SkillCaseWindow extends Window {
         padTop(32);
     }
 
-    public Actor rebuild(Skin skin) {
+    @Override
+    public void init() {
+
+    }
+
+    @Override
+    public Actor build(Skin skin) {
         this.clear();
         
         setSkin(skin);

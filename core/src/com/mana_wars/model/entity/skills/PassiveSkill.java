@@ -11,4 +11,10 @@ public class PassiveSkill extends Skill {
         super(id, level, rarity, name, manaCost, skillCharacteristics);
     }
 
+    private static PassiveSkill Empty = new PassiveSkill(50, 0, Rarity.EMPTY,
+            0, "EMPTY", new ArrayList<>());
+
+    public static PassiveSkill getEmpty() {
+        return Empty;
+    }
 }

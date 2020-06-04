@@ -212,7 +212,7 @@ public class SkillsOperationsTest {
         Skill from = mock(Skill.class);
         when(from.getName()).thenReturn("a");
         when(from.getLevel()).thenReturn(1);
-        Skill to = Skill.Empty;
+        Skill to = ActiveSkill.getEmpty();
         boolean result = SkillsOperations.can(SkillsOperations.MERGE)
                 .from(SkillTable.ALL_SKILLS)
                 .to(SkillTable.ACTIVE_SKILLS)
@@ -274,7 +274,7 @@ public class SkillsOperationsTest {
         Skill from = mock(Skill.class);
         when(from.getName()).thenReturn("a");
         when(from.getLevel()).thenReturn(1);
-        Skill to = Skill.Empty;
+        Skill to = PassiveSkill.getEmpty();
         boolean result = SkillsOperations.can(SkillsOperations.MERGE)
                 .from(SkillTable.ALL_SKILLS)
                 .to(SkillTable.PASSIVE_SKILLS)
@@ -398,7 +398,7 @@ public class SkillsOperationsTest {
         Skill from = mock(Skill.class);
         when(from.getName()).thenReturn("a");
         when(from.getLevel()).thenReturn(1);
-        Skill to = Skill.Empty;
+        Skill to = ActiveSkill.getEmpty();
         boolean result = SkillsOperations.can(SkillsOperations.MERGE)
                 .from(SkillTable.ACTIVE_SKILLS)
                 .to(SkillTable.ACTIVE_SKILLS)
@@ -522,7 +522,7 @@ public class SkillsOperationsTest {
         Skill from = mock(Skill.class);
         when(from.getName()).thenReturn("a");
         when(from.getLevel()).thenReturn(1);
-        Skill to = Skill.Empty;
+        Skill to = PassiveSkill.getEmpty();
         boolean result = SkillsOperations.can(SkillsOperations.MERGE)
                 .from(SkillTable.PASSIVE_SKILLS)
                 .to(SkillTable.PASSIVE_SKILLS)
@@ -643,7 +643,7 @@ public class SkillsOperationsTest {
         Skill from = mock(ActiveSkill.class);
         when(from.getName()).thenReturn("a");
         when(from.getLevel()).thenReturn(1);
-        Skill to = ActiveSkill.EmptyActive;
+        Skill to = ActiveSkill.getEmpty();
         boolean result = SkillsOperations.can(SkillsOperations.SWAP)
                 .from(SkillTable.ALL_SKILLS)
                 .to(SkillTable.ACTIVE_SKILLS)
@@ -679,7 +679,7 @@ public class SkillsOperationsTest {
     @Test
     public void swapSkill_AllToPassive_Failure_Empty() {
         Skill from = mock(PassiveSkill.class);
-        Skill to = Skill.Empty;
+        Skill to = PassiveSkill.getEmpty();
         boolean result = SkillsOperations.can(SkillsOperations.SWAP)
                 .from(SkillTable.ALL_SKILLS)
                 .to(SkillTable.PASSIVE_SKILLS)
@@ -739,7 +739,7 @@ public class SkillsOperationsTest {
     @Test
     public void swapSkill_ActiveToActive_Failure_Empty() {
         Skill from = mock(ActiveSkill.class);
-        Skill to = Skill.Empty;
+        Skill to = ActiveSkill.getEmpty();
         boolean result = SkillsOperations.can(SkillsOperations.SWAP)
                 .from(SkillTable.ACTIVE_SKILLS)
                 .to(SkillTable.ACTIVE_SKILLS)
@@ -799,48 +799,12 @@ public class SkillsOperationsTest {
     @Test
     public void swapSkill_PassiveToPassive_Failure_Empty() {
         Skill from = mock(PassiveSkill.class);
-        Skill to = Skill.Empty;
+        Skill to = PassiveSkill.getEmpty();
         boolean result = SkillsOperations.can(SkillsOperations.SWAP)
                 .from(SkillTable.PASSIVE_SKILLS)
                 .to(SkillTable.PASSIVE_SKILLS)
                 .validate()
                 .from(from).to(to).validate();
-        assertFalse(result);
-    }
-
-
-    @Test
-    public void SwapSkillTest(){
-        Skill from = mock(Skill.class);
-        boolean result = SkillsOperations.can(SkillsOperations.SWAP)
-                .from(SkillTable.ACTIVE_SKILLS)
-                .to(SkillTable.ACTIVE_SKILLS)
-                .validate()
-                .from(from).to(Skill.Empty).validate();
-        assertFalse(result);
-
-        Skill to = mock(Skill.class);
-        result = SkillsOperations.can(SkillsOperations.SWAP)
-                .from(SkillTable.ACTIVE_SKILLS)
-                .to(SkillTable.ACTIVE_SKILLS)
-                .validate()
-                .from(from).to(to).validate();
-        assertTrue(result);
-
-        from = mock(PassiveSkill.class);
-        to = mock(ActiveSkill.class);
-        result = SkillsOperations.can(SkillsOperations.SWAP)
-                .from(SkillTable.ALL_SKILLS)
-                .to(SkillTable.ACTIVE_SKILLS)
-                .validate()
-                .from(from).to(to).validate();
-        assertFalse(result);
-
-        result = SkillsOperations.can(SkillsOperations.SWAP)
-                .from(SkillTable.ALL_SKILLS)
-                .to(SkillTable.ACTIVE_SKILLS)
-                .validate()
-                .from(from).to(Skill.Empty).validate();
         assertFalse(result);
     }
 
@@ -930,7 +894,7 @@ public class SkillsOperationsTest {
     @Test
     public void moveSkill_AllToActive_Success() {
         Skill from = mock(ActiveSkill.class);
-        Skill to = Skill.Empty;
+        Skill to = ActiveSkill.getEmpty();
         boolean result = SkillsOperations.can(SkillsOperations.MOVE)
                 .from(SkillTable.ALL_SKILLS)
                 .to(SkillTable.ACTIVE_SKILLS)
@@ -967,7 +931,7 @@ public class SkillsOperationsTest {
     @Test
     public void moveSkill_AllToPassive_Success() {
         Skill from = mock(PassiveSkill.class);
-        Skill to = Skill.Empty;
+        Skill to = PassiveSkill.getEmpty();
         boolean result = SkillsOperations.can(SkillsOperations.MOVE)
                 .from(SkillTable.ALL_SKILLS)
                 .to(SkillTable.PASSIVE_SKILLS)
@@ -979,7 +943,7 @@ public class SkillsOperationsTest {
     @Test
     public void moveSkill_AllToPassive_Failure_Subclass() {
         Skill from = mock(ActiveSkill.class);
-        Skill to = Skill.Empty;
+        Skill to = PassiveSkill.getEmpty();
         boolean result = SkillsOperations.can(SkillsOperations.MOVE)
                 .from(SkillTable.ALL_SKILLS)
                 .to(SkillTable.PASSIVE_SKILLS)
@@ -1027,7 +991,7 @@ public class SkillsOperationsTest {
     @Test
     public void moveSkill_ActiveToActive_Success() {
         Skill from = mock(ActiveSkill.class);
-        Skill to = Skill.Empty;
+        Skill to = ActiveSkill.getEmpty();
         boolean result = SkillsOperations.can(SkillsOperations.MOVE)
                 .from(SkillTable.ACTIVE_SKILLS)
                 .to(SkillTable.ACTIVE_SKILLS)
@@ -1075,7 +1039,7 @@ public class SkillsOperationsTest {
     @Test
     public void moveSkill_PassiveToPassive_Success() {
         Skill from = mock(PassiveSkill.class);
-        Skill to = Skill.Empty;
+        Skill to = PassiveSkill.getEmpty();
         boolean result = SkillsOperations.can(SkillsOperations.MOVE)
                 .from(SkillTable.PASSIVE_SKILLS)
                 .to(SkillTable.PASSIVE_SKILLS)

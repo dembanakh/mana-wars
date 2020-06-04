@@ -1,8 +1,12 @@
 package com.mana_wars.model.mana_bonus;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.mana_wars.model.repository.ManaBonusRepository;
 
 import io.reactivex.functions.Consumer;
+
+import static com.mana_wars.model.Utility.clamp;
+import static com.mana_wars.model.Utility.minsToMillis;
 
 public class ManaBonusImpl implements ManaBonus {
 
@@ -43,31 +47,20 @@ public class ManaBonusImpl implements ManaBonus {
     }
 
     @Override
-    public void onBonusClaimed(Consumer<? super Integer> callback) {
-        int bonusSize = bonusBitSize * (int)Math.floor(
+    public int evalCurrentBonus() {
+        return bonusBitSize * (int)Math.floor(
                 (clamp(getTimeSinceLastClaim(), 0L, minsToMillis(getFullBonusTimeout())) /
                         (double)minsToMillis(getFullBonusTimeout())) * numBonusBits);
+    }
+
+    @Override
+    public void onBonusClaimed() {
         manaBonusRepository.setLastTimeBonusClaimed(timer.getCurrentTime());
-        try {
-            callback.accept(bonusSize);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
     public int getFullBonusTimeout() {
         return bonusBitTimeout * numBonusBits;
-    }
-
-    private long minsToMillis(int mins) {
-        return mins * 60L * 1000;
-    }
-
-    private <T extends Comparable<T>> T clamp(T value, T min, T max) {
-        if (value.compareTo(min) < 0) return min;
-        if (value.compareTo(max) > 0) return max;
-        return value;
     }
 
 }

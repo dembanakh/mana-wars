@@ -9,7 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mana_wars.model.interactor.GreetingInteractor;
 import com.mana_wars.presentation.presenters.GreetingPresenter;
 import com.mana_wars.presentation.view.GreetingView;
-import com.mana_wars.ui.management.ScreenManager;
+import com.mana_wars.ui.management.ScreenInstance;
+import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.OverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
@@ -25,9 +26,9 @@ public class GreetingScreen extends BaseScreen implements GreetingView {
 
     private final GreetingPresenter presenter;
 
-    public GreetingScreen(ScreenManager screenManager, FactoryStorage factoryStorage,
+    public GreetingScreen(ScreenSetter screenSetter, FactoryStorage factoryStorage,
                           RepositoryStorage repositoryStorage, OverlayUI overlayUI) {
-        super(screenManager);
+        super(screenSetter);
         this.overlayUI = overlayUI;
 
         presenter = new GreetingPresenter(this,
@@ -35,11 +36,6 @@ public class GreetingScreen extends BaseScreen implements GreetingView {
                         repositoryStorage.getDatabaseRepository()));
 
         skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
-    }
-
-    @Override
-    public void init() {
-
     }
 
     @Override
@@ -96,12 +92,13 @@ public class GreetingScreen extends BaseScreen implements GreetingView {
 
     @Override
     public void onStart() {
-        setScreen(ScreenManager.ScreenInstance.MAIN_MENU);
+        setScreen(ScreenInstance.MAIN_MENU, null);
     }
 
     @Override
     public void dispose() {
         super.dispose();
         skin.dispose();
+        presenter.dispose();
     }
 }

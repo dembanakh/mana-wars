@@ -34,8 +34,9 @@ public class MainMenuInteractor {
         this.manaBonus = manaBonus;
     }
 
-    public void initManaBonus() {
+    public Single<Long> initManaBonus() {
         manaBonus.init();
+        return Single.just(manaBonus.getTimeSinceLastClaim());
     }
 
     //TODO refactor
@@ -45,7 +46,7 @@ public class MainMenuInteractor {
             Skill s = SkillFactory.getNewSkill(skills);
             disposable.add(databaseRepository.insertUserSkill(s).subscribe(()->{
                 System.out.println("Skill added");
-            },Throwable::printStackTrace));
+            }, Throwable::printStackTrace));
 
             return s;
         });
@@ -78,7 +79,8 @@ public class MainMenuInteractor {
     }
 
     public void claimBonus() {
-        manaBonus.onBonusClaimed(this::updateManaAmount);
+        updateManaAmount(manaBonus.evalCurrentBonus());
+        manaBonus.onBonusClaimed();
     }
 
     public int getFullManaBonusTimeout() {

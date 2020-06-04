@@ -77,7 +77,7 @@ public class SkillsList2DTest {
         SkillsList2D list = new SkillsList2D(getStyle(), 5, null, null, false);
 
         Skill skill1 = new Skill(1, 1, Rarity.EPIC, "1", 10, new ArrayList<>());
-        Skill skill2 = Skill.Empty;
+        Skill skill2 = Skill.getEmpty();
         Skill skill3 = new Skill(3, 1, Rarity.COMMON, "3", 10, new ArrayList<>());
         list.setItems(skill1, skill2, skill3);
 
@@ -113,7 +113,7 @@ public class SkillsList2DTest {
 
         assertEquals(skill2, list.removeIndex(1));
 
-        assertEquals(Arrays.asList(skill1, Skill.Empty, skill3), list.getItemsCopy());
+        assertEquals(Arrays.asList(skill1, Skill.getEmpty(), skill3), list.getItemsCopy());
     }
 
     private List.ListStyle getStyle() {

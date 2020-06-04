@@ -14,26 +14,28 @@ import com.badlogic.gdx.utils.ObjectMap;
  * A drag is valid only if it started after some time after touchDown.
  */
 public class TimeoutDragAndDrop {
-    static final Vector2 tmpVector = new Vector2();
+    private static final Vector2 tmpVector = new Vector2();
 
-    TimeoutDragAndDrop.Source dragSource;
-    TimeoutDragAndDrop.Payload payload;
-    Actor dragActor;
-    TimeoutDragAndDrop.Target target;
-    boolean isValidTarget;
-    final Array<TimeoutDragAndDrop.Target> targets = new Array();
-    final ObjectMap<TimeoutDragAndDrop.Source, DragListener> sourceListeners = new ObjectMap();
+    private TimeoutDragAndDrop.Source dragSource;
+    private TimeoutDragAndDrop.Payload payload;
+    private Actor dragActor;
+    private TimeoutDragAndDrop.Target target;
+    private boolean isValidTarget;
+    private final Array<TimeoutDragAndDrop.Target> targets = new Array<>();
+    private final ObjectMap<TimeoutDragAndDrop.Source, DragListener> sourceListeners = new ObjectMap<>();
     private float tapSquareSize = 8;
     private int button;
-    float dragActorX = 0, dragActorY = 0;
-    float touchOffsetX, touchOffsetY;
-    long dragValidTime;
-    int dragTime = 250;
-    int activePointer = -1;
-    boolean cancelTouchFocus = true;
-    boolean keepWithinStage = true;
+    private float dragActorX = 0;
+    private float dragActorY = 0;
+    private float touchOffsetX;
+    private float touchOffsetY;
+    private long dragValidTime;
+    private int dragTime = 250;
+    private int activePointer = -1;
+    private boolean cancelTouchFocus = true;
+    private boolean keepWithinStage = true;
 
-    private float touchDownTimeout;
+    private final float touchDownTimeout;
 
     /*
      * touchDownTimeout - time in seconds for the user to keep finger down until the drag starts
@@ -308,7 +310,7 @@ public class TimeoutDragAndDrop {
         abstract public TimeoutDragAndDrop.Payload dragStart (InputEvent event, float x, float y, int pointer);
 
         /** Called repeatedly during a drag which started on this source. */
-        public void drag (InputEvent event, float x, float y, int pointer) {
+        void drag(InputEvent event, float x, float y, int pointer) {
         }
 
         /** Called when a drag for the source is stopped. The coordinates are in the source's local coordinate system.
@@ -341,7 +343,7 @@ public class TimeoutDragAndDrop {
 
         /** Called when the payload is no longer over the target, whether because the touch was moved or a drop occurred. This is
          * called even if {@link #drag(TimeoutDragAndDrop.Source, TimeoutDragAndDrop.Payload, float, float, int)} returned false. */
-        public void reset (TimeoutDragAndDrop.Source source, TimeoutDragAndDrop.Payload payload) {
+        void reset(TimeoutDragAndDrop.Source source, TimeoutDragAndDrop.Payload payload) {
         }
 
         /** Called when the payload is dropped on the target. The coordinates are in the target's local coordinate system. This is

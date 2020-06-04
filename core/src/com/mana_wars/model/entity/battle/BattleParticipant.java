@@ -1,23 +1,23 @@
 package com.mana_wars.model.entity.battle;
 
-import com.mana_wars.model.entity.skills.Skill;
+import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.entity.skills.SkillCharacteristic;
 
 import java.util.EnumMap;
 import java.util.List;
 
 import io.reactivex.subjects.BehaviorSubject;
-import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.Subject;
 
+public abstract class BattleParticipant {
 
-public class BattleParticipant {
+    protected Battle battle;
 
-    protected List<Skill> passiveSkills;
+    protected List<PassiveSkill> passiveSkills;
 
-    private final BehaviorSubject<Integer> healthObservable;
+    private final EnumMap<Characteristic, Subject<Integer>> observables = new EnumMap<>(Characteristic.class);
 
-
-    private EnumMap<Characteristic, Integer> characteristics = new EnumMap<>(Characteristic.class);
+    private final EnumMap<Characteristic, Integer> characteristics = new EnumMap<>(Characteristic.class);
     {
         for(Characteristic c : Characteristic.values()) {
             characteristics.put(c,0);
@@ -29,32 +29,36 @@ public class BattleParticipant {
         this.characteristics.put(Characteristic.MANA, manaPoints);
         this.characteristics.put(Characteristic.COOLDOWN, 100);
         this.characteristics.put(Characteristic.CAST_TIME,100);
-        this.healthObservable = BehaviorSubject.create();
-        this.healthObservable.onNext(healthPoints);
+        this.observables.put(Characteristic.HEALTH, BehaviorSubject.createDefault(healthPoints));
     }
 
-    public BehaviorSubject<Integer> getHealthObservable() {
-        return healthObservable;
-    }
+    public abstract void start();
+    public abstract void act(float delta);
 
-    public int getCharacteristicValue(Characteristic type){
-        return characteristics.get(type);
+    public void setBattle(Battle battle) {
+        this.battle = battle;
     }
 
     public void applySkillCharacteristic(SkillCharacteristic sc) {
         Characteristic c = sc.getCharacteristic();
         int changedValue = c.changeValue(characteristics.get(c), sc.getChangeType(), sc.getValue());
         characteristics.put(c, changedValue);
-        if (c == Characteristic.HEALTH) {
-            healthObservable.onNext(changedValue);
-        }
+        observables.get(c).onNext(changedValue);
     }
 
-    public void setPassiveSkills(List<Skill> passiveSkills) {
+    boolean isAlive() {
+        return getCharacteristicValue(Characteristic.HEALTH) > 0;
+    }
+
+    public int getCharacteristicValue(Characteristic type){
+        return characteristics.get(type);
+    }
+
+    public void setPassiveSkills(List<PassiveSkill> passiveSkills) {
         this.passiveSkills = passiveSkills;
     }
 
-    public List<Skill> getPassiveSkills() {
+    List<PassiveSkill> getPassiveSkills() {
         return passiveSkills;
     }
 }

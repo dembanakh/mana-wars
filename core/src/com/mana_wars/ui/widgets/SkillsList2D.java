@@ -14,8 +14,8 @@ public class SkillsList2D extends List2D<Skill> {
 
     private final boolean ordered;
 
-    private AssetFactory<Integer, TextureRegion> iconFactory;
-    private AssetFactory<Rarity, TextureRegion> frameFactory;
+    private final AssetFactory<Integer, TextureRegion> iconFactory;
+    private final AssetFactory<Rarity, TextureRegion> frameFactory;
 
     public SkillsList2D(Skin skin, int cols, AssetFactory<Integer, TextureRegion> iconFactory,
                         AssetFactory<Rarity, TextureRegion> frameFactory, boolean ordered) {
@@ -84,7 +84,7 @@ public class SkillsList2D extends List2D<Skill> {
             return super.removeIndex(index);
         } else {
             Skill result = items.get(index).data;
-            items.get(index).data = Skill.Empty;
+            items.get(index).data = Skill.getEmpty();
             return result;
         }
     }

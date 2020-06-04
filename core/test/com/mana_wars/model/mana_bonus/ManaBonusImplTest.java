@@ -2,7 +2,10 @@ package com.mana_wars.model.mana_bonus;
 
 import com.mana_wars.model.repository.ManaBonusRepository;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -13,9 +16,16 @@ import static org.mockito.Mockito.when;
 
 public class ManaBonusImplTest {
 
+    @Mock
+    private ManaBonusRepository manaBonusRepository;
+
+    @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+    }
+
     @Test
     public void init_firstBonus() {
-        ManaBonusRepository manaBonusRepository = mock(ManaBonusRepository.class);
         when(manaBonusRepository.wasBonusEverClaimed()).thenReturn(false);
 
         ManaBonus manaBonus = new ManaBonusImpl(1, 1, 1,
@@ -28,7 +38,6 @@ public class ManaBonusImplTest {
 
     @Test
     public void init_notFirstBonus() {
-        ManaBonusRepository manaBonusRepository = mock(ManaBonusRepository.class);
         when(manaBonusRepository.wasBonusEverClaimed()).thenReturn(true);
 
         ManaBonus manaBonus = new ManaBonusImpl(1, 1, 1,
@@ -41,7 +50,6 @@ public class ManaBonusImplTest {
 
     @Test
     public void init_twice() {
-        ManaBonusRepository manaBonusRepository = mock(ManaBonusRepository.class);
         when(manaBonusRepository.wasBonusEverClaimed()).thenReturn(false);
 
         ManaBonus manaBonus = new ManaBonusImpl(1, 1, 1,
@@ -58,7 +66,6 @@ public class ManaBonusImplTest {
 
     @Test
     public void getTimeSinceLastClaim() {
-        ManaBonusRepository manaBonusRepository = mock(ManaBonusRepository.class);
         when(manaBonusRepository.wasBonusEverClaimed()).thenReturn(true);
         when(manaBonusRepository.getLastTimeBonusClaimed()).thenReturn(2L);
 
@@ -71,7 +78,6 @@ public class ManaBonusImplTest {
 
     @Test
     public void isBonusBitAvailable_true() {
-        ManaBonusRepository manaBonusRepository = mock(ManaBonusRepository.class);
         when(manaBonusRepository.wasBonusEverClaimed()).thenReturn(true);
         when(manaBonusRepository.getLastTimeBonusClaimed()).thenReturn(10000L);
 
@@ -84,7 +90,6 @@ public class ManaBonusImplTest {
 
     @Test
     public void isBonusBitAvailable_false() {
-        ManaBonusRepository manaBonusRepository = mock(ManaBonusRepository.class);
         when(manaBonusRepository.wasBonusEverClaimed()).thenReturn(true);
         when(manaBonusRepository.getLastTimeBonusClaimed()).thenReturn(10000L);
 
@@ -96,8 +101,7 @@ public class ManaBonusImplTest {
     }
 
     @Test
-    public void onBonusClaimed_zero() {
-        ManaBonusRepository manaBonusRepository = mock(ManaBonusRepository.class);
+    public void evalCurrentBonus_zero() {
         when(manaBonusRepository.wasBonusEverClaimed()).thenReturn(true);
         when(manaBonusRepository.getLastTimeBonusClaimed()).thenReturn(2L);
 
@@ -105,16 +109,11 @@ public class ManaBonusImplTest {
                 () -> 10, manaBonusRepository);
         manaBonus.init();
 
-        final int[] backValue = {1};
-        manaBonus.onBonusClaimed(x -> backValue[0] = x);
-
-        verify(manaBonusRepository).setLastTimeBonusClaimed(10);
-        assertEquals(0, backValue[0]);
+        assertEquals(0, manaBonus.evalCurrentBonus());
     }
 
     @Test
-    public void onBonusClaimed() {
-        ManaBonusRepository manaBonusRepository = mock(ManaBonusRepository.class);
+    public void evalCurrentBonus() {
         when(manaBonusRepository.wasBonusEverClaimed()).thenReturn(true);
         when(manaBonusRepository.getLastTimeBonusClaimed()).thenReturn(10L);
 
@@ -122,16 +121,24 @@ public class ManaBonusImplTest {
                 () -> 10 + (2 * 60 * 1000 + 1), manaBonusRepository);
         manaBonus.init();
 
-        final int[] backValue = {1};
-        manaBonus.onBonusClaimed(x -> backValue[0] = x);
+        assertEquals(10, manaBonus.evalCurrentBonus());
+    }
+
+    @Test
+    public void onBonusClaimed() {
+        when(manaBonusRepository.wasBonusEverClaimed()).thenReturn(true);
+        when(manaBonusRepository.getLastTimeBonusClaimed()).thenReturn(10L);
+
+        ManaBonus manaBonus = new ManaBonusImpl(1, 5, 4,
+                () -> 10 + (2 * 60 * 1000 + 1), manaBonusRepository);
+        manaBonus.init();
+        manaBonus.onBonusClaimed();
 
         verify(manaBonusRepository).setLastTimeBonusClaimed(10 + (2 * 60 * 1000 + 1));
-        assertEquals(10, backValue[0]);
     }
 
     @Test
     public void getFullBonusTimeout() {
-        ManaBonusRepository manaBonusRepository = mock(ManaBonusRepository.class);
         when(manaBonusRepository.wasBonusEverClaimed()).thenReturn(true);
 
         ManaBonus manaBonus = new ManaBonusImpl(10, 20, 30,

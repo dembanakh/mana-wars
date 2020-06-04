@@ -1,8 +1,9 @@
 package com.mana_wars.model.entity.enemy;
 
-public abstract class BaseEnemyFactory  implements EnemyFactory{
+public abstract class BaseEnemyFactory  implements EnemyFactory {
 
+    void init() {
 
-
+    }
 
 }

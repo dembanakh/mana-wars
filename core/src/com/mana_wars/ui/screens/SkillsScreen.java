@@ -12,11 +12,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.entity.SkillTable;
 import com.mana_wars.model.entity.base.Rarity;
+import com.mana_wars.model.entity.skills.ActiveSkill;
+import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.interactor.SkillsInteractor;
 import com.mana_wars.presentation.presenters.SkillsPresenter;
 import com.mana_wars.presentation.view.SkillsView;
-import com.mana_wars.ui.management.ScreenManager;
+import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.MenuOverlayUI;
 import com.mana_wars.ui.overlays.OverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
@@ -27,9 +29,6 @@ import com.mana_wars.ui.widgets.SkillsList2D;
 import com.mana_wars.ui.widgets.TimeoutDragAndDrop;
 
 import java.util.List;
-
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.subjects.Subject;
 
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.*;
 import static com.mana_wars.ui.UIStringConstants.*;
@@ -47,12 +46,17 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
 
     private final SkillsPresenter presenter;
 
-    public SkillsScreen(ScreenManager screenManager, FactoryStorage factoryStorage,
-                 RepositoryStorage repositoryStorage, MenuOverlayUI overlayUI) {
-        super(screenManager);
+    public SkillsScreen(ScreenSetter screenSetter, FactoryStorage factoryStorage,
+                        RepositoryStorage repositoryStorage, MenuOverlayUI overlayUI) {
+        super(screenSetter);
         this.overlayUI = overlayUI;
 
-        presenter = new SkillsPresenter(this, Gdx.app::postRunnable, new SkillsInteractor(repositoryStorage.getDatabaseRepository()));
+        this.presenter = new SkillsPresenter(this,
+                Gdx.app::postRunnable,
+                new SkillsInteractor(repositoryStorage.getDatabaseRepository()));
+        presenter.addObserver_manaAmount(overlayUI.getManaAmountObserver());
+        presenter.addObserver_userLevel(overlayUI.getUserLevelObserver());
+        presenter.addObserver_userName(overlayUI.getUsernameObserver());
 
         skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
         mainSkillsTable = new SkillsList2D(getEmptyBackgroundStyle(), COLUMNS_NUMBER,
@@ -66,11 +70,6 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
         passiveSkillsTable.setUserObject(SkillTable.PASSIVE_SKILLS);
         scrollPane = new ScrollPane(mainSkillsTable, skin);
         dragAndDrop = new SkillsDragAndDrop(factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
-    }
-
-    @Override
-    public void init() {
-        presenter.init();
     }
 
     @Override
@@ -119,13 +118,7 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
     }
 
     @Override
-    public void initObservers(CompositeDisposable disposable, Subject<Integer> manaAmountObservable,
-                              Subject<Integer> userLevelObservable, Subject<String> usernameObservable) {
-        overlayUI.addObservers(disposable, manaAmountObservable, userLevelObservable, usernameObservable);
-    }
-
-    @Override
-    public void setSkillsList(List<Skill> activeSkills, List<Skill> passiveSkills, List<Skill> skills) {
+    public void setSkillsList(List<ActiveSkill> activeSkills, List<PassiveSkill> passiveSkills, List<Skill> skills) {
         mainSkillsTable.setItems(skills);
         activeSkillsTable.setItems(activeSkills);
         passiveSkillsTable.setItems(passiveSkills);
@@ -202,7 +195,7 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
         presenter.dispose();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("ConstantConditions")
     private class SkillsDragAndDrop {
 
         private final TimeoutDragAndDrop dragAndDrop;

@@ -4,10 +4,14 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.mana_wars.model.entity.enemy.FirstDungeonEnemyFactory;
 import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.factory.UIElementFactory;
-import com.mana_wars.ui.management.ScreenManager;
-import com.mana_wars.ui.screens.util.BuildableUI;
+import com.mana_wars.ui.management.ScreenInstance;
+import com.mana_wars.ui.management.ScreenSetter;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.mana_wars.ui.UIElementsSize.NAVIGATION_BAR.*;
 
@@ -15,10 +19,10 @@ public class NavigationBar implements BuildableUI {
 
     private Table bar;
 
-    private final ScreenManager screenManager;
+    private final ScreenSetter screenSetter;
 
-    public NavigationBar(final ScreenManager screenManager) {
-        this.screenManager = screenManager;
+    public NavigationBar(final ScreenSetter screenSetter) {
+        this.screenSetter = screenSetter;
     }
 
     @Override
@@ -66,15 +70,17 @@ public class NavigationBar implements BuildableUI {
     }
 
     private void onMain() {
-        screenManager.setScreen(ScreenManager.ScreenInstance.MAIN_MENU);
+        screenSetter.setScreen(ScreenInstance.MAIN_MENU, null);
     }
 
     private void onSkills() {
-        screenManager.setScreen(ScreenManager.ScreenInstance.SKILLS);
+        screenSetter.setScreen(ScreenInstance.SKILLS, null);
     }
 
     private void onBattle() {
-        screenManager.setScreen(ScreenManager.ScreenInstance.BATTLE);
+        Map<String, Object> args = new HashMap<>();
+        args.put("EnemyFactory", new FirstDungeonEnemyFactory());
+        screenSetter.setScreen(ScreenInstance.BATTLE, args);
     }
 
 }

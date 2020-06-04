@@ -1,10 +1,9 @@
 package com.mana_wars.model.repository;
 
-import com.mana_wars.model.entity.SkillTable;
+import com.mana_wars.model.SkillsListTriple;
 import com.mana_wars.model.entity.skills.Skill;
 
 import java.util.List;
-import java.util.Map;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
@@ -12,7 +11,7 @@ import io.reactivex.Single;
 public interface DatabaseRepository {
 
     Single<List<Skill>> getSkillsList();
-    Single<Map<SkillTable,List<Skill>>> getUserSkills();
+    Single<SkillsListTriple> getUserSkills();
     Completable insertUserSkill(Skill s);
 
     Completable mergeSkills(Skill toUpdate, Skill toDelete);

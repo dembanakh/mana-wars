@@ -7,8 +7,8 @@ import java.util.List;
 
 public class ActiveSkill extends Skill {
 
-    protected double cooldown;
-    protected double castTime;
+    private double cooldown;
+    private double castTime;
 
     public ActiveSkill(int id, int level, Rarity rarity, int manaCost, double castTime, double cooldown,String name, List<SkillCharacteristic> skillCharacteristics) {
         super(id, level, rarity, name, manaCost, skillCharacteristics);
@@ -24,6 +24,11 @@ public class ActiveSkill extends Skill {
         return castTime;
     }
 
-    public static ActiveSkill EmptyActive = new ActiveSkill(50, 0, Rarity.EMPTY, 0, 0,0, "EMPTY",
+    private static ActiveSkill Empty = new ActiveSkill(50, 0, Rarity.EMPTY, 0, 0,0, "EMPTY",
              new ArrayList<>());
+
+    public static ActiveSkill getEmpty() {
+        return Empty;
+    }
+
 }

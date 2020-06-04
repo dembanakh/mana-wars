@@ -2,11 +2,7 @@ package com.mana_wars.ui.overlays;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.mana_wars.ui.screens.util.BuildableUI;
-import com.mana_wars.ui.screens.util.ValueField;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.mana_wars.ui.widgets.BuildableUI;
 
 public abstract class OverlayUI {
 

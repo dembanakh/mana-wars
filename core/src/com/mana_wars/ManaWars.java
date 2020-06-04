@@ -1,17 +1,19 @@
 package com.mana_wars;
 
 import com.badlogic.gdx.Game;
+import com.mana_wars.model.entity.User;
 import com.mana_wars.model.repository.DatabaseRepository;
 import com.mana_wars.model.repository.LocalUserDataRepository;
 import com.mana_wars.model.repository.LocalizedStringsRepository;
 import com.mana_wars.ui.management.ScreenHandler;
-import com.mana_wars.ui.management.ScreenManagerImpl;
+import com.mana_wars.ui.management.ScreenManager;
 import com.mana_wars.ui.storage.RepositoryStorage;
 
 public class ManaWars extends Game implements ScreenHandler, RepositoryStorage {
 
 	private static ManaWars instance;
-	private final ScreenManagerImpl screenManager;
+	private final ScreenManager screenManager;
+	private final User user;
 
 	//platform repos
 	private LocalUserDataRepository localUserDataRepository;
@@ -19,7 +21,8 @@ public class ManaWars extends Game implements ScreenHandler, RepositoryStorage {
 	private DatabaseRepository databaseRepository;
 
 	private ManaWars() {
-		screenManager = new ScreenManagerImpl(this);
+		screenManager = new ScreenManager(this);
+		user = new User();
 	}
 
 	public static ManaWars getInstance() {

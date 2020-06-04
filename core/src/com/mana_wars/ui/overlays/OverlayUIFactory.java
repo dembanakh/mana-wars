@@ -1,17 +1,19 @@
 package com.mana_wars.ui.overlays;
 
-import com.mana_wars.ui.management.ScreenManager;
-import com.mana_wars.ui.screens.util.BuildableUI;
+import com.mana_wars.ui.management.ScreenSetter;
+import com.mana_wars.ui.widgets.BuildableUI;
 
 import java.util.Collections;
 
 public class OverlayUIFactory {
 
     private final MenuOverlayUI menuOverlayUI;
+    private final BattleOverlayUI battleOverlayUI;
     private final OverlayUI emptyOverlayUI;
 
-    public OverlayUIFactory(ScreenManager screenManager) {
-        menuOverlayUI = new MenuOverlayUI(screenManager);
+    public OverlayUIFactory(ScreenSetter screenSetter) {
+        menuOverlayUI = new MenuOverlayUI(screenSetter);
+        battleOverlayUI = new BattleOverlayUI(screenSetter);
         emptyOverlayUI = new OverlayUI() {
             @Override
             protected Iterable<BuildableUI> getElements() {
@@ -22,11 +24,16 @@ public class OverlayUIFactory {
 
     public void init() {
         menuOverlayUI.init();
+        battleOverlayUI.init();
         emptyOverlayUI.init();
     }
 
     public MenuOverlayUI getMenuOverlayUI() {
         return menuOverlayUI;
+    }
+
+    public BattleOverlayUI getBattleOverlayUI() {
+        return battleOverlayUI;
     }
 
     public OverlayUI getEmptyOverlayUI() {

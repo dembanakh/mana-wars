@@ -4,7 +4,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -28,16 +27,16 @@ import java.util.ArrayList;
  */
 public abstract class List2D<T> extends Widget implements Cullable {
 
-    List.ListStyle style;
+    private List.ListStyle style;
     final Array<List2DItem<T>> items = new Array<>();
-    Selection<List2DItem<T>> selection = new Selection<>();
+    final Selection<List2DItem<T>> selection = new Selection<>();
     private Rectangle cullingArea;
     private float prefWidth, prefHeight;
-    float itemHeight, itemWidth;
-    protected int alignment = Align.left;
+    private float itemHeight;
+    private float itemWidth;
+    int alignment = Align.left;
     int pressedIndex = -1, overIndex = -1;
     private InputListener keyListener;
-    boolean typeToSelect;
 
     private int cols;
 
@@ -61,7 +60,7 @@ public abstract class List2D<T> extends Widget implements Cullable {
         addTouchListeners();
     }
 
-    protected void addKeyboardListeners() {
+    private void addKeyboardListeners() {
         addListener(keyListener = new InputListener() {
             public boolean keyDown (InputEvent event, int keycode) {
                 if (items.isEmpty()) return false;
@@ -113,7 +112,7 @@ public abstract class List2D<T> extends Widget implements Cullable {
         });
     }
 
-    protected void addTouchListeners() {
+    void addTouchListeners() {
         addListener(new InputListener() {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 if (pointer != 0 || button != 0) return true;
@@ -227,7 +226,7 @@ public abstract class List2D<T> extends Widget implements Cullable {
         }
     }
 
-    protected void drawBackground (Batch batch, float parentAlpha) {
+    private void drawBackground(Batch batch, float parentAlpha) {
         if (style.background != null) {
             Color color = getColor();
             batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
@@ -238,7 +237,7 @@ public abstract class List2D<T> extends Widget implements Cullable {
     protected abstract void drawItem(Batch batch, BitmapFont font, int index, T item,
                                      float x, float y, float width, float height);
 
-    public void setCols (int cols) {
+    private void setCols(int cols) {
         if (cols <= 0) throw new IllegalArgumentException("cols cannot be <= 0.");
         this.cols = cols;
         invalidate();
@@ -248,7 +247,7 @@ public abstract class List2D<T> extends Widget implements Cullable {
         return cols;
     }
 
-    public void setStyle (List.ListStyle style) {
+    private void setStyle(List.ListStyle style) {
         if (style == null) throw new IllegalArgumentException("style cannot be null.");
         this.style = style;
         invalidateHierarchy();
@@ -373,7 +372,7 @@ public abstract class List2D<T> extends Widget implements Cullable {
         if (oldPrefWidth != getPrefWidth() || oldPrefHeight != getPrefHeight()) invalidateHierarchy();
     }
 
-    public void setItems (Iterable<T> newItems) {
+    public void setItems (Iterable<? extends T> newItems) {
         if (newItems == null) throw new IllegalArgumentException("newItems cannot be null.");
         float oldPrefWidth = getPrefWidth(), oldPrefHeight = getPrefHeight();
 
@@ -387,7 +386,7 @@ public abstract class List2D<T> extends Widget implements Cullable {
         if (oldPrefWidth != getPrefWidth() || oldPrefHeight != getPrefHeight()) invalidateHierarchy();
     }
 
-    public void clearItems () {
+    void clearItems() {
         if (items.size == 0) return;
         items.clear();
         overIndex = -1;
@@ -408,7 +407,7 @@ public abstract class List2D<T> extends Widget implements Cullable {
     }
 
     java.util.List<T> getItemsCopy() {
-        java.util.List<T> itemsArr = new ArrayList<T>();
+        java.util.List<T> itemsArr = new ArrayList<>();
         for (List2DItem<T> item : items) itemsArr.add(item.data);
         return itemsArr;
     }
@@ -431,10 +430,6 @@ public abstract class List2D<T> extends Widget implements Cullable {
         this.alignment = alignment;
     }
 
-    public void setTypeToSelect (boolean typeToSelect) {
-        this.typeToSelect = typeToSelect;
-    }
-
     public InputListener getKeyListener () {
         return keyListener;
     }
@@ -447,7 +442,7 @@ public abstract class List2D<T> extends Widget implements Cullable {
     public Rectangle getCullingArea() { return cullingArea; }
 
     static class List2DItem<T> {
-        int index;
+        final int index;
         T data;
 
         List2DItem(int index, T data) {

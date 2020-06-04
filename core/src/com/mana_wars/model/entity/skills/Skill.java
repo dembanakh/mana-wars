@@ -6,17 +6,15 @@ import com.mana_wars.model.entity.base.Rarity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Skill extends GameItem {
 
-    protected int manaCost;
-    protected List <SkillCharacteristic> skillCharacteristics;
+    private int manaCost;
+    private List <SkillCharacteristic> skillCharacteristics;
 
     public Skill(int id, int level, Rarity rarity, String name, int manaCost, List <SkillCharacteristic> skillCharacteristics) {
         super(id, level, rarity, name);
         this.manaCost = manaCost;
-        this.name = name;
         this.skillCharacteristics = skillCharacteristics;
     }
 
@@ -30,6 +28,10 @@ public class Skill extends GameItem {
         }
     }
 
+    public int getManaCost() {
+        return manaCost;
+    }
+
     public String getDescription() {
         StringBuilder result = new StringBuilder();
         for(SkillCharacteristic sc : skillCharacteristics){
@@ -39,7 +41,10 @@ public class Skill extends GameItem {
         return result.toString();
     }
 
-    public static Skill Empty = new Skill(50, 0, Rarity.EMPTY, "EMPTY",
+    private static Skill Empty = new Skill(50, 0, Rarity.EMPTY, "EMPTY",
             0, new ArrayList<>());
 
+    public static Skill getEmpty() {
+        return Empty;
+    }
 }

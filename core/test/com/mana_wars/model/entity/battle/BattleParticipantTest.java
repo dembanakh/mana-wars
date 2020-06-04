@@ -16,8 +16,18 @@ import static org.mockito.Mockito.when;
 public class BattleParticipantTest {
 
     @Test
-    public void testGetCharacteristicValue(){
-        BattleParticipant bp = new BattleParticipant(100,200);
+    public void testGetCharacteristicValue() {
+        BattleParticipant bp = new BattleParticipant(100, 200) {
+            @Override
+            public void start() {
+
+            }
+
+            @Override
+            public void act(float delta) {
+
+            }
+        };
         assertEquals(100, bp.getCharacteristicValue(Characteristic.HEALTH));
         assertEquals(200, bp.getCharacteristicValue(Characteristic.MANA));
     }
@@ -25,7 +35,18 @@ public class BattleParticipantTest {
 
     @Test
     public void testApplySkillCharacteristic() {
-        BattleParticipant bp = new BattleParticipant(100,200);
+        BattleParticipant bp = new BattleParticipant(100,200) {
+
+            @Override
+            public void start() {
+
+            }
+
+            @Override
+            public void act(float delta) {
+
+            }
+        };
         SkillCharacteristic sc = mock(SkillCharacteristic.class);
 
         when(sc.getCharacteristic()).thenReturn(Characteristic.HEALTH);

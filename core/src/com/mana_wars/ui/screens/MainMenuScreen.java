@@ -6,12 +6,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.interactor.MainMenuInteractor;
 import com.mana_wars.model.mana_bonus.ManaBonusImpl;
 import com.mana_wars.presentation.presenters.MainMenuPresenter;
 import com.mana_wars.presentation.view.MainMenuView;
-import com.mana_wars.ui.management.ScreenManager;
+import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.MenuOverlayUI;
 import com.mana_wars.ui.overlays.OverlayUI;
 import com.mana_wars.ui.widgets.ManaBonusProgressBar;
@@ -19,10 +20,6 @@ import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.ui.factory.UIElementFactory;
 import com.mana_wars.ui.widgets.SkillCaseWindow;
-
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.subjects.PublishSubject;
-import io.reactivex.subjects.Subject;
 
 import static com.mana_wars.ui.UIStringConstants.*;
 
@@ -36,29 +33,31 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
 
     private final MainMenuPresenter presenter;
 
-    public MainMenuScreen(ScreenManager screenManager, FactoryStorage factoryStorage,
-                   RepositoryStorage repositoryStorage, MenuOverlayUI overlayUI) {
-        super(screenManager);
+    public MainMenuScreen(ScreenSetter screenSetter, FactoryStorage factoryStorage,
+                          RepositoryStorage repositoryStorage, MenuOverlayUI overlayUI) {
+        super(screenSetter);
         this.overlayUI = overlayUI;
 
-        presenter = new MainMenuPresenter(this,
+        this.presenter = new MainMenuPresenter(this,
                 Gdx.app::postRunnable,
-                new MainMenuInteractor(repositoryStorage.getLocalUserDataRepository(),
+                new MainMenuInteractor(
+                        repositoryStorage.getLocalUserDataRepository(),
                         repositoryStorage.getDatabaseRepository(),
-                        new ManaBonusImpl(1, 20, 4,
-                                            System::currentTimeMillis,
-                                            repositoryStorage.getLocalUserDataRepository())));
+                        new ManaBonusImpl(
+                                GameConstants.MANA_BONUS_BIT_TIMEOUT,
+                                GameConstants.MANA_BONUS_BIT_SIZE,
+                                GameConstants.MANA_BONUS_NUM_BITS,
+                                System::currentTimeMillis,
+                                repositoryStorage.getLocalUserDataRepository())));
+        presenter.addObserver_manaAmount(overlayUI.getManaAmountObserver());
+        presenter.addObserver_userLevel(overlayUI.getUserLevelObserver());
+        presenter.addObserver_userName(overlayUI.getUsernameObserver());
 
-        skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
-        skillCaseWindow = new SkillCaseWindow(SKILL_CASE_WINDOW.TITLE, skin,
+        this.skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
+        this.skillCaseWindow = new SkillCaseWindow(SKILL_CASE_WINDOW.TITLE, skin,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
-        manaBonusProgressBar = new ManaBonusProgressBar(presenter.getFullManaBonusTimeout(),
-                presenter::claimBonus, skin);
-    }
-
-    @Override
-    public void init() {
-        presenter.init();
+        this.manaBonusProgressBar = new ManaBonusProgressBar(presenter.getFullManaBonusTimeout(),
+                this::claimBonus, skin);
     }
 
     @Override
@@ -74,7 +73,7 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
     @Override
     protected void rebuildStage() {
         super.rebuildStage();
-        addActor(skillCaseWindow.rebuild(skin));
+        addActor(skillCaseWindow.build(skin));
     }
 
     @Override
@@ -97,15 +96,14 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
             }
         });
         layer.add(skillCaseButton).row();
-        layer.add(manaBonusProgressBar.rebuild(skin)).height(100).width(200);
+        // TODO: remove constants
+        layer.add(manaBonusProgressBar.build(skin)).height(100).width(200);
 
         return layer;
     }
 
-    @Override
-    public void initObservers(CompositeDisposable disposable, Subject<Integer> manaAmountObservable,
-                              Subject<Integer> userLevelObservable, Subject<String> usernameObservable) {
-        overlayUI.addObservers(disposable, manaAmountObservable, userLevelObservable, usernameObservable);
+    private void claimBonus() {
+        presenter.claimBonus();
     }
 
     @Override

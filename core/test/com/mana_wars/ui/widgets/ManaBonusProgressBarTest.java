@@ -1,14 +1,11 @@
 package com.mana_wars.ui.widgets;
 
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class ManaBonusProgressBarTest {
 
@@ -17,14 +14,12 @@ public class ManaBonusProgressBarTest {
         ManaBonusProgressBar bar = new ManaBonusProgressBar(100, null,
                 getProgressBarStyle(), null);
 
-        assertTrue(bar.shouldSynchronizeNow());
+        // assuming SYNC_EVERY_FRAMES > 1
 
-        if (ManaBonusProgressBar.SYNC_EVERY_FRAMES > 2) {
-            assertFalse(bar.shouldSynchronizeNow());
+        assertFalse(bar.shouldSynchronizeNow());
 
-            for (int i = 2; i < ManaBonusProgressBar.SYNC_EVERY_FRAMES; ++i) {
-                bar.shouldSynchronizeNow();
-            }
+        for (int i = 2; i < ManaBonusProgressBar.SYNC_EVERY_FRAMES; ++i) {
+            bar.shouldSynchronizeNow();
         }
         assertTrue(bar.shouldSynchronizeNow());
     }

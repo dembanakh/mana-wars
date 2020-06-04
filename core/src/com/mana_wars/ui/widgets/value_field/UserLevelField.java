@@ -1,4 +1,4 @@
-package com.mana_wars.ui.screens.util;
+package com.mana_wars.ui.widgets.value_field;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -9,10 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import static com.mana_wars.ui.UIElementsSize.SCREEN_HEIGHT;
 
-public class UserLevelField implements ValueField<Integer> {
-
-    private Table field;
-    private Label userLevelLabel;
+public class UserLevelField extends ValueField<Integer> {
 
     @Override
     public void init() {
@@ -22,26 +19,18 @@ public class UserLevelField implements ValueField<Integer> {
             field.setPosition(0, SCREEN_HEIGHT - 50);
             field.setSize(100, 50);
 
-            userLevelLabel = new Label("", new Label.LabelStyle(new BitmapFont(), new Color()));
-            userLevelLabel.setFillParent(true);
-            userLevelLabel.setColor(Color.BLACK);
-            userLevelLabel.setFontScale(2);
-            field.add(userLevelLabel).center();
+            label = new Label("", new Label.LabelStyle(new BitmapFont(), new Color()));
+            label.setFillParent(true);
+            label.setColor(Color.BLACK);
+            label.setFontScale(2);
+            field.add(label).center();
         }
     }
 
     @Override
     public Actor build(final Skin skin) {
-        field.setSkin(skin);
+        Actor result = super.build(skin);
         field.setBackground("white");
-
-        userLevelLabel.setStyle(skin.get(Label.LabelStyle.class));
-
-        return field;
-    }
-
-    @Override
-    public void accept(Integer userLevel) {
-        userLevelLabel.setText(userLevel);
+        return result;
     }
 }

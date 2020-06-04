@@ -13,7 +13,7 @@ import com.mana_wars.ui.factory.UIElementFactory;
 
 import static com.mana_wars.ui.UIElementsSize.SCREEN_WIDTH;
 
-public class ManaBonusProgressBar extends ProgressBar {
+public class ManaBonusProgressBar extends ProgressBar implements BuildableUI {
 
     private static final float GRANULARITY = 1f / 60;
     static final float SYNC_EVERY_FRAMES = 60;
@@ -23,10 +23,11 @@ public class ManaBonusProgressBar extends ProgressBar {
 
     private Button claimButton;
 
-    private Runnable claimCallback;
+    private final Runnable claimCallback;
 
-    /*
-     * @param bonusTimeout - bonus is available every bonusTimeout minutes
+    /**
+     * @param fullBonusTimeout the time for the all bonus bits to be ready for claim
+     * @param claimCallback called when CLAIM button is pressed
      */
     public ManaBonusProgressBar(int fullBonusTimeout, Runnable claimCallback, Skin skin) {
         this(fullBonusTimeout, claimCallback, skin.get("default-horizontal", ProgressBarStyle.class),
@@ -53,13 +54,13 @@ public class ManaBonusProgressBar extends ProgressBar {
         this.claimCallback = claimCallback;
     }
 
-    private void onClaim() {
-        claimButton.setVisible(false);
-        claimCallback.run();
-        currentValue = 0;
+    @Override
+    public void init() {
+
     }
 
-    public Actor rebuild(Skin skin) {
+    @Override
+    public Actor build(Skin skin) {
         Table barCont = new Table();
         barCont.add(this).padTop(600).width(SCREEN_WIDTH);
 
@@ -79,9 +80,12 @@ public class ManaBonusProgressBar extends ProgressBar {
         setValue((float) currentValue);
     }
 
+    /**
+     * @return true if the view has to synchronize timing with the model in this frame
+     */
     public boolean shouldSynchronizeNow() {
-        boolean result = frameCounter == 0 && currentValue < getMaxValue();
         frameCounter++;
+        boolean result = frameCounter == SYNC_EVERY_FRAMES && currentValue < getMaxValue();
         frameCounter %= SYNC_EVERY_FRAMES;
 
         return result;
@@ -101,6 +105,12 @@ public class ManaBonusProgressBar extends ProgressBar {
 
     double getCurrentValue() {
         return currentValue;
+    }
+
+    private void onClaim() {
+        claimButton.setVisible(false);
+        claimCallback.run();
+        currentValue = 0;
     }
 
 }

@@ -1,4 +1,4 @@
-package com.mana_wars.ui.screens.util;
+package com.mana_wars.ui.widgets.value_field;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -10,9 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import static com.mana_wars.ui.UIElementsSize.SCREEN_HEIGHT;
 import static com.mana_wars.ui.UIElementsSize.SCREEN_WIDTH;
 
-public class HealthField implements ValueField<Integer> {
-    private Table field;
-    private Label userHealthLabel;
+public class HealthField extends ValueField<Integer> {
 
     private final int widthOffset;
     private final int heightOffset;
@@ -32,26 +30,19 @@ public class HealthField implements ValueField<Integer> {
 
             field.setSize(100, 50);
 
-            userHealthLabel = new Label("", new Label.LabelStyle(new BitmapFont(), new Color()));
-            userHealthLabel.setFillParent(true);
-            userHealthLabel.setColor(Color.BLACK);
-            userHealthLabel.setFontScale(2);
-            field.add(userHealthLabel).center();
+            label = new Label("", new Label.LabelStyle(new BitmapFont(), new Color()));
+            label.setFillParent(true);
+            label.setColor(Color.BLACK);
+            label.setFontScale(2);
+            field.add(label).center();
         }
     }
 
     @Override
     public Actor build(final Skin skin) {
-        field.setSkin(skin);
+        Actor result = super.build(skin);
         field.setBackground("white");
-
-        userHealthLabel.setStyle(skin.get(Label.LabelStyle.class));
-
-        return field;
+        return result;
     }
 
-    @Override
-    public void accept(Integer health) {
-        userHealthLabel.setText(health);
-    }
 }

@@ -1,18 +1,15 @@
 package com.mana_wars.model.interactor;
 
+import com.mana_wars.model.SkillsListTriple;
 import com.mana_wars.model.skills_operations.SkillsOperations;
 import com.mana_wars.model.entity.SkillTable;
 
 import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.repository.DatabaseRepository;
 
-import java.util.List;
-import java.util.Map;
-
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.subjects.BehaviorSubject;
-import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
 public class SkillsInteractor {
@@ -30,7 +27,7 @@ public class SkillsInteractor {
         usernameObservable = BehaviorSubject.create();
     }
 
-    public Single<Map<SkillTable,List<Skill>>> getUserSkills() {
+    public Single<SkillsListTriple> getUserSkills() {
         return databaseRepository.getUserSkills();
     }
 

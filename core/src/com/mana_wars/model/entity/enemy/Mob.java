@@ -13,12 +13,26 @@ import java.util.List;
 
 public class Mob extends BattleParticipant {
 
-    public Mob(int healthPoints, int manaPoints) {
+    Mob(int healthPoints, int manaPoints) {
         super(healthPoints, manaPoints);
         this.passiveSkills = new ArrayList<>();
     }
 
-    public List<ActiveSkill> getInitialAutoSkills(){
+    @Override
+    public void start() {
+        double activationTime = 0;
+        for (ActiveSkill skill : getInitialAutoSkills()) {
+            activationTime += skill.getCastTime();
+            battle.requestSkillApplication(this, skill, activationTime);
+        }
+    }
+
+    @Override
+    public void act(float delta) {
+
+    }
+
+    private List<ActiveSkill> getInitialAutoSkills() {
         return Arrays.asList(new ActiveSkill(1, 1, Rarity.COMMON, 0, 1, 2, "",
                 Arrays.asList(new SkillCharacteristic(10, Characteristic.HEALTH, ValueChangeType.DECREASE, SkillCharacteristic.Target.ENEMY))));
     }

@@ -8,20 +8,22 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.mana_wars.ui.management.ScreenManager;
+import com.mana_wars.ui.management.ScreenInstance;
+import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.OverlayUI;
 
 import java.util.Map;
+import java.util.NoSuchElementException;
 
-public abstract class BaseScreen implements Screen {
+public abstract class BaseScreen implements Screen, ScreenSetter {
 
     private final Stage stage;
 
-    private final ScreenManager screenManager;
+    private final ScreenSetter screenSetter;
 
     private Map<String, Object> arguments;
 
-    BaseScreen(ScreenManager screenManager) {
+    BaseScreen(ScreenSetter screenSetter) {
         this.stage = new Stage() {
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
@@ -30,26 +32,25 @@ public abstract class BaseScreen implements Screen {
                 return super.touchDown(screenX, screenY, pointer, button);
             }
         };
-        this.screenManager = screenManager;
+        this.screenSetter = screenSetter;
     }
 
-    public BaseScreen setArguments(Map<String, Object> arguments) {
+    public BaseScreen reInit(Map<String, Object> arguments) {
         this.arguments = arguments;
         return this;
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T getArgument(String key) {
-        if (!arguments.containsKey(key)) return null;
+    <T> T getArgument(String key) {
+        if (!arguments.containsKey(key))
+            throw new NoSuchElementException("There is no argument for key " + key);
         return (T)arguments.get(key);
     }
-
-    public abstract void init();
 
     protected abstract Skin getSkin();
     protected abstract OverlayUI getOverlayUI();
 
-    protected void rebuildStage() {
+    void rebuildStage() {
         stage.clear();
         Stack stack = new Stack();
         stage.addActor(stack);
@@ -58,15 +59,16 @@ public abstract class BaseScreen implements Screen {
         stack.add(buildForegroundLayer(getSkin()));
     }
 
-    protected void addActor(Actor actor) {
+    void addActor(Actor actor) {
         stage.addActor(actor);
     }
 
     protected abstract Table buildBackgroundLayer(Skin skin);
     protected abstract Table buildForegroundLayer(Skin skin);
 
-    protected void setScreen(ScreenManager.ScreenInstance instance) {
-        screenManager.setScreen(instance);
+    @Override
+    public void setScreen(ScreenInstance instance, Map<String, Object> arguments) {
+        screenSetter.setScreen(instance, arguments);
     }
 
     @Override

@@ -1,14 +1,16 @@
 package com.mana_wars.model.mana_bonus;
 
-import com.mana_wars.model.repository.ManaBonusRepository;
-
-import io.reactivex.functions.Consumer;
-
 public interface ManaBonus {
     void init();
     long getTimeSinceLastClaim(); //millis
+
+    /**
+     * @return true if the first bonus bit is ready to be claimed
+     */
     boolean isBonusBitAvailable();
-    void onBonusClaimed(Consumer<? super Integer> callback);
+
+    int evalCurrentBonus();
+    void onBonusClaimed();
 
     int getFullBonusTimeout(); //minutes
 }
