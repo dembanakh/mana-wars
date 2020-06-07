@@ -1,4 +1,4 @@
-package com.mana_wars.ui.widgets;
+package com.mana_wars.ui.widgets.skills_list_2d;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -10,25 +10,19 @@ import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.ui.factory.AssetFactory;
 
-public class SkillsList2D extends List2D<Skill> {
+public class OperationSkillsList2D extends StaticSkillsList2D<Skill> {
 
     private final boolean ordered;
 
-    private final AssetFactory<Integer, TextureRegion> iconFactory;
-    private final AssetFactory<Rarity, TextureRegion> frameFactory;
-
-    public SkillsList2D(Skin skin, int cols, AssetFactory<Integer, TextureRegion> iconFactory,
-                        AssetFactory<Rarity, TextureRegion> frameFactory, boolean ordered) {
+    public OperationSkillsList2D(Skin skin, int cols, AssetFactory<Integer, TextureRegion> iconFactory,
+                                 AssetFactory<Rarity, TextureRegion> frameFactory, boolean ordered) {
         this(skin.get(List.ListStyle.class), cols, iconFactory, frameFactory, ordered);
     }
 
-    public SkillsList2D(List.ListStyle style, int cols, AssetFactory<Integer, TextureRegion> iconFactory,
-                        AssetFactory<Rarity, TextureRegion> frameFactory, boolean ordered) {
-        super(style, cols);
+    public OperationSkillsList2D(List.ListStyle style, int cols, AssetFactory<Integer, TextureRegion> iconFactory,
+                                 AssetFactory<Rarity, TextureRegion> frameFactory, boolean ordered) {
+        super(style, cols, iconFactory, frameFactory);
         this.ordered = ordered;
-        this.iconFactory = iconFactory;
-        this.frameFactory = frameFactory;
-        this.selection.setDisabled(true);
     }
 
     @Override

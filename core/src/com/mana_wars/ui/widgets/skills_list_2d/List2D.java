@@ -1,4 +1,4 @@
-package com.mana_wars.ui.widgets;
+package com.mana_wars.ui.widgets.skills_list_2d;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;

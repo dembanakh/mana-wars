@@ -1,4 +1,4 @@
-package com.mana_wars.ui.widgets;
+package com.mana_wars.ui.widgets.skills_list_2d;
 
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.mana_wars.model.entity.base.Rarity;
@@ -11,11 +11,11 @@ import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
-public class SkillsList2DTest {
+public class OperationSkillsList2DTest {
 
     @Test
     public void insert_Rarity_ordered() {
-        SkillsList2D list = new SkillsList2D(getStyle(), 5, null, null, true);
+        OperationSkillsList2D list = new OperationSkillsList2D(getStyle(), 5, null, null, true);
 
         Skill skill1 = new Skill(1, 1, Rarity.EPIC, "1", 10, new ArrayList<>());
         Skill skill2 = new Skill(2, 1, Rarity.ARCANE, "2", 10, new ArrayList<>());
@@ -30,7 +30,7 @@ public class SkillsList2DTest {
 
     @Test
     public void insert_Name_ordered() {
-        SkillsList2D list = new SkillsList2D(getStyle(), 5, null, null, true);
+        OperationSkillsList2D list = new OperationSkillsList2D(getStyle(), 5, null, null, true);
 
         Skill skill1 = new Skill(1, 1, Rarity.EPIC, "1", 10, new ArrayList<>());
         Skill skill2 = new Skill(2, 1, Rarity.ARCANE, "2", 10, new ArrayList<>());
@@ -45,7 +45,7 @@ public class SkillsList2DTest {
 
     @Test
     public void insert_Level_ordered() {
-        SkillsList2D list = new SkillsList2D(getStyle(), 5, null, null, true);
+        OperationSkillsList2D list = new OperationSkillsList2D(getStyle(), 5, null, null, true);
 
         Skill skill1 = new Skill(1, 1, Rarity.EPIC, "1", 10, new ArrayList<>());
         Skill skill2 = new Skill(2, 1, Rarity.ARCANE, "2", 10, new ArrayList<>());
@@ -60,7 +60,7 @@ public class SkillsList2DTest {
 
     @Test
     public void removeIndex_ordered() {
-        SkillsList2D list = new SkillsList2D(getStyle(), 5, null, null, true);
+        OperationSkillsList2D list = new OperationSkillsList2D(getStyle(), 5, null, null, true);
 
         Skill skill1 = new Skill(1, 1, Rarity.EPIC, "1", 10, new ArrayList<>());
         Skill skill2 = new Skill(2, 1, Rarity.ARCANE, "2", 10, new ArrayList<>());
@@ -74,7 +74,7 @@ public class SkillsList2DTest {
 
     @Test
     public void insert_AtEmpty_unordered() {
-        SkillsList2D list = new SkillsList2D(getStyle(), 5, null, null, false);
+        OperationSkillsList2D list = new OperationSkillsList2D(getStyle(), 5, null, null, false);
 
         Skill skill1 = new Skill(1, 1, Rarity.EPIC, "1", 10, new ArrayList<>());
         Skill skill2 = Skill.getEmpty();
@@ -89,7 +89,7 @@ public class SkillsList2DTest {
 
     @Test
     public void insert_AtActual_unordered() {
-        SkillsList2D list = new SkillsList2D(getStyle(), 5, null, null, false);
+        OperationSkillsList2D list = new OperationSkillsList2D(getStyle(), 5, null, null, false);
 
         Skill skill1 = new Skill(1, 1, Rarity.EPIC, "1", 10, new ArrayList<>());
         Skill skill2 = new Skill(2, 1, Rarity.ARCANE, "2", 10, new ArrayList<>());
@@ -104,7 +104,7 @@ public class SkillsList2DTest {
 
     @Test
     public void removeIndex_unordered() {
-        SkillsList2D list = new SkillsList2D(getStyle(), 5, null, null, false);
+        OperationSkillsList2D list = new OperationSkillsList2D(getStyle(), 5, null, null, false);
 
         Skill skill1 = new Skill(1, 1, Rarity.EPIC, "1", 10, new ArrayList<>());
         Skill skill2 = new Skill(2, 1, Rarity.ARCANE, "2", 10, new ArrayList<>());

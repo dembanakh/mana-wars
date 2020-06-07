@@ -24,8 +24,8 @@ import com.mana_wars.ui.overlays.OverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.ui.factory.AssetFactory;
-import com.mana_wars.ui.widgets.List2D;
-import com.mana_wars.ui.widgets.SkillsList2D;
+import com.mana_wars.ui.widgets.skills_list_2d.List2D;
+import com.mana_wars.ui.widgets.skills_list_2d.OperationSkillsList2D;
 import com.mana_wars.ui.widgets.TimeoutDragAndDrop;
 
 import java.util.List;
@@ -59,13 +59,13 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
         presenter.addObserver_userName(overlayUI.getUsernameObserver());
 
         skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
-        mainSkillsTable = new SkillsList2D(getEmptyBackgroundStyle(), COLUMNS_NUMBER,
+        mainSkillsTable = new OperationSkillsList2D(getEmptyBackgroundStyle(), COLUMNS_NUMBER,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(), true);
         mainSkillsTable.setUserObject(SkillTable.ALL_SKILLS);
-        activeSkillsTable = new SkillsList2D(skin, GameConstants.USER_ACTIVE_SKILL_COUNT,
+        activeSkillsTable = new OperationSkillsList2D(skin, GameConstants.USER_ACTIVE_SKILL_COUNT,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(), false);
         activeSkillsTable.setUserObject(SkillTable.ACTIVE_SKILLS);
-        passiveSkillsTable = new SkillsList2D(skin, GameConstants.USER_PASSIVE_SKILL_COUNT,
+        passiveSkillsTable = new OperationSkillsList2D(skin, GameConstants.USER_PASSIVE_SKILL_COUNT,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(), false);
         passiveSkillsTable.setUserObject(SkillTable.PASSIVE_SKILLS);
         scrollPane = new ScrollPane(mainSkillsTable, skin);

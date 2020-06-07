@@ -1,10 +1,13 @@
 package com.mana_wars.ui.overlays;
 
+import com.badlogic.gdx.utils.Align;
+import com.mana_wars.ui.layout_constraints.AbsoluteSizeConstraint;
+import com.mana_wars.ui.layout_constraints.AbsoluteXPositionConstraint;
+import com.mana_wars.ui.layout_constraints.AbsoluteYPositionConstraint;
+import com.mana_wars.ui.layout_constraints.RelativeWidthConstraint;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.widgets.BuildableUI;
-import com.mana_wars.ui.widgets.value_field.ManaAmountField;
-import com.mana_wars.ui.widgets.value_field.UserLevelField;
-import com.mana_wars.ui.widgets.value_field.UsernameField;
+import com.mana_wars.ui.widgets.value_field.TextValueField;
 import com.mana_wars.ui.widgets.value_field.ValueField;
 import com.mana_wars.ui.widgets.NavigationBar;
 
@@ -20,9 +23,23 @@ public class MenuOverlayUI extends OverlayUI {
     private final BuildableUI navigationBar;
 
     MenuOverlayUI(final ScreenSetter screenSetter) {
-        manaAmountField = new ManaAmountField();
-        userLevelField = new UserLevelField();
-        usernameField = new UsernameField();
+        manaAmountField = new TextValueField<Integer>()
+                .setXConstraint(new AbsoluteXPositionConstraint(Align.right, 0))
+                .setYConstraint(new AbsoluteYPositionConstraint(Align.top, 0))
+                .setWidthConstraint(new AbsoluteSizeConstraint(100))
+                .setHeightConstraint(new AbsoluteSizeConstraint(50))
+                .setBackgroundColor("white");
+        userLevelField = new TextValueField<Integer>()
+                .setXConstraint(new AbsoluteXPositionConstraint(Align.left, 0))
+                .setYConstraint(new AbsoluteYPositionConstraint(Align.top, 0))
+                .setWidthConstraint(new AbsoluteSizeConstraint(100))
+                .setHeightConstraint(new AbsoluteSizeConstraint(50))
+                .setBackgroundColor("white");
+        usernameField = new TextValueField<String>()
+                .setXConstraint(new AbsoluteXPositionConstraint(Align.left, 0))
+                .setYConstraint(new AbsoluteYPositionConstraint(Align.top, 0))
+                .setWidthConstraint(new RelativeWidthConstraint())
+                .setHeightConstraint(new AbsoluteSizeConstraint(50));
         navigationBar = new NavigationBar(screenSetter);
     }
 

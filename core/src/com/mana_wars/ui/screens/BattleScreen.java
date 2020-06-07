@@ -22,14 +22,16 @@ import com.mana_wars.model.interactor.BattleInteractor;
 import com.mana_wars.presentation.presenters.BattlePresenter;
 import com.mana_wars.presentation.view.BattleView;
 import com.mana_wars.ui.factory.UIElementFactory;
-import com.mana_wars.ui.widgets.BattleSkillsList2D;
-import com.mana_wars.ui.widgets.List2D;
+import com.mana_wars.ui.widgets.skills_list_2d.ApplicableSkillsList2D;
+import com.mana_wars.ui.widgets.skills_list_2d.List2D;
+import com.mana_wars.ui.widgets.skills_list_2d.StaticSkillsList2D;
 
 
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.PASSIVE_SKILLS_TABLE_HEIGHT;
 import static com.mana_wars.ui.UIStringConstants.*;
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.ACTIVE_SKILLS_TABLE_HEIGHT;
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.SKILLS_TABLES_WIDTH;
@@ -42,6 +44,7 @@ public class BattleScreen extends BaseScreen implements BattleView {
     private final BattlePresenter presenter;
 
     private final List2D<ActiveSkill> userActiveSkills;
+    private final List2D<PassiveSkill> userPassiveSkills;
 
     private final AtomicBoolean isBattle = new AtomicBoolean(false);
 
@@ -57,13 +60,20 @@ public class BattleScreen extends BaseScreen implements BattleView {
 
         skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
 
-        userActiveSkills = new BattleSkillsList2D(skin, GameConstants.USER_ACTIVE_SKILL_COUNT,
+        userActiveSkills = new ApplicableSkillsList2D(skin, GameConstants.USER_ACTIVE_SKILL_COUNT,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory())
                 .setOnSkillClick((skill) -> {
                     if (isBattle.get()) {
+                        this.blockSkill(0);
                         presenter.applyUserSkill(skill);
                     }
                 });
+        userPassiveSkills = new StaticSkillsList2D<>(skin, GameConstants.USER_PASSIVE_SKILL_COUNT,
+                factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
+    }
+
+    private void blockSkill(int index) {
+        userActiveSkills.setSelectedIndex(index);
     }
 
     @Override
@@ -77,6 +87,7 @@ public class BattleScreen extends BaseScreen implements BattleView {
 
     @Override
     public void startBattle() {
+        // create sufficient number of Health bars in BattleOverlayUI
         isBattle.set(true);
     }
 
@@ -124,12 +135,16 @@ public class BattleScreen extends BaseScreen implements BattleView {
                     }
                 });
 
-        userActiveSkills.getSelection().setMultiple(false);
+        userActiveSkills.getSelection().setMultiple(true);
         userActiveSkills.getSelection().setRequired(false);
+        userPassiveSkills.getSelection().setMultiple(true);
+        userPassiveSkills.getSelection().setRequired(false);
 
         layer.add(backButton).pad(100).row();
         layer.add(userActiveSkills).bottom().expandX()
                 .height(ACTIVE_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH).row();
+        layer.add(userPassiveSkills).bottom().expandX()
+                .height(PASSIVE_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH).row();
         return layer;
     }
 
@@ -143,6 +158,7 @@ public class BattleScreen extends BaseScreen implements BattleView {
     @Override
     public void setSkills(List<ActiveSkill> activeSkills, List<PassiveSkill> passiveSkills) {
         userActiveSkills.setItems(activeSkills);
+        userPassiveSkills.setItems(passiveSkills);
     }
 
     @Override
