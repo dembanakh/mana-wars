@@ -4,6 +4,7 @@ import com.mana_wars.ui.overlays.OverlayUIFactory;
 import com.mana_wars.ui.screens.BaseScreen;
 import com.mana_wars.ui.screens.BattleScreen;
 import com.mana_wars.ui.screens.GreetingScreen;
+import com.mana_wars.ui.screens.LoadingScreen;
 import com.mana_wars.ui.screens.MainMenuScreen;
 import com.mana_wars.ui.screens.SkillsScreen;
 import com.mana_wars.ui.storage.FactoryStorage;
@@ -12,6 +13,7 @@ import com.mana_wars.ui.storage.RepositoryStorage;
 import java.util.Map;
 
 public enum ScreenInstance {
+    LOADING,
     GREETING,
     MAIN_MENU,
     SKILLS,
@@ -22,6 +24,8 @@ public enum ScreenInstance {
     public static void init(final ScreenSetter screenSetter, final FactoryStorage factoryStorage,
                             final RepositoryStorage repositoryStorage,
                             final OverlayUIFactory overlayUIFactory) {
+        LOADING.screen = new LoadingScreen(screenSetter, factoryStorage, repositoryStorage,
+                overlayUIFactory.getEmptyOverlayUI());
         GREETING.screen = new GreetingScreen(screenSetter, factoryStorage, repositoryStorage,
                 overlayUIFactory.getEmptyOverlayUI());
         MAIN_MENU.screen = new MainMenuScreen(screenSetter, factoryStorage, repositoryStorage,

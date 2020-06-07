@@ -49,11 +49,6 @@ public class GreetingScreen extends BaseScreen implements GreetingView {
     }
 
     @Override
-    protected void rebuildStage() {
-        super.rebuildStage();
-    }
-
-    @Override
     protected Table buildBackgroundLayer(Skin skin) {
         Table layer = new Table();
 

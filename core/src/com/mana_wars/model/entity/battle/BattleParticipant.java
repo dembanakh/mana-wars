@@ -30,6 +30,9 @@ public abstract class BattleParticipant {
         this.characteristics.put(Characteristic.COOLDOWN, 100);
         this.characteristics.put(Characteristic.CAST_TIME,100);
         this.observables.put(Characteristic.HEALTH, BehaviorSubject.createDefault(healthPoints));
+        this.observables.put(Characteristic.MANA, BehaviorSubject.createDefault(manaPoints));
+        this.observables.put(Characteristic.COOLDOWN, BehaviorSubject.createDefault(100));
+        this.observables.put(Characteristic.CAST_TIME, BehaviorSubject.createDefault(100));
     }
 
     public abstract void start();
