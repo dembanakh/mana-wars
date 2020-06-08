@@ -14,7 +14,7 @@ import java.util.List;
 public class Mob extends BattleParticipant {
 
     Mob(int healthPoints, int manaPoints) {
-        super(healthPoints, manaPoints);
+        super("Block-wolf", healthPoints, manaPoints);
         this.passiveSkills = new ArrayList<>();
     }
 

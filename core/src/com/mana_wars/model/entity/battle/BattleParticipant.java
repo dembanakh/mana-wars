@@ -11,11 +11,13 @@ import io.reactivex.subjects.Subject;
 
 public abstract class BattleParticipant {
 
+    private final String name;
+
     protected Battle battle;
 
     protected List<PassiveSkill> passiveSkills;
 
-    private final EnumMap<Characteristic, Subject<Integer>> observables = new EnumMap<>(Characteristic.class);
+    private final Subject<Integer> healthObservable;
 
     private final EnumMap<Characteristic, Integer> characteristics = new EnumMap<>(Characteristic.class);
     {
@@ -24,15 +26,13 @@ public abstract class BattleParticipant {
         }
     }
 
-    public BattleParticipant(int healthPoints, int manaPoints) {
+    public BattleParticipant(String name, int healthPoints, int manaPoints) {
+        this.name = name;
         this.characteristics.put(Characteristic.HEALTH, healthPoints);
         this.characteristics.put(Characteristic.MANA, manaPoints);
         this.characteristics.put(Characteristic.COOLDOWN, 100);
         this.characteristics.put(Characteristic.CAST_TIME,100);
-        this.observables.put(Characteristic.HEALTH, BehaviorSubject.createDefault(healthPoints));
-        this.observables.put(Characteristic.MANA, BehaviorSubject.createDefault(manaPoints));
-        this.observables.put(Characteristic.COOLDOWN, BehaviorSubject.createDefault(100));
-        this.observables.put(Characteristic.CAST_TIME, BehaviorSubject.createDefault(100));
+        healthObservable = BehaviorSubject.createDefault(healthPoints);
     }
 
     public abstract void start();
@@ -46,7 +46,8 @@ public abstract class BattleParticipant {
         Characteristic c = sc.getCharacteristic();
         int changedValue = c.changeValue(characteristics.get(c), sc.getChangeType(), sc.getValue());
         characteristics.put(c, changedValue);
-        observables.get(c).onNext(changedValue);
+        if (c == Characteristic.HEALTH)
+            healthObservable.onNext(changedValue);
     }
 
     boolean isAlive() {
@@ -61,7 +62,15 @@ public abstract class BattleParticipant {
         this.passiveSkills = passiveSkills;
     }
 
-    List<PassiveSkill> getPassiveSkills() {
+    public List<PassiveSkill> getPassiveSkills() {
         return passiveSkills;
+    }
+
+    public Subject<Integer> getHealthObservable() {
+        return healthObservable;
+    }
+
+    public String getName() {
+        return name;
     }
 }

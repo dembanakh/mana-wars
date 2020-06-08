@@ -18,18 +18,24 @@ public class ClickableSkillsList2D<T extends Skill> extends StaticSkillsList2D<T
 
     public ClickableSkillsList2D(Skin skin, int cols, AssetFactory<Integer, TextureRegion> iconFactory,
                                  AssetFactory<Rarity, TextureRegion> frameFactory) {
-        this(skin.get(List.ListStyle.class), cols, iconFactory, frameFactory);
+        this(skin.get(List.ListStyle.class), cols, iconFactory, frameFactory, (skill) -> {});
+    }
+
+    public ClickableSkillsList2D(Skin skin, int cols, AssetFactory<Integer, TextureRegion> iconFactory,
+                                 AssetFactory<Rarity, TextureRegion> frameFactory,
+                                 Consumer<? super T> onSkillClick) {
+        this(skin.get(List.ListStyle.class), cols, iconFactory, frameFactory, onSkillClick);
     }
 
     private ClickableSkillsList2D(List.ListStyle style, int cols, AssetFactory<Integer, TextureRegion> iconFactory,
-                                  AssetFactory<Rarity, TextureRegion> frameFactory) {
+                                  AssetFactory<Rarity, TextureRegion> frameFactory,
+                                  Consumer<? super T> onSkillClick) {
         super(style, cols, iconFactory, frameFactory);
-        this.onSkillClick = (skill) -> {};
+        setOnSkillClick(onSkillClick);
     }
 
-    public List2D<T> setOnSkillClick(Consumer<? super T> onSkillClick) {
+    protected void setOnSkillClick(Consumer<? super T> onSkillClick) {
         this.onSkillClick = onSkillClick;
-        return this;
     }
 
     @Override
@@ -42,10 +48,9 @@ public class ClickableSkillsList2D<T extends Skill> extends StaticSkillsList2D<T
                 if (index == -1) return true;
                 pressedIndex = index;
 
-                T skill = getItem(index);
-                if (skill != null) {
+                if (isClickable(index)) {
                     try {
-                        onSkillClick.accept(skill);
+                        onSkillClick.accept(getItem(index));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -73,6 +78,10 @@ public class ClickableSkillsList2D<T extends Skill> extends StaticSkillsList2D<T
                 if (pointer == -1) overIndex = -1;
             }
         });
+    }
+
+    protected boolean isClickable(int index) {
+        return getItem(index) != null;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.mana_wars.presentation.presenters;
 
+import com.mana_wars.model.entity.User;
 import com.mana_wars.model.entity.battle.BattleConfig;
 import com.mana_wars.model.entity.battle.BattleParticipant;
 import com.mana_wars.model.entity.battle.Characteristic;
@@ -32,8 +33,8 @@ public class BattlePresenter implements BattlePresenterCallback {
         disposable.add(interactor.getUserHealthObservable().subscribe(observer));
     }
 
-    public void addObserver_enemyHealth(Consumer<? super Integer> observer) {
-        disposable.add(interactor.getEnemyHealthObservable().subscribe(observer));
+    public void addObserver_enemyHealth(int index, Consumer<? super Integer> observer) {
+        disposable.add(interactor.getEnemyHealthObservable(index).subscribe(observer));
     }
 
     public void initBattle(BattleConfig battle) {
@@ -43,11 +44,6 @@ public class BattlePresenter implements BattlePresenterCallback {
     public void applyUserSkill(ActiveSkill skill) {
         //TODO handle empty
         interactor.applyUserSkill(skill);
-    }
-
-    public void dispose() {
-        disposable.dispose();
-        interactor.dispose();
     }
 
     public void updateBattle(float timeDelta) {
@@ -63,15 +59,20 @@ public class BattlePresenter implements BattlePresenterCallback {
     }
 
     @Override
-    public void setSkills(List<ActiveSkill> activeSkills, List<PassiveSkill> passiveSkills) {
+    public void setSkills(Iterable<ActiveSkill> activeSkills, Iterable<PassiveSkill> passiveSkills) {
         uiThreadHandler.postRunnable(() -> view.setSkills(activeSkills, passiveSkills));
     }
 
     @Override
-    public void setOpponents(List<BattleParticipant> userSide, List<BattleParticipant> enemySide) {
-        uiThreadHandler.postRunnable(()->{
-            System.out.println("Data for init user and enemy health, icon etc");
-            System.out.println("User health " + userSide.get(0).getCharacteristicValue(Characteristic.HEALTH));
+    public void setOpponents(User user, Iterable<BattleParticipant> userSide, Iterable<BattleParticipant> enemySide) {
+        uiThreadHandler.postRunnable(() -> {
+            view.setPlayers(user, userSide, enemySide);
         });
     }
+
+    public void dispose() {
+        disposable.dispose();
+        interactor.dispose();
+    }
+
 }

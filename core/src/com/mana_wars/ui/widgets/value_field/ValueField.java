@@ -24,7 +24,7 @@ public abstract class ValueField<T> implements BuildableUI, Consumer<T> {
     }
 
     protected void addActor(Actor actor) {
-        field.add(actor).center();
+        field.add(actor).center().row();
     }
 
     @Override

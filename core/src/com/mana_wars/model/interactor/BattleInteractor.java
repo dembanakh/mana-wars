@@ -35,20 +35,18 @@ public class BattleInteractor {
             battle.getUser().setPassiveSkills(skills.passiveSkills);
             callback.setSkills(skills.activeSkills, skills.passiveSkills);
             battle.init();
-            callback.setOpponents(battle.getUserSide(), battle.getEnemySide());
+            callback.setOpponents(battle.getUser(), battle.getUserSide(), battle.getEnemySide());
             battle.start();
             callback.startBattle();
         }, Throwable::printStackTrace));
     }
 
     public Subject<Integer> getUserHealthObservable() {
-        return userHealthObservable;
-        //return battle.getUser().getHealthObservable();
+        return battle.getUser().getHealthObservable();
     }
 
-    public Subject<Integer> getEnemyHealthObservable() {
-        return enemyHealthObservable;
-        //return battle.getEnemySide().get(0).getHealthObservable();
+    public Subject<Integer> getEnemyHealthObservable(int index) {
+        return battle.getEnemySide().get(index).getHealthObservable();
     }
 
     public void updateBattle(float timeDelta){

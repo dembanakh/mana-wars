@@ -319,14 +319,6 @@ public abstract class List2D<T> extends Widget implements Cullable {
         return items.removeIndex(index).data;
     }
 
-    public List2DItem<T> getOverItem () {
-        return overIndex == -1 ? null : items.get(overIndex);
-    }
-
-    public List2DItem<T> getPressedItem () {
-        return pressedIndex == -1 ? null : items.get(pressedIndex);
-    }
-
     public T getItemAt(float x, float y) {
         List2DItem<T> item = getListItemAt(x, y);
         return item == null ? null : item.data;

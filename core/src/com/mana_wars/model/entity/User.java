@@ -7,7 +7,7 @@ import com.mana_wars.model.entity.skills.ActiveSkill;
 public class User extends BattleParticipant {
 
     public User() {
-        super(1000, 1000);
+        super("User", 1000, 1000);
     }
 
 
