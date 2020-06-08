@@ -1,5 +1,9 @@
 package com.mana_wars.model.db.core_entity_converter;
 
+import android.app.Application;
+
+import androidx.test.core.app.ApplicationProvider;
+
 import com.mana_wars.model.db.entity.DBSkillCharacteristic;
 import com.mana_wars.model.entity.base.ValueChangeType;
 import com.mana_wars.model.entity.battle.Characteristic;
@@ -20,6 +24,7 @@ public class CharacteristicsConverterTest  {
         List<DBSkillCharacteristic> input = new ArrayList<>();
         List<SkillCharacteristic> result = CharacteristicsConverter.toSkillCharacteristics(input);
         assertEquals(0, result.size());
+
 
         DBSkillCharacteristic mockSkill = mock(DBSkillCharacteristic.class);
         when(mockSkill.getValue()).thenReturn(2);
