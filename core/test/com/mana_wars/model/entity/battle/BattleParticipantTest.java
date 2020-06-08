@@ -17,7 +17,7 @@ public class BattleParticipantTest {
 
     @Test
     public void testGetCharacteristicValue() {
-        BattleParticipant bp = new BattleParticipant(100, 200) {
+        BattleParticipant bp = new BattleParticipant("a", 100, 200) {
             @Override
             public void start() {
 
@@ -35,7 +35,7 @@ public class BattleParticipantTest {
 
     @Test
     public void testApplySkillCharacteristic() {
-        BattleParticipant bp = new BattleParticipant(100,200) {
+        BattleParticipant bp = new BattleParticipant("a", 100,200) {
 
             @Override
             public void start() {
