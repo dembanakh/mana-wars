@@ -1,9 +1,5 @@
 package com.mana_wars;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 074c49d... further Battle refactor
 import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
