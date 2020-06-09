@@ -104,17 +104,9 @@ public abstract class BaseBattle implements BattleConfig, Battle {
 
 
     @Override
-    public void requestSkillApplication(BattleParticipant participant, ActiveSkill skill) {
+    public synchronized void requestSkillApplication(BattleParticipant participant, ActiveSkill skill, double castTime) {
         //TODO think about synchronization
-        synchronized (this) {
-            double activationTime = battleTime + skill.getCastTime();
-            requestSkillApplication(participant, skill, activationTime);
-        }
-    }
-
-    @Override
-    public synchronized void requestSkillApplication(BattleParticipant participant, ActiveSkill skill, double activationTime) {
-        //TODO think about synchronization
+        double activationTime = battleTime + castTime;
         battleEvents.add(new BattleEvent(activationTime, skill, participant));
     }
 

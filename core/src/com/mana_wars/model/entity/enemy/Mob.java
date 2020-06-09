@@ -23,6 +23,7 @@ public class Mob extends BattleParticipant {
         double activationTime = 0;
         for (ActiveSkill skill : getInitialAutoSkills()) {
             activationTime += skill.getCastTime();
+            //TODO change
             battle.requestSkillApplication(this, skill, activationTime);
         }
 

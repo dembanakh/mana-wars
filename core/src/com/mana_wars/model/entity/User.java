@@ -46,7 +46,7 @@ public class User extends BattleParticipant {
 
             //todo refactor
             if (toApply != null && toApply.isAvailableAt(currentTime)){
-                battle.requestSkillApplication(this, toApply.skill);
+                battle.requestSkillApplication(this, toApply.skill, toApply.skill.getCastTime()*getCharacteristicValue(Characteristic.CAST_TIME)/100);
                 for (BattleSkill battleSkill : battleSkills){
                     if (battleSkill == toApply){
                         toApply.updateAvailabilityTime(currentTime
