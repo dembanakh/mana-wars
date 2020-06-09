@@ -1,14 +1,12 @@
 package com.mana_wars.model.entity.battle;
 
-import com.mana_wars.model.entity.User;
 import com.mana_wars.model.entity.enemy.EnemyFactory;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class PvEBattle extends BaseBattle {
 
-    public PvEBattle(User user, EnemyFactory enemyFactory) {
+    public PvEBattle(BattleParticipant user, EnemyFactory enemyFactory) {
         super(user, new ArrayList<>(), enemyFactory.generateEnemies());
     }
 

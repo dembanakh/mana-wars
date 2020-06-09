@@ -4,62 +4,70 @@ import com.mana_wars.model.entity.battle.BattleParticipant;
 import com.mana_wars.model.entity.battle.Characteristic;
 import com.mana_wars.model.entity.skills.BattleSkill;
 import com.mana_wars.model.entity.skills.SkillCharacteristic;
+import com.mana_wars.model.entity.user.UserBattleAPI;
+import com.mana_wars.model.entity.user.UserMenuAPI;
+import com.mana_wars.model.entity.user.UserSkillsAPI;
+import com.mana_wars.model.repository.UserLevelRepository;
 import com.mana_wars.model.repository.UserManaRepository;
+import com.mana_wars.model.repository.UsernameRepository;
 
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.Subject;
 
-public class User extends BattleParticipant {
+public class User extends BattleParticipant implements UserMenuAPI, UserSkillsAPI, UserBattleAPI {
 
-    private final Subject<Integer> manaObservable;
+    private final Subject<Integer> manaAmountObservable;
+    private final Subject<Integer> userLevelObservable;
+    private final Subject<String> usernameObservable;
+
     private final UserManaRepository userManaRepository;
+    private final UserLevelRepository userLevelRepository;
+    private final UsernameRepository usernameRepository;
 
-    public User(UserManaRepository userManaRepository) {
+    private BattleSkill toApply;
+    private double battleTime;
+
+    public User(UserManaRepository userManaRepository, UserLevelRepository userLevelRepository,
+                UsernameRepository usernameRepository) {
         super("User", 1000);
         this.userManaRepository = userManaRepository;
+        this.userLevelRepository = userLevelRepository;
+        this.usernameRepository = usernameRepository;
+        manaAmountObservable = BehaviorSubject.createDefault(initManaAmount());
+        userLevelObservable = BehaviorSubject.createDefault(initUserLevel());
+        usernameObservable = BehaviorSubject.createDefault(initUsername());
+    }
+
+    private int initManaAmount() {
         final int userMana = userManaRepository.getUserMana();
-        manaObservable = BehaviorSubject.createDefault(userMana);
         setCharacteristicValue(Characteristic.MANA, userMana);
+        return userMana;
     }
 
-    public Subject<Integer> getManaObservable() {
-        return manaObservable;
+    private int initUserLevel() {
+        return userLevelRepository.getUserLevel();
     }
 
-
-
-
+    private String initUsername() {
+        return usernameRepository.getUsername();
+    }
 
     @Override
     public void start() {
 
     }
 
-    private BattleSkill toApply;
-    private double battleTime;
-
     @Override
     public void update(double currentTime) {
-
         synchronized (this){
             battleTime = currentTime;
 
             //todo refactor
             if (toApply != null && toApply.isAvailableAt(currentTime)){
-                battle.requestSkillApplication(this, toApply.skill, toApply.skill.getCastTime()*getCharacteristicValue(Characteristic.CAST_TIME)/100);
-                for (BattleSkill battleSkill : battleSkills){
-                    if (battleSkill == toApply){
-                        toApply.updateAvailabilityTime(currentTime
-                                + toApply.skill.getCastTime()*getCharacteristicValue(Characteristic.CAST_TIME)/100
-                                + toApply.skill.getCooldown()*getCharacteristicValue(Characteristic.COOLDOWN)/100);
-                    }
-                    else battleSkill.updateAvailabilityTime(
-                            currentTime+toApply.skill.getCastTime());
-                }
+                super.applySkill(toApply.skill, currentTime);
             }
             toApply = null;
         }
-
     }
 
     @Override
@@ -70,21 +78,35 @@ public class User extends BattleParticipant {
         if (c == Characteristic.MANA){
             setManaAmount(getCharacteristicValue(c));
         }
-
     }
 
-    public User reInitCharacteristics() {
+
+    @Override
+    public Subject<Integer> getManaAmountObservable() {
+        return manaAmountObservable;
+    }
+
+    @Override
+    public Subject<Integer> getUserLevelObservable() {
+        return userLevelObservable;
+    }
+
+    @Override
+    public Subject<String> getUsernameObservable() {
+        return usernameObservable;
+    }
+
+    @Override
+    public void reInitCharacteristics() {
         setCharacteristicValue(Characteristic.HEALTH, initialHealth);
-        return this;
     }
 
+    @Override
     public boolean tryApplyActiveSkill(int skillIndex) {
-
         BattleSkill targetBattleSkill = battleSkills[skillIndex];
 
         if (getCharacteristicValue(Characteristic.MANA) >= targetBattleSkill.skill.getManaCost()
             && targetBattleSkill.isAvailableAt(battleTime)) {
-
             synchronized (this){
                 toApply = targetBattleSkill;
             }
@@ -93,6 +115,7 @@ public class User extends BattleParticipant {
         return false;
     }
 
+    @Override
     public void updateManaAmount(int delta) {
         setManaAmount(userManaRepository.getUserMana() + delta);
     }
@@ -100,8 +123,7 @@ public class User extends BattleParticipant {
     private void setManaAmount(int userMana){
         setCharacteristicValue(Characteristic.MANA, userMana);
         userManaRepository.setUserMana(userMana);
-        manaObservable.onNext(userMana);
+        manaAmountObservable.onNext(userMana);
     }
-
 
 }

@@ -34,15 +34,15 @@ public class TimeoutSelection<T> {
         }
     }
 
-    public void selectFor(T data, float time) {
+    public void selectFor(T data, double time) {
         selection.add(new TimeoutItem<>(data, Math.max(getTime(data), time)));
     }
 
-    private float getTime(T data) {
+    private double getTime(T data) {
         for (TimeoutItem<T> item : selection) {
             if (item.data == data) return item.time;
         }
-        return 0f;
+        return 0;
     }
 
     public boolean contains(T data) {
@@ -54,9 +54,9 @@ public class TimeoutSelection<T> {
 
     private static class TimeoutItem<T> {
         private final T data;
-        private float time;
+        private double time;
 
-        private TimeoutItem(T data, float time) {
+        private TimeoutItem(T data, double time) {
             this.data = data;
             this.time = time;
         }

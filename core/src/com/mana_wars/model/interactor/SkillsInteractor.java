@@ -1,6 +1,7 @@
 package com.mana_wars.model.interactor;
 
 import com.mana_wars.model.SkillsListTriple;
+import com.mana_wars.model.entity.user.UserSkillsAPI;
 import com.mana_wars.model.skills_operations.SkillsOperations;
 import com.mana_wars.model.entity.SkillTable;
 
@@ -9,22 +10,16 @@ import com.mana_wars.model.repository.DatabaseRepository;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
-import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.Subject;
 
 public class SkillsInteractor {
 
-    private DatabaseRepository databaseRepository;
+    private final UserSkillsAPI user;
+    private final DatabaseRepository databaseRepository;
 
-    private final Subject<Integer> manaAmountObservable;
-    private final Subject<Integer> userLevelObservable;
-    private final Subject<String> usernameObservable;
-
-    public SkillsInteractor(DatabaseRepository databaseRepository){
+    public SkillsInteractor(final UserSkillsAPI user, final DatabaseRepository databaseRepository) {
+        this.user = user;
         this.databaseRepository = databaseRepository;
-        manaAmountObservable = BehaviorSubject.create();
-        userLevelObservable = BehaviorSubject.create();
-        usernameObservable = BehaviorSubject.create();
     }
 
     public Single<SkillsListTriple> getUserSkills() {
@@ -64,15 +59,15 @@ public class SkillsInteractor {
     }
 
     public Subject<Integer> getManaAmountObservable() {
-        return manaAmountObservable;
+        return user.getManaAmountObservable();
     }
 
     public Subject<Integer> getUserLevelObservable() {
-        return userLevelObservable;
+        return user.getUserLevelObservable();
     }
 
     public Subject<String> getUsernameObservable() {
-        return usernameObservable;
+        return user.getUsernameObservable();
     }
 
 }

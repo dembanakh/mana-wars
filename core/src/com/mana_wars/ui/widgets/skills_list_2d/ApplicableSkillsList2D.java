@@ -4,13 +4,13 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mana_wars.model.entity.base.Rarity;
-import com.mana_wars.model.entity.skills.Skill;
+import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.widgets.TimeoutSelection;
 
 import io.reactivex.functions.Consumer;
 
-public class ApplicableSkillsList2D<T extends Skill> extends ClickableSkillsList2D<T>
+public class ApplicableSkillsList2D<T extends ActiveSkill> extends ClickableSkillsList2D<T>
         implements BlockableSkillsList<T> {
 
     private final TimeoutSelection<Integer> blockedSkills;
@@ -30,8 +30,14 @@ public class ApplicableSkillsList2D<T extends Skill> extends ClickableSkillsList
     }
 
     @Override
-    public void blockSkillAtFor(int index, float time) {
-        blockedSkills.selectFor(index, time);
+    public void blockSkills(int appliedSkillIndex) {
+        T appliedSkill = getItem(appliedSkillIndex);
+        for (int i = 0; i < items.size; ++i) {
+            if (i == appliedSkillIndex)
+                blockedSkills.selectFor(i, appliedSkill.getCastTime() + appliedSkill.getCooldown());
+            else
+                blockedSkills.selectFor(i, appliedSkill.getCastTime());
+        }
     }
 
     @Override

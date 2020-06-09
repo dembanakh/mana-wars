@@ -1,6 +1,5 @@
 package com.mana_wars.model.entity.battle;
 
-import com.mana_wars.model.entity.User;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.Skill;
 
@@ -13,15 +12,18 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class BaseBattle implements BattleConfig, Battle {
 
-    private Map<BattleParticipant, List<BattleParticipant>> opponents = new HashMap<>();
-    private List<BattleParticipant> userSide;
-    private List<BattleParticipant> enemySide;
-    private User user;
-    private AtomicBoolean isActive = new AtomicBoolean(false);
+    private final Map<BattleParticipant, List<BattleParticipant>> opponents = new HashMap<>();
+    private final List<BattleParticipant> userSide;
+    private final List<BattleParticipant> enemySide;
+    private final BattleParticipant user;
+    private final AtomicBoolean isActive = new AtomicBoolean(false);
+
     double battleTime;
     private PriorityQueue<BattleEvent> battleEvents = new PriorityQueue<>();
 
-    BaseBattle(User user, List<BattleParticipant> userSide, List<BattleParticipant> enemySide){
+    BaseBattle(final BattleParticipant user,
+               final List<BattleParticipant> userSide,
+               final List<BattleParticipant> enemySide){
         this.user = user;
         this.userSide = userSide;
         this.enemySide = enemySide;
@@ -52,22 +54,16 @@ public abstract class BaseBattle implements BattleConfig, Battle {
 
     @Override
     public synchronized void update(float timeDelta){
-
-
         if (isActive.get()) {
             battleTime += timeDelta;
-
-
 
             while (!battleEvents.isEmpty() && battleEvents.peek().targetTime < battleTime){
                 BattleEvent be = battleEvents.poll();
                 if (be.participant.isAlive())
                     activateParticipantSkill(be);
-                // TODO reduce user's mana amount
             }
 
             user.update(battleTime);
-
             for (BattleParticipant battleParticipant : getUserSide()) {
                 battleParticipant.update(battleTime);
             }
@@ -88,29 +84,13 @@ public abstract class BaseBattle implements BattleConfig, Battle {
     }
 
     @Override
-    public User getUser() {
-        return user;
-    }
-
-    @Override
-    public List<BattleParticipant> getUserSide() {
-        return userSide;
-    }
-
-    @Override
-    public List<BattleParticipant> getEnemySide() {
-        return enemySide;
-    }
-
-
-    @Override
     public synchronized void requestSkillApplication(BattleParticipant participant, ActiveSkill skill, double castTime) {
         //TODO think about synchronization
         double activationTime = battleTime + castTime;
         battleEvents.add(new BattleEvent(activationTime, skill, participant));
     }
 
-
+    // TODO: remove after Mob::update has been implemented
     synchronized void addBattleEvent(BattleEvent event) {
         battleEvents.add(event);
     }
@@ -119,6 +99,7 @@ public abstract class BaseBattle implements BattleConfig, Battle {
         //TODO refactor for multiple targets
         be.skill.activate(be.participant, getOpponents(be.participant).get(0));
     }
+
 
     private void initSide(Iterable<BattleParticipant> side) {
         for (BattleParticipant participant : side) {
@@ -142,6 +123,22 @@ public abstract class BaseBattle implements BattleConfig, Battle {
         return opponents.get(participant);
     }
 
+    @Override
+    public BattleParticipant getUser() {
+        return user;
+    }
+
+    @Override
+    public List<BattleParticipant> getUserSide() {
+        return userSide;
+    }
+
+    @Override
+    public List<BattleParticipant> getEnemySide() {
+        return enemySide;
+    }
+
+    // TODO: make private after Mob::update has been implemented
     protected static class BattleEvent implements Comparable<BattleEvent> {
         private final double targetTime;
         final ActiveSkill skill;

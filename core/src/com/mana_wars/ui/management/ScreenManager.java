@@ -4,11 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.mana_wars.ManaWars;
+import com.mana_wars.model.entity.User;
 import com.mana_wars.model.entity.base.Rarity;
+import com.mana_wars.model.repository.DatabaseUpdater;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.overlays.OverlayUIFactory;
+import com.mana_wars.ui.screens.LoadingScreen;
 import com.mana_wars.ui.storage.FactoryStorage;
+import com.mana_wars.ui.storage.RepositoryStorage;
 
 import java.util.Map;
 
@@ -60,14 +63,15 @@ public class ScreenManager implements FactoryStorage, ScreenSetter {
         };
     }
 
-    public void start() {
+    public void start(final User user, final RepositoryStorage repositoryStorage,
+                      final DatabaseUpdater databaseUpdater) {
         skillIconFactory.loadItems();
         skinFactory.loadItems();
         rarityFrameFactory.loadItems();
         overlayUIFactory.init();
-        ScreenInstance.init(this, this, ManaWars.getInstance(),
-                overlayUIFactory, ManaWars.getInstance());
-        setScreen(ScreenInstance.LOADING, null);
+        ScreenInstance.init(user, this, this, repositoryStorage, overlayUIFactory);
+        handler.setScreen(new LoadingScreen(this, this,
+                overlayUIFactory.getEmptyOverlayUI(), databaseUpdater));
     }
 
     public void dispose() {

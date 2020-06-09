@@ -5,46 +5,38 @@ import com.mana_wars.model.entity.User;
 import com.mana_wars.model.repository.DatabaseRepository;
 import com.mana_wars.model.repository.DatabaseUpdater;
 import com.mana_wars.model.repository.LocalUserDataRepository;
-import com.mana_wars.model.repository.LocalizedStringsRepository;
 import com.mana_wars.ui.management.ScreenHandler;
 import com.mana_wars.ui.management.ScreenManager;
 import com.mana_wars.ui.storage.RepositoryStorage;
-import com.mana_wars.ui.storage.UpdaterStorage;
 
-public class ManaWars extends Game implements ScreenHandler, RepositoryStorage, UpdaterStorage {
+public class ManaWars extends Game implements ScreenHandler, RepositoryStorage {
 
-	private static ManaWars instance;
 	private final ScreenManager screenManager;
-	private User user;
 
 	//platform repos
-	private LocalUserDataRepository localUserDataRepository;
-	private DatabaseRepository databaseRepository;
+	private final LocalUserDataRepository localUserDataRepository;
+	private final DatabaseRepository databaseRepository;
 
-	private DatabaseUpdater databaseUpdater;
+	private final DatabaseUpdater databaseUpdater;
 
-	private ManaWars() {
-		screenManager = new ScreenManager(this);
-	}
-
-	public static ManaWars getInstance() {
-		if (instance == null) instance = new ManaWars();
-		return instance;
+	public ManaWars(final LocalUserDataRepository localUserDataRepository,
+					final DatabaseRepository databaseRepository,
+					final DatabaseUpdater databaseUpdater) {
+		this.localUserDataRepository = localUserDataRepository;
+		this.databaseRepository = databaseRepository;
+		this.databaseUpdater = databaseUpdater;
+		this.screenManager = new ScreenManager(this);
 	}
 	
 	@Override
 	public void create () {
-		user = new User(localUserDataRepository);
-		screenManager.start();
+		screenManager.start(new User(localUserDataRepository, localUserDataRepository, localUserDataRepository),
+				this, databaseUpdater);
 	}
 	
 	@Override
 	public void dispose () {
 		screenManager.dispose();
-	}
-
-	public void setLocalUserDataRepository(final LocalUserDataRepository localUserDataRepository) {
-		this.localUserDataRepository = localUserDataRepository;
 	}
 
 	@Override
@@ -57,19 +49,4 @@ public class ManaWars extends Game implements ScreenHandler, RepositoryStorage, 
 		return databaseRepository;
 	}
 
-	public void setDatabaseRepository(final DatabaseRepository databaseRepository) {
-		this.databaseRepository = databaseRepository;
-	}
-
-	public DatabaseUpdater getDatabaseUpdater() {
-		return databaseUpdater;
-	}
-
-	public void setDatabaseUpdater(DatabaseUpdater databaseUpdater) {
-		this.databaseUpdater = databaseUpdater;
-	}
-
-	public User getUser() {
-		return user;
-	}
 }

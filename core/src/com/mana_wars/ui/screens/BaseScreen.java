@@ -21,8 +21,6 @@ public abstract class BaseScreen implements Screen, ScreenSetter {
 
     private final ScreenSetter screenSetter;
 
-    private Map<String, Object> arguments;
-
     BaseScreen(ScreenSetter screenSetter) {
         this.stage = new Stage() {
             @Override
@@ -36,12 +34,11 @@ public abstract class BaseScreen implements Screen, ScreenSetter {
     }
 
     public BaseScreen reInit(Map<String, Object> arguments) {
-        this.arguments = arguments;
         return this;
     }
 
     @SuppressWarnings("unchecked")
-    <T> T getArgument(String key) {
+    static <T> T getArgument(Map<String, Object> arguments, String key) {
         if (!arguments.containsKey(key))
             throw new NoSuchElementException("There is no argument for key " + key);
         return (T)arguments.get(key);
