@@ -15,6 +15,7 @@ import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.entity.skills.Skill;
+import com.mana_wars.model.entity.user.UserSkillsAPI;
 import com.mana_wars.model.interactor.SkillsInteractor;
 import com.mana_wars.presentation.presenters.SkillsPresenter;
 import com.mana_wars.presentation.view.SkillsView;
@@ -46,14 +47,15 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
 
     private final SkillsPresenter presenter;
 
-    public SkillsScreen(ScreenSetter screenSetter, FactoryStorage factoryStorage,
-                        RepositoryStorage repositoryStorage, MenuOverlayUI overlayUI) {
+    public SkillsScreen(final UserSkillsAPI user,
+                        final ScreenSetter screenSetter, final FactoryStorage factoryStorage,
+                        final RepositoryStorage repositoryStorage, final MenuOverlayUI overlayUI) {
         super(screenSetter);
         this.overlayUI = overlayUI;
 
         this.presenter = new SkillsPresenter(this,
                 Gdx.app::postRunnable,
-                new SkillsInteractor(repositoryStorage.getDatabaseRepository()));
+                new SkillsInteractor(user, repositoryStorage.getDatabaseRepository()));
         presenter.addObserver_manaAmount(overlayUI.getManaAmountObserver());
         presenter.addObserver_userLevel(overlayUI.getUserLevelObserver());
         presenter.addObserver_userName(overlayUI.getUsernameObserver());

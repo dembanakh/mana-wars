@@ -10,8 +10,6 @@ import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.OverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
-import com.mana_wars.ui.storage.RepositoryStorage;
-import com.mana_wars.ui.storage.UpdaterStorage;
 
 import java.util.Map;
 
@@ -22,11 +20,10 @@ public class LoadingScreen extends BaseScreen {
     private final DatabaseUpdater updater;
 
     public LoadingScreen(ScreenSetter screenSetter, FactoryStorage factoryStorage,
-                         RepositoryStorage repositoryStorage, OverlayUI overlayUI,
-                         UpdaterStorage updaterStorage) {
+                         OverlayUI overlayUI, DatabaseUpdater updater) {
         super(screenSetter);
         this.overlayUI = overlayUI;
-        this.updater = updaterStorage.getDatabaseUpdater();
+        this.updater = updater;
         this.skin = factoryStorage.getSkinFactory().getAsset(UIStringConstants.UI_SKIN.FREEZING);
     }
 

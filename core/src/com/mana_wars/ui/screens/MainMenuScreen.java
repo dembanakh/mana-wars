@@ -6,9 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.mana_wars.ManaWars;
 import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.entity.base.Rarity;
+import com.mana_wars.model.entity.user.UserMenuAPI;
 import com.mana_wars.model.interactor.MainMenuInteractor;
 import com.mana_wars.model.mana_bonus.ManaBonusImpl;
 import com.mana_wars.presentation.presenters.MainMenuPresenter;
@@ -34,16 +34,17 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
 
     private final MainMenuPresenter presenter;
 
-    public MainMenuScreen(ScreenSetter screenSetter, FactoryStorage factoryStorage,
-                          RepositoryStorage repositoryStorage, MenuOverlayUI overlayUI) {
+    public MainMenuScreen(final UserMenuAPI user, final ScreenSetter screenSetter,
+                          final FactoryStorage factoryStorage,
+                          final RepositoryStorage repositoryStorage,
+                          final MenuOverlayUI overlayUI) {
         super(screenSetter);
         this.overlayUI = overlayUI;
 
         this.presenter = new MainMenuPresenter(this,
                 Gdx.app::postRunnable,
                 new MainMenuInteractor(
-                        ManaWars.getInstance().getUser(),
-                        repositoryStorage.getLocalUserDataRepository(),
+                        user,
                         repositoryStorage.getDatabaseRepository(),
                         new ManaBonusImpl(
                                 GameConstants.MANA_BONUS_BIT_TIMEOUT,

@@ -17,6 +17,10 @@ public class GreetingInteractor {
         this.databaseRepository = databaseRepository;
     }
 
+    public boolean hasUsername() {
+        return usernameRepository.hasUsername();
+    }
+
     public void registerUser(String username) {
         if (!usernameRepository.hasUsername()) {
             usernameRepository.setUsername(username);
@@ -30,7 +34,4 @@ public class GreetingInteractor {
         disposable.dispose();
     }
 
-    public boolean hasUsername() {
-        return usernameRepository.hasUsername();
-    }
 }

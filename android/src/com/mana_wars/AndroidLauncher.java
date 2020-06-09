@@ -20,17 +20,12 @@ public class AndroidLauncher extends AndroidApplication {
 		config.useAccelerometer = false;
 		config.useGyroscope = false;
 
-		ManaWars app = ManaWars.getInstance();
-
 		SharedPreferencesRepository sharedPreferencesRepository = new SharedPreferencesRepository(this);
 		RoomRepository roomRepository = RoomRepository.getInstance(this);
 
-
-		app.setLocalUserDataRepository(sharedPreferencesRepository);
-		app.setDatabaseRepository(new DBMapperRepository(roomRepository));
-		app.setDatabaseUpdater(new DBUpdateChecker(this, roomRepository, sharedPreferencesRepository));
-
-
-		initialize(app, config);
+		initialize(new ManaWars(sharedPreferencesRepository,
+								new DBMapperRepository(roomRepository),
+								new DBUpdateChecker(this, roomRepository, sharedPreferencesRepository)),
+				config);
 	}
 }

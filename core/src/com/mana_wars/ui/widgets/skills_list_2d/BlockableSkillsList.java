@@ -5,7 +5,7 @@ import com.mana_wars.model.entity.skills.Skill;
 
 public interface BlockableSkillsList<T extends Skill> {
     void update(float delta);
-    void blockSkillAtFor(int index, float time);
+    void blockSkills(int appliedSkillIndex);
     void setItems(Iterable<? extends T> items);
 
     Actor toActor();

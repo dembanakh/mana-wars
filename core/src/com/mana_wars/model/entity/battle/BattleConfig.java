@@ -12,7 +12,7 @@ public interface BattleConfig {
     boolean checkFinish();
     void finish();
 
-    User getUser();
+    BattleParticipant getUser();
     List<BattleParticipant> getUserSide();
     List<BattleParticipant> getEnemySide();
 }

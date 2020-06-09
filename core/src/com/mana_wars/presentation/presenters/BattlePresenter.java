@@ -1,19 +1,18 @@
 package com.mana_wars.presentation.presenters;
 
-import com.mana_wars.model.entity.User;
 import com.mana_wars.model.entity.battle.BattleConfig;
 import com.mana_wars.model.entity.battle.BattleParticipant;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.interactor.BattleInteractor;
-import com.mana_wars.model.interactor.BattlePresenterCallback;
+import com.mana_wars.model.interactor.BattleInitializationObserver;
 import com.mana_wars.presentation.util.UIThreadHandler;
 import com.mana_wars.presentation.view.BattleView;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 
-public class BattlePresenter implements BattlePresenterCallback {
+public class BattlePresenter implements BattleInitializationObserver {
 
     private BattleView view;
     private BattleInteractor interactor;
@@ -38,10 +37,11 @@ public class BattlePresenter implements BattlePresenterCallback {
         interactor.init(this, battle);
     }
 
-    public void applyUserSkill(int skill) {
+    public void applyUserSkill(int appliedSkillIndex) {
         //TODO handle empty
-
-        interactor.tryApplyUserSkill(skill);
+        if (interactor.tryApplyUserSkill(appliedSkillIndex)) {
+            view.blockSkills(appliedSkillIndex);
+        }
     }
 
     public void updateBattle(float timeDelta) {
@@ -51,8 +51,12 @@ public class BattlePresenter implements BattlePresenterCallback {
         }
     }
 
+    public BattleParticipant getUser() {
+        return interactor.getUser();
+    }
+
     @Override
-    public void startBattle() {
+    public void onStartBattle() {
         view.startBattle();
     }
 
@@ -62,7 +66,7 @@ public class BattlePresenter implements BattlePresenterCallback {
     }
 
     @Override
-    public void setOpponents(User user, Iterable<BattleParticipant> userSide, Iterable<BattleParticipant> enemySide) {
+    public void setOpponents(BattleParticipant user, Iterable<BattleParticipant> userSide, Iterable<BattleParticipant> enemySide) {
         uiThreadHandler.postRunnable(() -> {
             view.setPlayers(user, userSide, enemySide);
         });
