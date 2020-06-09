@@ -3,12 +3,13 @@ package com.mana_wars.model.entity.battle;
 import com.mana_wars.model.entity.User;
 import com.mana_wars.model.entity.enemy.EnemyFactory;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 public class PvEBattle extends BaseBattle {
 
     public PvEBattle(User user, EnemyFactory enemyFactory) {
-        super(user, Collections.singletonList(user), enemyFactory.generateEnemies());
+        super(user, new ArrayList<>(), enemyFactory.generateEnemies());
     }
 
     @Override

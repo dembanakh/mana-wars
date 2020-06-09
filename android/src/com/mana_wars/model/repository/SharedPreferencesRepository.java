@@ -39,12 +39,12 @@ public class SharedPreferencesRepository implements LocalUserDataRepository {
 
     @Override
     public boolean hasUsername() {
-        return getUsername() != null;
+        return !getUsername().equals("");
     }
 
     @Override
     public String getUsername() {
-        return getDefaultManager().getString(USERNAME, null);
+        return getDefaultManager().getString(USERNAME, "");
     }
 
     @Override

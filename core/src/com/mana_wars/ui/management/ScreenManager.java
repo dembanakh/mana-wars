@@ -66,8 +66,8 @@ public class ScreenManager implements FactoryStorage, ScreenSetter {
         rarityFrameFactory.loadItems();
         overlayUIFactory.init();
         ScreenInstance.init(this, this, ManaWars.getInstance(),
-                overlayUIFactory);
-        setScreen(ScreenInstance.GREETING, null);
+                overlayUIFactory, ManaWars.getInstance());
+        setScreen(ScreenInstance.LOADING, null);
     }
 
     public void dispose() {

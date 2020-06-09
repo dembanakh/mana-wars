@@ -25,6 +25,8 @@ public class Mob extends BattleParticipant {
             activationTime += skill.getCastTime();
             battle.requestSkillApplication(this, skill, activationTime);
         }
+
+        System.out.println(getName() + " started");
     }
 
     @Override

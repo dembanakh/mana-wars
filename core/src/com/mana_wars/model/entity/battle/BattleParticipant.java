@@ -50,7 +50,7 @@ public abstract class BattleParticipant {
             healthObservable.onNext(changedValue);
     }
 
-    boolean isAlive() {
+    public boolean isAlive() {
         return getCharacteristicValue(Characteristic.HEALTH) > 0;
     }
 

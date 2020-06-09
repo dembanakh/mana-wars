@@ -20,6 +20,9 @@ public class Skill extends GameItem {
 
     //TODO rewrite and add observers
     public void activate(BattleParticipant self, BattleParticipant enemy){
+
+        System.out.println(getName() + " activated");
+
         for(SkillCharacteristic sc : skillCharacteristics){
             if(sc.getTarget()==SkillCharacteristic.Target.SELF)
                 self.applySkillCharacteristic(sc);

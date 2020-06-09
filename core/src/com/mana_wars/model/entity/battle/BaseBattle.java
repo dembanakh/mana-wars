@@ -25,11 +25,14 @@ public abstract class BaseBattle implements BattleConfig, Battle {
         this.user = user;
         this.userSide = userSide;
         this.enemySide = enemySide;
+
+        opponents.put(user, new ArrayList<>(enemySide));
         for(BattleParticipant userAlly : userSide){
             opponents.put(userAlly, new ArrayList<>(enemySide));
         }
         for(BattleParticipant userEnemy : enemySide){
             opponents.put(userEnemy, new ArrayList<>(userSide));
+            opponents.get(userEnemy).add(user);
         }
     }
 
@@ -48,6 +51,8 @@ public abstract class BaseBattle implements BattleConfig, Battle {
 
     @Override
     public synchronized void update(float timeDelta){
+
+
         if (isActive.get()) {
             for (BattleParticipant battleParticipant : getUserSide()) {
                 battleParticipant.act(timeDelta);
@@ -67,7 +72,7 @@ public abstract class BaseBattle implements BattleConfig, Battle {
 
     @Override
     public boolean checkFinish() {
-        return isSideFinished(userSide) || isSideFinished(enemySide);
+        return !user.isAlive() || isSideFinished(enemySide);
     }
 
     @Override

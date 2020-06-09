@@ -1,26 +1,33 @@
 package com.mana_wars.ui.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.mana_wars.model.repository.DatabaseUpdater;
 import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.OverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
+import com.mana_wars.ui.storage.UpdaterStorage;
+
+import java.util.Map;
 
 public class LoadingScreen extends BaseScreen {
 
     private final Skin skin;
     private final OverlayUI overlayUI;
+    private final DatabaseUpdater updater;
 
     public LoadingScreen(ScreenSetter screenSetter, FactoryStorage factoryStorage,
-                         RepositoryStorage repositoryStorage, OverlayUI overlayUI) {
+                         RepositoryStorage repositoryStorage, OverlayUI overlayUI,
+                         UpdaterStorage updaterStorage) {
         super(screenSetter);
         this.overlayUI = overlayUI;
-
-        skin = factoryStorage.getSkinFactory().getAsset(UIStringConstants.UI_SKIN.FREEZING);
+        this.updater = updaterStorage.getDatabaseUpdater();
+        this.skin = factoryStorage.getSkinFactory().getAsset(UIStringConstants.UI_SKIN.FREEZING);
     }
 
     @Override
@@ -50,9 +57,14 @@ public class LoadingScreen extends BaseScreen {
     }
 
     @Override
-    public void show() {
-        super.show();
-        setScreen(ScreenInstance.GREETING, null);
+    public BaseScreen reInit(Map<String, Object> arguments) {
+        //TODO activate loading animation
+        updater.checkUpdate(()->{
+            Gdx.app.postRunnable(()->{
+                setScreen(ScreenInstance.GREETING, null);
+            });
+        });
+        return super.reInit(arguments);
     }
 
     @Override

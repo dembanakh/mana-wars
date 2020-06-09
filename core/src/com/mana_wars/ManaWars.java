@@ -3,13 +3,15 @@ package com.mana_wars;
 import com.badlogic.gdx.Game;
 import com.mana_wars.model.entity.User;
 import com.mana_wars.model.repository.DatabaseRepository;
+import com.mana_wars.model.repository.DatabaseUpdater;
 import com.mana_wars.model.repository.LocalUserDataRepository;
 import com.mana_wars.model.repository.LocalizedStringsRepository;
 import com.mana_wars.ui.management.ScreenHandler;
 import com.mana_wars.ui.management.ScreenManager;
 import com.mana_wars.ui.storage.RepositoryStorage;
+import com.mana_wars.ui.storage.UpdaterStorage;
 
-public class ManaWars extends Game implements ScreenHandler, RepositoryStorage {
+public class ManaWars extends Game implements ScreenHandler, RepositoryStorage, UpdaterStorage {
 
 	private static ManaWars instance;
 	private final ScreenManager screenManager;
@@ -17,8 +19,9 @@ public class ManaWars extends Game implements ScreenHandler, RepositoryStorage {
 
 	//platform repos
 	private LocalUserDataRepository localUserDataRepository;
-	private LocalizedStringsRepository localizedStringsRepository;
 	private DatabaseRepository databaseRepository;
+
+	private DatabaseUpdater databaseUpdater;
 
 	private ManaWars() {
 		screenManager = new ScreenManager(this);
@@ -49,14 +52,6 @@ public class ManaWars extends Game implements ScreenHandler, RepositoryStorage {
 		return localUserDataRepository;
 	}
 
-	public LocalizedStringsRepository getLocalizedStringsRepository() {
-		return localizedStringsRepository;
-	}
-
-	public void setLocalizedStringsRepository(final LocalizedStringsRepository localizedStringsRepository) {
-		this.localizedStringsRepository = localizedStringsRepository;
-	}
-
 	@Override
 	public DatabaseRepository getDatabaseRepository() {
 		return databaseRepository;
@@ -66,4 +61,11 @@ public class ManaWars extends Game implements ScreenHandler, RepositoryStorage {
 		this.databaseRepository = databaseRepository;
 	}
 
+	public DatabaseUpdater getDatabaseUpdater() {
+		return databaseUpdater;
+	}
+
+	public void setDatabaseUpdater(DatabaseUpdater databaseUpdater) {
+		this.databaseUpdater = databaseUpdater;
+	}
 }

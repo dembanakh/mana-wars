@@ -10,9 +10,6 @@ import com.mana_wars.model.repository.RoomRepository;
 import com.mana_wars.model.repository.SharedPreferencesRepository;
 import com.mana_wars.utils.DBUpdateChecker;
 
-
-import static com.mana_wars.model.repository.LocalizedStringsRepository.SKILL_LABEL;
-
 public class AndroidLauncher extends AndroidApplication {
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
@@ -20,39 +17,20 @@ public class AndroidLauncher extends AndroidApplication {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		config.useCompass = false;
-
 		config.useAccelerometer = false;
 		config.useGyroscope = false;
 
-
 		ManaWars app = ManaWars.getInstance();
-
-		//todo replace
-		app.setLocalizedStringsRepository(id->
-		{
-			switch (id) {
-				case SKILL_LABEL:
-					return getResources().getString(R.string.skills_label);
-
-				default:
-					return null;
-			}
-		});
 
 		SharedPreferencesRepository sharedPreferencesRepository = new SharedPreferencesRepository(this);
 		RoomRepository roomRepository = RoomRepository.getInstance(this);
 
 
 		app.setLocalUserDataRepository(sharedPreferencesRepository);
-
 		app.setDatabaseRepository(new DBMapperRepository(roomRepository));
+		app.setDatabaseUpdater(new DBUpdateChecker(this, roomRepository, sharedPreferencesRepository));
 
-		//TODO refactor
-		DBUpdateChecker.check(this, sharedPreferencesRepository, roomRepository);
 
 		initialize(app, config);
-
 	}
-
-
 }
