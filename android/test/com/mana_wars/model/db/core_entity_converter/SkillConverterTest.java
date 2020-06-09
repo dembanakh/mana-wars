@@ -25,7 +25,6 @@ public class SkillConverterTest {
         when(skill.getId()).thenReturn(2);
         when(insideUserSkill.getLvl()).thenReturn(30);
         when(skill.getRarity()).thenReturn(1);
-        when(skill.getManaCost()).thenReturn(100);
         when(skill.getCastTime()).thenReturn(10.0);
         when(skill.getCooldown()).thenReturn(5.0);
         when(skill.getName()).thenReturn("aaa");
@@ -39,7 +38,6 @@ public class SkillConverterTest {
 
         assertEquals(30, result.getLevel());
         assertEquals(Rarity.getRarityByID(1), result.getRarity());
-        assertEquals(100, result.getManaCost());
         assertEquals(10.0, result.getCastTime(), 0.0001);
         assertEquals(5.0, result.getCooldown(), 0.0001);
         assertEquals("aaa", result.getName());;
@@ -54,7 +52,6 @@ public class SkillConverterTest {
         when(skill.getId()).thenReturn(2);
         when(insideUserSkill.getLvl()).thenReturn(30);
         when(skill.getRarity()).thenReturn(1);
-        when(skill.getManaCost()).thenReturn(100);
         when(skill.getName()).thenReturn("aaa");
 
         CompleteUserSkill userSkill = new CompleteUserSkill();
@@ -66,7 +63,6 @@ public class SkillConverterTest {
 
         assertEquals(30, result.getLevel());
         assertEquals(Rarity.getRarityByID(1), result.getRarity());
-        assertEquals(100, result.getManaCost());
         assertEquals("aaa", result.getName());;
 
     }
