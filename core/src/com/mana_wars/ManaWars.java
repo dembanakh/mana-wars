@@ -15,7 +15,7 @@ public class ManaWars extends Game implements ScreenHandler, RepositoryStorage, 
 
 	private static ManaWars instance;
 	private final ScreenManager screenManager;
-	private final User user;
+	private User user;
 
 	//platform repos
 	private LocalUserDataRepository localUserDataRepository;
@@ -25,7 +25,6 @@ public class ManaWars extends Game implements ScreenHandler, RepositoryStorage, 
 
 	private ManaWars() {
 		screenManager = new ScreenManager(this);
-		user = new User();
 	}
 
 	public static ManaWars getInstance() {
@@ -35,6 +34,7 @@ public class ManaWars extends Game implements ScreenHandler, RepositoryStorage, 
 	
 	@Override
 	public void create () {
+		user = new User(localUserDataRepository);
 		screenManager.start();
 	}
 	
@@ -67,5 +67,9 @@ public class ManaWars extends Game implements ScreenHandler, RepositoryStorage, 
 
 	public void setDatabaseUpdater(DatabaseUpdater databaseUpdater) {
 		this.databaseUpdater = databaseUpdater;
+	}
+
+	public User getUser() {
+		return user;
 	}
 }

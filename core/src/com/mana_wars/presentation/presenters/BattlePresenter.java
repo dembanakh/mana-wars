@@ -3,15 +3,12 @@ package com.mana_wars.presentation.presenters;
 import com.mana_wars.model.entity.User;
 import com.mana_wars.model.entity.battle.BattleConfig;
 import com.mana_wars.model.entity.battle.BattleParticipant;
-import com.mana_wars.model.entity.battle.Characteristic;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.interactor.BattleInteractor;
 import com.mana_wars.model.interactor.BattlePresenterCallback;
 import com.mana_wars.presentation.util.UIThreadHandler;
 import com.mana_wars.presentation.view.BattleView;
-
-import java.util.List;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
@@ -41,9 +38,10 @@ public class BattlePresenter implements BattlePresenterCallback {
         interactor.init(this, battle);
     }
 
-    public void applyUserSkill(ActiveSkill skill) {
+    public void applyUserSkill(int skill) {
         //TODO handle empty
-        interactor.applyUserSkill(skill);
+
+        interactor.tryApplyUserSkill(skill);
     }
 
     public void updateBattle(float timeDelta) {

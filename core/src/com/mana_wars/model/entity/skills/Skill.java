@@ -3,20 +3,20 @@ package com.mana_wars.model.entity.skills;
 import com.mana_wars.model.entity.battle.BattleParticipant;
 import com.mana_wars.model.entity.base.GameItem;
 import com.mana_wars.model.entity.base.Rarity;
+import com.mana_wars.model.entity.battle.Characteristic;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Skill extends GameItem {
 
-    private int manaCost;
     private List <SkillCharacteristic> skillCharacteristics;
 
-    public Skill(int id, int level, Rarity rarity, String name, int manaCost, List <SkillCharacteristic> skillCharacteristics) {
+    public Skill(int id, int level, Rarity rarity, String name, List <SkillCharacteristic> skillCharacteristics) {
         super(id, level, rarity, name);
-        this.manaCost = manaCost;
         this.skillCharacteristics = skillCharacteristics;
     }
+
 
     //TODO rewrite and add observers
     public void activate(BattleParticipant self, BattleParticipant enemy){
@@ -31,9 +31,6 @@ public class Skill extends GameItem {
         }
     }
 
-    public int getManaCost() {
-        return manaCost;
-    }
 
     public String getDescription() {
         StringBuilder result = new StringBuilder();
@@ -45,9 +42,19 @@ public class Skill extends GameItem {
     }
 
     private static Skill Empty = new Skill(50, 0, Rarity.EMPTY, "EMPTY",
-            0, new ArrayList<>());
+            new ArrayList<>());
 
     public static Skill getEmpty() {
         return Empty;
+    }
+
+    public int getManaCost() {
+
+        for (SkillCharacteristic c : skillCharacteristics){
+            if (c.getCharacteristic() == Characteristic.MANA){
+                return c.getValue();
+            }
+        }
+        return 0;
     }
 }

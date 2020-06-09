@@ -13,8 +13,8 @@ import java.util.List;
 
 public class Mob extends BattleParticipant {
 
-    Mob(int healthPoints, int manaPoints) {
-        super("Block-wolf", healthPoints, manaPoints);
+    Mob(int healthPoints) {
+        super("Block-wolf", healthPoints);
         this.passiveSkills = new ArrayList<>();
     }
 
@@ -30,12 +30,12 @@ public class Mob extends BattleParticipant {
     }
 
     @Override
-    public void act(float delta) {
+    public void update(double currentTime) {
 
     }
 
     private List<ActiveSkill> getInitialAutoSkills() {
-        return Arrays.asList(new ActiveSkill(1, 1, Rarity.COMMON, 0, 1, 2, "",
+        return Arrays.asList(new ActiveSkill(1, 1, Rarity.COMMON,  1, 2, "block black",
                 Arrays.asList(new SkillCharacteristic(10, Characteristic.HEALTH, ValueChangeType.DECREASE, SkillCharacteristic.Target.ENEMY))));
     }
 }

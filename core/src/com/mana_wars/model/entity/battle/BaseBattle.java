@@ -38,6 +38,7 @@ public abstract class BaseBattle implements BattleConfig, Battle {
 
     @Override
     public void init() {
+        user.setBattle(this);
         initSide(userSide);
         initSide(enemySide);
         System.out.println("Battle inited");
@@ -54,18 +55,24 @@ public abstract class BaseBattle implements BattleConfig, Battle {
 
 
         if (isActive.get()) {
-            for (BattleParticipant battleParticipant : getUserSide()) {
-                battleParticipant.act(timeDelta);
-            }
-            for (BattleParticipant battleParticipant : getEnemySide()) {
-                battleParticipant.act(timeDelta);
-            }
-
             battleTime += timeDelta;
+
+
+
             while (!battleEvents.isEmpty() && battleEvents.peek().targetTime < battleTime){
                 BattleEvent be = battleEvents.poll();
                 if (be.participant.isAlive())
                     activateParticipantSkill(be);
+                // TODO reduce user's mana amount
+            }
+
+            user.update(battleTime);
+
+            for (BattleParticipant battleParticipant : getUserSide()) {
+                battleParticipant.update(battleTime);
+            }
+            for (BattleParticipant battleParticipant : getEnemySide()) {
+                battleParticipant.update(battleTime);
             }
         }
     }

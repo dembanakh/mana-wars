@@ -29,18 +29,20 @@ public class BattleParticipantValueField extends ValueFieldWithInitialData<Battl
         participantName = new Label("", new Label.LabelStyle(new BitmapFont(), new Color()));
         participantName.setFillParent(true);
         participantName.setColor(Color.BLACK);
-        participantName.setFontScale(2);
+        participantName.setFontScale(4);
         field.add(participantName).row();
 
         Stack stack = new Stack();
         healthBar = new ProgressBar(0, 100, 1, false,
                 new ProgressBar.ProgressBarStyle());
+        healthBar.setScale(4);
         stack.add(healthBar);
+
 
         participantHealth = new Label("", new Label.LabelStyle(new BitmapFont(), new Color()));
         participantHealth.setFillParent(true);
         participantHealth.setColor(Color.BLACK);
-        participantHealth.setFontScale(2);
+        participantHealth.setFontScale(4);
         stack.add(participantHealth);
         field.add(stack).row();
 

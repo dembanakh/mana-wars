@@ -7,12 +7,12 @@ import java.util.List;
 
 public class PassiveSkill extends Skill {
 
-    public PassiveSkill(int id, int level, Rarity rarity, int manaCost, String name, List<SkillCharacteristic> skillCharacteristics) {
-        super(id, level, rarity, name, manaCost, skillCharacteristics);
+    public PassiveSkill(int id, int level, Rarity rarity, String name, List<SkillCharacteristic> skillCharacteristics) {
+        super(id, level, rarity, name, skillCharacteristics);
     }
 
     private static PassiveSkill Empty = new PassiveSkill(50, 0, Rarity.EMPTY,
-            0, "EMPTY", new ArrayList<>());
+             "EMPTY", new ArrayList<>());
 
     public static PassiveSkill getEmpty() {
         return Empty;

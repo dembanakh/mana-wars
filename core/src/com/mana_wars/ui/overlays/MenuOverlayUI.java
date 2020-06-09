@@ -26,14 +26,14 @@ public class MenuOverlayUI extends OverlayUI {
         manaAmountField = new TextValueField<Integer>()
                 .setXConstraint(new AbsoluteXPositionConstraint(Align.right, 0))
                 .setYConstraint(new AbsoluteYPositionConstraint(Align.top, 0))
-                .setWidthConstraint(new AbsoluteSizeConstraint(100))
-                .setHeightConstraint(new AbsoluteSizeConstraint(50))
+                .setWidthConstraint(new AbsoluteSizeConstraint(200))
+                .setHeightConstraint(new AbsoluteSizeConstraint(100))
                 .setBackgroundColor("white");
         userLevelField = new TextValueField<Integer>()
                 .setXConstraint(new AbsoluteXPositionConstraint(Align.left, 0))
                 .setYConstraint(new AbsoluteYPositionConstraint(Align.top, 0))
-                .setWidthConstraint(new AbsoluteSizeConstraint(100))
-                .setHeightConstraint(new AbsoluteSizeConstraint(50))
+                .setWidthConstraint(new AbsoluteSizeConstraint(200))
+                .setHeightConstraint(new AbsoluteSizeConstraint(100))
                 .setBackgroundColor("white");
         usernameField = new TextValueField<String>()
                 .setXConstraint(new AbsoluteXPositionConstraint(Align.left, 0))

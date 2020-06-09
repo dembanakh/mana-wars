@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.mana_wars.ManaWars;
 import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.interactor.MainMenuInteractor;
@@ -41,6 +42,7 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
         this.presenter = new MainMenuPresenter(this,
                 Gdx.app::postRunnable,
                 new MainMenuInteractor(
+                        ManaWars.getInstance().getUser(),
                         repositoryStorage.getLocalUserDataRepository(),
                         repositoryStorage.getDatabaseRepository(),
                         new ManaBonusImpl(

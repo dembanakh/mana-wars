@@ -14,7 +14,7 @@ import io.reactivex.functions.Consumer;
 
 public class ClickableSkillsList2D<T extends Skill> extends StaticSkillsList2D<T> {
 
-    private Consumer<? super T> onSkillClick;
+    private Consumer<? super Integer> onSkillClick;
 
     public ClickableSkillsList2D(Skin skin, int cols, AssetFactory<Integer, TextureRegion> iconFactory,
                                  AssetFactory<Rarity, TextureRegion> frameFactory) {
@@ -23,18 +23,18 @@ public class ClickableSkillsList2D<T extends Skill> extends StaticSkillsList2D<T
 
     public ClickableSkillsList2D(Skin skin, int cols, AssetFactory<Integer, TextureRegion> iconFactory,
                                  AssetFactory<Rarity, TextureRegion> frameFactory,
-                                 Consumer<? super T> onSkillClick) {
+                                 Consumer<? super Integer> onSkillClick) {
         this(skin.get(List.ListStyle.class), cols, iconFactory, frameFactory, onSkillClick);
     }
 
     private ClickableSkillsList2D(List.ListStyle style, int cols, AssetFactory<Integer, TextureRegion> iconFactory,
                                   AssetFactory<Rarity, TextureRegion> frameFactory,
-                                  Consumer<? super T> onSkillClick) {
+                                  Consumer<? super Integer> onSkillClick) {
         super(style, cols, iconFactory, frameFactory);
         setOnSkillClick(onSkillClick);
     }
 
-    protected void setOnSkillClick(Consumer<? super T> onSkillClick) {
+    protected void setOnSkillClick(Consumer<? super Integer> onSkillClick) {
         this.onSkillClick = onSkillClick;
     }
 
@@ -50,7 +50,7 @@ public class ClickableSkillsList2D<T extends Skill> extends StaticSkillsList2D<T
 
                 if (isClickable(index)) {
                     try {
-                        onSkillClick.accept(getItem(index));
+                        onSkillClick.accept(index);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

@@ -32,7 +32,10 @@ public class BattleInteractor {
     public void init(BattlePresenterCallback callback, BattleConfig battle) {
         this.battle = battle;
         disposable.add(databaseRepository.getUserSkills().subscribe(skills -> {
-            battle.getUser().setPassiveSkills(skills.passiveSkills);
+
+            battle.getUser().initSkills(skills.activeSkills, skills.passiveSkills);
+            //TODO fetch and init UserSide and EnemySide skills
+
             callback.setSkills(skills.activeSkills, skills.passiveSkills);
             battle.init();
             callback.setOpponents(battle.getUser(), battle.getUserSide(), battle.getEnemySide());
@@ -60,8 +63,8 @@ public class BattleInteractor {
         } else return false;
     }
 
-    public void applyUserSkill(ActiveSkill skill) {
-        battle.getUser().tryApplyActiveSkill(skill);
+    public boolean tryApplyUserSkill(int skillIndex) {
+        return battle.getUser().tryApplyActiveSkill(skillIndex);
     }
 
     public void dispose() {

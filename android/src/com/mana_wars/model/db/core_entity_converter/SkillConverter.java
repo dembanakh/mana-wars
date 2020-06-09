@@ -18,7 +18,6 @@ public class SkillConverter {
                     skill.skill.getId(),
                     1,
                     Rarity.getRarityByID(skill.skill.getRarity()),
-                    skill.skill.getManaCost(),
                     skill.skill.getCastTime(),
                     skill.skill.getCooldown(),
                     skill.skill.getName(),
@@ -30,7 +29,6 @@ public class SkillConverter {
                     skill.skill.getId(),
                     1,
                     Rarity.getRarityByID(skill.skill.getRarity()),
-                    skill.skill.getManaCost(),
                     skill.skill.getName(),
                     CharacteristicsConverter.toSkillCharacteristics(skill.characteristics)
             );
@@ -46,7 +44,6 @@ public class SkillConverter {
                 userSkill.skill.getId(),
                 userSkill.userSkill.getLvl(),
                 Rarity.getRarityByID(userSkill.skill.getRarity()),
-                userSkill.skill.getManaCost(),
                 userSkill.skill.getCastTime(),
                 userSkill.skill.getCooldown(),
                 userSkill.skill.getName(),
@@ -60,7 +57,6 @@ public class SkillConverter {
                 userSkill.skill.getId(),
                 userSkill.userSkill.getLvl(),
                 Rarity.getRarityByID(userSkill.skill.getRarity()),
-                userSkill.skill.getManaCost(),
                 userSkill.skill.getName(),
                 CharacteristicsConverter.toSkillCharacteristics(userSkill.characteristics)
         );

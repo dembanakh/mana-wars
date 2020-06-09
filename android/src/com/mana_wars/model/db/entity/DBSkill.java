@@ -20,9 +20,6 @@ public class DBSkill {
     @ColumnInfo(name = "name")
     private String name;
 
-    @ColumnInfo(name = "manacost")
-    private int manaCost;
-
     @ColumnInfo(name = "is_active")
     private boolean isActive;
 
@@ -43,10 +40,6 @@ public class DBSkill {
 
     public String getName() {
         return name;
-    }
-
-    public int getManaCost() {
-        return manaCost;
     }
 
     public boolean isActive() {
@@ -73,10 +66,6 @@ public class DBSkill {
         this.name = name;
     }
 
-    public void setManaCost(int manaCost) {
-        this.manaCost = manaCost;
-    }
-
     public void setActive(boolean active) {
         isActive = active;
     }
@@ -94,7 +83,6 @@ public class DBSkill {
         result.setId(json.getInt("id"));
         result.setName(json.getString("name"));
         result.setRarity(json.getInt("rarity"));
-        result.setManaCost(json.getInt("manacost"));
         result.setActive(json.getBoolean("is_active"));
         result.setCastTime(result.isActive?json.getDouble("cast_time"):0);
         result.setCooldown(result.isActive?json.getDouble("cooldown"):0);

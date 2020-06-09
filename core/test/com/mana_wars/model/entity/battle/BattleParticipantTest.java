@@ -4,6 +4,7 @@ package com.mana_wars.model.entity.battle;
 import com.mana_wars.model.entity.base.ValueChangeType;
 import com.mana_wars.model.entity.skills.SkillCharacteristic;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -15,38 +16,33 @@ import static org.mockito.Mockito.when;
 
 public class BattleParticipantTest {
 
-    @Test
-    public void testGetCharacteristicValue() {
-        BattleParticipant bp = new BattleParticipant("a", 100, 200) {
+    private BattleParticipant bp;
+
+    @Before
+    public void setup(){
+        bp = new BattleParticipant("a", 100) {
             @Override
             public void start() {
 
             }
 
             @Override
-            public void act(float delta) {
+            public void update(double currentTime) {
 
             }
+
         };
+    }
+
+    @Test
+    public void testGetCharacteristicValue() {
         assertEquals(100, bp.getCharacteristicValue(Characteristic.HEALTH));
-        assertEquals(200, bp.getCharacteristicValue(Characteristic.MANA));
     }
 
 
     @Test
     public void testApplySkillCharacteristic() {
-        BattleParticipant bp = new BattleParticipant("a", 100,200) {
 
-            @Override
-            public void start() {
-
-            }
-
-            @Override
-            public void act(float delta) {
-
-            }
-        };
         SkillCharacteristic sc = mock(SkillCharacteristic.class);
 
         when(sc.getCharacteristic()).thenReturn(Characteristic.HEALTH);
@@ -55,7 +51,6 @@ public class BattleParticipantTest {
         bp.applySkillCharacteristic(sc);
 
         assertEquals(90, bp.getCharacteristicValue(Characteristic.HEALTH));
-        assertEquals(200, bp.getCharacteristicValue(Characteristic.MANA));
 
         verify(sc).getCharacteristic();
         verify(sc).getValue();

@@ -1,5 +1,6 @@
 package com.mana_wars.model.interactor;
 
+import com.mana_wars.model.entity.User;
 import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.entity.skills.SkillFactory;
 import com.mana_wars.model.mana_bonus.ManaBonus;
@@ -16,7 +17,9 @@ public class MainMenuInteractor {
     private final LocalUserDataRepository localUserDataRepository;
     private final DatabaseRepository databaseRepository;
 
-    private final Subject<Integer> manaAmountObservable;
+    private final User user;
+
+    // Todo relocate to user
     private final Subject<Integer> userLevelObservable;
     private final Subject<String> usernameObservable;
 
@@ -24,11 +27,11 @@ public class MainMenuInteractor {
 
     private CompositeDisposable disposable = new CompositeDisposable();
 
-    public MainMenuInteractor(LocalUserDataRepository ludr, DatabaseRepository databaseRepository,
+    public MainMenuInteractor(User user, LocalUserDataRepository ludr, DatabaseRepository databaseRepository,
                               ManaBonus manaBonus) {
+        this.user = user;
         this.localUserDataRepository = ludr;
         this.databaseRepository = databaseRepository;
-        this.manaAmountObservable = BehaviorSubject.createDefault(ludr.getUserMana());
         this.userLevelObservable = BehaviorSubject.createDefault(ludr.getUserLevel());
         this.usernameObservable = BehaviorSubject.createDefault(ludr.getUsername());
         this.manaBonus = manaBonus;
@@ -53,7 +56,7 @@ public class MainMenuInteractor {
     }
 
     public Subject<Integer> getManaAmountObservable() {
-        return manaAmountObservable;
+        return user.getManaObservable();
     }
 
     public Subject<Integer> getUserLevelObservable() {
@@ -65,9 +68,7 @@ public class MainMenuInteractor {
     }
 
     public void updateManaAmount(int delta) {
-        int userMana = localUserDataRepository.getUserMana() + delta;
-        localUserDataRepository.setUserMana(userMana);
-        manaAmountObservable.onNext(userMana);
+        user.updateManaAmount(delta);
     }
 
     public long getTimeSinceLastManaBonusClaim() {

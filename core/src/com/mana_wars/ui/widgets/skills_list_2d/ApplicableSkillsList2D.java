@@ -17,7 +17,7 @@ public class ApplicableSkillsList2D<T extends Skill> extends ClickableSkillsList
 
     public ApplicableSkillsList2D(Skin skin, int cols, AssetFactory<Integer, TextureRegion> iconFactory,
                                   AssetFactory<Rarity, TextureRegion> frameFactory,
-                                  Consumer<? super T> onSkillClick) {
+                                  Consumer<? super Integer> onSkillClick) {
         super(skin, cols, iconFactory, frameFactory);
         this.blockedSkills = new TimeoutSelection<>();
 

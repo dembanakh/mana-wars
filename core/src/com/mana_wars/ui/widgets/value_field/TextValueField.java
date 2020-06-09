@@ -16,7 +16,7 @@ public class TextValueField<T> extends ValueField<T> {
         label = new Label("", new Label.LabelStyle(new BitmapFont(), new Color()));
         label.setFillParent(true);
         label.setColor(Color.BLACK);
-        label.setFontScale(2);
+        label.setFontScale(4);
         addActor(label);
     }
 

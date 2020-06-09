@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
+import com.mana_wars.ManaWars;
 import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.entity.battle.BattleParticipant;
 import com.mana_wars.model.entity.battle.Characteristic;
@@ -65,10 +66,10 @@ public class BattleScreen extends BaseScreen implements BattleView {
 
         userActiveSkills = new ApplicableSkillsList2D<>(skin, GameConstants.USER_ACTIVE_SKILL_COUNT,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(),
-                (skill) -> {
+                (skillIndex) -> {
                     if (isBattle.get()) {
                         this.blockSkillForTime(0, 5);
-                        presenter.applyUserSkill(skill);
+                        presenter.applyUserSkill(skillIndex);
                     }
                 });
         userPassiveSkills = new StaticSkillsList2D<>(skin, GameConstants.USER_PASSIVE_SKILL_COUNT,
@@ -82,7 +83,8 @@ public class BattleScreen extends BaseScreen implements BattleView {
     @Override
     public BaseScreen reInit(Map<String, Object> arguments) {
         super.reInit(arguments);
-        presenter.initBattle(new PvEBattle(new User(), getArgument("EnemyFactory")));
+        presenter.initBattle(new PvEBattle(ManaWars.getInstance().getUser().reInitCharacteristics(),
+                getArgument("EnemyFactory")));
         return this;
     }
 
