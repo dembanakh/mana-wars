@@ -7,42 +7,61 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.ActiveSkill;
+import com.mana_wars.ui.animation.SkillTimeoutAnimation;
+import com.mana_wars.ui.animation.UIAnimation;
 import com.mana_wars.ui.factory.AssetFactory;
-import com.mana_wars.ui.widgets.TimeoutSelection;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 import io.reactivex.functions.Consumer;
-import space.earlygrey.shapedrawer.ShapeDrawer;
 
 public class ApplicableSkillsList2D<T extends ActiveSkill> extends ClickableSkillsList2D<T>
         implements BlockableSkillsList<T> {
 
-    private final TimeoutSelection<Integer> blockedSkills;
-    private final TextureRegion tempRegion;
-    private ShapeDrawer shapeDrawer;
+    private final UIAnimation<Integer, SkillTimeoutAnimation.Type> animation;
 
     public ApplicableSkillsList2D(Skin skin, int cols, AssetFactory<Integer, TextureRegion> iconFactory,
                                   AssetFactory<Rarity, TextureRegion> frameFactory,
                                   Consumer<? super Integer> onSkillClick) {
         super(skin, cols, iconFactory, frameFactory);
-        this.blockedSkills = new TimeoutSelection<>();
-        this.tempRegion = iconFactory.getAsset(1);
+        this.animation = new SkillTimeoutAnimation(iconFactory.getAsset(1));
 
         setOnSkillClick(onSkillClick);
     }
 
     @Override
     protected boolean isClickable(int index) {
-        return super.isClickable(index) && !blockedSkills.contains(index);
+        return super.isClickable(index) && !animation.contains(index);
+    }
+
+    @Override
+    public void setItems(Iterable<? extends T> newItems) {
+        super.setItems(newItems);
+        for (int i = 0; i < items.size; ++i) {
+            if (getItem(i).getRarity() == Rarity.EMPTY) {
+                animation.add(i, Collections.emptyList());
+            }
+        }
     }
 
     @Override
     public void blockSkills(int appliedSkillIndex) {
         T appliedSkill = getItem(appliedSkillIndex);
         for (int i = 0; i < items.size; ++i) {
+            if (getItem(i).getRarity() == Rarity.EMPTY) continue;
             if (i == appliedSkillIndex)
-                blockedSkills.selectFor(i, appliedSkill.getCastTime() + appliedSkill.getCooldown());
+                animation.add(i,
+                        Arrays.asList(
+                                new UIAnimation.KeyFrame<>(SkillTimeoutAnimation.Type.CAST_APPLIED,
+                                                        appliedSkill.getCastTime()),
+                                new UIAnimation.KeyFrame<>(SkillTimeoutAnimation.Type.COOLDOWN,
+                                                        appliedSkill.getCooldown())));
             else
-                blockedSkills.selectFor(i, appliedSkill.getCastTime());
+                animation.add(i,
+                        Arrays.asList(
+                                new UIAnimation.KeyFrame<>(SkillTimeoutAnimation.Type.CAST_NON_APPLIED,
+                                        appliedSkill.getCastTime())));
         }
     }
 
@@ -53,24 +72,19 @@ public class ApplicableSkillsList2D<T extends ActiveSkill> extends ClickableSkil
 
     @Override
     public void update(float delta) {
-        blockedSkills.update(delta);
+        animation.update(delta);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        shapeDrawer = new ShapeDrawer(batch, tempRegion);
+        animation.initBatch(batch);
         super.draw(batch, parentAlpha);
     }
 
     @Override
-    protected void drawItem(Batch batch, BitmapFont font, int index, T item, float x, float y, float width, float height) {
+    protected void drawItem(Batch batch, BitmapFont font, int index, T item,
+                            float x, float y, float width, float height) {
         super.drawItem(batch, font, index, item, x, y, width, height);
-        if (item.getRarity() == Rarity.EMPTY) {
-            shapeDrawer.setColor(0, 0, 0, 0.75f);
-            shapeDrawer.filledRectangle(x, y, width, height);
-        } else if (blockedSkills.contains(index)) {
-            shapeDrawer.setColor(0, 0, 0, 0.75f);
-            shapeDrawer.filledRectangle(x, y, width, (float)(height * blockedSkills.getRemainingFraction(index)));
-        }
+        animation.animate(index, x, y, width, height);
     }
 }

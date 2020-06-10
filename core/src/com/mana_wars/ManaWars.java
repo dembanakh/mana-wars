@@ -33,11 +33,6 @@ public class ManaWars extends Game implements ScreenHandler, RepositoryStorage {
 		screenManager.start(new User(localUserDataRepository, localUserDataRepository, localUserDataRepository),
 				this, databaseUpdater);
 	}
-	
-	@Override
-	public void dispose () {
-		screenManager.dispose();
-	}
 
 	@Override
 	public LocalUserDataRepository getLocalUserDataRepository() {
@@ -47,6 +42,11 @@ public class ManaWars extends Game implements ScreenHandler, RepositoryStorage {
 	@Override
 	public DatabaseRepository getDatabaseRepository() {
 		return databaseRepository;
+	}
+
+	@Override
+	public void dispose () {
+		screenManager.dispose();
 	}
 
 }

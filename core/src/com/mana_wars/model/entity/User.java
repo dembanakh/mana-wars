@@ -56,7 +56,6 @@ public class User extends BattleParticipant implements UserMenuAPI, UserSkillsAP
         synchronized (this){
             battleTime = currentTime;
 
-            //todo refactor
             if (toApply != null && toApply.isAvailableAt(currentTime)){
                 super.applySkill(toApply.skill, currentTime);
             }
