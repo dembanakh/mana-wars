@@ -29,7 +29,6 @@ public class ScreenManager implements FactoryStorage, ScreenSetter {
 
     public ScreenManager(final ScreenHandler handler) {
         this.handler = handler;
-        this.overlayUIFactory = new OverlayUIFactory(this);
         skillIconFactory = new AssetFactory<Integer, TextureRegion>(SKILLS_ICONS_FILENAME) {
             @Override
             public void loadItems() {
@@ -61,6 +60,7 @@ public class ScreenManager implements FactoryStorage, ScreenSetter {
                 }
             }
         };
+        this.overlayUIFactory = new OverlayUIFactory(this, this);
     }
 
     public void start(final User user, final RepositoryStorage repositoryStorage,
@@ -71,7 +71,7 @@ public class ScreenManager implements FactoryStorage, ScreenSetter {
         overlayUIFactory.init();
         ScreenInstance.init(user, this, this, repositoryStorage, overlayUIFactory);
         handler.setScreen(new LoadingScreen(this, this,
-                overlayUIFactory.getEmptyOverlayUI(), databaseUpdater));
+                overlayUIFactory.getEmptyOverlayUI(), databaseUpdater).reInit(null));
     }
 
     public void dispose() {

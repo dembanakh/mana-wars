@@ -1,6 +1,7 @@
 package com.mana_wars.ui.overlays;
 
 import com.mana_wars.ui.management.ScreenSetter;
+import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.widgets.BuildableUI;
 
 import java.util.Collections;
@@ -11,9 +12,10 @@ public class OverlayUIFactory {
     private final BattleOverlayUI battleOverlayUI;
     private final OverlayUI emptyOverlayUI;
 
-    public OverlayUIFactory(ScreenSetter screenSetter) {
+    public OverlayUIFactory(final ScreenSetter screenSetter, final FactoryStorage factoryStorage) {
         menuOverlayUI = new MenuOverlayUI(screenSetter);
-        battleOverlayUI = new BattleOverlayUI(screenSetter);
+        battleOverlayUI = new BattleOverlayUI(screenSetter, factoryStorage.getSkillIconFactory(),
+                factoryStorage.getRarityFrameFactory());
         emptyOverlayUI = new OverlayUI() {
             @Override
             protected Iterable<BuildableUI> getElements() {

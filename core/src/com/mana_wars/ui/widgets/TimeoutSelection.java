@@ -35,10 +35,17 @@ public class TimeoutSelection<T> {
     }
 
     public void selectFor(T data, double time) {
-        selection.add(new TimeoutItem<>(data, Math.max(getTime(data), time)));
+        selection.add(new TimeoutItem<>(data, Math.max(getRemainingTime(data), time)));
     }
 
-    private double getTime(T data) {
+    public double getRemainingFraction(T data) {
+        for (TimeoutItem<T> item : selection) {
+            if (item.data == data) return item.time / item.initialTime;
+        }
+        return 0;
+    }
+
+    private double getRemainingTime(T data) {
         for (TimeoutItem<T> item : selection) {
             if (item.data == data) return item.time;
         }
@@ -54,11 +61,13 @@ public class TimeoutSelection<T> {
 
     private static class TimeoutItem<T> {
         private final T data;
+        private final double initialTime;
         private double time;
 
-        private TimeoutItem(T data, double time) {
+        private TimeoutItem(T data, double initialTime) {
             this.data = data;
-            this.time = time;
+            this.initialTime = initialTime;
+            this.time = initialTime;
         }
     }
 

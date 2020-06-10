@@ -80,7 +80,7 @@ public class BattleScreen extends BaseScreen implements BattleView {
     @Override
     public BaseScreen reInit(Map<String, Object> arguments) {
         super.reInit(arguments);
-        presenter.initBattle(new PvEBattle(presenter.getUser(),
+        presenter.initBattle(new PvEBattle(presenter.getPreparedUser(),
                 getArgument(arguments, "EnemyFactory")));
         return this;
     }

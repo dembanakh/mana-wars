@@ -247,7 +247,7 @@ public abstract class List2D<T> extends Widget implements Cullable {
         return cols;
     }
 
-    private void setStyle(List.ListStyle style) {
+    public void setStyle(List.ListStyle style) {
         if (style == null) throw new IllegalArgumentException("style cannot be null.");
         this.style = style;
         invalidateHierarchy();

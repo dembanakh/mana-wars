@@ -51,8 +51,8 @@ public class BattlePresenter implements BattleInitializationObserver {
         }
     }
 
-    public BattleParticipant getUser() {
-        return interactor.getUser();
+    public BattleParticipant getPreparedUser() {
+        return interactor.getPreparedUser();
     }
 
     @Override

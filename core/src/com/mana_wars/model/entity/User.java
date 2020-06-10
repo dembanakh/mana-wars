@@ -22,20 +22,18 @@ public class User extends BattleParticipant implements UserMenuAPI, UserSkillsAP
 
     private final UserManaRepository userManaRepository;
     private final UserLevelRepository userLevelRepository;
-    private final UsernameRepository usernameRepository;
 
     private BattleSkill toApply;
     private double battleTime;
 
     public User(UserManaRepository userManaRepository, UserLevelRepository userLevelRepository,
                 UsernameRepository usernameRepository) {
-        super("User", 1000);
+        super(usernameRepository.getUsername(), 1000);
         this.userManaRepository = userManaRepository;
         this.userLevelRepository = userLevelRepository;
-        this.usernameRepository = usernameRepository;
         manaAmountObservable = BehaviorSubject.createDefault(initManaAmount());
         userLevelObservable = BehaviorSubject.createDefault(initUserLevel());
-        usernameObservable = BehaviorSubject.createDefault(initUsername());
+        usernameObservable = BehaviorSubject.createDefault(getName());
     }
 
     private int initManaAmount() {
@@ -46,10 +44,6 @@ public class User extends BattleParticipant implements UserMenuAPI, UserSkillsAP
 
     private int initUserLevel() {
         return userLevelRepository.getUserLevel();
-    }
-
-    private String initUsername() {
-        return usernameRepository.getUsername();
     }
 
     @Override
@@ -96,9 +90,14 @@ public class User extends BattleParticipant implements UserMenuAPI, UserSkillsAP
         return usernameObservable;
     }
 
-    @Override
-    public void reInitCharacteristics() {
+    private void reInitCharacteristics() {
         setCharacteristicValue(Characteristic.HEALTH, initialHealth);
+    }
+
+    @Override
+    public BattleParticipant prepareBattleParticipant() {
+        reInitCharacteristics();
+        return this;
     }
 
     @Override

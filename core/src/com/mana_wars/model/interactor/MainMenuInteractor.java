@@ -57,7 +57,7 @@ public class MainMenuInteractor {
         return user.getUsernameObservable();
     }
 
-    public void updateManaAmount(int delta) {
+    private void updateManaAmount(int delta) {
         user.updateManaAmount(delta);
     }
 

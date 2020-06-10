@@ -25,7 +25,6 @@ public class BattleInteractor {
 
     public void init(BattleInitializationObserver observer, BattleConfig battle) {
         this.battle = battle;
-        this.user.reInitCharacteristics();
         disposable.add(databaseRepository.getUserSkills().subscribe(skills -> {
             battle.getUser().initSkills(skills.activeSkills, skills.passiveSkills);
             //TODO fetch and init UserSide and EnemySide skills
@@ -61,8 +60,8 @@ public class BattleInteractor {
         return battle.getEnemySide().get(index).getHealthObservable();
     }
 
-    public BattleParticipant getUser() {
-        return battle.getUser();
+    public BattleParticipant getPreparedUser() {
+        return user.prepareBattleParticipant();
     }
 
     public void dispose() {
