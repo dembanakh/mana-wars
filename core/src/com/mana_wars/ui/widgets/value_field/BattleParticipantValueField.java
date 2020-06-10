@@ -2,14 +2,20 @@ package com.mana_wars.ui.widgets.value_field;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.mana_wars.model.GameConstants;
+import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.PassiveSkill;
+import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.widgets.skills_list_2d.List2D;
+import com.mana_wars.ui.widgets.skills_list_2d.StaticSkillsList2D;
 
 public class BattleParticipantValueField extends ValueFieldWithInitialData<BattleParticipantValueField.Data, Integer> {
 
@@ -19,6 +25,15 @@ public class BattleParticipantValueField extends ValueFieldWithInitialData<Battl
     private Label participantName;
 
     private List2D<PassiveSkill> participantPassiveSkills;
+
+    private final AssetFactory<Integer, TextureRegion> iconFactory;
+    private final AssetFactory<Rarity, TextureRegion> frameFactory;
+
+    public BattleParticipantValueField(final AssetFactory<Integer, TextureRegion> iconFactory,
+                                       final AssetFactory<Rarity, TextureRegion> frameFactory) {
+        this.iconFactory = iconFactory;
+        this.frameFactory = frameFactory;
+    }
 
     @Override
     public void init() {
@@ -38,7 +53,6 @@ public class BattleParticipantValueField extends ValueFieldWithInitialData<Battl
         healthBar.setScale(4);
         stack.add(healthBar);
 
-
         participantHealth = new Label("", new Label.LabelStyle(new BitmapFont(), new Color()));
         participantHealth.setFillParent(true);
         participantHealth.setColor(Color.BLACK);
@@ -46,9 +60,12 @@ public class BattleParticipantValueField extends ValueFieldWithInitialData<Battl
         stack.add(participantHealth);
         field.add(stack).row();
 
-        addActor(field);
+        // TODO: tune SkillsList2D size
+        participantPassiveSkills = new StaticSkillsList2D<>(new List.ListStyle(),
+                GameConstants.USER_PASSIVE_SKILL_COUNT, iconFactory, frameFactory);
+        field.add(participantPassiveSkills).expandX().row();
 
-        //setup participantPassiveSkills
+        addActor(field);
     }
 
     /*
@@ -85,6 +102,7 @@ public class BattleParticipantValueField extends ValueFieldWithInitialData<Battl
         participantName.setStyle(skin.get(Label.LabelStyle.class));
         participantHealth.setStyle(skin.get(Label.LabelStyle.class));
         healthBar.setStyle(skin.get("default-horizontal", ProgressBar.ProgressBarStyle.class));
+        participantPassiveSkills.setStyle(skin.get("default", List.ListStyle.class));
         return field;
     }
 
@@ -98,7 +116,7 @@ public class BattleParticipantValueField extends ValueFieldWithInitialData<Battl
     public void setInitialData(Data data) {
         participantName.setText(data.name);
         healthBar.setRange(0, data.initialHealth);
-        //participantPassiveSkills.setItems(data.passiveSkills);
+        participantPassiveSkills.setItems(data.passiveSkills);
     }
 
     public static class Data {

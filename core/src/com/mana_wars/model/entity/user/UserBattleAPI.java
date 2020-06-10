@@ -1,7 +1,8 @@
 package com.mana_wars.model.entity.user;
 
-public interface UserBattleAPI {
-    void reInitCharacteristics();
+import com.mana_wars.model.entity.battle.BattleParticipant;
 
+public interface UserBattleAPI {
+    BattleParticipant prepareBattleParticipant();
     boolean tryApplyActiveSkill(int skillIndex);
 }

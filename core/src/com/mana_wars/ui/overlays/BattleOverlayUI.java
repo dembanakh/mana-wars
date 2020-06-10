@@ -1,7 +1,10 @@
 package com.mana_wars.ui.overlays;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Align;
+import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.PassiveSkill;
+import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.layout_constraints.AbsoluteSizeConstraint;
 import com.mana_wars.ui.layout_constraints.AbsoluteXPositionConstraint;
 import com.mana_wars.ui.layout_constraints.AbsoluteYPositionConstraint;
@@ -25,13 +28,15 @@ public class BattleOverlayUI extends OverlayUI {
 
     private final List<ValueFieldWithInitialDataWrapper<BattleParticipantValueField.Data, Integer>> enemyFieldWrappers;
 
-    BattleOverlayUI(final ScreenSetter screenSetter) {
-        userField = new BattleParticipantValueField()
+    BattleOverlayUI(final ScreenSetter screenSetter,
+                    final AssetFactory<Integer, TextureRegion> iconFactory,
+                    final AssetFactory<Rarity, TextureRegion> frameFactory) {
+        userField = new BattleParticipantValueField(iconFactory, frameFactory)
                 .setXConstraint(new AbsoluteXPositionConstraint(Align.left, 0))
                 .setYConstraint(new AbsoluteYPositionConstraint(Align.top, 0))
                 .setWidthConstraint(new RelativeWidthConstraint(50))
                 .setHeightConstraint(new AbsoluteSizeConstraint(800));
-        enemyField = new BattleParticipantValueField()
+        enemyField = new BattleParticipantValueField(iconFactory, frameFactory)
                 .setXConstraint(new AbsoluteXPositionConstraint(Align.right, 0))
                 .setYConstraint(new AbsoluteYPositionConstraint(Align.top, 0))
                 .setWidthConstraint(new RelativeWidthConstraint(50))

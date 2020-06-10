@@ -55,6 +55,7 @@ public class LoadingScreen extends BaseScreen {
 
     @Override
     public BaseScreen reInit(Map<String, Object> arguments) {
+        System.out.println("her1");
         //TODO activate loading animation
         updater.checkUpdate(()->{
             Gdx.app.postRunnable(()->{
