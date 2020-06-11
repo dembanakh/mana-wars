@@ -1,8 +1,8 @@
-package com.mana_wars.ui.animation;
+package com.mana_wars.ui.animation.controller;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 
-public interface UIAnimation<T, Type> {
+public interface UIAnimationController<T, Type> {
     void initBatch(Batch batch);
     void add(T data, Iterable<KeyFrame<Type>> keyFrames);
 

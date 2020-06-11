@@ -16,8 +16,8 @@ public class ClickableSkillsList2D<T extends Skill> extends StaticSkillsList2D<T
 
     private Consumer<? super Integer> onSkillClick;
 
-    public ClickableSkillsList2D(Skin skin, int cols, AssetFactory<Integer, TextureRegion> iconFactory,
-                                 AssetFactory<Rarity, TextureRegion> frameFactory) {
+    ClickableSkillsList2D(Skin skin, int cols, AssetFactory<Integer, TextureRegion> iconFactory,
+                          AssetFactory<Rarity, TextureRegion> frameFactory) {
         this(skin.get(List.ListStyle.class), cols, iconFactory, frameFactory, (skill) -> {});
     }
 
@@ -34,7 +34,7 @@ public class ClickableSkillsList2D<T extends Skill> extends StaticSkillsList2D<T
         setOnSkillClick(onSkillClick);
     }
 
-    protected void setOnSkillClick(Consumer<? super Integer> onSkillClick) {
+    void setOnSkillClick(Consumer<? super Integer> onSkillClick) {
         this.onSkillClick = onSkillClick;
     }
 

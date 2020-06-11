@@ -1,7 +1,13 @@
-package com.mana_wars.ui.animation;
+package com.mana_wars.ui.animation.controller;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Align;
+import com.mana_wars.ui.animation.shape_animator.LoweringRectangleAnimator;
+import com.mana_wars.ui.animation.shape_animator.RotatingSquareSectorAnimator;
+import com.mana_wars.ui.animation.shape_animator.ShapeAnimator;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -9,17 +15,19 @@ import java.util.Set;
 
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
-public class SkillTimeoutAnimation implements UIAnimation<Integer, SkillTimeoutAnimation.Type> {
+public class SkillIconAnimationController implements UIAnimationController<Integer, SkillIconAnimationController.Type> {
 
     private final TextureRegion textureRegion;
+    private final BitmapFont font;
     private ShapeDrawer shapeDrawer;
 
     private final TimeoutMap<Integer, KeyFrame<Type>> timeoutMap;
     private final Set<Integer> emptySkills;
 
-    public SkillTimeoutAnimation(TextureRegion textureRegion) {
+    public SkillIconAnimationController(TextureRegion textureRegion, BitmapFont font) {
         this.textureRegion = textureRegion;
-        this.timeoutMap = new TimeoutMap<>();
+        this.font = font;
+        this.timeoutMap = new TimeoutHashMap<>();
         this.emptySkills = new HashSet<>();
     }
 
@@ -41,7 +49,6 @@ public class SkillTimeoutAnimation implements UIAnimation<Integer, SkillTimeoutA
     }
 
     private void blendAnimations(Integer data, Iterable<KeyFrame<Type>> keyFrames) {
-        KeyFrame<Type> currentKeyFrame = timeoutMap.get(data);
         Iterator<KeyFrame<Type>> newKeyFramesIterator = keyFrames.iterator();
         KeyFrame<Type> offeredKeyFrame = newKeyFramesIterator.next();
         if (Double.compare(timeoutMap.getRemainingTime(data), offeredKeyFrame.getDuration()) < 0) {
@@ -58,47 +65,37 @@ public class SkillTimeoutAnimation implements UIAnimation<Integer, SkillTimeoutA
     @Override
     public void animate(Integer index, float x, float y, float width, float height) {
         if (emptySkills.contains(index)) {
-            shapeDrawer.setColor(0, 0, 0, 0.8f);
-            shapeDrawer.filledRectangle(x, y, width, height);
+            Type.EMPTY.animator.animate(shapeDrawer, x, y, width, height, 1, 1);
         }
         else if (timeoutMap.contains(index)) {
             KeyFrame<Type> currentKeyFrame = timeoutMap.get(index);
-            currentKeyFrame.type.animate(shapeDrawer, x, y, width, height,
-                    timeoutMap.getRemainingTime(index), currentKeyFrame.getDuration());
+            double remainingTime = timeoutMap.getRemainingTime(index);
+            currentKeyFrame.type.animator.animate(shapeDrawer, x, y, width, height,
+                    remainingTime, currentKeyFrame.getDuration());
+            font.setColor(Color.BLACK);
+            String remainingTimeText = Integer.toString((int)Math.ceil(remainingTime));
+            font.draw(shapeDrawer.getBatch(), remainingTimeText,
+                    x, y + (height + font.getLineHeight()) / 2, 0,
+                    remainingTimeText.length(), width, Align.center, false, "");
         }
     }
 
     @Override
     public boolean contains(Integer data) {
-        return timeoutMap.contains(data);
+        return emptySkills.contains(data) || timeoutMap.contains(data);
     }
 
     public enum Type {
-        CAST_APPLIED {
-            @Override
-            void animate(ShapeDrawer shapeDrawer, float x, float y, float width, float height,
-                         double timeLeft, double duration) {
-                shapeDrawer.setColor(1, 0, 0, 0.75f);
-                shapeDrawer.filledRectangle(x, y, width, (float)(height * (timeLeft / duration)));
-            }
-        }, CAST_NON_APPLIED {
-            @Override
-            void animate(ShapeDrawer shapeDrawer, float x, float y, float width, float height,
-                         double timeLeft, double duration) {
-                shapeDrawer.setColor(0, 1, 0, 0.75f);
-                shapeDrawer.filledRectangle(x, y, width, (float)(height * (timeLeft / duration)));
-            }
-        }, COOLDOWN {
-            @Override
-            void animate(ShapeDrawer shapeDrawer, float x, float y, float width, float height,
-                         double timeLeft, double duration) {
-                shapeDrawer.setColor(0, 0, 1, 0.75f);
-                shapeDrawer.filledRectangle(x, y, width, (float)(height * (timeLeft / duration)));
-            }
-        };
+        EMPTY(new LoweringRectangleAnimator(new Color(0, 0, 0, 0.8f))),
+        CAST_APPLIED(new RotatingSquareSectorAnimator(new Color(1, 0, 0, 0.75f))),
+        CAST_NON_APPLIED(new RotatingSquareSectorAnimator(new Color(0, 1, 0, 0.75f))),
+        COOLDOWN(new RotatingSquareSectorAnimator(new Color(0, 0, 1, 0.75f)));
 
-        abstract void animate(ShapeDrawer shapeDrawer, float x, float y, float width, float height,
-                              double timeLeft, double duration);
+        private final ShapeAnimator animator;
+
+        Type(final ShapeAnimator animator) {
+            this.animator = animator;
+        }
     }
 
 }

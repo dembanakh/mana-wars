@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.PassiveSkill;
+import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.widgets.skills_list_2d.List2D;
 import com.mana_wars.ui.widgets.skills_list_2d.StaticSkillsList2D;
@@ -40,12 +41,12 @@ public class BattleParticipantValueField extends ValueFieldWithInitialData<Battl
         super.init();
 
         Table field = new Table();
+        field.setFillParent(true);
 
         participantName = new Label("", new Label.LabelStyle(new BitmapFont(), new Color()));
-        participantName.setFillParent(true);
         participantName.setColor(Color.BLACK);
         participantName.setFontScale(4);
-        field.add(participantName).row();
+        addActor(participantName);
 
         Stack stack = new Stack();
         healthBar = new ProgressBar(0, 100, 1, false,
@@ -58,14 +59,17 @@ public class BattleParticipantValueField extends ValueFieldWithInitialData<Battl
         participantHealth.setColor(Color.BLACK);
         participantHealth.setFontScale(4);
         stack.add(participantHealth);
-        field.add(stack).row();
+        addActor(stack);
 
-        // TODO: tune SkillsList2D size
-        participantPassiveSkills = new StaticSkillsList2D<>(new List.ListStyle(),
-                GameConstants.USER_PASSIVE_SKILL_COUNT, iconFactory, frameFactory);
-        field.add(participantPassiveSkills).expandX().row();
-
-        addActor(field);
+        participantPassiveSkills = new StaticSkillsList2D<PassiveSkill>(new List.ListStyle(),
+                GameConstants.USER_PASSIVE_SKILL_COUNT, iconFactory, frameFactory) {
+            @Override
+            protected boolean shouldShowLevel(PassiveSkill item) {
+                return false;
+            }
+        };
+        participantPassiveSkills.setMinHeight(131.4f);
+        addActorAndExpandX(participantPassiveSkills);
     }
 
     /*

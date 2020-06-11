@@ -1,4 +1,4 @@
-package com.mana_wars.ui.animation;
+package com.mana_wars.ui.animation.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,14 +9,15 @@ import java.util.Map;
 /*
  * Selected items must be different in terms of equals() (Map).
  */
-public class TimeoutMap<T, U extends Durationable> {
+public class TimeoutHashMap<T, U extends Durationable> implements TimeoutMap<T, U> {
 
     private final Map<T, TimeoutItem<U>> map;
 
-    TimeoutMap() {
+    TimeoutHashMap() {
         map = new HashMap<>();
     }
 
+    @Override
     public void update(float delta) {
         List<T> timeoutItems = new ArrayList<>();
         for (Map.Entry<T, TimeoutItem<U>> entry : map.entrySet()) {
@@ -38,25 +39,30 @@ public class TimeoutMap<T, U extends Durationable> {
             map.remove(data);
     }
 
+    @Override
     public boolean add(T data, Iterator<U> valueIterator) {
         if (!valueIterator.hasNext()) return false;
         map.put(data, new TimeoutItem<>(valueIterator.next(), valueIterator));
         return true;
     }
 
+    @Override
     public U get(T data) {
         return map.get(data).data;
     }
 
-    void remove(T data) {
+    @Override
+    public void remove(T data) {
         map.remove(data);
     }
 
-    double getRemainingTime(T data) {
+    @Override
+    public double getRemainingTime(T data) {
         return map.get(data).time;
     }
 
-    boolean contains(T data) {
+    @Override
+    public boolean contains(T data) {
         return map.containsKey(data);
     }
 

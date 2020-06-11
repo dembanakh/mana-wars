@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Align;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.ui.factory.AssetFactory;
@@ -29,7 +30,8 @@ public class StaticSkillsList2D<T extends Skill> extends List2D<T> {
     }
 
     @Override
-    protected void drawItem(Batch batch, BitmapFont font, int index, T item, float x, float y, float width, float height) {
+    protected void drawItem(Batch batch, BitmapFont font, int index, T item,
+                            float x, float y, float width, float height) {
         TextureRegion icon = iconFactory.getAsset(item.getIconID());
         TextureRegion frame = frameFactory.getAsset(item.getRarity());
         String text = String.valueOf(item.getLevel());
@@ -42,12 +44,16 @@ public class StaticSkillsList2D<T extends Skill> extends List2D<T> {
         batch.draw(icon, x + iconOffsetX, y + iconOffsetY);
         batch.draw(frame, x + frameOffsetX, y + frameOffsetY);
 
-        if (item.getRarity() != Rarity.EMPTY) {
+        if (shouldShowLevel(item)) {
             font.setColor(Color.BLACK);
             font.getData().setScale(2);
-            font.draw(batch, text, x + width / 2, y + frameOffsetY, 0, text.length(),
-                    width, alignment, false, "");
+            font.draw(batch, text, x, y + frameOffsetY, 0, text.length(),
+                    width, Align.center, false, "");
         }
+    }
+    
+    protected boolean shouldShowLevel(T item) {
+        return item.getRarity() != Rarity.EMPTY;
     }
 
 }
