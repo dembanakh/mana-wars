@@ -1,8 +1,5 @@
 package com.mana_wars.ui.widgets.skills_list_2d;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -23,29 +20,6 @@ public class OperationSkillsList2D extends StaticSkillsList2D<Skill> {
                                  AssetFactory<Rarity, TextureRegion> frameFactory, boolean ordered) {
         super(style, cols, iconFactory, frameFactory);
         this.ordered = ordered;
-    }
-
-    @Override
-    protected void drawItem(Batch batch, BitmapFont font, int index, Skill item, float x, float y,
-                            float width, float height) {
-        TextureRegion icon = iconFactory.getAsset(item.getIconID());
-        TextureRegion frame = frameFactory.getAsset(item.getRarity());
-        String text = String.valueOf(item.getLevel());
-
-        float iconOffsetX = (width - icon.getRegionWidth()) / 2;
-        float iconOffsetY = (height - icon.getRegionHeight()) / 2;
-        float frameOffsetX = (width - frame.getRegionWidth()) / 2;
-        float frameOffsetY = (height - frame.getRegionHeight()) / 2;
-
-        batch.draw(icon, x + iconOffsetX, y + iconOffsetY);
-        batch.draw(frame, x + frameOffsetX, y + frameOffsetY);
-
-        if (item.getRarity() != Rarity.EMPTY) {
-            font.setColor(Color.BLACK);
-            font.getData().setScale(2);
-            font.draw(batch, text, x + width / 2, y + frameOffsetY, 0, text.length(),
-                    width, alignment, false, "");
-        }
     }
 
     @Override

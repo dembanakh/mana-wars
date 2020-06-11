@@ -27,7 +27,7 @@ public class SkillIconAnimationController implements UIAnimationController<Integ
     public SkillIconAnimationController(TextureRegion textureRegion, BitmapFont font) {
         this.textureRegion = textureRegion;
         this.font = font;
-        this.timeoutMap = new TimeoutMap<>();
+        this.timeoutMap = new TimeoutHashMap<>();
         this.emptySkills = new HashSet<>();
     }
 
@@ -72,7 +72,7 @@ public class SkillIconAnimationController implements UIAnimationController<Integ
             double remainingTime = timeoutMap.getRemainingTime(index);
             currentKeyFrame.type.animator.animate(shapeDrawer, x, y, width, height,
                     remainingTime, currentKeyFrame.getDuration());
-            font.setColor(Color.RED);
+            font.setColor(Color.BLACK);
             String remainingTimeText = Integer.toString((int)Math.ceil(remainingTime));
             font.draw(shapeDrawer.getBatch(), remainingTimeText,
                     x, y + (height + font.getLineHeight()) / 2, 0,

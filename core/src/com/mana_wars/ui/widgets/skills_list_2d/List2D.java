@@ -31,6 +31,7 @@ public abstract class List2D<T> extends Widget implements Cullable {
     final Array<List2DItem<T>> items = new Array<>();
     final Selection<List2DItem<T>> selection = new Selection<>();
     private Rectangle cullingArea;
+    private Float minWidth, minHeight;
     private float prefWidth, prefHeight;
     private float itemHeight;
     private float itemWidth;
@@ -404,17 +405,25 @@ public abstract class List2D<T> extends Widget implements Cullable {
         return itemsArr;
     }
 
-    public float getItemHeight () { return itemHeight; }
+    public void setMinWidth(float minWidth) {
+        this.minWidth = minWidth;
+    }
 
-    public float getItemWidth () { return itemWidth; }
+    public void setMinHeight(float minHeight) {
+        this.minHeight = minHeight;
+    }
 
     public float getPrefWidth () {
         validate();
+        if (minWidth != null)
+            prefWidth = Math.max(prefWidth, minWidth);
         return prefWidth;
     }
 
     public float getPrefHeight () {
         validate();
+        if (minHeight != null)
+            prefHeight = Math.max(prefHeight, minHeight);
         return prefHeight;
     }
 

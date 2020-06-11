@@ -30,7 +30,8 @@ public class StaticSkillsList2D<T extends Skill> extends List2D<T> {
     }
 
     @Override
-    protected void drawItem(Batch batch, BitmapFont font, int index, T item, float x, float y, float width, float height) {
+    protected void drawItem(Batch batch, BitmapFont font, int index, T item,
+                            float x, float y, float width, float height) {
         TextureRegion icon = iconFactory.getAsset(item.getIconID());
         TextureRegion frame = frameFactory.getAsset(item.getRarity());
         String text = String.valueOf(item.getLevel());
@@ -43,12 +44,16 @@ public class StaticSkillsList2D<T extends Skill> extends List2D<T> {
         batch.draw(icon, x + iconOffsetX, y + iconOffsetY);
         batch.draw(frame, x + frameOffsetX, y + frameOffsetY);
 
-        if (item.getRarity() != Rarity.EMPTY) {
+        if (shouldShowLevel(item)) {
             font.setColor(Color.BLACK);
             font.getData().setScale(2);
             font.draw(batch, text, x, y + frameOffsetY, 0, text.length(),
                     width, Align.center, false, "");
         }
+    }
+    
+    protected boolean shouldShowLevel(T item) {
+        return item.getRarity() != Rarity.EMPTY;
     }
 
 }
