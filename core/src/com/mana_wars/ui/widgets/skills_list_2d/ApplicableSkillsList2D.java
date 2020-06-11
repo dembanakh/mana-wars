@@ -7,8 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.ActiveSkill;
-import com.mana_wars.ui.animation.SkillTimeoutAnimation;
-import com.mana_wars.ui.animation.UIAnimation;
+import com.mana_wars.ui.animation.controller.SkillIconAnimationController;
+import com.mana_wars.ui.animation.controller.UIAnimationController;
 import com.mana_wars.ui.factory.AssetFactory;
 
 import java.util.Arrays;
@@ -19,20 +19,21 @@ import io.reactivex.functions.Consumer;
 public class ApplicableSkillsList2D<T extends ActiveSkill> extends ClickableSkillsList2D<T>
         implements BlockableSkillsList<T> {
 
-    private final UIAnimation<Integer, SkillTimeoutAnimation.Type> animation;
+    private final UIAnimationController<Integer, SkillIconAnimationController.Type> animationController;
 
     public ApplicableSkillsList2D(Skin skin, int cols, AssetFactory<Integer, TextureRegion> iconFactory,
                                   AssetFactory<Rarity, TextureRegion> frameFactory,
                                   Consumer<? super Integer> onSkillClick) {
         super(skin, cols, iconFactory, frameFactory);
-        this.animation = new SkillTimeoutAnimation(iconFactory.getAsset(1));
+        this.animationController = new SkillIconAnimationController(iconFactory.getAsset(1),
+                getStyle().font);
 
         setOnSkillClick(onSkillClick);
     }
 
     @Override
     protected boolean isClickable(int index) {
-        return super.isClickable(index) && !animation.contains(index);
+        return super.isClickable(index) && !animationController.contains(index);
     }
 
     @Override
@@ -40,7 +41,7 @@ public class ApplicableSkillsList2D<T extends ActiveSkill> extends ClickableSkil
         super.setItems(newItems);
         for (int i = 0; i < items.size; ++i) {
             if (getItem(i).getRarity() == Rarity.EMPTY) {
-                animation.add(i, Collections.emptyList());
+                animationController.add(i, Collections.emptyList());
             }
         }
     }
@@ -51,16 +52,16 @@ public class ApplicableSkillsList2D<T extends ActiveSkill> extends ClickableSkil
         for (int i = 0; i < items.size; ++i) {
             if (getItem(i).getRarity() == Rarity.EMPTY) continue;
             if (i == appliedSkillIndex)
-                animation.add(i,
+                animationController.add(i,
                         Arrays.asList(
-                                new UIAnimation.KeyFrame<>(SkillTimeoutAnimation.Type.CAST_APPLIED,
+                                new UIAnimationController.KeyFrame<>(SkillIconAnimationController.Type.CAST_APPLIED,
                                                         appliedSkill.getCastTime()),
-                                new UIAnimation.KeyFrame<>(SkillTimeoutAnimation.Type.COOLDOWN,
+                                new UIAnimationController.KeyFrame<>(SkillIconAnimationController.Type.COOLDOWN,
                                                         appliedSkill.getCooldown())));
             else
-                animation.add(i,
+                animationController.add(i,
                         Arrays.asList(
-                                new UIAnimation.KeyFrame<>(SkillTimeoutAnimation.Type.CAST_NON_APPLIED,
+                                new UIAnimationController.KeyFrame<>(SkillIconAnimationController.Type.CAST_NON_APPLIED,
                                         appliedSkill.getCastTime())));
         }
     }
@@ -72,12 +73,12 @@ public class ApplicableSkillsList2D<T extends ActiveSkill> extends ClickableSkil
 
     @Override
     public void update(float delta) {
-        animation.update(delta);
+        animationController.update(delta);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        animation.initBatch(batch);
+        animationController.initBatch(batch);
         super.draw(batch, parentAlpha);
     }
 
@@ -85,6 +86,6 @@ public class ApplicableSkillsList2D<T extends ActiveSkill> extends ClickableSkil
     protected void drawItem(Batch batch, BitmapFont font, int index, T item,
                             float x, float y, float width, float height) {
         super.drawItem(batch, font, index, item, x, y, width, height);
-        animation.animate(index, x, y, width, height);
+        animationController.animate(index, x, y, width, height);
     }
 }

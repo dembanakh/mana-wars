@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Align;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.ui.factory.AssetFactory;
@@ -45,8 +46,8 @@ public class StaticSkillsList2D<T extends Skill> extends List2D<T> {
         if (item.getRarity() != Rarity.EMPTY) {
             font.setColor(Color.BLACK);
             font.getData().setScale(2);
-            font.draw(batch, text, x + width / 2, y + frameOffsetY, 0, text.length(),
-                    width, alignment, false, "");
+            font.draw(batch, text, x, y + frameOffsetY, 0, text.length(),
+                    width, Align.center, false, "");
         }
     }
 
