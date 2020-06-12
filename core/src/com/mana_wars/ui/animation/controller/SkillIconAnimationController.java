@@ -42,7 +42,7 @@ public class SkillIconAnimationController implements UIAnimationController<Integ
             emptySkills.add(data);
             return;
         }
-        if (timeoutMap.contains(data))
+        if (timeoutMap.containsKey(data))
             blendAnimations(data, keyFrames);
         else
             timeoutMap.add(data, keyFrames.iterator());
@@ -67,7 +67,7 @@ public class SkillIconAnimationController implements UIAnimationController<Integ
         if (emptySkills.contains(index)) {
             Type.EMPTY.animator.animate(shapeDrawer, x, y, width, height, 1, 1);
         }
-        else if (timeoutMap.contains(index)) {
+        else if (timeoutMap.containsKey(index)) {
             KeyFrame<Type> currentKeyFrame = timeoutMap.get(index);
             double remainingTime = timeoutMap.getRemainingTime(index);
             currentKeyFrame.type.animator.animate(shapeDrawer, x, y, width, height,
@@ -82,7 +82,7 @@ public class SkillIconAnimationController implements UIAnimationController<Integ
 
     @Override
     public boolean contains(Integer data) {
-        return emptySkills.contains(data) || timeoutMap.contains(data);
+        return emptySkills.contains(data) || timeoutMap.containsKey(data);
     }
 
     public enum Type {
