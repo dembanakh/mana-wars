@@ -4,8 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.utils.Align;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import static com.mana_wars.ui.UIElementsSize.SCREEN_HEIGHT;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -13,6 +15,13 @@ import static org.mockito.Mockito.when;
 public class AbsoluteYPositionConstraintTest {
 
     private PositionConstraint constraint;
+
+    @BeforeClass
+    public static void setup() {
+        Gdx.graphics = mock(Graphics.class);
+        when(Gdx.graphics.getWidth()).thenReturn(1000);
+        when(Gdx.graphics.getHeight()).thenReturn(1000);
+    }
 
     @Test(expected = IllegalArgumentException.class)
     public void testWrongAlign() {
