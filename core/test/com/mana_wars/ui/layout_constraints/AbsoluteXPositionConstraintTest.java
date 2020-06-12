@@ -5,6 +5,7 @@ import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.utils.Align;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -14,6 +15,13 @@ import static org.mockito.Mockito.when;
 public class AbsoluteXPositionConstraintTest {
 
     private PositionConstraint constraint;
+
+    @BeforeClass
+    public static void setup() {
+        Gdx.graphics = mock(Graphics.class);
+        when(Gdx.graphics.getWidth()).thenReturn(1000);
+        when(Gdx.graphics.getHeight()).thenReturn(1000);
+    }
 
     @Test(expected = IllegalArgumentException.class)
     public void testWrongAlign() {
@@ -35,8 +43,6 @@ public class AbsoluteXPositionConstraintTest {
     @Test
     public void testGetPosition_AlignRight() {
         constraint = new AbsoluteXPositionConstraint(Align.right, 100);
-        Gdx.graphics = mock(Graphics.class);
-        when(Gdx.graphics.getWidth()).thenReturn(1000);
         assertEquals(900, constraint.getPosition(), Double.MIN_VALUE);
     }
 
