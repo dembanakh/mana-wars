@@ -16,6 +16,7 @@ public class RelativeHeightConstraintTest {
         SizeConstraint constraint = new RelativeHeightConstraint(25);
         Gdx.graphics = mock(Graphics.class);
         when(Gdx.graphics.getHeight()).thenReturn(1000);
+        when(Gdx.graphics.getWidth()).thenReturn(1000);
         assertEquals(250, constraint.getSize(), Double.MIN_VALUE);
     }
 

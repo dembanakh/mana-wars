@@ -36,6 +36,7 @@ public class AbsoluteYPositionConstraintTest {
         constraint = new AbsoluteYPositionConstraint(Align.top, 100);
         Gdx.graphics = mock(Graphics.class);
         when(Gdx.graphics.getHeight()).thenReturn(1000);
+        when(Gdx.graphics.getWidth()).thenReturn(1000);
         assertEquals(900, constraint.getPosition(), Double.MIN_VALUE);
     }
 
