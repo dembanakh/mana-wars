@@ -5,7 +5,6 @@ import com.mana_wars.model.entity.battle.BattleParticipant;
 import com.mana_wars.model.entity.user.UserBattleAPI;
 import com.mana_wars.model.repository.DatabaseRepository;
 
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.subjects.Subject;
 
 public class BattleInteractor extends BaseInteractor{
@@ -13,7 +12,6 @@ public class BattleInteractor extends BaseInteractor{
     private final UserBattleAPI user;
     private BattleConfig battle;
     private final DatabaseRepository databaseRepository;
-
 
     public BattleInteractor(final UserBattleAPI user, final DatabaseRepository databaseRepository) {
         this.user = user;
@@ -57,7 +55,12 @@ public class BattleInteractor extends BaseInteractor{
         return battle.getEnemySide().get(index).getHealthObservable();
     }
 
+    public Subject<Integer> getUserManaAmountObservable() {
+        return user.getManaAmountObservable();
+    }
+
     public BattleParticipant getPreparedUser() {
         return user.prepareBattleParticipant();
     }
+
 }

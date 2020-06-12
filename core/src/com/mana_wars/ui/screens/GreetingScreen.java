@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.mana_wars.model.entity.user.UserGreetingAPI;
 import com.mana_wars.model.interactor.GreetingInteractor;
 import com.mana_wars.presentation.presenters.GreetingPresenter;
 import com.mana_wars.presentation.view.GreetingView;
@@ -22,12 +23,15 @@ import static com.mana_wars.ui.UIStringConstants.*;
 
 public class GreetingScreen extends BaseScreen<BaseOverlayUI, GreetingPresenter> implements GreetingView {
 
-    public GreetingScreen(ScreenSetter screenSetter, FactoryStorage factoryStorage,
-                          RepositoryStorage repositoryStorage, BaseOverlayUI overlayUI) {
+    public GreetingScreen(final UserGreetingAPI user,
+                          final ScreenSetter screenSetter,
+                          final FactoryStorage factoryStorage,
+                          final RepositoryStorage repositoryStorage,
+                          final BaseOverlayUI overlayUI) {
         super(screenSetter, factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING), overlayUI);
 
         presenter = new GreetingPresenter(this,
-                new GreetingInteractor(repositoryStorage.getLocalUserDataRepository()),
+                new GreetingInteractor(user, repositoryStorage.getLocalUserDataRepository()),
                 Gdx.app::postRunnable);
     }
 
@@ -70,6 +74,7 @@ public class GreetingScreen extends BaseScreen<BaseOverlayUI, GreetingPresenter>
 
     @Override
     public void onStart() {
+
         setScreen(ScreenInstance.MAIN_MENU, null);
     }
 }

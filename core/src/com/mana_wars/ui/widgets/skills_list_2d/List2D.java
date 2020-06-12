@@ -167,9 +167,11 @@ public abstract class List2D<T> extends Widget implements Cullable {
         prefWidth = getWidth();
         prefHeight = (float)(Math.ceil((float)items.size / cols) * itemHeight);
 
+        prefHeight += selectedDrawable.getTopHeight() + selectedDrawable.getBottomHeight();
         if (background != null) {
             prefHeight += background.getTopHeight() + background.getBottomHeight();
         }
+        setHeight(Math.max(getHeight(), prefHeight));
     }
 
     @Override

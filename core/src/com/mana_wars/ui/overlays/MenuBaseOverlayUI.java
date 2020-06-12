@@ -56,7 +56,12 @@ public class MenuBaseOverlayUI extends BaseOverlayUI {
         return userLevelField;
     }
 
-    public Consumer<? super String> getUsernameObserver() {
-        return usernameField;
+    public void setUsername(final String username) {
+        try {
+            usernameField.accept(username);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
 }

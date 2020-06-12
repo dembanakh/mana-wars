@@ -12,6 +12,8 @@ import com.mana_wars.ui.layout_constraints.RelativeWidthConstraint;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.widgets.BuildableUI;
 import com.mana_wars.ui.widgets.value_field.BattleParticipantValueField;
+import com.mana_wars.ui.widgets.value_field.TextValueField;
+import com.mana_wars.ui.widgets.value_field.ValueField;
 import com.mana_wars.ui.widgets.value_field.ValueFieldWithInitialData;
 import com.mana_wars.ui.widgets.value_field.ValueFieldWithInitialDataWrapper;
 
@@ -22,6 +24,8 @@ import java.util.List;
 import io.reactivex.functions.Consumer;
 
 public class BattleBaseOverlayUI extends BaseOverlayUI {
+
+    private final ValueField<Integer> userManaAmount;
 
     private final ValueFieldWithInitialData<BattleParticipantValueField.Data, Integer> userField;
     private final ValueFieldWithInitialData<BattleParticipantValueField.Data, Integer> enemyField;
@@ -41,12 +45,17 @@ public class BattleBaseOverlayUI extends BaseOverlayUI {
                 .setYConstraint(new AbsoluteYPositionConstraint(Align.top, 0))
                 .setWidthConstraint(new RelativeWidthConstraint(50))
                 .setHeightConstraint(new AbsoluteSizeConstraint(800));
+        userManaAmount = new TextValueField<Integer>()
+                .setXConstraint(new AbsoluteXPositionConstraint(Align.left, 0))
+                .setYConstraint(new AbsoluteYPositionConstraint(Align.top, 800))
+                .setWidthConstraint(new RelativeWidthConstraint())
+                .setHeightConstraint(new AbsoluteSizeConstraint(200));
         enemyFieldWrappers = new ArrayList<>();
     }
 
     @Override
     protected Iterable<BuildableUI> getElements() {
-        return Arrays.asList(userField, enemyField);
+        return Arrays.asList(userField, enemyField, userManaAmount);
     }
 
     public void clear() {
@@ -69,6 +78,10 @@ public class BattleBaseOverlayUI extends BaseOverlayUI {
 
     public void setActiveEnemy(int index) {
         enemyFieldWrappers.get(index).setField(enemyField);
+    }
+
+    public Consumer<? super Integer> getUserManaAmountObserver() {
+        return userManaAmount;
     }
 
 }

@@ -5,6 +5,7 @@ import com.mana_wars.model.entity.battle.Characteristic;
 import com.mana_wars.model.entity.skills.BattleSkill;
 import com.mana_wars.model.entity.skills.SkillCharacteristic;
 import com.mana_wars.model.entity.user.UserBattleAPI;
+import com.mana_wars.model.entity.user.UserGreetingAPI;
 import com.mana_wars.model.entity.user.UserMenuAPI;
 import com.mana_wars.model.entity.user.UserSkillsAPI;
 import com.mana_wars.model.repository.UserLevelRepository;
@@ -14,11 +15,10 @@ import com.mana_wars.model.repository.UsernameRepository;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.Subject;
 
-public class User extends BattleParticipant implements UserMenuAPI, UserSkillsAPI, UserBattleAPI {
+public class User extends BattleParticipant implements UserMenuAPI, UserSkillsAPI, UserBattleAPI, UserGreetingAPI {
 
     private final Subject<Integer> manaAmountObservable;
     private final Subject<Integer> userLevelObservable;
-    private final Subject<String> usernameObservable;
 
     private final UserManaRepository userManaRepository;
     private final UserLevelRepository userLevelRepository;
@@ -28,12 +28,12 @@ public class User extends BattleParticipant implements UserMenuAPI, UserSkillsAP
 
     public User(UserManaRepository userManaRepository, UserLevelRepository userLevelRepository,
                 UsernameRepository usernameRepository) {
-        super(usernameRepository.getUsername(), 1000);
+        super(1000);
         this.userManaRepository = userManaRepository;
         this.userLevelRepository = userLevelRepository;
         manaAmountObservable = BehaviorSubject.createDefault(initManaAmount());
         userLevelObservable = BehaviorSubject.createDefault(initUserLevel());
-        usernameObservable = BehaviorSubject.createDefault(getName());
+        if (usernameRepository.hasUsername()) setName(usernameRepository.getUsername());
     }
 
     private int initManaAmount() {
@@ -84,11 +84,6 @@ public class User extends BattleParticipant implements UserMenuAPI, UserSkillsAP
         return userLevelObservable;
     }
 
-    @Override
-    public Subject<String> getUsernameObservable() {
-        return usernameObservable;
-    }
-
     private void reInitCharacteristics() {
         setCharacteristicValue(Characteristic.HEALTH, initialHealth);
     }
@@ -122,6 +117,16 @@ public class User extends BattleParticipant implements UserMenuAPI, UserSkillsAP
         setCharacteristicValue(Characteristic.MANA, userMana);
         userManaRepository.setUserMana(userMana);
         manaAmountObservable.onNext(userMana);
+    }
+
+    @Override
+    public String getName() {
+        return super.getName();
+    }
+
+    @Override
+    public void setName(String name) {
+        super.setName(name);
     }
 
 }

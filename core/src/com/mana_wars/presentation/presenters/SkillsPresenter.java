@@ -9,7 +9,6 @@ import com.mana_wars.model.interactor.SkillsInteractor;
 import com.mana_wars.presentation.util.UIThreadHandler;
 import com.mana_wars.presentation.view.SkillsView;
 
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 
 public class SkillsPresenter extends BasePresenter<SkillsView, SkillsInteractor>{
@@ -24,10 +23,6 @@ public class SkillsPresenter extends BasePresenter<SkillsView, SkillsInteractor>
 
     public void addObserver_userLevel(Consumer<? super Integer> observer) {
         disposable.add(interactor.getUserLevelObservable().subscribe(observer));
-    }
-
-    public void addObserver_userName(Consumer<? super String> observer) {
-        disposable.add(interactor.getUsernameObservable().subscribe(observer));
     }
 
     public void refreshSkillsList() {

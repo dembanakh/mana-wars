@@ -47,6 +47,7 @@ public class BattleScreen extends BaseScreen<BattleBaseOverlayUI, BattlePresente
         presenter = new BattlePresenter(this,
                 new BattleInteractor(user, repositoryStorage.getDatabaseRepository()),
                 Gdx.app::postRunnable);
+        presenter.addObserver_userManaAmount(overlayUI.getUserManaAmountObserver());
 
         userActiveSkills = new ApplicableSkillsList2D<ActiveSkill>(getSkin(), GameConstants.USER_ACTIVE_SKILL_COUNT,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(),

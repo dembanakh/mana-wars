@@ -7,7 +7,6 @@ import com.mana_wars.model.mana_bonus.ManaBonus;
 import com.mana_wars.model.repository.DatabaseRepository;
 
 import io.reactivex.Single;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.subjects.Subject;
 
 public class MainMenuInteractor extends BaseInteractor{
@@ -17,7 +16,7 @@ public class MainMenuInteractor extends BaseInteractor{
 
     private final DatabaseRepository databaseRepository;
 
-    public MainMenuInteractor(UserMenuAPI user, DatabaseRepository databaseRepository,
+    public MainMenuInteractor(final UserMenuAPI user, DatabaseRepository databaseRepository,
                               ManaBonus manaBonus) {
         this.user = user;
         this.databaseRepository = databaseRepository;
@@ -50,10 +49,6 @@ public class MainMenuInteractor extends BaseInteractor{
         return user.getUserLevelObservable();
     }
 
-    public Subject<String> getUsernameObservable() {
-        return user.getUsernameObservable();
-    }
-
     private void updateManaAmount(int delta) {
         user.updateManaAmount(delta);
     }
@@ -75,4 +70,7 @@ public class MainMenuInteractor extends BaseInteractor{
         return manaBonus.getFullBonusTimeout();
     }
 
+    public Single<String> getUsername() {
+        return Single.just(user.getName());
+    }
 }
