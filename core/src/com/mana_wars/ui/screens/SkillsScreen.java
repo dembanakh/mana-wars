@@ -20,8 +20,7 @@ import com.mana_wars.model.interactor.SkillsInteractor;
 import com.mana_wars.presentation.presenters.SkillsPresenter;
 import com.mana_wars.presentation.view.SkillsView;
 import com.mana_wars.ui.management.ScreenSetter;
-import com.mana_wars.ui.overlays.MenuOverlayUI;
-import com.mana_wars.ui.overlays.OverlayUI;
+import com.mana_wars.ui.overlays.MenuBaseOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.ui.factory.AssetFactory;
@@ -34,10 +33,7 @@ import java.util.List;
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.*;
 import static com.mana_wars.ui.UIStringConstants.*;
 
-public class SkillsScreen extends BaseScreen implements SkillsView {
-
-    private final Skin skin;
-    private final MenuOverlayUI overlayUI;
+public class SkillsScreen extends BaseScreen<MenuBaseOverlayUI, SkillsPresenter> implements SkillsView {
 
     private final List2D<Skill> mainSkillsTable;
     private final List2D<Skill> activeSkillsTable;
@@ -45,13 +41,10 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
     private final SkillsDragAndDrop dragAndDrop;
     private final ScrollPane scrollPane;
 
-    private final SkillsPresenter presenter;
-
     public SkillsScreen(final UserSkillsAPI user,
                         final ScreenSetter screenSetter, final FactoryStorage factoryStorage,
-                        final RepositoryStorage repositoryStorage, final MenuOverlayUI overlayUI) {
-        super(screenSetter);
-        this.overlayUI = overlayUI;
+                        final RepositoryStorage repositoryStorage, final MenuBaseOverlayUI overlayUI) {
+        super(screenSetter, factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING), overlayUI);
 
         this.presenter = new SkillsPresenter(this,
                 Gdx.app::postRunnable,
@@ -60,28 +53,17 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
         presenter.addObserver_userLevel(overlayUI.getUserLevelObserver());
         presenter.addObserver_userName(overlayUI.getUsernameObserver());
 
-        skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
         mainSkillsTable = new OperationSkillsList2D(getEmptyBackgroundStyle(), COLUMNS_NUMBER,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(), true);
         mainSkillsTable.setUserObject(SkillTable.ALL_SKILLS);
-        activeSkillsTable = new OperationSkillsList2D(skin, GameConstants.USER_ACTIVE_SKILL_COUNT,
+        activeSkillsTable = new OperationSkillsList2D(getSkin(), GameConstants.USER_ACTIVE_SKILL_COUNT,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(), false);
         activeSkillsTable.setUserObject(SkillTable.ACTIVE_SKILLS);
-        passiveSkillsTable = new OperationSkillsList2D(skin, GameConstants.USER_PASSIVE_SKILL_COUNT,
+        passiveSkillsTable = new OperationSkillsList2D(getSkin(), GameConstants.USER_PASSIVE_SKILL_COUNT,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(), false);
         passiveSkillsTable.setUserObject(SkillTable.PASSIVE_SKILLS);
-        scrollPane = new ScrollPane(mainSkillsTable, skin);
+        scrollPane = new ScrollPane(mainSkillsTable, getSkin());
         dragAndDrop = new SkillsDragAndDrop(factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
-    }
-
-    @Override
-    protected Skin getSkin() {
-        return skin;
-    }
-
-    @Override
-    protected OverlayUI getOverlayUI() {
-        return overlayUI;
     }
 
     @Override
@@ -190,13 +172,6 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
         mainSkillsTable.setSelectedIndex(-1);
     }
 
-    @Override
-    public void dispose() {
-        super.dispose();
-        skin.dispose();
-        presenter.dispose();
-    }
-
     @SuppressWarnings("ConstantConditions")
     private class SkillsDragAndDrop {
 
@@ -292,7 +267,7 @@ public class SkillsScreen extends BaseScreen implements SkillsView {
     private com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle getEmptyBackgroundStyle() {
         com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle style =
                 new com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle(
-                        skin.get(com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle.class));
+                        getSkin().get(com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle.class));
         style.background = new BaseDrawable(style.background);
         return style;
     }

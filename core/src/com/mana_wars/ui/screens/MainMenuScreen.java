@@ -14,8 +14,7 @@ import com.mana_wars.model.mana_bonus.ManaBonusImpl;
 import com.mana_wars.presentation.presenters.MainMenuPresenter;
 import com.mana_wars.presentation.view.MainMenuView;
 import com.mana_wars.ui.management.ScreenSetter;
-import com.mana_wars.ui.overlays.MenuOverlayUI;
-import com.mana_wars.ui.overlays.OverlayUI;
+import com.mana_wars.ui.overlays.MenuBaseOverlayUI;
 import com.mana_wars.ui.widgets.ManaBonusProgressBar;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
@@ -24,22 +23,16 @@ import com.mana_wars.ui.widgets.SkillCaseWindow;
 
 import static com.mana_wars.ui.UIStringConstants.*;
 
-public class MainMenuScreen extends BaseScreen implements MainMenuView {
-
-    private final Skin skin;
-    private final MenuOverlayUI overlayUI;
+public class MainMenuScreen extends BaseScreen<MenuBaseOverlayUI,MainMenuPresenter> implements MainMenuView {
 
     private final SkillCaseWindow skillCaseWindow;
     private final ManaBonusProgressBar manaBonusProgressBar;
 
-    private final MainMenuPresenter presenter;
-
     public MainMenuScreen(final UserMenuAPI user, final ScreenSetter screenSetter,
                           final FactoryStorage factoryStorage,
                           final RepositoryStorage repositoryStorage,
-                          final MenuOverlayUI overlayUI) {
-        super(screenSetter);
-        this.overlayUI = overlayUI;
+                          final MenuBaseOverlayUI overlayUI) {
+        super(screenSetter, factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING), overlayUI);
 
         this.presenter = new MainMenuPresenter(this,
                 Gdx.app::postRunnable,
@@ -55,28 +48,16 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
         presenter.addObserver_manaAmount(overlayUI.getManaAmountObserver());
         presenter.addObserver_userLevel(overlayUI.getUserLevelObserver());
         presenter.addObserver_userName(overlayUI.getUsernameObserver());
-
-        this.skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
-        this.skillCaseWindow = new SkillCaseWindow(SKILL_CASE_WINDOW.TITLE, skin,
+        this.skillCaseWindow = new SkillCaseWindow(SKILL_CASE_WINDOW.TITLE, getSkin(),
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
         this.manaBonusProgressBar = new ManaBonusProgressBar(presenter.getFullManaBonusTimeout(),
-                this::claimBonus, skin);
-    }
-
-    @Override
-    protected Skin getSkin() {
-        return skin;
-    }
-
-    @Override
-    protected OverlayUI getOverlayUI() {
-        return overlayUI;
+                this::claimBonus, getSkin());
     }
 
     @Override
     protected void rebuildStage() {
         super.rebuildStage();
-        addActor(skillCaseWindow.build(skin));
+        addActor(skillCaseWindow.build(getSkin()));
     }
 
     @Override
@@ -136,13 +117,6 @@ public class MainMenuScreen extends BaseScreen implements MainMenuView {
     public void show() {
         super.show();
         presenter.onScreenShow();
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
-        skin.dispose();
-        presenter.dispose();
     }
 
 }

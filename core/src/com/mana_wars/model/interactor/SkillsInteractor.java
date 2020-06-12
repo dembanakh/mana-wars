@@ -12,7 +12,7 @@ import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.subjects.Subject;
 
-public class SkillsInteractor {
+public class SkillsInteractor extends BaseInteractor{
 
     private final UserSkillsAPI user;
     private final DatabaseRepository databaseRepository;

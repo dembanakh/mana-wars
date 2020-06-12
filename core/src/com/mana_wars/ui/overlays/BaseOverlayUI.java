@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mana_wars.ui.widgets.BuildableUI;
 
-public abstract class OverlayUI {
+public abstract class BaseOverlayUI {
 
     public void init() {
         for (BuildableUI element : getElements())

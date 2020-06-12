@@ -15,14 +15,14 @@ import java.util.Arrays;
 
 import io.reactivex.functions.Consumer;
 
-public class MenuOverlayUI extends OverlayUI {
+public class MenuBaseOverlayUI extends BaseOverlayUI {
 
     private final ValueField<Integer> manaAmountField;
     private final ValueField<Integer> userLevelField;
     private final ValueField<String> usernameField;
     private final BuildableUI navigationBar;
 
-    MenuOverlayUI(final ScreenSetter screenSetter) {
+    MenuBaseOverlayUI(final ScreenSetter screenSetter) {
         manaAmountField = new TextValueField<Integer>()
                 .setXConstraint(new AbsoluteXPositionConstraint(Align.right, 0))
                 .setYConstraint(new AbsoluteYPositionConstraint(Align.top, 0))

@@ -5,12 +5,10 @@ import com.mana_wars.model.repository.UsernameRepository;
 
 import io.reactivex.disposables.CompositeDisposable;
 
-public class GreetingInteractor {
+public class GreetingInteractor extends BaseInteractor{
 
     private UsernameRepository usernameRepository;
     private DatabaseRepository databaseRepository;
-
-    private CompositeDisposable disposable = new CompositeDisposable();
 
     public GreetingInteractor(UsernameRepository usernameRepository, DatabaseRepository databaseRepository) {
         this.usernameRepository = usernameRepository;
@@ -28,10 +26,6 @@ public class GreetingInteractor {
             // something went wrong
             System.out.println("Has username");
         }
-    }
-
-    public void dispose(){
-        disposable.dispose();
     }
 
 }
