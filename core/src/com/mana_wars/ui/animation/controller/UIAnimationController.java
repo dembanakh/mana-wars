@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 
 public interface UIAnimationController<T, Type> {
     void initBatch(Batch batch);
+    void clear();
     void add(T data, Iterable<KeyFrame<Type>> keyFrames);
 
     void update(float delta);

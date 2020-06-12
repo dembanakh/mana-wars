@@ -39,6 +39,7 @@ public class ApplicableSkillsList2D<T extends ActiveSkill> extends ClickableSkil
     @Override
     public void setItems(Iterable<? extends T> newItems) {
         super.setItems(newItems);
+        animationController.clear();
         for (int i = 0; i < items.size; ++i) {
             if (getItem(i).getRarity() == Rarity.EMPTY) {
                 animationController.add(i, Collections.emptyList());

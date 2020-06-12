@@ -30,6 +30,7 @@ import com.mana_wars.ui.widgets.TimeoutDragAndDrop;
 
 import java.util.List;
 
+import static com.mana_wars.ui.UIElementsSize.MENU_OVERLAY_UI.USER_LEVEL_FIELD_HEIGHT;
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.*;
 import static com.mana_wars.ui.UIStringConstants.*;
 
@@ -93,9 +94,12 @@ public class SkillsScreen extends BaseScreen<MenuBaseOverlayUI, SkillsPresenter>
         passiveSkillsTable.getSelection().setMultiple(false);
         passiveSkillsTable.getSelection().setRequired(false);
 
-        layer.add(activeSkillsTable).top().expandX().height(ACTIVE_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH).row();
-        layer.add(passiveSkillsTable).top().expandX().height(PASSIVE_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH).row();
-        layer.add(scrollPaneCont).top().expandX().height(MAIN_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH);
+        layer.add(activeSkillsTable).top().expandX().padTop(USER_LEVEL_FIELD_HEIGHT() + 15)
+                .height(ACTIVE_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH).row();
+        layer.add(passiveSkillsTable).top().expandX()
+                .height(PASSIVE_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH).row();
+        layer.add(scrollPaneCont).top().expandX()
+                .height(MAIN_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH);
 
         return layer;
     }
