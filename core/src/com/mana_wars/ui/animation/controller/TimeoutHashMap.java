@@ -22,7 +22,7 @@ public class TimeoutHashMap<T, U extends Durationable> implements TimeoutMap<T, 
         List<T> timeoutItems = new ArrayList<>();
         for (Map.Entry<T, TimeoutItem<U>> entry : map.entrySet()) {
             entry.getValue().time -= delta;
-            if (entry.getValue().time < 0) {
+            if (entry.getValue().time <= 0) {
                 entry.getValue().time = 0;
                 timeoutItems.add(entry.getKey());
             }
@@ -48,7 +48,9 @@ public class TimeoutHashMap<T, U extends Durationable> implements TimeoutMap<T, 
 
     @Override
     public U get(T data) {
-        return map.get(data).data;
+        if (map.containsKey(data))
+            return map.get(data).data;
+        return null;
     }
 
     @Override
@@ -58,12 +60,19 @@ public class TimeoutHashMap<T, U extends Durationable> implements TimeoutMap<T, 
 
     @Override
     public double getRemainingTime(T data) {
-        return map.get(data).time;
+        if (map.containsKey(data))
+            return map.get(data).time;
+        return 0;
     }
 
     @Override
-    public boolean contains(T data) {
+    public boolean containsKey(T data) {
         return map.containsKey(data);
+    }
+
+    @Override
+    public int size() {
+        return map.size();
     }
 
     private static class TimeoutItem<U extends Durationable> {
