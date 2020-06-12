@@ -9,7 +9,7 @@ public class AbsoluteYPositionConstraint implements PositionConstraint {
     private final int align;
     private final float offset;
 
-    public AbsoluteYPositionConstraint(int align, float offset) {
+    public AbsoluteYPositionConstraint(int align, float offset) throws IllegalArgumentException{
         if ((align & (Align.top | Align.bottom)) == 0)
             throw new IllegalArgumentException("This align is not legal for yConstraint");
         this.align = align;
