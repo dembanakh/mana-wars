@@ -12,6 +12,15 @@ public final class UIElementsSize {
         return Gdx.graphics.getHeight();
     }
 
+    public static class MENU_OVERLAY_UI {
+        public static float USER_LEVEL_FIELD_HEIGHT() {
+            return SCREEN_HEIGHT() * 0.05f;
+        }
+        public static float MANA_AMOUNT_FIELD_HEIGHT() {
+            return SCREEN_HEIGHT() * 0.05f;
+        }
+    }
+
     public static class SKILL_CASE_WINDOW {
         public static final int SKILL_NAME_PADDING = 10;
         public static final int SKILL_ICON_PADDING = 50;
@@ -32,7 +41,7 @@ public final class UIElementsSize {
         public static final int COLUMNS_NUMBER = 5;
         public static final float  ACTIVE_SKILLS_TABLE_HEIGHT = SCREEN_HEIGHT() * 0.1f;
         public static final float PASSIVE_SKILLS_TABLE_HEIGHT = SCREEN_HEIGHT() * 0.1f;
-        public static final float    MAIN_SKILLS_TABLE_HEIGHT = SCREEN_HEIGHT() * 0.7f;
+        public static final float    MAIN_SKILLS_TABLE_HEIGHT = SCREEN_HEIGHT() * 0.65f;
         public static final float SKILLS_TABLES_WIDTH = SCREEN_WIDTH();
     }
 

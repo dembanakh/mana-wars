@@ -59,6 +59,11 @@ public class TimeoutHashMap<T, U extends Durationable> implements TimeoutMap<T, 
     }
 
     @Override
+    public void clear() {
+        map.clear();
+    }
+
+    @Override
     public double getRemainingTime(T data) {
         if (map.containsKey(data))
             return map.get(data).time;

@@ -15,6 +15,9 @@ import java.util.Arrays;
 
 import io.reactivex.functions.Consumer;
 
+import static com.mana_wars.ui.UIElementsSize.MENU_OVERLAY_UI.MANA_AMOUNT_FIELD_HEIGHT;
+import static com.mana_wars.ui.UIElementsSize.MENU_OVERLAY_UI.USER_LEVEL_FIELD_HEIGHT;
+
 public class MenuBaseOverlayUI extends BaseOverlayUI {
 
     private final ValueField<Integer> manaAmountField;
@@ -26,14 +29,10 @@ public class MenuBaseOverlayUI extends BaseOverlayUI {
         manaAmountField = new TextValueField<Integer>()
                 .setXConstraint(new AbsoluteXPositionConstraint(Align.right, 0))
                 .setYConstraint(new AbsoluteYPositionConstraint(Align.top, 0))
-                .setWidthConstraint(new AbsoluteSizeConstraint(200))
-                .setHeightConstraint(new AbsoluteSizeConstraint(100))
                 .setBackgroundColor("white");
         userLevelField = new TextValueField<Integer>()
                 .setXConstraint(new AbsoluteXPositionConstraint(Align.left, 0))
                 .setYConstraint(new AbsoluteYPositionConstraint(Align.top, 0))
-                .setWidthConstraint(new AbsoluteSizeConstraint(200))
-                .setHeightConstraint(new AbsoluteSizeConstraint(100))
                 .setBackgroundColor("white");
         usernameField = new TextValueField<String>()
                 .setXConstraint(new AbsoluteXPositionConstraint(Align.left, 0))
@@ -41,6 +40,17 @@ public class MenuBaseOverlayUI extends BaseOverlayUI {
                 .setWidthConstraint(new RelativeWidthConstraint())
                 .setHeightConstraint(new AbsoluteSizeConstraint(50));
         navigationBar = new NavigationBar(screenSetter);
+    }
+
+    @Override
+    public void init() {
+        manaAmountField
+                .setWidthConstraint(new AbsoluteSizeConstraint(200))
+                .setHeightConstraint(new AbsoluteSizeConstraint(MANA_AMOUNT_FIELD_HEIGHT()));
+        userLevelField
+                .setWidthConstraint(new AbsoluteSizeConstraint(200))
+                .setHeightConstraint(new AbsoluteSizeConstraint(USER_LEVEL_FIELD_HEIGHT()));
+        super.init();
     }
 
     @Override

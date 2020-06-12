@@ -35,7 +35,6 @@ import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.SKILLS_TABLES_WIDTH;
 
 public class BattleScreen extends BaseScreen<BattleBaseOverlayUI, BattlePresenter> implements BattleView {
 
-
     private final BlockableSkillsList<ActiveSkill> userActiveSkills;
     private final AtomicBoolean isBattle = new AtomicBoolean(false);
 
@@ -109,6 +108,7 @@ public class BattleScreen extends BaseScreen<BattleBaseOverlayUI, BattlePresente
         layer.add(backButton).pad(100).row();
         layer.add(userActiveSkills.toActor()).bottom().expandX()
                 .height(ACTIVE_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH).row();
+        layer.setDebug(true);
         return layer;
     }
 

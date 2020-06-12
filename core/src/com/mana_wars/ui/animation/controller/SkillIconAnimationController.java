@@ -37,6 +37,12 @@ public class SkillIconAnimationController implements UIAnimationController<Integ
     }
 
     @Override
+    public void clear() {
+        timeoutMap.clear();
+        emptySkills.clear();
+    }
+
+    @Override
     public void add(Integer data, Iterable<KeyFrame<Type>> keyFrames) {
         if (!keyFrames.iterator().hasNext()) {
             emptySkills.add(data);
