@@ -8,4 +8,5 @@ public interface MainMenuView extends BaseView{
     void setTimeSinceLastManaBonusClaimed(long time);
     void onManaBonusReady();
 
+    void setUsername(String username);
 }

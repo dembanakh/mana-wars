@@ -51,7 +51,6 @@ public class SkillsScreen extends BaseScreen<MenuBaseOverlayUI, SkillsPresenter>
                 new SkillsInteractor(user, repositoryStorage.getDatabaseRepository()));
         presenter.addObserver_manaAmount(overlayUI.getManaAmountObserver());
         presenter.addObserver_userLevel(overlayUI.getUserLevelObserver());
-        presenter.addObserver_userName(overlayUI.getUsernameObserver());
 
         mainSkillsTable = new OperationSkillsList2D(getEmptyBackgroundStyle(), COLUMNS_NUMBER,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(), true);

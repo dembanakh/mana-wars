@@ -1,18 +1,16 @@
 package com.mana_wars.model.interactor;
 
-import com.mana_wars.model.repository.DatabaseRepository;
+import com.mana_wars.model.entity.user.UserGreetingAPI;
 import com.mana_wars.model.repository.UsernameRepository;
-
-import io.reactivex.disposables.CompositeDisposable;
 
 public class GreetingInteractor extends BaseInteractor{
 
-    private UsernameRepository usernameRepository;
-    private DatabaseRepository databaseRepository;
+    private final UserGreetingAPI user;
+    private final UsernameRepository usernameRepository;
 
-    public GreetingInteractor(UsernameRepository usernameRepository, DatabaseRepository databaseRepository) {
+    public GreetingInteractor(final UserGreetingAPI user, final UsernameRepository usernameRepository) {
+        this.user = user;
         this.usernameRepository = usernameRepository;
-        this.databaseRepository = databaseRepository;
     }
 
     public boolean hasUsername() {
@@ -20,7 +18,8 @@ public class GreetingInteractor extends BaseInteractor{
     }
 
     public void registerUser(String username) {
-        if (!usernameRepository.hasUsername()) {
+        if (!hasUsername()) {
+            user.setName(username);
             usernameRepository.setUsername(username);
         } else {
             // something went wrong

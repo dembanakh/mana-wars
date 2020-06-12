@@ -66,8 +66,4 @@ public class SkillsInteractor extends BaseInteractor{
         return user.getUserLevelObservable();
     }
 
-    public Subject<String> getUsernameObservable() {
-        return user.getUsernameObservable();
-    }
-
 }

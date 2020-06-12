@@ -25,7 +25,7 @@ public enum ScreenInstance {
                             final FactoryStorage factoryStorage,
                             final RepositoryStorage repositoryStorage,
                             final OverlayUIFactory overlayUIFactory) {
-        GREETING.screen = new GreetingScreen(screenSetter, factoryStorage, repositoryStorage,
+        GREETING.screen = new GreetingScreen(user, screenSetter, factoryStorage, repositoryStorage,
                 overlayUIFactory.getEmptyOverlayUI());
         MAIN_MENU.screen = new MainMenuScreen(user, screenSetter, factoryStorage, repositoryStorage,
                 overlayUIFactory.getMenuOverlayUI());

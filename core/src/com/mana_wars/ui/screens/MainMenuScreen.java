@@ -23,12 +23,13 @@ import com.mana_wars.ui.widgets.SkillCaseWindow;
 
 import static com.mana_wars.ui.UIStringConstants.*;
 
-public class MainMenuScreen extends BaseScreen<MenuBaseOverlayUI,MainMenuPresenter> implements MainMenuView {
+public class MainMenuScreen extends BaseScreen<MenuBaseOverlayUI, MainMenuPresenter> implements MainMenuView {
 
     private final SkillCaseWindow skillCaseWindow;
     private final ManaBonusProgressBar manaBonusProgressBar;
 
-    public MainMenuScreen(final UserMenuAPI user, final ScreenSetter screenSetter,
+    public MainMenuScreen(final UserMenuAPI user,
+                          final ScreenSetter screenSetter,
                           final FactoryStorage factoryStorage,
                           final RepositoryStorage repositoryStorage,
                           final MenuBaseOverlayUI overlayUI) {
@@ -47,7 +48,6 @@ public class MainMenuScreen extends BaseScreen<MenuBaseOverlayUI,MainMenuPresent
                                 repositoryStorage.getLocalUserDataRepository())));
         presenter.addObserver_manaAmount(overlayUI.getManaAmountObserver());
         presenter.addObserver_userLevel(overlayUI.getUserLevelObserver());
-        presenter.addObserver_userName(overlayUI.getUsernameObserver());
         this.skillCaseWindow = new SkillCaseWindow(SKILL_CASE_WINDOW.TITLE, getSkin(),
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
         this.manaBonusProgressBar = new ManaBonusProgressBar(presenter.getFullManaBonusTimeout(),
@@ -103,6 +103,11 @@ public class MainMenuScreen extends BaseScreen<MenuBaseOverlayUI,MainMenuPresent
     @Override
     public void onManaBonusReady() {
         manaBonusProgressBar.onBonusReady();
+    }
+
+    @Override
+    public void setUsername(String username) {
+        overlayUI.setUsername(username);
     }
 
     @Override

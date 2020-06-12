@@ -6,7 +6,7 @@ import com.mana_wars.presentation.view.BaseView;
 
 import io.reactivex.disposables.CompositeDisposable;
 
-public abstract class BasePresenter <U extends BaseView, T extends BaseInteractor>{
+public abstract class BasePresenter <U extends BaseView, T extends BaseInteractor> {
 
     protected final U view;
     protected final T interactor;

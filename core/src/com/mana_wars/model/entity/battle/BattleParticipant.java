@@ -16,7 +16,7 @@ public abstract class BattleParticipant {
 
     protected Battle battle;
 
-    private final String name;
+    private String name;
     protected final int initialHealth;
 
     protected final BattleSkill[] battleSkills = new BattleSkill[GameConstants.USER_ACTIVE_SKILL_COUNT];
@@ -27,7 +27,11 @@ public abstract class BattleParticipant {
     private final EnumMap<Characteristic, Integer> characteristics = new EnumMap<>(Characteristic.class);
 
     public BattleParticipant(String name, int healthPoints) {
+        this(healthPoints);
         this.name = name;
+    }
+
+    public BattleParticipant(int healthPoints) {
         this.initialHealth = healthPoints;
         setCharacteristicValue(Characteristic.HEALTH, healthPoints);
         setCharacteristicValue(Characteristic.MANA, 0);
@@ -66,6 +70,10 @@ public abstract class BattleParticipant {
         }
     }
 
+
+    protected void setName(final String name) {
+        this.name = name;
+    }
 
     public void setBattle(Battle battle) {
         this.battle = battle;

@@ -1,14 +1,13 @@
 package com.mana_wars.presentation.presenters;
 
+import com.mana_wars.model.entity.user.UserMenuAPI;
 import com.mana_wars.model.interactor.MainMenuInteractor;
 
 import com.mana_wars.presentation.util.UIThreadHandler;
 import com.mana_wars.presentation.view.MainMenuView;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 
 public class MainMenuPresenter extends BasePresenter<MainMenuView, MainMenuInteractor>{
-
 
     public MainMenuPresenter(MainMenuView view, UIThreadHandler uiThreadHandler, MainMenuInteractor interactor){
         super(view, interactor, uiThreadHandler);
@@ -22,15 +21,17 @@ public class MainMenuPresenter extends BasePresenter<MainMenuView, MainMenuInter
         disposable.add(interactor.getUserLevelObservable().subscribe(observer));
     }
 
-    public void addObserver_userName(Consumer<? super String> observer) {
-        disposable.add(interactor.getUsernameObservable().subscribe(observer));
-    }
-
     public void onScreenShow() {
         disposable.add(interactor.initManaBonus().subscribe(time -> {
             uiThreadHandler.postRunnable(() -> {
                 view.setTimeSinceLastManaBonusClaimed(time);
                 if (interactor.isBonusAvailable()) view.onManaBonusReady();
+            });
+        }, Throwable::printStackTrace));
+
+        disposable.add(interactor.getUsername().subscribe(username -> {
+            uiThreadHandler.postRunnable(() -> {
+                view.setUsername(username);
             });
         }, Throwable::printStackTrace));
     }

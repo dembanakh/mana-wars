@@ -14,6 +14,7 @@ public class GreetingPresenter extends BasePresenter<GreetingView, GreetingInter
         interactor.registerUser(username);
         view.onStart();
     }
+
     public boolean isFirstTimeAppOpen() {
         return !interactor.hasUsername();
     }
