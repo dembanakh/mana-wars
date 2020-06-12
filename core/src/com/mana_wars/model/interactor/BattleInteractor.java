@@ -8,15 +8,12 @@ import com.mana_wars.model.repository.DatabaseRepository;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.subjects.Subject;
 
-public class BattleInteractor {
+public class BattleInteractor extends BaseInteractor{
 
     private final UserBattleAPI user;
-
+    private BattleConfig battle;
     private final DatabaseRepository databaseRepository;
 
-    private BattleConfig battle;
-
-    private final CompositeDisposable disposable = new CompositeDisposable();
 
     public BattleInteractor(final UserBattleAPI user, final DatabaseRepository databaseRepository) {
         this.user = user;
@@ -63,9 +60,4 @@ public class BattleInteractor {
     public BattleParticipant getPreparedUser() {
         return user.prepareBattleParticipant();
     }
-
-    public void dispose() {
-        disposable.dispose();
-    }
-
 }

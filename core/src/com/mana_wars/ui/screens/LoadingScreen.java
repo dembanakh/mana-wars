@@ -5,36 +5,26 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.mana_wars.model.repository.DatabaseUpdater;
+import com.mana_wars.presentation.presenters.BasePresenter;
 import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
-import com.mana_wars.ui.overlays.OverlayUI;
+import com.mana_wars.ui.overlays.BaseOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
 
 import java.util.Map;
 
-public class LoadingScreen extends BaseScreen {
+//TODO think about Loading Presenter
+public class LoadingScreen extends BaseScreen<BaseOverlayUI, BasePresenter> {
 
-    private final Skin skin;
-    private final OverlayUI overlayUI;
     private final DatabaseUpdater updater;
 
     public LoadingScreen(ScreenSetter screenSetter, FactoryStorage factoryStorage,
-                         OverlayUI overlayUI, DatabaseUpdater updater) {
-        super(screenSetter);
-        this.overlayUI = overlayUI;
+                         BaseOverlayUI overlayUI, DatabaseUpdater updater) {
+        super(screenSetter,
+                factoryStorage.getSkinFactory().getAsset(UIStringConstants.UI_SKIN.FREEZING),
+                overlayUI);
         this.updater = updater;
-        this.skin = factoryStorage.getSkinFactory().getAsset(UIStringConstants.UI_SKIN.FREEZING);
-    }
-
-    @Override
-    protected Skin getSkin() {
-        return skin;
-    }
-
-    @Override
-    protected OverlayUI getOverlayUI() {
-        return overlayUI;
     }
 
     @Override
@@ -62,12 +52,6 @@ public class LoadingScreen extends BaseScreen {
             });
         });
         return super.reInit(arguments);
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
-        skin.dispose();
     }
 
 }

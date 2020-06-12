@@ -1,5 +1,6 @@
 package com.mana_wars.ui.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -11,7 +12,7 @@ import com.mana_wars.presentation.presenters.GreetingPresenter;
 import com.mana_wars.presentation.view.GreetingView;
 import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
-import com.mana_wars.ui.overlays.OverlayUI;
+import com.mana_wars.ui.overlays.BaseOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.ui.factory.UIElementFactory;
@@ -19,32 +20,15 @@ import com.mana_wars.ui.factory.UIElementFactory;
 import static com.mana_wars.ui.UIElementsSize.GREETING_SCREEN.*;
 import static com.mana_wars.ui.UIStringConstants.*;
 
-public class GreetingScreen extends BaseScreen implements GreetingView {
-
-    private final Skin skin;
-    private final OverlayUI overlayUI;
-
-    private final GreetingPresenter presenter;
+public class GreetingScreen extends BaseScreen<BaseOverlayUI, GreetingPresenter> implements GreetingView {
 
     public GreetingScreen(ScreenSetter screenSetter, FactoryStorage factoryStorage,
-                          RepositoryStorage repositoryStorage, OverlayUI overlayUI) {
-        super(screenSetter);
-        this.overlayUI = overlayUI;
+                          RepositoryStorage repositoryStorage, BaseOverlayUI overlayUI) {
+        super(screenSetter, factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING), overlayUI);
 
         presenter = new GreetingPresenter(this,
-                new GreetingInteractor(repositoryStorage.getLocalUserDataRepository()));
-
-        skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
-    }
-
-    @Override
-    protected Skin getSkin() {
-        return skin;
-    }
-
-    @Override
-    protected OverlayUI getOverlayUI() {
-        return overlayUI;
+                new GreetingInteractor(repositoryStorage.getLocalUserDataRepository()),
+                Gdx.app::postRunnable);
     }
 
     @Override
@@ -87,12 +71,5 @@ public class GreetingScreen extends BaseScreen implements GreetingView {
     @Override
     public void onStart() {
         setScreen(ScreenInstance.MAIN_MENU, null);
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
-        skin.dispose();
-        presenter.dispose();
     }
 }

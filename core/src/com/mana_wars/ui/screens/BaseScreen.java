@@ -8,20 +8,25 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.mana_wars.presentation.presenters.BasePresenter;
 import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
-import com.mana_wars.ui.overlays.OverlayUI;
+import com.mana_wars.ui.overlays.BaseOverlayUI;
 
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-public abstract class BaseScreen implements Screen, ScreenSetter {
+public abstract class BaseScreen<U extends BaseOverlayUI,T extends BasePresenter> implements Screen, ScreenSetter {
 
+    protected T presenter;
+    protected final U overlayUI;
+
+    private final Skin skin;
     private final Stage stage;
-
     private final ScreenSetter screenSetter;
 
-    BaseScreen(ScreenSetter screenSetter) {
+    BaseScreen(ScreenSetter screenSetter, Skin skin, U overlayUI) {
+        this.skin = skin;
         this.stage = new Stage() {
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
@@ -30,6 +35,7 @@ public abstract class BaseScreen implements Screen, ScreenSetter {
                 return super.touchDown(screenX, screenY, pointer, button);
             }
         };
+        this.overlayUI = overlayUI;
         this.screenSetter = screenSetter;
     }
 
@@ -44,8 +50,9 @@ public abstract class BaseScreen implements Screen, ScreenSetter {
         return (T)arguments.get(key);
     }
 
-    protected abstract Skin getSkin();
-    protected abstract OverlayUI getOverlayUI();
+    protected Skin getSkin(){
+        return skin;
+    };
 
     void rebuildStage() {
         stage.clear();
@@ -72,7 +79,7 @@ public abstract class BaseScreen implements Screen, ScreenSetter {
     public void show() {
         Gdx.input.setInputProcessor(stage);
         rebuildStage();
-        getOverlayUI().overlay(stage, getSkin());
+        overlayUI.overlay(stage, getSkin());
     }
 
     @Override
@@ -98,7 +105,7 @@ public abstract class BaseScreen implements Screen, ScreenSetter {
     public void resume() {
         Gdx.input.setInputProcessor(stage);
         rebuildStage();
-        getOverlayUI().overlay(stage, getSkin());
+        overlayUI.overlay(stage, getSkin());
     }
 
     @Override
@@ -109,6 +116,8 @@ public abstract class BaseScreen implements Screen, ScreenSetter {
     @Override
     public void dispose() {
         stage.dispose();
+        skin.dispose();
+        presenter.dispose();
     }
 
 }

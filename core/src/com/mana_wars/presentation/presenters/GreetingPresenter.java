@@ -1,27 +1,19 @@
 package com.mana_wars.presentation.presenters;
 
 import com.mana_wars.model.interactor.GreetingInteractor;
+import com.mana_wars.presentation.util.UIThreadHandler;
 import com.mana_wars.presentation.view.GreetingView;
 
-public class GreetingPresenter {
+public class GreetingPresenter extends BasePresenter<GreetingView, GreetingInteractor>{
 
-    private GreetingView view;
-    private GreetingInteractor interactor;
-
-    public GreetingPresenter(GreetingView view, GreetingInteractor interactor) {
-        this.view = view;
-        this.interactor = interactor;
+    public GreetingPresenter(GreetingView view, GreetingInteractor interactor, UIThreadHandler handler) {
+        super(view, interactor, handler);
     }
 
     public void onStart(String username) {
         interactor.registerUser(username);
         view.onStart();
     }
-
-    public void dispose(){
-        interactor.dispose();
-    }
-
     public boolean isFirstTimeAppOpen() {
         return !interactor.hasUsername();
     }

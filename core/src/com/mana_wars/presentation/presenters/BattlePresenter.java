@@ -12,17 +12,10 @@ import com.mana_wars.presentation.view.BattleView;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 
-public class BattlePresenter implements BattleInitializationObserver {
-
-    private BattleView view;
-    private BattleInteractor interactor;
-    private UIThreadHandler uiThreadHandler;
-    private CompositeDisposable disposable = new CompositeDisposable();
+public final class BattlePresenter extends BasePresenter<BattleView, BattleInteractor> implements BattleInitializationObserver {
 
     public BattlePresenter(BattleView view, BattleInteractor interactor, UIThreadHandler uiThreadHandler) {
-        this.view = view;
-        this.uiThreadHandler = uiThreadHandler;
-        this.interactor = interactor;
+        super(view, interactor, uiThreadHandler);
     }
 
     public void addObserver_userHealth(Consumer<? super Integer> observer) {
@@ -70,11 +63,6 @@ public class BattlePresenter implements BattleInitializationObserver {
         uiThreadHandler.postRunnable(() -> {
             view.setPlayers(user, userSide, enemySide);
         });
-    }
-
-    public void dispose() {
-        disposable.dispose();
-        interactor.dispose();
     }
 
 }
