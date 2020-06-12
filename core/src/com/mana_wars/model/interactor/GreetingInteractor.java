@@ -1,6 +1,5 @@
 package com.mana_wars.model.interactor;
 
-import com.mana_wars.model.repository.DatabaseRepository;
 import com.mana_wars.model.repository.UsernameRepository;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -8,13 +7,11 @@ import io.reactivex.disposables.CompositeDisposable;
 public class GreetingInteractor {
 
     private UsernameRepository usernameRepository;
-    private DatabaseRepository databaseRepository;
 
     private CompositeDisposable disposable = new CompositeDisposable();
 
-    public GreetingInteractor(UsernameRepository usernameRepository, DatabaseRepository databaseRepository) {
+    public GreetingInteractor(UsernameRepository usernameRepository) {
         this.usernameRepository = usernameRepository;
-        this.databaseRepository = databaseRepository;
     }
 
     public boolean hasUsername() {

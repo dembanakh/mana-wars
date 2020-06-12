@@ -32,8 +32,7 @@ public class GreetingScreen extends BaseScreen implements GreetingView {
         this.overlayUI = overlayUI;
 
         presenter = new GreetingPresenter(this,
-                new GreetingInteractor(repositoryStorage.getLocalUserDataRepository(),
-                        repositoryStorage.getDatabaseRepository()));
+                new GreetingInteractor(repositoryStorage.getLocalUserDataRepository()));
 
         skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
     }
