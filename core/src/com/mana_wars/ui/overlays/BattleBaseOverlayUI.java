@@ -21,16 +21,16 @@ import java.util.List;
 
 import io.reactivex.functions.Consumer;
 
-public class BattleOverlayUI extends OverlayUI {
+public class BattleBaseOverlayUI extends BaseOverlayUI {
 
     private final ValueFieldWithInitialData<BattleParticipantValueField.Data, Integer> userField;
     private final ValueFieldWithInitialData<BattleParticipantValueField.Data, Integer> enemyField;
 
     private final List<ValueFieldWithInitialDataWrapper<BattleParticipantValueField.Data, Integer>> enemyFieldWrappers;
 
-    BattleOverlayUI(final ScreenSetter screenSetter,
-                    final AssetFactory<Integer, TextureRegion> iconFactory,
-                    final AssetFactory<Rarity, TextureRegion> frameFactory) {
+    BattleBaseOverlayUI(final ScreenSetter screenSetter,
+                        final AssetFactory<Integer, TextureRegion> iconFactory,
+                        final AssetFactory<Rarity, TextureRegion> frameFactory) {
         userField = new BattleParticipantValueField(iconFactory, frameFactory)
                 .setXConstraint(new AbsoluteXPositionConstraint(Align.left, 0))
                 .setYConstraint(new AbsoluteYPositionConstraint(Align.top, 0))

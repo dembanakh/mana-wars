@@ -13,8 +13,7 @@ import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.entity.user.UserBattleAPI;
 import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
-import com.mana_wars.ui.overlays.BattleOverlayUI;
-import com.mana_wars.ui.overlays.OverlayUI;
+import com.mana_wars.ui.overlays.BattleBaseOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.model.entity.battle.PvEBattle;
@@ -34,18 +33,16 @@ import static com.mana_wars.ui.UIStringConstants.*;
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.ACTIVE_SKILLS_TABLE_HEIGHT;
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.SKILLS_TABLES_WIDTH;
 
-public class BattleScreen extends BaseScreen<BattlePresenter> implements BattleView {
+public class BattleScreen extends BaseScreen<BattleBaseOverlayUI, BattlePresenter> implements BattleView {
 
-    private final BattleOverlayUI overlayUI;
 
     private final BlockableSkillsList<ActiveSkill> userActiveSkills;
     private final AtomicBoolean isBattle = new AtomicBoolean(false);
 
     public BattleScreen(final UserBattleAPI user,
                         final ScreenSetter screenSetter, final FactoryStorage factoryStorage,
-                        final RepositoryStorage repositoryStorage, final BattleOverlayUI overlayUI) {
-        super(screenSetter, factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING));
-        this.overlayUI = overlayUI;
+                        final RepositoryStorage repositoryStorage, final BattleBaseOverlayUI overlayUI) {
+        super(screenSetter, factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING), overlayUI);
 
         presenter = new BattlePresenter(this,
                 new BattleInteractor(user, repositoryStorage.getDatabaseRepository()),
@@ -143,12 +140,6 @@ public class BattleScreen extends BaseScreen<BattlePresenter> implements BattleV
     @Override
     public void finishBattle() {
         isBattle.set(false);
-    }
-
-
-    @Override
-    protected OverlayUI getOverlayUI() {
-        return overlayUI;
     }
 
 }

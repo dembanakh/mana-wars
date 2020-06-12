@@ -11,22 +11,21 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.mana_wars.presentation.presenters.BasePresenter;
 import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
-import com.mana_wars.ui.overlays.OverlayUI;
+import com.mana_wars.ui.overlays.BaseOverlayUI;
 
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-public abstract class BaseScreen<T extends BasePresenter> implements Screen, ScreenSetter {
-
-    private final Stage stage;
+public abstract class BaseScreen<U extends BaseOverlayUI,T extends BasePresenter> implements Screen, ScreenSetter {
 
     protected T presenter;
+    protected final U overlayUI;
 
     private final Skin skin;
-
+    private final Stage stage;
     private final ScreenSetter screenSetter;
 
-    BaseScreen(ScreenSetter screenSetter, Skin skin) {
+    BaseScreen(ScreenSetter screenSetter, Skin skin, U overlayUI) {
         this.skin = skin;
         this.stage = new Stage() {
             @Override
@@ -36,6 +35,7 @@ public abstract class BaseScreen<T extends BasePresenter> implements Screen, Scr
                 return super.touchDown(screenX, screenY, pointer, button);
             }
         };
+        this.overlayUI = overlayUI;
         this.screenSetter = screenSetter;
     }
 
@@ -53,7 +53,6 @@ public abstract class BaseScreen<T extends BasePresenter> implements Screen, Scr
     protected Skin getSkin(){
         return skin;
     };
-    protected abstract OverlayUI getOverlayUI();
 
     void rebuildStage() {
         stage.clear();
@@ -80,7 +79,7 @@ public abstract class BaseScreen<T extends BasePresenter> implements Screen, Scr
     public void show() {
         Gdx.input.setInputProcessor(stage);
         rebuildStage();
-        getOverlayUI().overlay(stage, getSkin());
+        overlayUI.overlay(stage, getSkin());
     }
 
     @Override
@@ -106,7 +105,7 @@ public abstract class BaseScreen<T extends BasePresenter> implements Screen, Scr
     public void resume() {
         Gdx.input.setInputProcessor(stage);
         rebuildStage();
-        getOverlayUI().overlay(stage, getSkin());
+        overlayUI.overlay(stage, getSkin());
     }
 
     @Override

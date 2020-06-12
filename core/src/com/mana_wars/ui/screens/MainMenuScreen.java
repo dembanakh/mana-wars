@@ -14,8 +14,7 @@ import com.mana_wars.model.mana_bonus.ManaBonusImpl;
 import com.mana_wars.presentation.presenters.MainMenuPresenter;
 import com.mana_wars.presentation.view.MainMenuView;
 import com.mana_wars.ui.management.ScreenSetter;
-import com.mana_wars.ui.overlays.MenuOverlayUI;
-import com.mana_wars.ui.overlays.OverlayUI;
+import com.mana_wars.ui.overlays.MenuBaseOverlayUI;
 import com.mana_wars.ui.widgets.ManaBonusProgressBar;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
@@ -24,9 +23,7 @@ import com.mana_wars.ui.widgets.SkillCaseWindow;
 
 import static com.mana_wars.ui.UIStringConstants.*;
 
-public class MainMenuScreen extends BaseScreen<MainMenuPresenter> implements MainMenuView {
-
-    private final MenuOverlayUI overlayUI;
+public class MainMenuScreen extends BaseScreen<MenuBaseOverlayUI,MainMenuPresenter> implements MainMenuView {
 
     private final SkillCaseWindow skillCaseWindow;
     private final ManaBonusProgressBar manaBonusProgressBar;
@@ -34,9 +31,8 @@ public class MainMenuScreen extends BaseScreen<MainMenuPresenter> implements Mai
     public MainMenuScreen(final UserMenuAPI user, final ScreenSetter screenSetter,
                           final FactoryStorage factoryStorage,
                           final RepositoryStorage repositoryStorage,
-                          final MenuOverlayUI overlayUI) {
-        super(screenSetter, factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING));
-        this.overlayUI = overlayUI;
+                          final MenuBaseOverlayUI overlayUI) {
+        super(screenSetter, factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING), overlayUI);
 
         this.presenter = new MainMenuPresenter(this,
                 Gdx.app::postRunnable,
@@ -56,11 +52,6 @@ public class MainMenuScreen extends BaseScreen<MainMenuPresenter> implements Mai
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
         this.manaBonusProgressBar = new ManaBonusProgressBar(presenter.getFullManaBonusTimeout(),
                 this::claimBonus, getSkin());
-    }
-
-    @Override
-    protected OverlayUI getOverlayUI() {
-        return overlayUI;
     }
 
     @Override

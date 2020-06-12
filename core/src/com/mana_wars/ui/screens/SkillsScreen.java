@@ -20,8 +20,7 @@ import com.mana_wars.model.interactor.SkillsInteractor;
 import com.mana_wars.presentation.presenters.SkillsPresenter;
 import com.mana_wars.presentation.view.SkillsView;
 import com.mana_wars.ui.management.ScreenSetter;
-import com.mana_wars.ui.overlays.MenuOverlayUI;
-import com.mana_wars.ui.overlays.OverlayUI;
+import com.mana_wars.ui.overlays.MenuBaseOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.ui.factory.AssetFactory;
@@ -34,9 +33,7 @@ import java.util.List;
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.*;
 import static com.mana_wars.ui.UIStringConstants.*;
 
-public class SkillsScreen extends BaseScreen<SkillsPresenter> implements SkillsView {
-
-    private final MenuOverlayUI overlayUI;
+public class SkillsScreen extends BaseScreen<MenuBaseOverlayUI, SkillsPresenter> implements SkillsView {
 
     private final List2D<Skill> mainSkillsTable;
     private final List2D<Skill> activeSkillsTable;
@@ -46,9 +43,8 @@ public class SkillsScreen extends BaseScreen<SkillsPresenter> implements SkillsV
 
     public SkillsScreen(final UserSkillsAPI user,
                         final ScreenSetter screenSetter, final FactoryStorage factoryStorage,
-                        final RepositoryStorage repositoryStorage, final MenuOverlayUI overlayUI) {
-        super(screenSetter, factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING));
-        this.overlayUI = overlayUI;
+                        final RepositoryStorage repositoryStorage, final MenuBaseOverlayUI overlayUI) {
+        super(screenSetter, factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING), overlayUI);
 
         this.presenter = new SkillsPresenter(this,
                 Gdx.app::postRunnable,
@@ -68,11 +64,6 @@ public class SkillsScreen extends BaseScreen<SkillsPresenter> implements SkillsV
         passiveSkillsTable.setUserObject(SkillTable.PASSIVE_SKILLS);
         scrollPane = new ScrollPane(mainSkillsTable, getSkin());
         dragAndDrop = new SkillsDragAndDrop(factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
-    }
-
-    @Override
-    protected OverlayUI getOverlayUI() {
-        return overlayUI;
     }
 
     @Override

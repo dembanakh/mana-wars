@@ -12,7 +12,7 @@ import com.mana_wars.presentation.presenters.GreetingPresenter;
 import com.mana_wars.presentation.view.GreetingView;
 import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
-import com.mana_wars.ui.overlays.OverlayUI;
+import com.mana_wars.ui.overlays.BaseOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.ui.factory.UIElementFactory;
@@ -20,24 +20,16 @@ import com.mana_wars.ui.factory.UIElementFactory;
 import static com.mana_wars.ui.UIElementsSize.GREETING_SCREEN.*;
 import static com.mana_wars.ui.UIStringConstants.*;
 
-public class GreetingScreen extends BaseScreen<GreetingPresenter> implements GreetingView {
-
-    private final OverlayUI overlayUI;
+public class GreetingScreen extends BaseScreen<BaseOverlayUI, GreetingPresenter> implements GreetingView {
 
     public GreetingScreen(ScreenSetter screenSetter, FactoryStorage factoryStorage,
-                          RepositoryStorage repositoryStorage, OverlayUI overlayUI) {
-        super(screenSetter, factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING));
-        this.overlayUI = overlayUI;
+                          RepositoryStorage repositoryStorage, BaseOverlayUI overlayUI) {
+        super(screenSetter, factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING), overlayUI);
 
         presenter = new GreetingPresenter(this,
                 new GreetingInteractor(repositoryStorage.getLocalUserDataRepository(),
                         repositoryStorage.getDatabaseRepository()),
                 Gdx.app::postRunnable);
-    }
-
-    @Override
-    protected OverlayUI getOverlayUI() {
-        return overlayUI;
     }
 
     @Override

@@ -8,15 +8,15 @@ import java.util.Collections;
 
 public class OverlayUIFactory {
 
-    private final MenuOverlayUI menuOverlayUI;
-    private final BattleOverlayUI battleOverlayUI;
-    private final OverlayUI emptyOverlayUI;
+    private final MenuBaseOverlayUI menuOverlayUI;
+    private final BattleBaseOverlayUI battleOverlayUI;
+    private final BaseOverlayUI emptyOverlayUI;
 
     public OverlayUIFactory(final ScreenSetter screenSetter, final FactoryStorage factoryStorage) {
-        menuOverlayUI = new MenuOverlayUI(screenSetter);
-        battleOverlayUI = new BattleOverlayUI(screenSetter, factoryStorage.getSkillIconFactory(),
+        menuOverlayUI = new MenuBaseOverlayUI(screenSetter);
+        battleOverlayUI = new BattleBaseOverlayUI(screenSetter, factoryStorage.getSkillIconFactory(),
                 factoryStorage.getRarityFrameFactory());
-        emptyOverlayUI = new OverlayUI() {
+        emptyOverlayUI = new BaseOverlayUI() {
             @Override
             protected Iterable<BuildableUI> getElements() {
                 return Collections.emptyList();
@@ -30,15 +30,15 @@ public class OverlayUIFactory {
         emptyOverlayUI.init();
     }
 
-    public MenuOverlayUI getMenuOverlayUI() {
+    public MenuBaseOverlayUI getMenuOverlayUI() {
         return menuOverlayUI;
     }
 
-    public BattleOverlayUI getBattleOverlayUI() {
+    public BattleBaseOverlayUI getBattleOverlayUI() {
         return battleOverlayUI;
     }
 
-    public OverlayUI getEmptyOverlayUI() {
+    public BaseOverlayUI getEmptyOverlayUI() {
         return emptyOverlayUI;
     }
 
