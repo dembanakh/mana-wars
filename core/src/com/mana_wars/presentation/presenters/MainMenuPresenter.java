@@ -7,17 +7,13 @@ import com.mana_wars.presentation.view.MainMenuView;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 
-public class MainMenuPresenter {
+public class MainMenuPresenter extends BasePresenter<MainMenuInteractor>{
 
     private final MainMenuView view;
-    private final MainMenuInteractor interactor;
-    private final UIThreadHandler uiThreadHandler;
-    private final CompositeDisposable disposable = new CompositeDisposable();
 
     public MainMenuPresenter(MainMenuView view, UIThreadHandler uiThreadHandler, MainMenuInteractor interactor){
+        super(interactor, uiThreadHandler);
         this.view = view;
-        this.uiThreadHandler = uiThreadHandler;
-        this.interactor = interactor;
     }
 
     public void addObserver_manaAmount(Consumer<? super Integer> observer) {
@@ -60,10 +56,4 @@ public class MainMenuPresenter {
         view.setTimeSinceLastManaBonusClaimed(interactor.getTimeSinceLastManaBonusClaim());
         if (interactor.isBonusAvailable()) view.onManaBonusReady();
     }
-
-    public void dispose(){
-        disposable.dispose();
-        interactor.dispose();
-    }
-
 }

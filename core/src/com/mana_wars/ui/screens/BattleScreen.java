@@ -34,30 +34,24 @@ import static com.mana_wars.ui.UIStringConstants.*;
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.ACTIVE_SKILLS_TABLE_HEIGHT;
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.SKILLS_TABLES_WIDTH;
 
-public class BattleScreen extends BaseScreen implements BattleView {
+public class BattleScreen extends BaseScreen<BattlePresenter> implements BattleView {
 
-    private final Skin skin;
     private final BattleOverlayUI overlayUI;
 
-    private final BattlePresenter presenter;
-
     private final BlockableSkillsList<ActiveSkill> userActiveSkills;
-
     private final AtomicBoolean isBattle = new AtomicBoolean(false);
 
     public BattleScreen(final UserBattleAPI user,
                         final ScreenSetter screenSetter, final FactoryStorage factoryStorage,
                         final RepositoryStorage repositoryStorage, final BattleOverlayUI overlayUI) {
-        super(screenSetter);
+        super(screenSetter, factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING));
         this.overlayUI = overlayUI;
 
         presenter = new BattlePresenter(this,
                 new BattleInteractor(user, repositoryStorage.getDatabaseRepository()),
                 Gdx.app::postRunnable);
 
-        skin = factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING);
-
-        userActiveSkills = new ApplicableSkillsList2D<ActiveSkill>(skin, GameConstants.USER_ACTIVE_SKILL_COUNT,
+        userActiveSkills = new ApplicableSkillsList2D<ActiveSkill>(getSkin(), GameConstants.USER_ACTIVE_SKILL_COUNT,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(),
                 (skillIndex) -> {
                     if (isBattle.get()) {
@@ -151,21 +145,10 @@ public class BattleScreen extends BaseScreen implements BattleView {
         isBattle.set(false);
     }
 
-    @Override
-    protected Skin getSkin() {
-        return skin;
-    }
 
     @Override
     protected OverlayUI getOverlayUI() {
         return overlayUI;
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
-        skin.dispose();
-        presenter.dispose();
     }
 
 }

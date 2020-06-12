@@ -12,17 +12,13 @@ import com.mana_wars.presentation.view.SkillsView;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 
-public class SkillsPresenter {
+public class SkillsPresenter extends BasePresenter<SkillsInteractor>{
 
     private SkillsView view;
-    private SkillsInteractor interactor;
-    private UIThreadHandler uiThreadHandler;
-    private CompositeDisposable disposable = new CompositeDisposable();
 
     public SkillsPresenter(SkillsView view, UIThreadHandler uiThreadHandler, SkillsInteractor interactor) {
+        super(interactor, uiThreadHandler);
         this.view = view;
-        this.uiThreadHandler = uiThreadHandler;
-        this.interactor = interactor;
     }
 
     public void addObserver_manaAmount(Consumer<? super Integer> observer) {
@@ -90,9 +86,5 @@ public class SkillsPresenter {
             moveSkill(skillSource, (tableTarget == SkillTable.ALL_SKILLS) ? -1 : skillTargetIndex);
             view.finishMove(tableTarget, skillTargetIndex, skillSource);
         }
-    }
-
-    public void dispose() {
-        disposable.dispose();
     }
 }

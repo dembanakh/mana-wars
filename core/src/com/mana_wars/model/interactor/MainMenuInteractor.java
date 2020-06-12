@@ -10,15 +10,12 @@ import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.subjects.Subject;
 
-public class MainMenuInteractor {
+public class MainMenuInteractor extends BaseInteractor{
 
     private final UserMenuAPI user;
-
-    private final DatabaseRepository databaseRepository;
-
     private final ManaBonus manaBonus;
 
-    private CompositeDisposable disposable = new CompositeDisposable();
+    private final DatabaseRepository databaseRepository;
 
     public MainMenuInteractor(UserMenuAPI user, DatabaseRepository databaseRepository,
                               ManaBonus manaBonus) {
@@ -76,10 +73,6 @@ public class MainMenuInteractor {
 
     public int getFullManaBonusTimeout() {
         return manaBonus.getFullBonusTimeout();
-    }
-
-    public void dispose() {
-        disposable.dispose();
     }
 
 }

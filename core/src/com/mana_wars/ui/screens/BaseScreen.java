@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.mana_wars.presentation.presenters.BasePresenter;
 import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.OverlayUI;
@@ -15,13 +16,18 @@ import com.mana_wars.ui.overlays.OverlayUI;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-public abstract class BaseScreen implements Screen, ScreenSetter {
+public abstract class BaseScreen<T extends BasePresenter> implements Screen, ScreenSetter {
 
     private final Stage stage;
 
+    protected T presenter;
+
+    private final Skin skin;
+
     private final ScreenSetter screenSetter;
 
-    BaseScreen(ScreenSetter screenSetter) {
+    BaseScreen(ScreenSetter screenSetter, Skin skin) {
+        this.skin = skin;
         this.stage = new Stage() {
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
@@ -44,7 +50,9 @@ public abstract class BaseScreen implements Screen, ScreenSetter {
         return (T)arguments.get(key);
     }
 
-    protected abstract Skin getSkin();
+    protected Skin getSkin(){
+        return skin;
+    };
     protected abstract OverlayUI getOverlayUI();
 
     void rebuildStage() {
@@ -109,6 +117,8 @@ public abstract class BaseScreen implements Screen, ScreenSetter {
     @Override
     public void dispose() {
         stage.dispose();
+        skin.dispose();
+        presenter.dispose();
     }
 
 }
