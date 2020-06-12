@@ -12,13 +12,6 @@ import static org.mockito.Mockito.when;
 
 public class RelativeHeightConstraintTest {
 
-    @BeforeClass
-    public static void setup() {
-        Gdx.graphics = mock(Graphics.class);
-        when(Gdx.graphics.getWidth()).thenReturn(1000);
-        when(Gdx.graphics.getHeight()).thenReturn(1000);
-    }
-
     @Test
     public void testGetSize() {
         SizeConstraint constraint = new RelativeHeightConstraint(25);

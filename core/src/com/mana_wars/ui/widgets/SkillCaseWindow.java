@@ -86,8 +86,8 @@ public class SkillCaseWindow extends Window implements BuildableUI {
         skillFrame.setDrawable(new TextureRegionDrawable(frameFactory.getAsset(skillRarity)));
         this.skillName.setText(skillName);
         this.skillDescription.setText(skillDescription);
-        setPosition((SCREEN_WIDTH - getWidth()) * 0.5f,
-                (SCREEN_HEIGHT - getHeight()) * 0.5f);
+        setPosition((SCREEN_WIDTH() - getWidth()) * 0.5f,
+                (SCREEN_HEIGHT() - getHeight()) * 0.5f);
         pack();
         setVisible(true);
     }

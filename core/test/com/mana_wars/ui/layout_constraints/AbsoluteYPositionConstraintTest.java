@@ -16,13 +16,6 @@ public class AbsoluteYPositionConstraintTest {
 
     private PositionConstraint constraint;
 
-    @BeforeClass
-    public static void setup() {
-        Gdx.graphics = mock(Graphics.class);
-        when(Gdx.graphics.getWidth()).thenReturn(1000);
-        when(Gdx.graphics.getHeight()).thenReturn(1000);
-    }
-
     @Test(expected = IllegalArgumentException.class)
     public void testWrongAlign() {
         constraint = new AbsoluteYPositionConstraint(Align.left | Align.right, 100);

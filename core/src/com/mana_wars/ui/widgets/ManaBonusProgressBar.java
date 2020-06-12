@@ -62,7 +62,7 @@ public class ManaBonusProgressBar extends ProgressBar implements BuildableUI {
     @Override
     public Actor build(Skin skin) {
         Table barCont = new Table();
-        barCont.add(this).padTop(600).width(SCREEN_WIDTH);
+        barCont.add(this).padTop(600).width(SCREEN_WIDTH());
 
         Table buttonCont = new Table();
         buttonCont.add(claimButton).padTop(600);

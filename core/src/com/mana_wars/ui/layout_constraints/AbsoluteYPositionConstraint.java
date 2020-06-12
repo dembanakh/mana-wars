@@ -27,7 +27,7 @@ public class AbsoluteYPositionConstraint implements PositionConstraint {
             case Align.bottom:
                 return offset;
             case Align.top:
-                return SCREEN_HEIGHT - offset;
+                return SCREEN_HEIGHT() - offset;
             default:
                 return 0;
         }

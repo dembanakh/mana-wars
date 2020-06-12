@@ -27,7 +27,7 @@ public class AbsoluteXPositionConstraint implements PositionConstraint {
             case Align.left:
                 return offset;
             case Align.right:
-                return SCREEN_WIDTH - offset;
+                return SCREEN_WIDTH() - offset;
             default:
                 return 0;
         }

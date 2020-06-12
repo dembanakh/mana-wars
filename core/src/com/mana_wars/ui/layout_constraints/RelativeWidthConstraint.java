@@ -16,6 +16,6 @@ public class RelativeWidthConstraint implements SizeConstraint {
 
     @Override
     public float getSize() {
-        return (percent * (float)SCREEN_WIDTH) / 100;
+        return (percent * (float)SCREEN_WIDTH()) / 100;
     }
 }
