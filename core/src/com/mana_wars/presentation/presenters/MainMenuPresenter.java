@@ -7,13 +7,11 @@ import com.mana_wars.presentation.view.MainMenuView;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 
-public class MainMenuPresenter extends BasePresenter<MainMenuInteractor>{
+public class MainMenuPresenter extends BasePresenter<MainMenuView, MainMenuInteractor>{
 
-    private final MainMenuView view;
 
     public MainMenuPresenter(MainMenuView view, UIThreadHandler uiThreadHandler, MainMenuInteractor interactor){
-        super(interactor, uiThreadHandler);
-        this.view = view;
+        super(view, interactor, uiThreadHandler);
     }
 
     public void addObserver_manaAmount(Consumer<? super Integer> observer) {
