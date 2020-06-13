@@ -105,10 +105,9 @@ public class BattleScreen extends BaseScreen<BattleBaseOverlayUI, BattlePresente
                     }
                 });
 
-        layer.add(backButton).pad(100).row();
+        layer.add(backButton).pad(200, 0, 100, 0).row();
         layer.add(userActiveSkills.toActor()).bottom().expandX()
                 .height(ACTIVE_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH).row();
-        layer.setDebug(true);
         return layer;
     }
 

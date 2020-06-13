@@ -35,12 +35,12 @@ public class BattleBaseOverlayUI extends BaseOverlayUI {
     BattleBaseOverlayUI(final ScreenSetter screenSetter,
                         final AssetFactory<Integer, TextureRegion> iconFactory,
                         final AssetFactory<Rarity, TextureRegion> frameFactory) {
-        userField = new BattleParticipantValueField(iconFactory, frameFactory)
+        userField = new BattleParticipantValueField(iconFactory, frameFactory, -200, 1)
                 .setXConstraint(new AbsoluteXPositionConstraint(Align.left, 0))
                 .setYConstraint(new AbsoluteYPositionConstraint(Align.top, 0))
                 .setWidthConstraint(new RelativeWidthConstraint(50))
                 .setHeightConstraint(new AbsoluteSizeConstraint(800));
-        enemyField = new BattleParticipantValueField(iconFactory, frameFactory)
+        enemyField = new BattleParticipantValueField(iconFactory, frameFactory, 200, 1)
                 .setXConstraint(new AbsoluteXPositionConstraint(Align.right, 0))
                 .setYConstraint(new AbsoluteYPositionConstraint(Align.top, 0))
                 .setWidthConstraint(new RelativeWidthConstraint(50))
