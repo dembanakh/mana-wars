@@ -22,7 +22,7 @@ public class BattleParticipantTest {
     public void setup(){
         bp = new BattleParticipant("a", 100) {
             @Override
-            public void init() {
+            public void start() {
 
             }
 
