@@ -4,6 +4,7 @@ import com.mana_wars.model.entity.User;
 import com.mana_wars.ui.overlays.OverlayUIFactory;
 import com.mana_wars.ui.screens.BaseScreen;
 import com.mana_wars.ui.screens.BattleScreen;
+import com.mana_wars.ui.screens.BattleSummaryScreen;
 import com.mana_wars.ui.screens.GreetingScreen;
 import com.mana_wars.ui.screens.MainMenuScreen;
 import com.mana_wars.ui.screens.SkillsScreen;
@@ -16,7 +17,8 @@ public enum ScreenInstance {
     GREETING,
     MAIN_MENU,
     SKILLS,
-    BATTLE;
+    BATTLE,
+    BATTLE_SUMMARY;
 
     private BaseScreen screen;
 
@@ -33,6 +35,8 @@ public enum ScreenInstance {
                 overlayUIFactory.getMenuOverlayUI());
         BATTLE.screen = new BattleScreen(user, screenSetter, factoryStorage, repositoryStorage,
                 overlayUIFactory.getBattleOverlayUI());
+        BATTLE_SUMMARY.screen = new BattleSummaryScreen(user, screenSetter, factoryStorage, repositoryStorage,
+                overlayUIFactory.getEmptyOverlayUI());
     }
 
     public static void dispose() {

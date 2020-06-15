@@ -49,6 +49,9 @@ public abstract class BaseBattle implements BattleConfig, Battle {
     @Override
     public void start(){
         battleTime = 0;
+        user.start();
+        startSide(userSide);
+        startSide(enemySide);
         isActive.set(true);
     }
 
@@ -107,6 +110,12 @@ public abstract class BaseBattle implements BattleConfig, Battle {
             for (Skill s : participant.getPassiveSkills()) {
                 s.activate(participant, getOpponents(participant).get(0));
             }
+        }
+    }
+
+    private void startSide(List<BattleParticipant> side) {
+        for (BattleParticipant participant : side) {
+            participant.start();
         }
     }
 

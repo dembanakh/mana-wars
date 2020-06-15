@@ -24,7 +24,7 @@ public class BattleInteractor extends BaseInteractor{
             battle.getUser().initSkills(skills.activeSkills, skills.passiveSkills);
             //TODO fetch and init UserSide and EnemySide skills
 
-            observer.setSkills(skills.activeSkills, skills.passiveSkills);
+            observer.setSkills(skills.activeSkills);
             battle.init();
             observer.setOpponents(battle.getUser(), battle.getUserSide(), battle.getEnemySide());
             battle.start();

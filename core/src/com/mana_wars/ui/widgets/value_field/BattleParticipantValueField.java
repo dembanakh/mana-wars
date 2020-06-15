@@ -15,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.PassiveSkill;
-import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.widgets.skills_list_2d.List2D;
 import com.mana_wars.ui.widgets.skills_list_2d.StaticSkillsList2D;
@@ -104,22 +103,24 @@ public class BattleParticipantValueField extends ValueFieldWithInitialData<Battl
         int lastValue = (int)healthBar.getValue();
         participantHealth.setText(value);
         healthBar.setValue(value);
-        if (lastValue != value) {
-            int deltaHealth = value - lastValue;
-            if (deltaHealth > 0) {
-                healthChangeLabel.setText(String.format(Locale.US, "+%d", deltaHealth));
-                healthChangeLabel.setColor(Color.GREEN);
-            } else {
-                healthChangeLabel.setText(deltaHealth);
-                healthChangeLabel.setColor(Color.RED);
-            }
-            healthChangeLabel.addAction(Actions.sequence(
-                    Actions.fadeIn(0),
-                    Actions.parallel(Actions.moveBy(deltaHealthAnimationDistance, 0,
-                            deltaHealthAnimationDuration, Interpolation.pow2InInverse),
-                                    Actions.fadeOut(deltaHealthAnimationDuration)),
-                    Actions.moveBy(-deltaHealthAnimationDistance, 0)));
+        updateHealthChangeLabel(value - lastValue);
+    }
+
+    private void updateHealthChangeLabel(int deltaHealth) {
+        if (deltaHealth == 0) return;
+        else if (deltaHealth > 0) {
+            healthChangeLabel.setText(String.format(Locale.US, "+%d", deltaHealth));
+            healthChangeLabel.setColor(Color.GREEN);
+        } else {
+            healthChangeLabel.setText(deltaHealth);
+            healthChangeLabel.setColor(Color.RED);
         }
+        healthChangeLabel.addAction(Actions.sequence(
+                Actions.fadeIn(0),
+                Actions.parallel(Actions.moveBy(deltaHealthAnimationDistance, 0,
+                        deltaHealthAnimationDuration, Interpolation.pow2InInverse),
+                        Actions.fadeOut(deltaHealthAnimationDuration)),
+                Actions.moveBy(-deltaHealthAnimationDistance, 0)));
     }
 
     @Override
@@ -127,6 +128,12 @@ public class BattleParticipantValueField extends ValueFieldWithInitialData<Battl
         participantName.setText(data.name);
         healthBar.setRange(0, data.initialHealth);
         participantPassiveSkills.setItems(data.passiveSkills);
+        try {
+            healthBar.setValue(data.initialHealth);
+            participantHealth.setText(data.initialHealth);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static class Data {

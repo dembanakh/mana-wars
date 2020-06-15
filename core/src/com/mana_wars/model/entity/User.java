@@ -5,6 +5,7 @@ import com.mana_wars.model.entity.battle.Characteristic;
 import com.mana_wars.model.entity.skills.BattleSkill;
 import com.mana_wars.model.entity.skills.SkillCharacteristic;
 import com.mana_wars.model.entity.user.UserBattleAPI;
+import com.mana_wars.model.entity.user.UserBattleSummaryAPI;
 import com.mana_wars.model.entity.user.UserGreetingAPI;
 import com.mana_wars.model.entity.user.UserMenuAPI;
 import com.mana_wars.model.entity.user.UserSkillsAPI;
@@ -15,7 +16,8 @@ import com.mana_wars.model.repository.UsernameRepository;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.Subject;
 
-public class User extends BattleParticipant implements UserMenuAPI, UserSkillsAPI, UserBattleAPI, UserGreetingAPI {
+public class User extends BattleParticipant implements
+        UserMenuAPI, UserSkillsAPI, UserBattleAPI, UserGreetingAPI, UserBattleSummaryAPI {
 
     private final Subject<Integer> manaAmountObservable;
     private final Subject<Integer> userLevelObservable;
@@ -44,11 +46,6 @@ public class User extends BattleParticipant implements UserMenuAPI, UserSkillsAP
 
     private int initUserLevel() {
         return userLevelRepository.getUserLevel();
-    }
-
-    @Override
-    public void start() {
-
     }
 
     @Override

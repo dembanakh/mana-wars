@@ -37,10 +37,13 @@ public abstract class BattleParticipant {
         setCharacteristicValue(Characteristic.MANA, 0);
         setCharacteristicValue(Characteristic.CAST_TIME, 100);
         setCharacteristicValue(Characteristic.COOLDOWN, 100);
-        healthObservable = BehaviorSubject.createDefault(healthPoints);
+        healthObservable = BehaviorSubject.create();
     }
 
-    public abstract void start();
+    public void start() {
+        healthObservable.onNext(initialHealth);
+    }
+
     public abstract void update(final double currentTime);
 
     public void applySkillCharacteristic(SkillCharacteristic sc) {
