@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import com.mana_wars.model.GameConstants;
-import com.mana_wars.model.entity.battle.BattleParticipant;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.entity.user.UserBattleAPI;
 import com.mana_wars.ui.management.ScreenInstance;
@@ -103,18 +102,20 @@ public class BattleScreen extends BaseScreen<BattleBaseOverlayUI, BattlePresente
                 new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
+                        isBattle.set(false);
+                        overlayUI.clear();
                         setScreen(ScreenInstance.MAIN_MENU, null);
                     }
                 });
 
-        layer.add(backButton).pad(200, 0, 100, 0).row();
+        layer.add(backButton).pad(200, 0, 100, 0).bottom().expand().row();
         layer.add(userActiveSkills.toActor()).bottom().expand()
                 .height(ACTIVE_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH).row();
         return layer;
     }
 
     @Override
-    public void setSkills(Iterable<ActiveSkill> activeSkills, Iterable<PassiveSkill> passiveSkills) {
+    public void setSkills(Iterable<ActiveSkill> activeSkills) {
         userActiveSkills.setItems(activeSkills);
     }
 
@@ -152,7 +153,7 @@ public class BattleScreen extends BaseScreen<BattleBaseOverlayUI, BattlePresente
     public void finishBattle() {
         isBattle.set(false);
         overlayUI.clear();
-        // setScreen
+        setScreen(ScreenInstance.BATTLE_SUMMARY, null);
     }
 
 }

@@ -6,7 +6,7 @@ import com.mana_wars.model.entity.skills.PassiveSkill;
 
 public interface BattleInitializationObserver {
 
-    void setSkills(Iterable<ActiveSkill> activeSkills, Iterable<PassiveSkill> passiveSkills);
+    void setSkills(Iterable<ActiveSkill> activeSkills);
     void setOpponents(BattleParticipant user, Iterable<BattleParticipant> userSide, Iterable<BattleParticipant> enemySide);
     void onStartBattle();
 

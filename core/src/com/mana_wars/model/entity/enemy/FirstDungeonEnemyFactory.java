@@ -9,7 +9,7 @@ public class FirstDungeonEnemyFactory extends BaseEnemyFactory {
 
     @Override
     public List<BattleParticipant> generateEnemies() {
-        Mob mob = new Mob(500);
+        Mob mob = new Mob(100);
         return Collections.singletonList(mob);
     }
 

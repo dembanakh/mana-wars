@@ -54,8 +54,8 @@ public final class BattlePresenter extends BasePresenter<BattleView, BattleInter
     }
 
     @Override
-    public void setSkills(Iterable<ActiveSkill> activeSkills, Iterable<PassiveSkill> passiveSkills) {
-        uiThreadHandler.postRunnable(() -> view.setSkills(activeSkills, passiveSkills));
+    public void setSkills(Iterable<ActiveSkill> activeSkills) {
+        uiThreadHandler.postRunnable(() -> view.setSkills(activeSkills));
     }
 
     @Override

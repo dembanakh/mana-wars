@@ -20,6 +20,7 @@ public class Mob extends BattleParticipant {
 
     @Override
     public void start() {
+        super.start();
         double activationTime = 0;
         for (ActiveSkill skill : getInitialAutoSkills()) {
             activationTime += skill.getCastTime();
