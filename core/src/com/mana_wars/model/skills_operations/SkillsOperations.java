@@ -61,15 +61,17 @@ public enum SkillsOperations {
     }, MOVE {
         @Override
         protected Boolean validate(SkillOperationQuery query) {
-            if (query.tableQuery.source == query.tableQuery.target)
-                return query.target.getRarity() == Rarity.EMPTY;
+            if (query.source == null) return false;
+            if (query.target == null) return query.tableQuery.target == SkillTable.ALL_SKILLS;
             if (query.tableQuery.source == SkillTable.ALL_SKILLS) {
                 if (query.tableQuery.target == SkillTable.ACTIVE_SKILLS)
                     return (query.source instanceof ActiveSkill) && (query.target.getRarity() == Rarity.EMPTY);
                 if (query.tableQuery.target == SkillTable.PASSIVE_SKILLS)
                     return (query.source instanceof PassiveSkill) && (query.target.getRarity() == Rarity.EMPTY);
             }
-            return query.target == null;
+            if (query.tableQuery.source == query.tableQuery.target)
+                return query.target.getRarity() == Rarity.EMPTY;
+            return false;
         }
 
         @Override

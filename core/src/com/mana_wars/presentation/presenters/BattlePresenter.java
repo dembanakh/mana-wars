@@ -59,9 +59,18 @@ public final class BattlePresenter extends BasePresenter<BattleView, BattleInter
     }
 
     @Override
-    public void setOpponents(BattleParticipant user, Iterable<BattleParticipant> userSide, Iterable<BattleParticipant> enemySide) {
+    public void setOpponents(BattleParticipant user, Iterable<BattleParticipant> userSide,
+                             Iterable<BattleParticipant> enemySide) {
+        view.setUser(user.getName(), user.getInitialHealthAmount(), user.getPassiveSkills(),
+                this::addObserver_userHealth);
+        int index = 0;
+        for (BattleParticipant bp : enemySide) {
+            int finalIndex = index++;
+            view.addEnemy(bp.getName(), bp.getInitialHealthAmount(), bp.getPassiveSkills(),
+                    (observer) -> addObserver_enemyHealth(finalIndex, observer));
+        }
         uiThreadHandler.postRunnable(() -> {
-            view.setPlayers(user, userSide, enemySide);
+            view.setActiveEnemy(0);
         });
     }
 

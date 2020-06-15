@@ -222,6 +222,20 @@ public class SkillsOperationsTest {
     }
 
     @Test
+    public void mergeSkill_AllToActive_Failure_Null() {
+        Skill from = mock(Skill.class);
+        when(from.getName()).thenReturn("a");
+        when(from.getLevel()).thenReturn(1);
+        Skill to = null;
+        boolean result = SkillsOperations.can(SkillsOperations.MERGE)
+                .from(SkillTable.ALL_SKILLS)
+                .to(SkillTable.ACTIVE_SKILLS)
+                .validate()
+                .from(from).to(to).validate();
+        assertFalse(result);
+    }
+
+    @Test
     public void mergeSkill_AllToPassive_Success() {
         Skill from = mock(Skill.class);
         when(from.getName()).thenReturn("a");
@@ -275,6 +289,20 @@ public class SkillsOperationsTest {
         when(from.getName()).thenReturn("a");
         when(from.getLevel()).thenReturn(1);
         Skill to = PassiveSkill.getEmpty();
+        boolean result = SkillsOperations.can(SkillsOperations.MERGE)
+                .from(SkillTable.ALL_SKILLS)
+                .to(SkillTable.PASSIVE_SKILLS)
+                .validate()
+                .from(from).to(to).validate();
+        assertFalse(result);
+    }
+
+    @Test
+    public void mergeSkill_AllToPassive_Failure_Null() {
+        Skill from = mock(Skill.class);
+        when(from.getName()).thenReturn("a");
+        when(from.getLevel()).thenReturn(1);
+        Skill to = null;
         boolean result = SkillsOperations.can(SkillsOperations.MERGE)
                 .from(SkillTable.ALL_SKILLS)
                 .to(SkillTable.PASSIVE_SKILLS)
@@ -408,6 +436,20 @@ public class SkillsOperationsTest {
     }
 
     @Test
+    public void mergeSkill_ActiveToActive_Failure_Null() {
+        Skill from = mock(Skill.class);
+        when(from.getName()).thenReturn("a");
+        when(from.getLevel()).thenReturn(1);
+        Skill to = null;
+        boolean result = SkillsOperations.can(SkillsOperations.MERGE)
+                .from(SkillTable.ACTIVE_SKILLS)
+                .to(SkillTable.ACTIVE_SKILLS)
+                .validate()
+                .from(from).to(to).validate();
+        assertFalse(result);
+    }
+
+    @Test
     public void mergeSkill_PassiveToAll_Success() {
         Skill from = mock(Skill.class);
         when(from.getName()).thenReturn("a");
@@ -523,6 +565,20 @@ public class SkillsOperationsTest {
         when(from.getName()).thenReturn("a");
         when(from.getLevel()).thenReturn(1);
         Skill to = PassiveSkill.getEmpty();
+        boolean result = SkillsOperations.can(SkillsOperations.MERGE)
+                .from(SkillTable.PASSIVE_SKILLS)
+                .to(SkillTable.PASSIVE_SKILLS)
+                .validate()
+                .from(from).to(to).validate();
+        assertFalse(result);
+    }
+
+    @Test
+    public void mergeSkill_PassiveToPassive_Failure_Null() {
+        Skill from = mock(Skill.class);
+        when(from.getName()).thenReturn("a");
+        when(from.getLevel()).thenReturn(1);
+        Skill to = null;
         boolean result = SkillsOperations.can(SkillsOperations.MERGE)
                 .from(SkillTable.PASSIVE_SKILLS)
                 .to(SkillTable.PASSIVE_SKILLS)
@@ -653,6 +709,20 @@ public class SkillsOperationsTest {
     }
 
     @Test
+    public void swapSkill_AllToActive_Failure_Null() {
+        Skill from = mock(ActiveSkill.class);
+        when(from.getName()).thenReturn("a");
+        when(from.getLevel()).thenReturn(1);
+        Skill to = null;
+        boolean result = SkillsOperations.can(SkillsOperations.SWAP)
+                .from(SkillTable.ALL_SKILLS)
+                .to(SkillTable.ACTIVE_SKILLS)
+                .validate()
+                .from(from).to(to).validate();
+        assertFalse(result);
+    }
+
+    @Test
     public void swapSkill_AllToPassive_Success() {
         Skill from = mock(PassiveSkill.class);
         Skill to = mock(PassiveSkill.class);
@@ -680,6 +750,20 @@ public class SkillsOperationsTest {
     public void swapSkill_AllToPassive_Failure_Empty() {
         Skill from = mock(PassiveSkill.class);
         Skill to = PassiveSkill.getEmpty();
+        boolean result = SkillsOperations.can(SkillsOperations.SWAP)
+                .from(SkillTable.ALL_SKILLS)
+                .to(SkillTable.PASSIVE_SKILLS)
+                .validate()
+                .from(from).to(to).validate();
+        assertFalse(result);
+    }
+
+    @Test
+    public void swapSkill_AllToPassive_Failure_Null() {
+        Skill from = mock(PassiveSkill.class);
+        when(from.getName()).thenReturn("a");
+        when(from.getLevel()).thenReturn(1);
+        Skill to = null;
         boolean result = SkillsOperations.can(SkillsOperations.SWAP)
                 .from(SkillTable.ALL_SKILLS)
                 .to(SkillTable.PASSIVE_SKILLS)
@@ -749,6 +833,20 @@ public class SkillsOperationsTest {
     }
 
     @Test
+    public void swapSkill_ActiveToActive_Failure_Null() {
+        Skill from = mock(ActiveSkill.class);
+        when(from.getName()).thenReturn("a");
+        when(from.getLevel()).thenReturn(1);
+        Skill to = null;
+        boolean result = SkillsOperations.can(SkillsOperations.SWAP)
+                .from(SkillTable.ACTIVE_SKILLS)
+                .to(SkillTable.ACTIVE_SKILLS)
+                .validate()
+                .from(from).to(to).validate();
+        assertFalse(result);
+    }
+
+    @Test
     public void swapSkill_PassiveToAll_Success() {
         Skill from = mock(PassiveSkill.class);
         Skill to = mock(PassiveSkill.class);
@@ -800,6 +898,20 @@ public class SkillsOperationsTest {
     public void swapSkill_PassiveToPassive_Failure_Empty() {
         Skill from = mock(PassiveSkill.class);
         Skill to = PassiveSkill.getEmpty();
+        boolean result = SkillsOperations.can(SkillsOperations.SWAP)
+                .from(SkillTable.PASSIVE_SKILLS)
+                .to(SkillTable.PASSIVE_SKILLS)
+                .validate()
+                .from(from).to(to).validate();
+        assertFalse(result);
+    }
+
+    @Test
+    public void swapSkill_PassiveToActive_Failure_Null() {
+        Skill from = mock(PassiveSkill.class);
+        when(from.getName()).thenReturn("a");
+        when(from.getLevel()).thenReturn(1);
+        Skill to = null;
         boolean result = SkillsOperations.can(SkillsOperations.SWAP)
                 .from(SkillTable.PASSIVE_SKILLS)
                 .to(SkillTable.PASSIVE_SKILLS)
@@ -929,6 +1041,18 @@ public class SkillsOperationsTest {
     }
 
     @Test
+    public void moveSkill_AllToActive_Failure_Null() {
+        Skill from = mock(ActiveSkill.class);
+        Skill to = null;
+        boolean result = SkillsOperations.can(SkillsOperations.MOVE)
+                .from(SkillTable.ALL_SKILLS)
+                .to(SkillTable.ACTIVE_SKILLS)
+                .validate()
+                .from(from).to(to).validate();
+        assertFalse(result);
+    }
+
+    @Test
     public void moveSkill_AllToPassive_Success() {
         Skill from = mock(PassiveSkill.class);
         Skill to = PassiveSkill.getEmpty();
@@ -956,6 +1080,18 @@ public class SkillsOperationsTest {
     public void moveSkill_AllToPassive_Failure_Second() {
         Skill from = mock(PassiveSkill.class);
         Skill to = mock(PassiveSkill.class);
+        boolean result = SkillsOperations.can(SkillsOperations.MOVE)
+                .from(SkillTable.ALL_SKILLS)
+                .to(SkillTable.PASSIVE_SKILLS)
+                .validate()
+                .from(from).to(to).validate();
+        assertFalse(result);
+    }
+
+    @Test
+    public void moveSkill_AllToPassive_Failure_Null() {
+        Skill from = mock(PassiveSkill.class);
+        Skill to = null;
         boolean result = SkillsOperations.can(SkillsOperations.MOVE)
                 .from(SkillTable.ALL_SKILLS)
                 .to(SkillTable.PASSIVE_SKILLS)
@@ -1013,6 +1149,18 @@ public class SkillsOperationsTest {
     }
 
     @Test
+    public void moveSkill_ActiveToActive_Failure_Null() {
+        Skill from = mock(ActiveSkill.class);
+        Skill to = null;
+        boolean result = SkillsOperations.can(SkillsOperations.MOVE)
+                .from(SkillTable.ACTIVE_SKILLS)
+                .to(SkillTable.ACTIVE_SKILLS)
+                .validate()
+                .from(from).to(to).validate();
+        assertFalse(result);
+    }
+
+    @Test
     public void moveSkill_PassiveToAll_Success() {
         Skill from = mock(PassiveSkill.class);
         Skill to = null;
@@ -1053,6 +1201,18 @@ public class SkillsOperationsTest {
         Skill from = mock(PassiveSkill.class);
         Skill to = mock(PassiveSkill.class);
         when(to.getRarity()).thenReturn(Rarity.COMMON);
+        boolean result = SkillsOperations.can(SkillsOperations.MOVE)
+                .from(SkillTable.PASSIVE_SKILLS)
+                .to(SkillTable.PASSIVE_SKILLS)
+                .validate()
+                .from(from).to(to).validate();
+        assertFalse(result);
+    }
+
+    @Test
+    public void moveSkill_PassiveToPassive_Failure_Null() {
+        Skill from = mock(PassiveSkill.class);
+        Skill to = null;
         boolean result = SkillsOperations.can(SkillsOperations.MOVE)
                 .from(SkillTable.PASSIVE_SKILLS)
                 .to(SkillTable.PASSIVE_SKILLS)

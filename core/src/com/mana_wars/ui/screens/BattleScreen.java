@@ -29,6 +29,8 @@ import com.mana_wars.ui.widgets.skills_list_2d.BlockableSkillsList;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import io.reactivex.functions.Consumer;
+
 import static com.mana_wars.ui.UIStringConstants.*;
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.ACTIVE_SKILLS_TABLE_HEIGHT;
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.SKILLS_TABLES_WIDTH;
@@ -106,7 +108,7 @@ public class BattleScreen extends BaseScreen<BattleBaseOverlayUI, BattlePresente
                 });
 
         layer.add(backButton).pad(200, 0, 100, 0).row();
-        layer.add(userActiveSkills.toActor()).bottom().expandX()
+        layer.add(userActiveSkills.toActor()).bottom().expand()
                 .height(ACTIVE_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH).row();
         return layer;
     }
@@ -117,19 +119,28 @@ public class BattleScreen extends BaseScreen<BattleBaseOverlayUI, BattlePresente
     }
 
     @Override
-    public void setPlayers(BattleParticipant user,
-                           Iterable<BattleParticipant> userSide,
-                           Iterable<BattleParticipant> enemySide) {
-        overlayUI.clear();
-        presenter.addObserver_userHealth(overlayUI.setUser(user.getName(), user.getInitialHealthAmount(),
-                user.getPassiveSkills()));
-        int index = 0;
-        for (BattleParticipant enemy : enemySide) {
-            presenter.addObserver_enemyHealth(index++, overlayUI.addEnemy(enemy.getName(),
-                    enemy.getInitialHealthAmount(),
-                    enemy.getPassiveSkills()));
+    public void setUser(String name, int initialHealth, Iterable<PassiveSkill> passiveSkills,
+                        Consumer<Consumer<? super Integer>> subscribe) {
+        try {
+            subscribe.accept(overlayUI.setUser(name, initialHealth, passiveSkills));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        overlayUI.setActiveEnemy(0);
+    }
+
+    @Override
+    public void addEnemy(String name, int initialHealth, Iterable<PassiveSkill> passiveSkills,
+                         Consumer<Consumer<? super Integer>> subscribe) {
+        try {
+            subscribe.accept(overlayUI.addEnemy(name, initialHealth, passiveSkills));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void setActiveEnemy(int index) {
+        overlayUI.setActiveEnemy(index);
     }
 
     @Override
@@ -140,6 +151,8 @@ public class BattleScreen extends BaseScreen<BattleBaseOverlayUI, BattlePresente
     @Override
     public void finishBattle() {
         isBattle.set(false);
+        overlayUI.clear();
+        // setScreen
     }
 
 }
