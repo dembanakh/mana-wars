@@ -107,6 +107,11 @@ public class User extends BattleParticipant implements
     }
 
     @Override
+    public int getLevel() {
+        return userLevelRepository.getUserLevel();
+    }
+
+    @Override
     public boolean tryApplyActiveSkill(int skillIndex) {
         BattleSkill targetBattleSkill = battleSkills.get(skillIndex);
 

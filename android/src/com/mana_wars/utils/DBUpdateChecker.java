@@ -26,7 +26,7 @@ public class DBUpdateChecker implements DatabaseUpdater {
 
         final int currentDBversion = preferences.getDBversion();
 
-        if (GameConstants.DB_VERSION > currentDBversion){
+        if (GameConstants.DB_VERSION > currentDBversion || true) {
             try {
                 new DBUpdaterParser(context).updateFromJSON(new DBUpdater(dbrepository, ()->{
                     preferences.setDBversion(GameConstants.DB_VERSION);

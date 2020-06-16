@@ -11,6 +11,9 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.Subject;
+
 public class BaseBattle implements BattleConfig, Battle {
 
     private final Map<BattleParticipant, List<BattleParticipant>> opponents = new HashMap<>();
@@ -22,12 +25,15 @@ public class BaseBattle implements BattleConfig, Battle {
     private double battleTime;
     private final PriorityQueue<BattleEvent> battleEvents = new PriorityQueue<>();
 
+    private final Subject<Boolean> finishBattleObservable;
+
     BaseBattle(final BattleParticipant user,
                final List<BattleParticipant> userSide,
                final List<BattleParticipant> enemySide) {
         this.user = user;
         this.userSide = userSide;
         this.enemySide = enemySide;
+        this.finishBattleObservable = PublishSubject.create();
 
         opponents.put(user, new ArrayList<>(enemySide));
         for(BattleParticipant userAlly : userSide){
@@ -57,6 +63,10 @@ public class BaseBattle implements BattleConfig, Battle {
 
     @Override
     public synchronized void update(float timeDelta) {
+        if (checkFinish()) {
+            isActive.set(false);
+            finishBattleObservable.onNext(true);
+        }
         if (isActive.get()) {
             battleTime += timeDelta;
 
@@ -74,16 +84,6 @@ public class BaseBattle implements BattleConfig, Battle {
                 battleParticipant.update(battleTime);
             }
         }
-    }
-
-    @Override
-    public boolean checkFinish() {
-        return !user.isAlive() || isSideFinished(enemySide);
-    }
-
-    @Override
-    public void finish() {
-        isActive.set(false);
     }
 
     @Override
@@ -114,6 +114,10 @@ public class BaseBattle implements BattleConfig, Battle {
         }
     }
 
+    private boolean checkFinish() {
+        return !user.isAlive() || isSideFinished(enemySide);
+    }
+
     private boolean isSideFinished(List<BattleParticipant> side) {
         for (BattleParticipant participant : side) {
             if (participant.isAlive()){
@@ -140,6 +144,11 @@ public class BaseBattle implements BattleConfig, Battle {
     @Override
     public List<BattleParticipant> getEnemySide() {
         return enemySide;
+    }
+
+    @Override
+    public Subject<Boolean> getFinishBattleObservable() {
+        return finishBattleObservable;
     }
 
     private static class BattleEvent implements Comparable<BattleEvent> {

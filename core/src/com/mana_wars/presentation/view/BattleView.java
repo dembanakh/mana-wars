@@ -13,7 +13,7 @@ public interface BattleView extends BaseView{
     void addEnemy(String name, int initialHealth, Iterable<PassiveSkill> passiveSkills,
                   Consumer<Consumer<? super Integer>> subscribe);
     void setActiveEnemy(int index);
-    void finishBattle();
+    void finishBattle(Boolean temp);
 
     void blockSkills(int appliedSkillIndex);
 

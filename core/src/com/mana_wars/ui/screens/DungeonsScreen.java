@@ -63,6 +63,11 @@ public class DungeonsScreen extends BaseScreen<BaseOverlayUI, DungeonsPresenter>
     }
 
     @Override
+    public void setDungeonDisabled(int index, boolean insufficientUserLevel, boolean insufficientManaAmount) {
+        dungeonButtonsTable.setDisabled(index, insufficientUserLevel, insufficientManaAmount);
+    }
+
+    @Override
     public void show() {
         super.show();
         presenter.refreshDungeonsList();

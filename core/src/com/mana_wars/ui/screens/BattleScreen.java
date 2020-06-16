@@ -149,9 +149,10 @@ public class BattleScreen extends BaseScreen<BattleBaseOverlayUI, BattlePresente
     }
 
     @Override
-    public void finishBattle() {
+    public void finishBattle(Boolean temp) {
         isBattle.set(false);
         overlayUI.clear();
+        // TODO: replace temp with BattleSummaryData and pass as argument
         setScreen(ScreenInstance.BATTLE_SUMMARY, null);
     }
 

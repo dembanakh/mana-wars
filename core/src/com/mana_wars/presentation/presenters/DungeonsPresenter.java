@@ -1,5 +1,6 @@
 package com.mana_wars.presentation.presenters;
 
+import com.mana_wars.model.entity.enemy.Dungeon;
 import com.mana_wars.model.entity.user.UserDungeonsAPI;
 import com.mana_wars.model.interactor.DungeonsInteractor;
 import com.mana_wars.presentation.util.UIThreadHandler;
@@ -16,6 +17,11 @@ public class DungeonsPresenter extends BasePresenter<DungeonsView, DungeonsInter
 
             uiThreadHandler.postRunnable(() -> {
                 view.setDungeonsList(dungeons);
+                for (int i = 0; i < dungeons.size(); ++i) {
+                    Dungeon dungeon = dungeons.get(i);
+                    view.setDungeonDisabled(i, getUser().getLevel() < dungeon.getRequiredLvl(),
+                                            false);
+                }
             }
 
             );
