@@ -56,7 +56,7 @@ public class SkillsScreen extends BaseScreen<MenuBaseOverlayUI, SkillsPresenter>
         mainSkillsTable = new OperationSkillsList2D(getEmptyBackgroundStyle(), COLUMNS_NUMBER,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(), true);
         mainSkillsTable.setUserObject(SkillTable.ALL_SKILLS);
-        activeSkillsTable = new OperationSkillsList2D(getSkin(), GameConstants.USER_ACTIVE_SKILL_COUNT,
+        activeSkillsTable = new OperationSkillsList2D(getSkin(), GameConstants.MAX_CHOSEN_ACTIVE_SKILL_COUNT,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(), false);
         activeSkillsTable.setUserObject(SkillTable.ACTIVE_SKILLS);
         passiveSkillsTable = new OperationSkillsList2D(getSkin(), GameConstants.USER_PASSIVE_SKILL_COUNT,
@@ -123,7 +123,6 @@ public class SkillsScreen extends BaseScreen<MenuBaseOverlayUI, SkillsPresenter>
     @Override
     public void finishSwap(SkillTable tableSource, SkillTable tableTarget,
                            int skillSourceIndex, int skillTargetIndex, Skill skillSource, Skill skillTarget) {
-        //System.out.println("SWAP");
         List2D<Skill> listSource = getList2D(tableSource);
         List2D<Skill> listTarget = getList2D(tableTarget);
         listTarget.removeIndex(skillTargetIndex);
@@ -134,7 +133,6 @@ public class SkillsScreen extends BaseScreen<MenuBaseOverlayUI, SkillsPresenter>
 
     @Override
     public void finishMove(SkillTable tableTarget, int skillTargetIndex, Skill skillSource) {
-        //System.out.println("MOVE");
         List2D<Skill> listTarget = getList2D(tableTarget);
         if (tableTarget == SkillTable.ALL_SKILLS) {
             listTarget.insert(skillTargetIndex, skillSource);

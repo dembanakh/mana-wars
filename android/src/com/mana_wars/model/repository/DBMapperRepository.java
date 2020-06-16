@@ -4,8 +4,16 @@ import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.SkillsListTriple;
 import com.mana_wars.model.db.core_entity_converter.SkillConverter;
 import com.mana_wars.model.db.entity.CompleteUserSkill;
+import com.mana_wars.model.db.entity.DBDungeon;
+import com.mana_wars.model.db.entity.DBMobSkillWithCharacteristics;
+import com.mana_wars.model.db.entity.DBMobWithSkills;
+import com.mana_wars.model.db.entity.DBSkill;
+import com.mana_wars.model.db.entity.DBSkillCharacteristic;
 import com.mana_wars.model.db.entity.DBSkillWithCharacteristics;
 import com.mana_wars.model.db.entity.UserSkill;
+import com.mana_wars.model.entity.battle.Characteristic;
+import com.mana_wars.model.entity.enemy.Dungeon;
+import com.mana_wars.model.entity.enemy.Mob;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.entity.skills.Skill;
@@ -17,6 +25,7 @@ import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
+import io.reactivex.functions.Function;
 
 public class DBMapperRepository implements DatabaseRepository {
 
@@ -48,7 +57,7 @@ public class DBMapperRepository implements DatabaseRepository {
 
             SkillsListTriple result = new SkillsListTriple();
 
-            for (int i = 0; i < GameConstants.USER_ACTIVE_SKILL_COUNT; i++)
+            for (int i = 0; i < GameConstants.MAX_CHOSEN_ACTIVE_SKILL_COUNT; i++)
                 //TODO refactor
                 result.activeSkills.add(ActiveSkill.getEmpty());
             for (int i = 0; i < GameConstants.USER_PASSIVE_SKILL_COUNT; i++)
@@ -105,8 +114,55 @@ public class DBMapperRepository implements DatabaseRepository {
         return room.updateEntities(Arrays.asList(source, target), room.userSkillsDAO);
     }
 
+
+    private final HashMap<Dungeon, DBDungeon> lastDungeonsMap = new HashMap<>();
+
+    //TODO think about this method
+    @Override
+    public Single<List<Dungeon>> getDungeons() {
+        return room.getAllEntities(room.dbDungeonDAO).map(dbDungeons -> {
+            List<Dungeon> dungeons = new ArrayList<>();
+            lastDungeonsMap.clear();
+            for (DBDungeon dbDungeon : dbDungeons){
+                Dungeon dungeon = new Dungeon(dbDungeon.getId(), dbDungeon.getName(), dbDungeon.getRequiredLvl());
+                lastDungeonsMap.put(dungeon, dbDungeon);
+                dungeons.add(dungeon);
+            }
+            return dungeons;
+        });
+    }
+
+    @Override
+    public Single<List<Mob>> getMobsListByDungeon(Dungeon dungeon) {
+
+        return room.getDBMobsWithSkillsByDungeonID(lastDungeonsMap.get(dungeon).getId()).map(
+                dbMobWithSkills -> {
+
+                    List<Mob> mobs = new ArrayList<>();
+                    for(DBMobWithSkills mob : dbMobWithSkills){
+
+                        List<ActiveSkill> activeSkills = new ArrayList<>();
+                        List<PassiveSkill> passiveSkills = new ArrayList<>();
+
+                        for(DBMobSkillWithCharacteristics skill : mob.skills){
+
+                            if (skill.skill.skill.isActive()){
+                                activeSkills.add(SkillConverter.toActiveSkill(skill.skill, skill.dbMobSkill.getLvl()));
+                            }else {
+                                passiveSkills.add(SkillConverter.toPassiveSkill(skill.skill, skill.dbMobSkill.getLvl()));
+                            }
+                            
+                        }
+                        mobs.add(new Mob(mob.mob.getName(), mob.mob.getInitialHealth(), activeSkills, passiveSkills));
+                    }
+                    return mobs;
+                });
+    }
+
     @Override
     public Completable insertUserSkill(Skill s) {
         return room.insertEntity(new UserSkill(s.getLevel(), s.getIconID()), room.userSkillsDAO);
     }
+
+
 }

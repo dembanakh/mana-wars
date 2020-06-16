@@ -5,6 +5,7 @@ import com.mana_wars.ui.overlays.OverlayUIFactory;
 import com.mana_wars.ui.screens.BaseScreen;
 import com.mana_wars.ui.screens.BattleScreen;
 import com.mana_wars.ui.screens.BattleSummaryScreen;
+import com.mana_wars.ui.screens.DungeonsScreen;
 import com.mana_wars.ui.screens.GreetingScreen;
 import com.mana_wars.ui.screens.MainMenuScreen;
 import com.mana_wars.ui.screens.SkillsScreen;
@@ -18,7 +19,8 @@ public enum ScreenInstance {
     MAIN_MENU,
     SKILLS,
     BATTLE,
-    BATTLE_SUMMARY;
+    BATTLE_SUMMARY,
+    DUNGEONS;
 
     private BaseScreen screen;
 
@@ -35,6 +37,8 @@ public enum ScreenInstance {
                 overlayUIFactory.getMenuOverlayUI());
         BATTLE.screen = new BattleScreen(user, screenSetter, factoryStorage, repositoryStorage,
                 overlayUIFactory.getBattleOverlayUI());
+        DUNGEONS.screen = new DungeonsScreen(user, screenSetter, factoryStorage, repositoryStorage,
+                overlayUIFactory.getEmptyOverlayUI());
         BATTLE_SUMMARY.screen = new BattleSummaryScreen(user, screenSetter, factoryStorage, repositoryStorage,
                 overlayUIFactory.getEmptyOverlayUI());
     }

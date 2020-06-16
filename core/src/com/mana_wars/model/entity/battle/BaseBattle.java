@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public abstract class BaseBattle implements BattleConfig, Battle {
+public class BaseBattle implements BattleConfig, Battle {
 
     private final Map<BattleParticipant, List<BattleParticipant>> opponents = new HashMap<>();
     private final List<BattleParticipant> userSide;
@@ -41,6 +41,9 @@ public abstract class BaseBattle implements BattleConfig, Battle {
     @Override
     public void init() {
         user.setBattle(this);
+        for (Skill s : user.getPassiveSkills()) {
+            s.activate(user, getOpponents(user).get(0));
+        }
         initSide(userSide);
         initSide(enemySide);
         System.out.println("Battle inited");

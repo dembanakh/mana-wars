@@ -15,6 +15,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mana_wars.model.db.entity.DBDungeon;
+import com.mana_wars.model.db.entity.DBMob;
+import com.mana_wars.model.db.entity.DBMobSkill;
 import com.mana_wars.model.db.entity.DBSkill;
 import com.mana_wars.model.db.entity.DBSkillCharacteristic;
 
@@ -29,6 +32,9 @@ public class DBUpdaterParser {
     public interface DBUpdater{
         void insertSkills(List<DBSkill> skills);
         void insertCharacteristics(List<DBSkillCharacteristic> characteristics);
+        void insertDungeons(List<DBDungeon> dungeons);
+        void insertMobs(List<DBMob> mobs);
+        void insertMobsSkills(List<DBMobSkill> mobSkills);
     }
 
     public void updateFromJSON(DBUpdater updater) throws IOException, JSONException {
@@ -36,21 +42,27 @@ public class DBUpdaterParser {
 
         if(dbjson.getInt("version")!= GameConstants.DB_VERSION) throw new JSONException("wrong DB version");
 
-        JSONArray skillsJSON = dbjson.getJSONArray("skills");
-        List<DBSkill> skills = new ArrayList<>();
-        for(int i=0; i<skillsJSON.length();i++){
-            skills.add(DBSkill.fromJSON(skillsJSON.getJSONObject(i)));
-        }
-        updater.insertSkills(skills);
-
-        JSONArray characteristicsJSON = dbjson.getJSONArray("skill_characteristics");
-        List<DBSkillCharacteristic> characteristics = new ArrayList<>();
-        for(int i=0; i<characteristicsJSON.length();i++){
-            characteristics.add(DBSkillCharacteristic.fromJSON(characteristicsJSON.getJSONObject(i)));
-        }
-        updater.insertCharacteristics(characteristics);
+        updater.insertSkills(parseJSON(dbjson.getJSONArray("skills"), DBSkill::fromJSON));
+        updater.insertCharacteristics(parseJSON(dbjson.getJSONArray("skill_characteristics"), DBSkillCharacteristic::fromJSON));
+        updater.insertDungeons(parseJSON(dbjson.getJSONArray("dungeons"), DBDungeon::fromJSON));
+        updater.insertMobs(parseJSON(dbjson.getJSONArray("mobs"), DBMob::fromJSON));
+        updater.insertMobsSkills(parseJSON(dbjson.getJSONArray("mobs_skills"), DBMobSkill::fromJSON));
     }
 
+    //TODO rename
+    private interface CreatorFromJson<T>{
+        T fromJson(JSONObject json) throws JSONException;
+    }
+
+    // TODO think about such an optimization
+    private <T> List<T> parseJSON(JSONArray jsonArray, CreatorFromJson<T> creator) throws JSONException {
+        List<T> list = new ArrayList<>();
+
+        for(int i=0; i<jsonArray.length();i++){
+            list.add(creator.fromJson(jsonArray.getJSONObject(i)));
+        }
+        return list;
+    }
 
 
     private String readJSONStringFromFile() throws IOException {

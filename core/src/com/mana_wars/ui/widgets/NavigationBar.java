@@ -4,7 +4,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.mana_wars.model.entity.enemy.FirstDungeonEnemyFactory;
 import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.factory.UIElementFactory;
 import com.mana_wars.ui.management.ScreenInstance;
@@ -53,16 +52,17 @@ public class NavigationBar implements BuildableUI {
             }
         })).width(TAB_WIDTH).height(TAB_HEIGHT);
 
-        bar.add(UIElementFactory.getButton(skin, "BATTLE", new ChangeListener() {
+        bar.add(UIElementFactory.getButton(skin, "PLACEHOLDER", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                onBattle();
+
             }
         })).width(TAB_WIDTH).height(TAB_HEIGHT);
         // PLACEHOLDER3
-        bar.add(UIElementFactory.getButton(skin, "PLACEHOLDER3", new ChangeListener() {
+        bar.add(UIElementFactory.getButton(skin, "DUNGEONS", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                onDungeons();
             }
         })).width(TAB_WIDTH).height(TAB_HEIGHT);
 
@@ -77,10 +77,8 @@ public class NavigationBar implements BuildableUI {
         screenSetter.setScreen(ScreenInstance.SKILLS, null);
     }
 
-    private void onBattle() {
-        Map<String, Object> args = new HashMap<>();
-        args.put("EnemyFactory", new FirstDungeonEnemyFactory());
-        screenSetter.setScreen(ScreenInstance.BATTLE, args);
+    private void onDungeons(){
+        screenSetter.setScreen(ScreenInstance.DUNGEONS, null);
     }
 
 }

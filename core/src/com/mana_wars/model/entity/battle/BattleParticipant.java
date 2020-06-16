@@ -6,6 +6,7 @@ import com.mana_wars.model.entity.skills.BattleSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.entity.skills.SkillCharacteristic;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
@@ -19,21 +20,23 @@ public abstract class BattleParticipant {
     private String name;
     protected final int initialHealth;
 
-    protected final BattleSkill[] battleSkills = new BattleSkill[GameConstants.USER_ACTIVE_SKILL_COUNT];
+    protected final List<BattleSkill> battleSkills = new ArrayList<>();
+        //new BattleSkill[GameConstants.MAX_CHOSEN_ACTIVE_SKILL_COUNT];
 
     protected List<PassiveSkill> passiveSkills;
+    protected List<ActiveSkill> activeSkills;
     private final Subject<Integer> healthObservable;
 
     private final EnumMap<Characteristic, Integer> characteristics = new EnumMap<>(Characteristic.class);
 
-    public BattleParticipant(String name, int healthPoints) {
-        this(healthPoints);
+    public BattleParticipant(String name, int initialHealth) {
+        this(initialHealth);
         this.name = name;
     }
 
-    public BattleParticipant(int healthPoints) {
-        this.initialHealth = healthPoints;
-        setCharacteristicValue(Characteristic.HEALTH, healthPoints);
+    public BattleParticipant(int initialHealth) {
+        this.initialHealth = initialHealth;
+        setCharacteristicValue(Characteristic.HEALTH, initialHealth);
         setCharacteristicValue(Characteristic.MANA, 0);
         setCharacteristicValue(Characteristic.CAST_TIME, 100);
         setCharacteristicValue(Characteristic.COOLDOWN, 100);
@@ -66,11 +69,18 @@ public abstract class BattleParticipant {
         }
     }
 
-    public void initSkills(List<ActiveSkill> activeSkills, List<PassiveSkill> passiveSkills){
+    protected void initSkills(List<ActiveSkill> activeSkills, List<PassiveSkill> passiveSkills){
         this.passiveSkills = passiveSkills;
-        for (int i = 0; i < GameConstants.USER_ACTIVE_SKILL_COUNT; i++){
-            this.battleSkills[i] = new BattleSkill(activeSkills.get(i));
+        this.activeSkills = activeSkills;
+        //TODO think about the separation
+
+        for(ActiveSkill s : activeSkills){
+            battleSkills.add(new BattleSkill(s));
         }
+
+        /*for (int i = 0; i < GameConstants.MAX_CHOSEN_ACTIVE_SKILL_COUNT && i < activeSkills.size(); i++){
+            this.battleSkills[i] = new BattleSkill(activeSkills.get(i));
+        }*/
     }
 
 
@@ -110,4 +120,7 @@ public abstract class BattleParticipant {
         return name;
     }
 
+    public Iterable<ActiveSkill> getActiveSkills() {
+        return activeSkills;
+    }
 }

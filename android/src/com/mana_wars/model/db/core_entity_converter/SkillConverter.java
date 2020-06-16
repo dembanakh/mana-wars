@@ -11,28 +11,29 @@ import com.mana_wars.model.entity.skills.Skill;
 public class SkillConverter {
 
     public static Skill toSkill(DBSkillWithCharacteristics skill){
+        return skill.skill.isActive()? toActiveSkill(skill, 1): toPassiveSkill(skill, 1);
+    }
 
-        if(skill.skill.isActive()){
+    public static ActiveSkill toActiveSkill(DBSkillWithCharacteristics skill, int lvl){
+        return new ActiveSkill(
+                skill.skill.getId(),
+                lvl,
+                Rarity.getRarityByID(skill.skill.getRarity()),
+                skill.skill.getCastTime(),
+                skill.skill.getCooldown(),
+                skill.skill.getName(),
+                CharacteristicsConverter.toSkillCharacteristics(skill.characteristics)
+        );
+    }
 
-            return new ActiveSkill(
-                    skill.skill.getId(),
-                    1,
-                    Rarity.getRarityByID(skill.skill.getRarity()),
-                    skill.skill.getCastTime(),
-                    skill.skill.getCooldown(),
-                    skill.skill.getName(),
-                    CharacteristicsConverter.toSkillCharacteristics(skill.characteristics)
-            );
-
-        }else {
-            return new PassiveSkill(
-                    skill.skill.getId(),
-                    1,
-                    Rarity.getRarityByID(skill.skill.getRarity()),
-                    skill.skill.getName(),
-                    CharacteristicsConverter.toSkillCharacteristics(skill.characteristics)
-            );
-        }
+    public static PassiveSkill toPassiveSkill(DBSkillWithCharacteristics skill, int lvl) {
+        return new PassiveSkill(
+                skill.skill.getId(),
+                lvl,
+                Rarity.getRarityByID(skill.skill.getRarity()),
+                skill.skill.getName(),
+                CharacteristicsConverter.toSkillCharacteristics(skill.characteristics)
+        );
     }
 
     public static Skill toSkill(CompleteUserSkill userSkill){
@@ -50,7 +51,6 @@ public class SkillConverter {
                 CharacteristicsConverter.toSkillCharacteristics(userSkill.characteristics)
                 );
     }
-
 
     public static PassiveSkill toPassiveSkill(CompleteUserSkill userSkill) {
         return new PassiveSkill(
