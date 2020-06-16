@@ -37,13 +37,11 @@ public final class BattlePresenter extends BasePresenter<BattleView, BattleInter
 
     public void updateBattle(float timeDelta) {
         interactor.updateBattle(timeDelta);
-        if (interactor.tryFinishBattle()) {
-            view.finishBattle();
-        }
     }
 
     @Override
     public void onStartBattle() {
+        disposable.add(interactor.getFinishBattleObservable().subscribe(view::finishBattle));
         view.startBattle();
     }
 

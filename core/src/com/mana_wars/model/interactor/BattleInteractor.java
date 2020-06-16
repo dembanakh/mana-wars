@@ -33,13 +33,6 @@ public class BattleInteractor extends BaseInteractor{
         battle.update(timeDelta);
     }
 
-    public boolean tryFinishBattle() {
-        if (battle.checkFinish()) {
-            battle.finish();
-            return true;
-        } else return false;
-    }
-
     public boolean tryApplyUserSkill(int skillIndex) {
         return user.tryApplyActiveSkill(skillIndex);
     }
@@ -54,6 +47,10 @@ public class BattleInteractor extends BaseInteractor{
 
     public Subject<Integer> getUserManaAmountObservable() {
         return user.getManaAmountObservable();
+    }
+
+    public Subject<Boolean> getFinishBattleObservable() {
+        return battle.getFinishBattleObservable();
     }
 
 }
