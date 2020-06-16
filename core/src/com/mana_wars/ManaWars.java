@@ -35,7 +35,7 @@ public class ManaWars extends Game implements ScreenHandler, RepositoryStorage {
 	}
 
 	@Override
-	public LocalUserDataRepository getLocalUserDataRepository() {
+	public LocalUserDataRepository getManaBonusRepository() {
 		return localUserDataRepository;
 	}
 

@@ -1,7 +1,6 @@
 package com.mana_wars.model.repository;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.mana_wars.model.db.AppDatabase;
 import com.mana_wars.model.db.dao.BaseDAO;
@@ -12,20 +11,14 @@ import com.mana_wars.model.db.dao.DBSkillCharacteristicDAO;
 import com.mana_wars.model.db.dao.DBSkillDAO;
 import com.mana_wars.model.db.dao.UserSkillsDAO;
 import com.mana_wars.model.db.entity.CompleteUserSkill;
-import com.mana_wars.model.db.entity.DBDungeon;
-import com.mana_wars.model.db.entity.DBMob;
-import com.mana_wars.model.db.entity.DBMobSkill;
 import com.mana_wars.model.db.entity.DBMobWithSkills;
-import com.mana_wars.model.db.entity.DBSkill;
 import com.mana_wars.model.db.entity.DBSkillWithCharacteristics;
 import com.mana_wars.model.db.entity.UserSkill;
-import com.mana_wars.model.entity.skills.Skill;
 
 import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
-import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;

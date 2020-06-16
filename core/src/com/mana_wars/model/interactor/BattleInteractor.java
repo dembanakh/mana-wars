@@ -19,15 +19,12 @@ public class BattleInteractor extends BaseInteractor{
         this.databaseRepository = databaseRepository;
     }
 
-    public void init(BattleInitializationObserver observer, BaseBattleBuilder battleBuilder) {
-
+    public void init(final BattleInitializationObserver observer, final BaseBattleBuilder battleBuilder) {
         battleBuilder.fetchData(disposable, databaseRepository, ()-> {
-
             this.battle = battleBuilder.build();
             observer.setSkills(battle.getUser().getActiveSkills());
-            observer.setOpponents(battle.getUser(), battle.getUserSide(), battle.getEnemySide());
-
             battle.init();
+            observer.setOpponents(battle.getUser(), battle.getUserSide(), battle.getEnemySide());
             battle.start();
             observer.onStartBattle();
         });
@@ -58,10 +55,6 @@ public class BattleInteractor extends BaseInteractor{
 
     public Subject<Integer> getUserManaAmountObservable() {
         return user.getManaAmountObservable();
-    }
-
-    public BattleParticipant getPreparedUser() {
-        return user.prepareBattleParticipant();
     }
 
 }

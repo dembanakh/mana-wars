@@ -15,7 +15,6 @@ import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.BaseOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
-import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.ui.factory.UIElementFactory;
 
 import static com.mana_wars.ui.UIElementsSize.GREETING_SCREEN.*;
@@ -26,12 +25,11 @@ public class GreetingScreen extends BaseScreen<BaseOverlayUI, GreetingPresenter>
     public GreetingScreen(final UserGreetingAPI user,
                           final ScreenSetter screenSetter,
                           final FactoryStorage factoryStorage,
-                          final RepositoryStorage repositoryStorage,
                           final BaseOverlayUI overlayUI) {
         super(screenSetter, factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING), overlayUI);
 
         presenter = new GreetingPresenter(this,
-                new GreetingInteractor(user, repositoryStorage.getLocalUserDataRepository()),
+                new GreetingInteractor(user),
                 Gdx.app::postRunnable);
     }
 

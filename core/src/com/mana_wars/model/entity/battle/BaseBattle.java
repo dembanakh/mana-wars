@@ -4,6 +4,7 @@ import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.Skill;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +19,8 @@ public class BaseBattle implements BattleConfig, Battle {
     private final BattleParticipant user;
     private final AtomicBoolean isActive = new AtomicBoolean(false);
 
-    double battleTime;
-    private PriorityQueue<BattleEvent> battleEvents = new PriorityQueue<>();
+    private double battleTime;
+    private final PriorityQueue<BattleEvent> battleEvents = new PriorityQueue<>();
 
     BaseBattle(final BattleParticipant user,
                final List<BattleParticipant> userSide,
@@ -40,21 +41,17 @@ public class BaseBattle implements BattleConfig, Battle {
 
     @Override
     public void init() {
-        user.setBattle(this);
-        for (Skill s : user.getPassiveSkills()) {
-            s.activate(user, getOpponents(user).get(0));
-        }
-        initSide(userSide);
-        initSide(enemySide);
-        System.out.println("Battle inited");
+        initParticipants(Collections.singletonList(user));
+        initParticipants(userSide);
+        initParticipants(enemySide);
     }
 
     @Override
     public void start(){
         battleTime = 0;
-        user.start();
-        startSide(userSide);
-        startSide(enemySide);
+        startParticipants(Collections.singletonList(user));
+        startParticipants(userSide);
+        startParticipants(enemySide);
         isActive.set(true);
     }
 
@@ -96,19 +93,14 @@ public class BaseBattle implements BattleConfig, Battle {
         battleEvents.add(new BattleEvent(activationTime, skill, participant));
     }
 
-    // TODO: remove after Mob::update has been implemented
-    synchronized void addBattleEvent(BattleEvent event) {
-        battleEvents.add(event);
-    }
-
-    void activateParticipantSkill(BattleEvent be) {
+    private void activateParticipantSkill(BattleEvent be) {
         //TODO refactor for multiple targets
         be.skill.activate(be.participant, getOpponents(be.participant).get(0));
     }
 
 
-    private void initSide(Iterable<BattleParticipant> side) {
-        for (BattleParticipant participant : side) {
+    private void initParticipants(Iterable<BattleParticipant> participants) {
+        for (BattleParticipant participant : participants) {
             participant.setBattle(this);
             for (Skill s : participant.getPassiveSkills()) {
                 s.activate(participant, getOpponents(participant).get(0));
@@ -116,8 +108,8 @@ public class BaseBattle implements BattleConfig, Battle {
         }
     }
 
-    private void startSide(List<BattleParticipant> side) {
-        for (BattleParticipant participant : side) {
+    private void startParticipants(List<BattleParticipant> participants) {
+        for (BattleParticipant participant : participants) {
             participant.start();
         }
     }
@@ -150,11 +142,10 @@ public class BaseBattle implements BattleConfig, Battle {
         return enemySide;
     }
 
-    // TODO: make private after Mob::update has been implemented
-    protected static class BattleEvent implements Comparable<BattleEvent> {
+    private static class BattleEvent implements Comparable<BattleEvent> {
         private final double targetTime;
-        final ActiveSkill skill;
-        final BattleParticipant participant;
+        private final ActiveSkill skill;
+        private final BattleParticipant participant;
 
         BattleEvent(double targetTime, ActiveSkill skill, BattleParticipant participant) {
             this.targetTime = targetTime;

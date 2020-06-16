@@ -1,5 +1,6 @@
 package com.mana_wars.presentation.presenters;
 
+import com.mana_wars.model.entity.user.UserDungeonsAPI;
 import com.mana_wars.model.interactor.DungeonsInteractor;
 import com.mana_wars.presentation.util.UIThreadHandler;
 import com.mana_wars.presentation.view.DungeonsView;
@@ -22,4 +23,7 @@ public class DungeonsPresenter extends BasePresenter<DungeonsView, DungeonsInter
         }, Throwable::printStackTrace));
     }
 
+    public UserDungeonsAPI getUser() {
+        return interactor.getUser();
+    }
 }

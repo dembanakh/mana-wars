@@ -45,10 +45,6 @@ public final class BattlePresenter extends BasePresenter<BattleView, BattleInter
         }
     }
 
-    public BattleParticipant getPreparedUser() {
-        return interactor.getPreparedUser();
-    }
-
     @Override
     public void onStartBattle() {
         view.startBattle();

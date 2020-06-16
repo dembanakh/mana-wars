@@ -1,6 +1,5 @@
 package com.mana_wars.model.entity.battle;
 
-import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.BattleSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
@@ -31,7 +30,7 @@ public abstract class BattleParticipant {
 
     public BattleParticipant(String name, int initialHealth) {
         this(initialHealth);
-        this.name = name;
+        setName(name);
     }
 
     public BattleParticipant(int initialHealth) {

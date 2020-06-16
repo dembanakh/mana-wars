@@ -2,10 +2,13 @@ package com.mana_wars.model.entity;
 
 import com.mana_wars.model.entity.battle.BattleParticipant;
 import com.mana_wars.model.entity.battle.Characteristic;
+import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.BattleSkill;
+import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.entity.skills.SkillCharacteristic;
 import com.mana_wars.model.entity.user.UserBattleAPI;
 import com.mana_wars.model.entity.user.UserBattleSummaryAPI;
+import com.mana_wars.model.entity.user.UserDungeonsAPI;
 import com.mana_wars.model.entity.user.UserGreetingAPI;
 import com.mana_wars.model.entity.user.UserMenuAPI;
 import com.mana_wars.model.entity.user.UserSkillsAPI;
@@ -13,15 +16,18 @@ import com.mana_wars.model.repository.UserLevelRepository;
 import com.mana_wars.model.repository.UserManaRepository;
 import com.mana_wars.model.repository.UsernameRepository;
 
+import java.util.List;
+
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.Subject;
 
 public class User extends BattleParticipant implements
-        UserMenuAPI, UserSkillsAPI, UserBattleAPI, UserGreetingAPI, UserBattleSummaryAPI {
+        UserMenuAPI, UserSkillsAPI, UserDungeonsAPI, UserBattleAPI, UserGreetingAPI, UserBattleSummaryAPI {
 
     private final Subject<Integer> manaAmountObservable;
     private final Subject<Integer> userLevelObservable;
 
+    private final UsernameRepository usernameRepository;
     private final UserManaRepository userManaRepository;
     private final UserLevelRepository userLevelRepository;
 
@@ -33,9 +39,10 @@ public class User extends BattleParticipant implements
         super(1000);
         this.userManaRepository = userManaRepository;
         this.userLevelRepository = userLevelRepository;
+        this.usernameRepository = usernameRepository;
         manaAmountObservable = BehaviorSubject.createDefault(initManaAmount());
         userLevelObservable = BehaviorSubject.createDefault(initUserLevel());
-        if (usernameRepository.hasUsername()) setName(usernameRepository.getUsername());
+        if (usernameRepository.hasUsername()) super.setName(usernameRepository.getUsername());
     }
 
     private int initManaAmount() {
@@ -92,6 +99,11 @@ public class User extends BattleParticipant implements
     }
 
     @Override
+    public void initSkills(List<ActiveSkill> activeSkills, List<PassiveSkill> passiveSkills) {
+        super.initSkills(activeSkills, passiveSkills);
+    }
+
+    @Override
     public boolean tryApplyActiveSkill(int skillIndex) {
         BattleSkill targetBattleSkill = battleSkills.get(skillIndex);
 
@@ -124,6 +136,7 @@ public class User extends BattleParticipant implements
     @Override
     public void setName(String name) {
         super.setName(name);
+        usernameRepository.setUsername(name);
     }
 
 }

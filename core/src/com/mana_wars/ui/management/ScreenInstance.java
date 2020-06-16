@@ -18,9 +18,9 @@ public enum ScreenInstance {
     GREETING,
     MAIN_MENU,
     SKILLS,
+    DUNGEONS,
     BATTLE,
-    BATTLE_SUMMARY,
-    DUNGEONS;
+    BATTLE_SUMMARY;
 
     private BaseScreen screen;
 
@@ -29,16 +29,16 @@ public enum ScreenInstance {
                             final FactoryStorage factoryStorage,
                             final RepositoryStorage repositoryStorage,
                             final OverlayUIFactory overlayUIFactory) {
-        GREETING.screen = new GreetingScreen(user, screenSetter, factoryStorage, repositoryStorage,
+        GREETING.screen = new GreetingScreen(user, screenSetter, factoryStorage,
                 overlayUIFactory.getEmptyOverlayUI());
         MAIN_MENU.screen = new MainMenuScreen(user, screenSetter, factoryStorage, repositoryStorage,
                 overlayUIFactory.getMenuOverlayUI());
-        SKILLS.screen = new SkillsScreen(user, screenSetter, factoryStorage, repositoryStorage,
+        SKILLS.screen = new SkillsScreen(user, screenSetter, factoryStorage, repositoryStorage.getDatabaseRepository(),
                 overlayUIFactory.getMenuOverlayUI());
-        BATTLE.screen = new BattleScreen(user, screenSetter, factoryStorage, repositoryStorage,
-                overlayUIFactory.getBattleOverlayUI());
-        DUNGEONS.screen = new DungeonsScreen(user, screenSetter, factoryStorage, repositoryStorage,
+        DUNGEONS.screen = new DungeonsScreen(user, screenSetter, factoryStorage, repositoryStorage.getDatabaseRepository(),
                 overlayUIFactory.getEmptyOverlayUI());
+        BATTLE.screen = new BattleScreen(user, screenSetter, factoryStorage, repositoryStorage.getDatabaseRepository(),
+                overlayUIFactory.getBattleOverlayUI());
         BATTLE_SUMMARY.screen = new BattleSummaryScreen(user, screenSetter, factoryStorage, repositoryStorage,
                 overlayUIFactory.getEmptyOverlayUI());
     }

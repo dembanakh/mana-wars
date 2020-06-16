@@ -1,6 +1,5 @@
 package com.mana_wars.model.mana_bonus;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.mana_wars.model.repository.ManaBonusRepository;
 
 import io.reactivex.functions.Consumer;

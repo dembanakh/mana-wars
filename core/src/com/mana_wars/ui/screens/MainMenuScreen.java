@@ -15,9 +15,9 @@ import com.mana_wars.presentation.presenters.MainMenuPresenter;
 import com.mana_wars.presentation.view.MainMenuView;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.MenuBaseOverlayUI;
+import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.ui.widgets.ManaBonusProgressBar;
 import com.mana_wars.ui.storage.FactoryStorage;
-import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.ui.factory.UIElementFactory;
 import com.mana_wars.ui.widgets.SkillCaseWindow;
 
@@ -38,14 +38,13 @@ public class MainMenuScreen extends BaseScreen<MenuBaseOverlayUI, MainMenuPresen
         this.presenter = new MainMenuPresenter(this,
                 Gdx.app::postRunnable,
                 new MainMenuInteractor(
-                        user,
-                        repositoryStorage.getDatabaseRepository(),
+                        user, repositoryStorage.getDatabaseRepository(),
                         new ManaBonusImpl(
                                 GameConstants.MANA_BONUS_BIT_TIMEOUT,
                                 GameConstants.MANA_BONUS_BIT_SIZE,
                                 GameConstants.MANA_BONUS_NUM_BITS,
                                 System::currentTimeMillis,
-                                repositoryStorage.getLocalUserDataRepository())));
+                                repositoryStorage.getManaBonusRepository())));
         presenter.addObserver_manaAmount(overlayUI.getManaAmountObserver());
         presenter.addObserver_userLevel(overlayUI.getUserLevelObserver());
         this.skillCaseWindow = new SkillCaseWindow(SKILL_CASE_WINDOW.TITLE, getSkin(),
