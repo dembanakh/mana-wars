@@ -1,43 +1,29 @@
 package com.mana_wars.model.entity.enemy;
 
-import com.mana_wars.model.entity.base.Rarity;
-import com.mana_wars.model.entity.base.ValueChangeType;
 import com.mana_wars.model.entity.battle.BattleParticipant;
-import com.mana_wars.model.entity.battle.Characteristic;
 import com.mana_wars.model.entity.skills.ActiveSkill;
-import com.mana_wars.model.entity.skills.SkillCharacteristic;
+import com.mana_wars.model.entity.skills.BattleSkill;
+import com.mana_wars.model.entity.skills.PassiveSkill;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Mob extends BattleParticipant {
 
-    Mob(int healthPoints) {
-        super("Block-wolf", healthPoints);
-        this.passiveSkills = new ArrayList<>();
-    }
-
-    @Override
-    public void start() {
-        super.start();
-        double activationTime = 0;
-        for (ActiveSkill skill : getInitialAutoSkills()) {
-            activationTime += skill.getCastTime();
-            //TODO change
-            battle.requestSkillApplication(this, skill, activationTime);
-        }
-
-        System.out.println(getName() + " started");
+    public Mob(String name, int initialHealth, List<ActiveSkill> activeSkills, List<PassiveSkill> passiveSkills) {
+        super(name, initialHealth);
+        initSkills(activeSkills, passiveSkills);
     }
 
     @Override
     public void update(double currentTime) {
+        for(BattleSkill skill : battleSkills){
 
+            if (skill.isAvailableAt(currentTime)){
+                super.applySkill(skill.skill, currentTime);
+                break;
+            }
+
+        }
     }
 
-    private List<ActiveSkill> getInitialAutoSkills() {
-        return Arrays.asList(new ActiveSkill(1, 1, Rarity.COMMON,  1, 2, "block black",
-                Arrays.asList(new SkillCharacteristic(10, Characteristic.HEALTH, ValueChangeType.DECREASE, SkillCharacteristic.Target.ENEMY))));
-    }
 }

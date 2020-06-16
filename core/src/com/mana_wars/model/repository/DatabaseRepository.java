@@ -1,6 +1,8 @@
 package com.mana_wars.model.repository;
 
 import com.mana_wars.model.SkillsListTriple;
+import com.mana_wars.model.entity.enemy.Dungeon;
+import com.mana_wars.model.entity.enemy.Mob;
 import com.mana_wars.model.entity.skills.Skill;
 
 import java.util.List;
@@ -17,4 +19,7 @@ public interface DatabaseRepository {
     Completable mergeSkills(Skill toUpdate, Skill toDelete);
     Completable moveSkill(Skill toUpdate, int index);
     Completable swapSkills(Skill skillSource, Skill skillTarget);
+
+    Single<List<Dungeon>> getDungeons();
+    Single<List<Mob>> getMobsListByDungeon(Dungeon dungeon);
 }

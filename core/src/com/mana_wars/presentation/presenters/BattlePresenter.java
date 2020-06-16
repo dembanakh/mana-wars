@@ -1,5 +1,6 @@
 package com.mana_wars.presentation.presenters;
 
+import com.mana_wars.model.entity.battle.BaseBattleBuilder;
 import com.mana_wars.model.entity.battle.BattleConfig;
 import com.mana_wars.model.entity.battle.BattleParticipant;
 import com.mana_wars.model.entity.skills.ActiveSkill;
@@ -26,8 +27,8 @@ public final class BattlePresenter extends BasePresenter<BattleView, BattleInter
         disposable.add(interactor.getEnemyHealthObservable(index).subscribe(observer));
     }
 
-    public void initBattle(BattleConfig battle) {
-        interactor.init(this, battle);
+    public void initBattle(BaseBattleBuilder battleBuilder) {
+        interactor.init(this, battleBuilder);
     }
 
     public void applyUserSkill(int appliedSkillIndex) {

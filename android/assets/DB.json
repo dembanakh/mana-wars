@@ -135,5 +135,52 @@
       "target" : 1
     }
   ],
+  "dungeons" : [
+    {
+      "id" : 1,
+      "name" : "The block forest",
+      "required_lvl" : 1
+    }
+  ],
+  "mobs" : [
+    {
+      "id" : 1,
+      "name" : "Block wolf",
+      "dungeon_id" : 1,
+      "init_health" : 200
+    },
+    {
+      "id" : 2,
+      "name" : "Block fox",
+      "dungeon_id" : 1,
+      "init_health" : 100
+    }
+  ],
+  "mobs_skills" : [
+    {
+      "id" : 1,
+      "mob_id": 1,
+      "skill_id": 1,
+      "lvl" : 1
+    },
+    {
+      "id" : 2,
+      "mob_id": 1,
+      "skill_id": 3,
+      "lvl" : 1
+    },
+    {
+      "id" : 3,
+      "mob_id": 2,
+      "skill_id": 4,
+      "lvl" : 1
+    },
+    {
+      "id" : 4,
+      "mob_id": 2,
+      "skill_id": 3,
+      "lvl" : 1
+    }
+  ],
   "version" : 1
 }

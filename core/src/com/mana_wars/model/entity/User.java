@@ -93,7 +93,7 @@ public class User extends BattleParticipant implements
 
     @Override
     public boolean tryApplyActiveSkill(int skillIndex) {
-        BattleSkill targetBattleSkill = battleSkills[skillIndex];
+        BattleSkill targetBattleSkill = battleSkills.get(skillIndex);
 
         if (getCharacteristicValue(Characteristic.MANA) >= targetBattleSkill.skill.getManaCost()
             && targetBattleSkill.isAvailableAt(battleTime)) {

@@ -15,7 +15,6 @@ import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.BattleBaseOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
-import com.mana_wars.model.entity.battle.PvEBattle;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.interactor.BattleInteractor;
 import com.mana_wars.presentation.presenters.BattlePresenter;
@@ -30,6 +29,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.reactivex.functions.Consumer;
 
+import static com.mana_wars.model.GameConstants.CHOSEN_BATTLE_BUILDER;
 import static com.mana_wars.ui.UIStringConstants.*;
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.ACTIVE_SKILLS_TABLE_HEIGHT;
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.SKILLS_TABLES_WIDTH;
@@ -49,7 +49,7 @@ public class BattleScreen extends BaseScreen<BattleBaseOverlayUI, BattlePresente
                 Gdx.app::postRunnable);
         presenter.addObserver_userManaAmount(overlayUI.getUserManaAmountObserver());
 
-        userActiveSkills = new ApplicableSkillsList2D<ActiveSkill>(getSkin(), GameConstants.USER_ACTIVE_SKILL_COUNT,
+        userActiveSkills = new ApplicableSkillsList2D<ActiveSkill>(getSkin(), GameConstants.MAX_CHOSEN_ACTIVE_SKILL_COUNT,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(),
                 (skillIndex) -> {
                     if (isBattle.get()) {
@@ -71,8 +71,7 @@ public class BattleScreen extends BaseScreen<BattleBaseOverlayUI, BattlePresente
     @Override
     public BaseScreen reInit(Map<String, Object> arguments) {
         super.reInit(arguments);
-        presenter.initBattle(new PvEBattle(presenter.getPreparedUser(),
-                getArgument(arguments, "EnemyFactory")));
+        presenter.initBattle(getArgument(arguments, CHOSEN_BATTLE_BUILDER));
         return this;
     }
 

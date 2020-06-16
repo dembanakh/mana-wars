@@ -5,10 +5,17 @@ import android.util.Log;
 
 import com.mana_wars.model.db.AppDatabase;
 import com.mana_wars.model.db.dao.BaseDAO;
+import com.mana_wars.model.db.dao.DBDungeonDAO;
+import com.mana_wars.model.db.dao.DBMobDAO;
+import com.mana_wars.model.db.dao.DBMobSkillDAO;
 import com.mana_wars.model.db.dao.DBSkillCharacteristicDAO;
 import com.mana_wars.model.db.dao.DBSkillDAO;
 import com.mana_wars.model.db.dao.UserSkillsDAO;
 import com.mana_wars.model.db.entity.CompleteUserSkill;
+import com.mana_wars.model.db.entity.DBDungeon;
+import com.mana_wars.model.db.entity.DBMob;
+import com.mana_wars.model.db.entity.DBMobSkill;
+import com.mana_wars.model.db.entity.DBMobWithSkills;
 import com.mana_wars.model.db.entity.DBSkill;
 import com.mana_wars.model.db.entity.DBSkillWithCharacteristics;
 import com.mana_wars.model.db.entity.UserSkill;
@@ -27,14 +34,18 @@ public class RoomRepository {
 
     private static RoomRepository instance;
 
-    public UserSkillsDAO userSkillsDAO;
-    public DBSkillDAO dbSkillDAO;
-    public DBSkillCharacteristicDAO dbSkillCharacteristicDAO;
+    public final UserSkillsDAO userSkillsDAO;
+    public final DBSkillDAO dbSkillDAO;
+    public final DBSkillCharacteristicDAO dbSkillCharacteristicDAO;
+    public final DBDungeonDAO dbDungeonDAO;
+    public final DBMobDAO dbMobDAO;
+    public final DBMobSkillDAO dbMobSkillDAO;
 
     public static RoomRepository getInstance(Context context){
         if (instance==null) {
             AppDatabase db = AppDatabase.getDatabase(context);
-            instance = new RoomRepository(db.userSkillsDAO(), db.dbSkillDAO(),db.dbSkillCharacteristicDAO());
+            instance = new RoomRepository(db.userSkillsDAO(), db.dbSkillDAO(),
+                    db.dbSkillCharacteristicDAO(), db.dbDungeonDAO(), db.dbMobDAO(), db.dbMobSkillDAO());
         }
         return instance;
     }
@@ -75,10 +86,27 @@ public class RoomRepository {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    private RoomRepository(UserSkillsDAO userSkillsDAO, DBSkillDAO dbSkillDAO, DBSkillCharacteristicDAO dbSkillCharacteristicDAO) {
+    public Single<List<DBMobWithSkills>> getDBMobsWithSkillsByDungeonID(int id){
+        return Single.create((SingleOnSubscribe<List<DBMobWithSkills>>) emitter -> {
+            try {
+                emitter.onSuccess(dbMobDAO.getDBMobsWithSkillsByDungeonID(id));
+            }catch ( Exception e){
+                emitter.onError(e);
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    private RoomRepository(UserSkillsDAO userSkillsDAO, DBSkillDAO dbSkillDAO,
+                           DBSkillCharacteristicDAO dbSkillCharacteristicDAO,
+                           DBDungeonDAO dbDungeonDAO, DBMobDAO dbMobDAO, DBMobSkillDAO dbMobSkillDAO) {
         this.userSkillsDAO = userSkillsDAO;
         this.dbSkillDAO = dbSkillDAO;
         this.dbSkillCharacteristicDAO = dbSkillCharacteristicDAO;
+        this.dbDungeonDAO = dbDungeonDAO;
+        this.dbMobDAO = dbMobDAO;
+        this.dbMobSkillDAO = dbMobSkillDAO;
     }
 
     public <T> Completable insertEntities(final List<T> entities, final BaseDAO<T> dao){
