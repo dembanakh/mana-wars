@@ -23,9 +23,9 @@ import com.mana_wars.model.db.entity.DBSkillCharacteristic;
 
 public class DBUpdaterParser {
 
-    public Context context;
+    public final Context context;
 
-    public DBUpdaterParser(Context context){
+    DBUpdaterParser(Context context){
         this.context = context;
     }
 
@@ -37,10 +37,11 @@ public class DBUpdaterParser {
         void insertMobsSkills(List<DBMobSkill> mobSkills);
     }
 
-    public void updateFromJSON(DBUpdater updater) throws IOException, JSONException {
+    void updateFromJSON(DBUpdater updater) throws IOException, JSONException {
         JSONObject dbjson = new JSONObject(readJSONStringFromFile());
 
-        if(dbjson.getInt("version")!= GameConstants.DB_VERSION) throw new JSONException("wrong DB version");
+        if (dbjson.getInt("version") != GameConstants.DB_VERSION)
+            throw new JSONException("wrong DB version");
 
         updater.insertSkills(parseJSON(dbjson.getJSONArray("skills"), DBSkill::fromJSON));
         updater.insertCharacteristics(parseJSON(dbjson.getJSONArray("skill_characteristics"), DBSkillCharacteristic::fromJSON));
@@ -49,17 +50,16 @@ public class DBUpdaterParser {
         updater.insertMobsSkills(parseJSON(dbjson.getJSONArray("mobs_skills"), DBMobSkill::fromJSON));
     }
 
-    //TODO rename
-    private interface CreatorFromJson<T>{
+    private interface JSONParser<T>{
         T fromJson(JSONObject json) throws JSONException;
     }
 
-    // TODO think about such an optimization
-    private <T> List<T> parseJSON(JSONArray jsonArray, CreatorFromJson<T> creator) throws JSONException {
+    // TODO think about such optimization
+    private <T> List<T> parseJSON(JSONArray jsonArray, JSONParser<T> parser) throws JSONException {
         List<T> list = new ArrayList<>();
 
-        for(int i=0; i<jsonArray.length();i++){
-            list.add(creator.fromJson(jsonArray.getJSONObject(i)));
+        for(int i = 0; i < jsonArray.length(); i++){
+            list.add(parser.fromJson(jsonArray.getJSONObject(i)));
         }
         return list;
     }
@@ -69,8 +69,8 @@ public class DBUpdaterParser {
         InputStream inputStream = null;
         StringBuilder builder = new StringBuilder();
         try {
-            String jsonDataString = null;
-            inputStream=context.getAssets().open("DB.json");
+            String jsonDataString;
+            inputStream = context.getAssets().open("DB.json");
             BufferedReader bufferedReader = new BufferedReader(
                     new InputStreamReader(inputStream, "UTF-8"));
             while ((jsonDataString = bufferedReader.readLine()) != null) {

@@ -21,9 +21,9 @@ public class ApplicableSkillsList2D<T extends ActiveSkill> extends ClickableSkil
 
     private final UIAnimationController<Integer, SkillIconAnimationController.Type> animationController;
 
-    public ApplicableSkillsList2D(Skin skin, int cols, AssetFactory<Integer, TextureRegion> iconFactory,
-                                  AssetFactory<Rarity, TextureRegion> frameFactory,
-                                  Consumer<? super Integer> onSkillClick) {
+    protected ApplicableSkillsList2D(Skin skin, int cols, AssetFactory<Integer, TextureRegion> iconFactory,
+                                     AssetFactory<Rarity, TextureRegion> frameFactory,
+                                     Consumer<? super Integer> onSkillClick) {
         super(skin, cols, iconFactory, frameFactory);
         this.animationController = new SkillIconAnimationController(iconFactory.getAsset(1),
                 getStyle().font);

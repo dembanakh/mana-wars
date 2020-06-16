@@ -17,12 +17,12 @@ import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.entity.user.UserSkillsAPI;
 import com.mana_wars.model.interactor.SkillsInteractor;
+import com.mana_wars.model.repository.DatabaseRepository;
 import com.mana_wars.presentation.presenters.SkillsPresenter;
 import com.mana_wars.presentation.view.SkillsView;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.MenuBaseOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
-import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.widgets.skills_list_2d.List2D;
 import com.mana_wars.ui.widgets.skills_list_2d.OperationSkillsList2D;
@@ -44,12 +44,12 @@ public class SkillsScreen extends BaseScreen<MenuBaseOverlayUI, SkillsPresenter>
 
     public SkillsScreen(final UserSkillsAPI user,
                         final ScreenSetter screenSetter, final FactoryStorage factoryStorage,
-                        final RepositoryStorage repositoryStorage, final MenuBaseOverlayUI overlayUI) {
+                        final DatabaseRepository databaseRepository, final MenuBaseOverlayUI overlayUI) {
         super(screenSetter, factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING), overlayUI);
 
         this.presenter = new SkillsPresenter(this,
                 Gdx.app::postRunnable,
-                new SkillsInteractor(user, repositoryStorage.getDatabaseRepository()));
+                new SkillsInteractor(user, databaseRepository));
         presenter.addObserver_manaAmount(overlayUI.getManaAmountObserver());
         presenter.addObserver_userLevel(overlayUI.getUserLevelObserver());
 

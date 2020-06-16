@@ -1,16 +1,13 @@
 package com.mana_wars.presentation.presenters;
 
 import com.mana_wars.model.entity.battle.BaseBattleBuilder;
-import com.mana_wars.model.entity.battle.BattleConfig;
 import com.mana_wars.model.entity.battle.BattleParticipant;
 import com.mana_wars.model.entity.skills.ActiveSkill;
-import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.interactor.BattleInteractor;
 import com.mana_wars.model.interactor.BattleInitializationObserver;
 import com.mana_wars.presentation.util.UIThreadHandler;
 import com.mana_wars.presentation.view.BattleView;
 
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 
 public final class BattlePresenter extends BasePresenter<BattleView, BattleInteractor> implements BattleInitializationObserver {
@@ -43,10 +40,6 @@ public final class BattlePresenter extends BasePresenter<BattleView, BattleInter
         if (interactor.tryFinishBattle()) {
             view.finishBattle();
         }
-    }
-
-    public BattleParticipant getPreparedUser() {
-        return interactor.getPreparedUser();
     }
 
     @Override

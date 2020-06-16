@@ -10,11 +10,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.entity.user.UserBattleAPI;
+import com.mana_wars.model.repository.DatabaseRepository;
 import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.BattleBaseOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
-import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.interactor.BattleInteractor;
 import com.mana_wars.presentation.presenters.BattlePresenter;
@@ -41,11 +41,11 @@ public class BattleScreen extends BaseScreen<BattleBaseOverlayUI, BattlePresente
 
     public BattleScreen(final UserBattleAPI user,
                         final ScreenSetter screenSetter, final FactoryStorage factoryStorage,
-                        final RepositoryStorage repositoryStorage, final BattleBaseOverlayUI overlayUI) {
+                        final DatabaseRepository databaseRepository, final BattleBaseOverlayUI overlayUI) {
         super(screenSetter, factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING), overlayUI);
 
         presenter = new BattlePresenter(this,
-                new BattleInteractor(user, repositoryStorage.getDatabaseRepository()),
+                new BattleInteractor(user, databaseRepository),
                 Gdx.app::postRunnable);
         presenter.addObserver_userManaAmount(overlayUI.getUserManaAmountObserver());
 

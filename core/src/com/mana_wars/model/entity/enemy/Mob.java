@@ -16,13 +16,11 @@ public class Mob extends BattleParticipant {
 
     @Override
     public void update(double currentTime) {
-        for(BattleSkill skill : battleSkills){
-
+        for (BattleSkill skill : battleSkills) {
             if (skill.isAvailableAt(currentTime)){
                 super.applySkill(skill.skill, currentTime);
                 break;
             }
-
         }
     }
 

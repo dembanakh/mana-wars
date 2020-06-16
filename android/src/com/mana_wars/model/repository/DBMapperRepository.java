@@ -7,11 +7,8 @@ import com.mana_wars.model.db.entity.CompleteUserSkill;
 import com.mana_wars.model.db.entity.DBDungeon;
 import com.mana_wars.model.db.entity.DBMobSkillWithCharacteristics;
 import com.mana_wars.model.db.entity.DBMobWithSkills;
-import com.mana_wars.model.db.entity.DBSkill;
-import com.mana_wars.model.db.entity.DBSkillCharacteristic;
 import com.mana_wars.model.db.entity.DBSkillWithCharacteristics;
 import com.mana_wars.model.db.entity.UserSkill;
-import com.mana_wars.model.entity.battle.Characteristic;
 import com.mana_wars.model.entity.enemy.Dungeon;
 import com.mana_wars.model.entity.enemy.Mob;
 import com.mana_wars.model.entity.skills.ActiveSkill;
@@ -22,25 +19,24 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
-import io.reactivex.functions.Function;
 
 public class DBMapperRepository implements DatabaseRepository {
 
-    private RoomRepository room;
+    private final RoomRepository room;
 
     public DBMapperRepository(RoomRepository room){
         this.room = room;
     }
 
-
     @Override
     public Single<List<Skill>> getSkillsList() {
         return room.getSkillsWithCharacteristics().map(dbSkills -> {
             List<Skill> result = new ArrayList<>();
-            for(DBSkillWithCharacteristics skill : dbSkills){
+            for (DBSkillWithCharacteristics skill : dbSkills){
                 Skill convertedSkill = SkillConverter.toSkill(skill);
                 result.add(convertedSkill);
             }
@@ -48,7 +44,7 @@ public class DBMapperRepository implements DatabaseRepository {
         });
     }
 
-    private final HashMap<Skill, UserSkill> lastUserSkillsMap = new HashMap<>();
+    private final Map<Skill, UserSkill> lastUserSkillsMap = new HashMap<>();
 
     @Override
     public Single<SkillsListTriple> getUserSkills() {
@@ -115,14 +111,14 @@ public class DBMapperRepository implements DatabaseRepository {
     }
 
 
-    private final HashMap<Dungeon, DBDungeon> lastDungeonsMap = new HashMap<>();
+    private final Map<Dungeon, DBDungeon> lastDungeonsMap = new HashMap<>();
 
     //TODO think about this method
     @Override
     public Single<List<Dungeon>> getDungeons() {
         return room.getAllEntities(room.dbDungeonDAO).map(dbDungeons -> {
-            List<Dungeon> dungeons = new ArrayList<>();
             lastDungeonsMap.clear();
+            List<Dungeon> dungeons = new ArrayList<>();
             for (DBDungeon dbDungeon : dbDungeons){
                 Dungeon dungeon = new Dungeon(dbDungeon.getId(), dbDungeon.getName(), dbDungeon.getRequiredLvl());
                 lastDungeonsMap.put(dungeon, dbDungeon);
@@ -134,7 +130,6 @@ public class DBMapperRepository implements DatabaseRepository {
 
     @Override
     public Single<List<Mob>> getMobsListByDungeon(Dungeon dungeon) {
-
         return room.getDBMobsWithSkillsByDungeonID(lastDungeonsMap.get(dungeon).getId()).map(
                 dbMobWithSkills -> {
 
