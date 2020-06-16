@@ -26,8 +26,6 @@ import static com.mana_wars.model.GameConstants.CHOSEN_BATTLE_BUILDER;
 
 public class DungeonsScreen extends BaseScreen<BaseOverlayUI, DungeonsPresenter> implements DungeonsView {
 
-    private final ScreenSetter screenSetter;
-
     private final DungeonButtonsTable dungeonButtonsTable;
 
     public DungeonsScreen(final UserDungeonsAPI user,
@@ -40,7 +38,6 @@ public class DungeonsScreen extends BaseScreen<BaseOverlayUI, DungeonsPresenter>
                 new DungeonsInteractor(user, databaseRepository),
                 Gdx.app::postRunnable);
 
-        this.screenSetter = screenSetter;
         this.dungeonButtonsTable = new DungeonButtonsTable(getSkin(), this::onDungeon);
     }
 
@@ -75,7 +72,7 @@ public class DungeonsScreen extends BaseScreen<BaseOverlayUI, DungeonsPresenter>
         Map<String, Object> args = new HashMap<>();
         args.put(CHOSEN_BATTLE_BUILDER,
                 new DungeonBattleBuilder(presenter.getUser(), new DungeonEnemyFactory(dungeon)));
-        screenSetter.setScreen(ScreenInstance.BATTLE, args);
+        setScreen(ScreenInstance.BATTLE, args);
     }
 
 }

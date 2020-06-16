@@ -19,11 +19,11 @@ public class DungeonsPresenter extends BasePresenter<DungeonsView, DungeonsInter
             }
 
             );
-
         }, Throwable::printStackTrace));
     }
 
     public UserDungeonsAPI getUser() {
         return interactor.getUser();
     }
+
 }

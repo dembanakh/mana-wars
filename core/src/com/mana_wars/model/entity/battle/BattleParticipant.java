@@ -20,10 +20,8 @@ public abstract class BattleParticipant {
     protected final int initialHealth;
 
     protected final List<BattleSkill> battleSkills = new ArrayList<>();
-        //new BattleSkill[GameConstants.MAX_CHOSEN_ACTIVE_SKILL_COUNT];
 
     protected List<PassiveSkill> passiveSkills;
-    protected List<ActiveSkill> activeSkills;
     private final Subject<Integer> healthObservable;
 
     private final EnumMap<Characteristic, Integer> characteristics = new EnumMap<>(Characteristic.class);
@@ -70,16 +68,10 @@ public abstract class BattleParticipant {
 
     protected void initSkills(List<ActiveSkill> activeSkills, List<PassiveSkill> passiveSkills){
         this.passiveSkills = passiveSkills;
-        this.activeSkills = activeSkills;
-        //TODO think about the separation
 
-        for(ActiveSkill s : activeSkills){
+        for (ActiveSkill s : activeSkills) {
             battleSkills.add(new BattleSkill(s));
         }
-
-        /*for (int i = 0; i < GameConstants.MAX_CHOSEN_ACTIVE_SKILL_COUNT && i < activeSkills.size(); i++){
-            this.battleSkills[i] = new BattleSkill(activeSkills.get(i));
-        }*/
     }
 
 
@@ -119,7 +111,4 @@ public abstract class BattleParticipant {
         return name;
     }
 
-    public Iterable<ActiveSkill> getActiveSkills() {
-        return activeSkills;
-    }
 }

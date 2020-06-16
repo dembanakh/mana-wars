@@ -16,7 +16,7 @@ import com.mana_wars.ui.overlays.BaseOverlayUI;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-public abstract class BaseScreen<U extends BaseOverlayUI,T extends BasePresenter> implements Screen, ScreenSetter {
+public abstract class BaseScreen<U extends BaseOverlayUI, T extends BasePresenter> implements Screen, ScreenSetter {
 
     protected T presenter;
     protected final U overlayUI;

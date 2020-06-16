@@ -31,6 +31,8 @@ public class User extends BattleParticipant implements
     private final UserManaRepository userManaRepository;
     private final UserLevelRepository userLevelRepository;
 
+    private List<ActiveSkill> activeSkills;
+
     private BattleSkill toApply;
     private double battleTime;
 
@@ -101,6 +103,7 @@ public class User extends BattleParticipant implements
     @Override
     public void initSkills(List<ActiveSkill> activeSkills, List<PassiveSkill> passiveSkills) {
         super.initSkills(activeSkills, passiveSkills);
+        this.activeSkills = activeSkills;
     }
 
     @Override
@@ -137,6 +140,11 @@ public class User extends BattleParticipant implements
     public void setName(String name) {
         super.setName(name);
         usernameRepository.setUsername(name);
+    }
+
+    @Override
+    public Iterable<ActiveSkill> getActiveSkills() {
+        return activeSkills;
     }
 
 }

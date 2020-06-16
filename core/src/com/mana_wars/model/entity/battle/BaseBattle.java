@@ -24,7 +24,7 @@ public class BaseBattle implements BattleConfig, Battle {
 
     BaseBattle(final BattleParticipant user,
                final List<BattleParticipant> userSide,
-               final List<BattleParticipant> enemySide){
+               final List<BattleParticipant> enemySide) {
         this.user = user;
         this.userSide = userSide;
         this.enemySide = enemySide;
@@ -47,7 +47,7 @@ public class BaseBattle implements BattleConfig, Battle {
     }
 
     @Override
-    public void start(){
+    public void start() {
         battleTime = 0;
         startParticipants(Collections.singletonList(user));
         startParticipants(userSide);
@@ -56,7 +56,7 @@ public class BaseBattle implements BattleConfig, Battle {
     }
 
     @Override
-    public synchronized void update(float timeDelta){
+    public synchronized void update(float timeDelta) {
         if (isActive.get()) {
             battleTime += timeDelta;
 
