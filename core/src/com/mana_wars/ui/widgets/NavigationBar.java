@@ -54,7 +54,8 @@ public class NavigationBar implements BuildableUI {
         bar.add(UIElementFactory.getButton(skin, "PLACEHOLDER", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
+                // TODO: TEMP
+                screenSetter.setScreen(ScreenInstance.SKILLS_INFO, null);
             }
         })).width(TAB_WIDTH).height(TAB_HEIGHT);
         // PLACEHOLDER3

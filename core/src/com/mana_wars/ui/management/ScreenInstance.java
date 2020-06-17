@@ -8,6 +8,7 @@ import com.mana_wars.ui.screens.BattleSummaryScreen;
 import com.mana_wars.ui.screens.DungeonsScreen;
 import com.mana_wars.ui.screens.GreetingScreen;
 import com.mana_wars.ui.screens.MainMenuScreen;
+import com.mana_wars.ui.screens.SkillsInfoScreen;
 import com.mana_wars.ui.screens.SkillsScreen;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
@@ -18,6 +19,7 @@ public enum ScreenInstance {
     GREETING,
     MAIN_MENU,
     SKILLS,
+    SKILLS_INFO,
     DUNGEONS,
     BATTLE,
     BATTLE_SUMMARY;
@@ -35,6 +37,8 @@ public enum ScreenInstance {
                 overlayUIFactory.getMenuOverlayUI());
         SKILLS.screen = new SkillsScreen(user, screenSetter, factoryStorage, repositoryStorage.getDatabaseRepository(),
                 overlayUIFactory.getMenuOverlayUI());
+        SKILLS_INFO.screen = new SkillsInfoScreen(screenSetter, factoryStorage, repositoryStorage.getDatabaseRepository(),
+                overlayUIFactory.getEmptyOverlayUI());
         DUNGEONS.screen = new DungeonsScreen(user, screenSetter, factoryStorage, repositoryStorage.getDatabaseRepository(),
                 overlayUIFactory.getEmptyOverlayUI());
         BATTLE.screen = new BattleScreen(user, screenSetter, factoryStorage, repositoryStorage.getDatabaseRepository(),

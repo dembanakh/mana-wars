@@ -25,7 +25,7 @@ import static com.mana_wars.ui.UIElementsSize.SKILL_CASE_WINDOW.SKILL_DESCRIPTIO
 import static com.mana_wars.ui.UIElementsSize.SKILL_CASE_WINDOW.SKILL_ICON_PADDING;
 import static com.mana_wars.ui.UIElementsSize.SKILL_CASE_WINDOW.SKILL_NAME_PADDING;
 
-public class SkillCaseWindow extends Window implements BuildableUI {
+public class SkillInfoWindow extends Window implements BuildableUI {
 
     private final Image skillIcon;
     private final Image skillFrame;
@@ -35,12 +35,13 @@ public class SkillCaseWindow extends Window implements BuildableUI {
     private final AssetFactory<Integer, TextureRegion> iconFactory;
     private final AssetFactory<Rarity, TextureRegion> frameFactory;
 
-    public SkillCaseWindow(String title, Skin skin, AssetFactory<Integer, TextureRegion> iconFactory,
+    public SkillInfoWindow(String title, Skin skin, AssetFactory<Integer, TextureRegion> iconFactory,
                            AssetFactory<Rarity, TextureRegion> frameFactory) {
         super(title, skin);
         this.skillIcon = new Image();
         this.skillFrame = new Image();
         this.skillName = new Label("", skin);
+        this.skillName.setAlignment(Align.center);
         this.skillDescription = new Label("", skin);
         this.skillDescription.setAlignment(Align.center | Align.right);
         this.skillDescription.setFontScale(1.5f);
@@ -62,7 +63,7 @@ public class SkillCaseWindow extends Window implements BuildableUI {
         setFillParent(false);
         setMovable(false);
         setResizable(false);
-        add(skillName).padTop(SKILL_NAME_PADDING).row();
+        add(skillName).padTop(SKILL_NAME_PADDING).width(800).row();
         Stack stack = new Stack();
         stack.add(skillIcon);
         stack.add(skillFrame);
@@ -72,18 +73,19 @@ public class SkillCaseWindow extends Window implements BuildableUI {
                 new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
-                        hide();
+                        hideSkill();
                     }
                 })).bottom().pad(GET_BUTTON_PADDING_TOP, GET_BUTTON_PADDING_LEFT,
                 GET_BUTTON_PADDING_BOTTOM, GET_BUTTON_PADDING_RIGHT);
         pack();
+        //setSize(800, 1200);
         setVisible(false);
         setDebug(false);
 
         return this;
     }
 
-    private void hide() {
+    private void hideSkill() {
         setVisible(false);
     }
 

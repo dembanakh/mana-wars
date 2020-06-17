@@ -8,13 +8,13 @@ import java.util.Collections;
 
 public class OverlayUIFactory {
 
-    private final MenuBaseOverlayUI menuOverlayUI;
-    private final BattleBaseOverlayUI battleOverlayUI;
+    private final MenuOverlayUI menuOverlayUI;
+    private final BattleOverlayUI battleOverlayUI;
     private final BaseOverlayUI emptyOverlayUI;
 
     public OverlayUIFactory(final ScreenSetter screenSetter, final FactoryStorage factoryStorage) {
-        menuOverlayUI = new MenuBaseOverlayUI(screenSetter);
-        battleOverlayUI = new BattleBaseOverlayUI(screenSetter, factoryStorage.getSkillIconFactory(),
+        menuOverlayUI = new MenuOverlayUI(screenSetter);
+        battleOverlayUI = new BattleOverlayUI(factoryStorage.getSkillIconFactory(),
                 factoryStorage.getRarityFrameFactory());
         emptyOverlayUI = new BaseOverlayUI() {
             @Override
@@ -30,11 +30,11 @@ public class OverlayUIFactory {
         emptyOverlayUI.init();
     }
 
-    public MenuBaseOverlayUI getMenuOverlayUI() {
+    public MenuOverlayUI getMenuOverlayUI() {
         return menuOverlayUI;
     }
 
-    public BattleBaseOverlayUI getBattleOverlayUI() {
+    public BattleOverlayUI getBattleOverlayUI() {
         return battleOverlayUI;
     }
 
