@@ -16,31 +16,32 @@ public abstract class BattleParticipant {
 
     protected Battle battle;
 
-    private String name;
-    protected final int initialHealth;
+    private final String name;
+    private final int initialHealth;
 
     protected final List<BattleSkill> battleSkills = new ArrayList<>();
 
-    protected List<PassiveSkill> passiveSkills;
+    protected final List<PassiveSkill> passiveSkills;
     private final Subject<Integer> healthObservable;
 
     private final EnumMap<Characteristic, Integer> characteristics = new EnumMap<>(Characteristic.class);
 
-    public BattleParticipant(String name, int initialHealth) {
-        this(initialHealth);
-        setName(name);
-    }
-
-    public BattleParticipant(int initialHealth) {
+    public BattleParticipant(String name, int initialHealth, List<ActiveSkill> activeSkills, List<PassiveSkill> passiveSkills) {
+        this.name = name;
         this.initialHealth = initialHealth;
         setCharacteristicValue(Characteristic.HEALTH, initialHealth);
         setCharacteristicValue(Characteristic.MANA, 0);
         setCharacteristicValue(Characteristic.CAST_TIME, 100);
         setCharacteristicValue(Characteristic.COOLDOWN, 100);
         healthObservable = BehaviorSubject.create();
+        this.passiveSkills = passiveSkills;
+
+        for (ActiveSkill s : activeSkills) {
+            battleSkills.add(new BattleSkill(s));
+        }
     }
 
-    public void start() {
+    void start() {
         healthObservable.onNext(initialHealth);
     }
 
@@ -66,18 +67,6 @@ public abstract class BattleParticipant {
         }
     }
 
-    protected void initSkills(List<ActiveSkill> activeSkills, List<PassiveSkill> passiveSkills){
-        this.passiveSkills = passiveSkills;
-
-        for (ActiveSkill s : activeSkills) {
-            battleSkills.add(new BattleSkill(s));
-        }
-    }
-
-
-    protected void setName(final String name) {
-        this.name = name;
-    }
 
     public void setBattle(Battle battle) {
         this.battle = battle;

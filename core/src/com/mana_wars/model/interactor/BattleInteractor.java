@@ -2,12 +2,13 @@ package com.mana_wars.model.interactor;
 
 import com.mana_wars.model.entity.battle.BaseBattleBuilder;
 import com.mana_wars.model.entity.battle.BattleConfig;
+import com.mana_wars.model.entity.battle.BattleSummaryData;
 import com.mana_wars.model.entity.user.UserBattleAPI;
 import com.mana_wars.model.repository.DatabaseRepository;
 
 import io.reactivex.subjects.Subject;
 
-public class BattleInteractor extends BaseInteractor{
+public class BattleInteractor extends BaseInteractor {
 
     private final UserBattleAPI user;
     private BattleConfig battle;
@@ -49,7 +50,7 @@ public class BattleInteractor extends BaseInteractor{
         return user.getManaAmountObservable();
     }
 
-    public Subject<Boolean> getFinishBattleObservable() {
+    public Subject<BattleSummaryData> getFinishBattleObservable() {
         return battle.getFinishBattleObservable();
     }
 

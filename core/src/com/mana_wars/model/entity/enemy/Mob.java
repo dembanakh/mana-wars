@@ -10,8 +10,7 @@ import java.util.List;
 public class Mob extends BattleParticipant {
 
     public Mob(String name, int initialHealth, List<ActiveSkill> activeSkills, List<PassiveSkill> passiveSkills) {
-        super(name, initialHealth);
-        initSkills(activeSkills, passiveSkills);
+        super(name, initialHealth, activeSkills, passiveSkills);
     }
 
     @Override

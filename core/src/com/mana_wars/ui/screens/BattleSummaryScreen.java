@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.mana_wars.model.entity.battle.BattleSummaryData;
 import com.mana_wars.model.entity.user.UserBattleSummaryAPI;
 import com.mana_wars.presentation.presenters.BasePresenter;
 import com.mana_wars.ui.UIStringConstants;
@@ -15,12 +16,21 @@ import com.mana_wars.ui.overlays.BaseOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
 
+import java.util.Map;
+
 public class BattleSummaryScreen extends BaseScreen<BaseOverlayUI, BasePresenter> {
 
     public BattleSummaryScreen(final UserBattleSummaryAPI user,
                                final ScreenSetter screenSetter, final FactoryStorage factoryStorage,
                                final RepositoryStorage repositoryStorage, final BaseOverlayUI overlayUI) {
         super(screenSetter, factoryStorage.getSkinFactory().getAsset(UIStringConstants.UI_SKIN.FREEZING), overlayUI);
+    }
+
+    @Override
+    public BaseScreen reInit(Map<String, Object> arguments) {
+        BattleSummaryData summaryData = getArgument(arguments, "BattleSummaryData");
+        // TODO: use summaryData
+        return this;
     }
 
     @Override

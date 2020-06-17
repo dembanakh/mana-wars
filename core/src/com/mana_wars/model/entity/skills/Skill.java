@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Skill extends GameItem {
 
-    private List <SkillCharacteristic> skillCharacteristics;
+    private final List <SkillCharacteristic> skillCharacteristics;
 
     public Skill(int id, int level, Rarity rarity, String name, List <SkillCharacteristic> skillCharacteristics) {
         super(id, level, rarity, name);
@@ -18,7 +18,7 @@ public class Skill extends GameItem {
     }
 
     public void activate(BattleParticipant self, BattleParticipant enemy){
-        System.out.println(getName() + " activated");
+        //System.out.println(getName() + " activated");
         for(SkillCharacteristic sc : skillCharacteristics){
             if(sc.getTarget()==SkillCharacteristic.Target.SELF)
                 self.applySkillCharacteristic(sc);
@@ -27,10 +27,19 @@ public class Skill extends GameItem {
         }
     }
 
+    public int getManaCost() {
+        for (SkillCharacteristic c : skillCharacteristics){
+            if (c.getCharacteristic() == Characteristic.MANA){
+                return c.getValue();
+            }
+        }
+        return 0;
+    }
 
     public String getDescription() {
         StringBuilder result = new StringBuilder();
-        for(SkillCharacteristic sc : skillCharacteristics){
+        for (SkillCharacteristic sc : skillCharacteristics) {
+            if (sc.getCharacteristic() == Characteristic.MANA) continue;
             result.append(sc.getDescription());
             result.append('\n');
         }
@@ -44,13 +53,4 @@ public class Skill extends GameItem {
         return Empty;
     }
 
-    public int getManaCost() {
-
-        for (SkillCharacteristic c : skillCharacteristics){
-            if (c.getCharacteristic() == Characteristic.MANA){
-                return c.getValue();
-            }
-        }
-        return 0;
-    }
 }

@@ -1,6 +1,6 @@
 package com.mana_wars.ui.management;
 
-import com.mana_wars.model.entity.User;
+import com.mana_wars.model.entity.user.User;
 import com.mana_wars.ui.overlays.OverlayUIFactory;
 import com.mana_wars.ui.screens.BaseScreen;
 import com.mana_wars.ui.screens.BattleScreen;

@@ -14,5 +14,5 @@ public interface BattleConfig {
     List<BattleParticipant> getUserSide();
     List<BattleParticipant> getEnemySide();
 
-    Subject<Boolean> getFinishBattleObservable();
+    Subject<BattleSummaryData> getFinishBattleObservable();
 }

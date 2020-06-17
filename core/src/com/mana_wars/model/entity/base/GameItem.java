@@ -46,7 +46,7 @@ public abstract class GameItem implements Comparable<GameItem> {
     @Override
     public int compareTo(GameItem gameItem) {
         if (rarity != gameItem.rarity) return rarity.getId() - gameItem.rarity.getId();
-        if(!name.equals(gameItem.name)) return -name.compareTo(gameItem.name);
+        if (!name.equals(gameItem.name)) return -name.compareTo(gameItem.name);
         return level - gameItem.level;
     }
 

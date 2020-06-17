@@ -6,11 +6,12 @@ public enum ValueChangeType {
 
     private final int value;
 
-    private ValueChangeType(int value){
+    ValueChangeType(int value){
         this.value = value;
     }
 
     public int getConstant() {
         return value;
     }
+
 }

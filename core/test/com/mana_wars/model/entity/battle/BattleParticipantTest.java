@@ -1,18 +1,17 @@
 package com.mana_wars.model.entity.battle;
 
-
 import com.mana_wars.model.entity.base.ValueChangeType;
 import com.mana_wars.model.entity.skills.SkillCharacteristic;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Collections;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-
 
 public class BattleParticipantTest {
 
@@ -20,11 +19,7 @@ public class BattleParticipantTest {
 
     @Before
     public void setup(){
-        bp = new BattleParticipant("a", 100) {
-            @Override
-            public void start() {
-
-            }
+        bp = new BattleParticipant("a", 100, Collections.emptyList(), Collections.emptyList()) {
 
             @Override
             public void update(double currentTime) {
@@ -38,7 +33,6 @@ public class BattleParticipantTest {
     public void testGetCharacteristicValue() {
         assertEquals(100, bp.getCharacteristicValue(Characteristic.HEALTH));
     }
-
 
     @Test
     public void testApplySkillCharacteristic() {

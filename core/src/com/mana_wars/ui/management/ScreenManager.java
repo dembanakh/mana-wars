@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.mana_wars.model.entity.User;
+import com.mana_wars.model.entity.user.User;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.repository.DatabaseUpdater;
 import com.mana_wars.ui.factory.AssetFactory;

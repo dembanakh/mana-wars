@@ -5,11 +5,11 @@ import com.mana_wars.model.entity.battle.Characteristic;
 
 public class SkillCharacteristic {
 
-    private Characteristic characteristic;
-    private ValueChangeType changeType;
-    private Target target;
+    private final Characteristic characteristic;
+    private final ValueChangeType changeType;
+    private final Target target;
 
-    private int value;
+    private final int value;
 
     public enum Target {
         SELF,
@@ -23,7 +23,7 @@ public class SkillCharacteristic {
         this.target = target;
     }
 
-    public String getDescription(){
+    String getDescription() {
         String result = String.valueOf(target);
         result += " ";
         result += String.valueOf(characteristic);
@@ -47,4 +47,5 @@ public class SkillCharacteristic {
     public int getValue(){
         return value;
     }
+
 }

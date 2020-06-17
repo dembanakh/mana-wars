@@ -25,7 +25,7 @@ public class BaseBattle implements BattleConfig, Battle {
     private double battleTime;
     private final PriorityQueue<BattleEvent> battleEvents = new PriorityQueue<>();
 
-    private final Subject<Boolean> finishBattleObservable;
+    private final Subject<BattleSummaryData> finishBattleObservable;
 
     BaseBattle(final BattleParticipant user,
                final List<BattleParticipant> userSide,
@@ -65,8 +65,9 @@ public class BaseBattle implements BattleConfig, Battle {
     public synchronized void update(float timeDelta) {
         if (checkFinish()) {
             isActive.set(false);
-            finishBattleObservable.onNext(true);
+            finishBattleObservable.onNext(new BattleSummaryData());
         }
+
         if (isActive.get()) {
             battleTime += timeDelta;
 
@@ -87,17 +88,18 @@ public class BaseBattle implements BattleConfig, Battle {
     }
 
     @Override
-    public synchronized void requestSkillApplication(BattleParticipant participant, ActiveSkill skill, double castTime) {
+    public synchronized void requestSkillApplication(BattleParticipant participant,
+                                                     ActiveSkill skill, double castTime) {
         //TODO think about synchronization
         double activationTime = battleTime + castTime;
         battleEvents.add(new BattleEvent(activationTime, skill, participant));
     }
 
+
     private void activateParticipantSkill(BattleEvent be) {
         //TODO refactor for multiple targets
         be.skill.activate(be.participant, getOpponents(be.participant).get(0));
     }
-
 
     private void initParticipants(Iterable<BattleParticipant> participants) {
         for (BattleParticipant participant : participants) {
@@ -147,7 +149,7 @@ public class BaseBattle implements BattleConfig, Battle {
     }
 
     @Override
-    public Subject<Boolean> getFinishBattleObservable() {
+    public Subject<BattleSummaryData> getFinishBattleObservable() {
         return finishBattleObservable;
     }
 

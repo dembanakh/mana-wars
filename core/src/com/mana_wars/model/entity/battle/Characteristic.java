@@ -20,8 +20,8 @@ public enum Characteristic {
         this.type = type;
     }
 
-    public int changeValue(int prev, ValueChangeType type, int diff){
-        prev += type.getConstant()*diff;
+    public int changeValue(int prev, ValueChangeType type, int diff) {
+        prev = this.type.apply(prev, type, diff);
         return validateValue(prev);
     }
 
@@ -29,7 +29,7 @@ public enum Characteristic {
         return type;
     }
 
-    private Integer validateValue(int value){
+    private int validateValue(int value){
         return Math.max(value, lowerBound);
     }
 

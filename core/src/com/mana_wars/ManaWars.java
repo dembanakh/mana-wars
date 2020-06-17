@@ -1,7 +1,7 @@
 package com.mana_wars;
 
 import com.badlogic.gdx.Game;
-import com.mana_wars.model.entity.User;
+import com.mana_wars.model.entity.user.User;
 import com.mana_wars.model.repository.DatabaseRepository;
 import com.mana_wars.model.repository.DatabaseUpdater;
 import com.mana_wars.model.repository.LocalUserDataRepository;
