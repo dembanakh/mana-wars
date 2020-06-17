@@ -12,7 +12,7 @@ public class PassiveSkill extends Skill {
     }
 
     private static PassiveSkill Empty = new PassiveSkill(50, 0, Rarity.EMPTY,
-             "EMPTY", new ArrayList<>());
+            "EMPTY", new ArrayList<>());
 
     public static PassiveSkill getEmpty() {
         return Empty;

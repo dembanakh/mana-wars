@@ -6,6 +6,5 @@ import java.util.List;
 
 public interface DungeonsView extends BaseView {
     void setDungeonsList(List<Dungeon> dungeons);
-
     void setDungeonDisabled(int i, boolean insufficientUserLevel, boolean insufficientManaAmount);
 }

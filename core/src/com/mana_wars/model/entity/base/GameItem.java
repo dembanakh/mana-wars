@@ -35,7 +35,7 @@ public abstract class GameItem implements Comparable<GameItem> {
         this.rarity = rarity;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 

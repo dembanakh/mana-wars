@@ -13,7 +13,7 @@ public enum Rarity {
 
     private final int id;
 
-    Rarity(int id){
+    Rarity(int id) {
         this.id = id;
     }
 
@@ -21,10 +21,10 @@ public enum Rarity {
         return id;
     }
 
-    public static Rarity getRarityByID(int id){
+    public static Rarity getRarityByID(int id) {
         Rarity res = null;
-        for(Rarity r : values()){
-            if(r.id==id){
+        for (Rarity r : values()) {
+            if (r.id == id) {
                 res = r;
                 break;
             }

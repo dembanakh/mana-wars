@@ -18,15 +18,17 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
 public class UserSkillsDAOTest {
 
-    private AppDatabase db;
     UserSkillsDAO dao;
+    private AppDatabase db;
+
     @Before
-    public void createDB(){
+    public void createDB() {
         Context context = ApplicationProvider.getApplicationContext();
         db = Room.inMemoryDatabaseBuilder(context, AppDatabase.class).build();
         dao = db.userSkillsDAO();
@@ -34,7 +36,7 @@ public class UserSkillsDAOTest {
     }
 
     @After
-    public void closeDB(){
+    public void closeDB() {
         db.close();
     }
 

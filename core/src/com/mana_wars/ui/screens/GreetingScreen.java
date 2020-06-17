@@ -11,14 +11,16 @@ import com.mana_wars.model.entity.user.UserGreetingAPI;
 import com.mana_wars.model.interactor.GreetingInteractor;
 import com.mana_wars.presentation.presenters.GreetingPresenter;
 import com.mana_wars.presentation.view.GreetingView;
+import com.mana_wars.ui.factory.UIElementFactory;
 import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.BaseOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
-import com.mana_wars.ui.factory.UIElementFactory;
 
-import static com.mana_wars.ui.UIElementsSize.GREETING_SCREEN.*;
-import static com.mana_wars.ui.UIStringConstants.*;
+import static com.mana_wars.ui.UIElementsSize.GREETING_SCREEN.BUTTON_PADDING_BOTTOM;
+import static com.mana_wars.ui.UIElementsSize.GREETING_SCREEN.BUTTON_PADDING_TOP;
+import static com.mana_wars.ui.UIStringConstants.GREETING_SCREEN;
+import static com.mana_wars.ui.UIStringConstants.UI_SKIN;
 
 public class GreetingScreen extends BaseScreen<BaseOverlayUI, GreetingPresenter> implements GreetingView {
 

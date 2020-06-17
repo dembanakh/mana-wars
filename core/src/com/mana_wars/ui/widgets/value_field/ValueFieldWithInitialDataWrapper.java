@@ -1,7 +1,5 @@
 package com.mana_wars.ui.widgets.value_field;
 
-import io.reactivex.functions.Consumer;
-
 public class ValueFieldWithInitialDataWrapper<T, U> extends ValueFieldWrapper<U> {
 
     private ValueFieldWithInitialData<T, U> field;

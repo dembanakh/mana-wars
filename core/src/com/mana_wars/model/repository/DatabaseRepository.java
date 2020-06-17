@@ -11,11 +11,10 @@ import io.reactivex.Completable;
 import io.reactivex.Single;
 
 public interface DatabaseRepository {
-
     Single<List<Skill>> getSkillsList();
     Single<SkillsListTriple> getUserSkills();
-    Completable insertUserSkill(Skill s);
 
+    Completable insertUserSkill(Skill s);
     Completable mergeSkills(Skill toUpdate, Skill toDelete);
     Completable moveSkill(Skill toUpdate, int index);
     Completable swapSkills(Skill skillSource, Skill skillTarget);

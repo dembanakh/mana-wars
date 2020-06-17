@@ -25,8 +25,8 @@ public class DBSkillCharacteristic {
     private int type;
 
     /**
-        true INCREASE
-        false DECREASE
+     * true INCREASE
+     * false DECREASE
      */
     @ColumnInfo(name = "change_type")
     private boolean changeType;
@@ -83,7 +83,8 @@ public class DBSkillCharacteristic {
         this.target = target;
     }
 
-    public DBSkillCharacteristic(){}
+    public DBSkillCharacteristic() {
+    }
 
     public static DBSkillCharacteristic fromJSON(JSONObject json) throws JSONException {
         DBSkillCharacteristic result = new DBSkillCharacteristic();
@@ -91,7 +92,7 @@ public class DBSkillCharacteristic {
         result.setSkillID(json.getInt("skill_id"));
         result.setValue(json.getInt("value"));
         result.setType(json.getInt("characteristic"));
-        result.setChangeType(json.getInt("value_change")==1);
+        result.setChangeType(json.getInt("value_change") == 1);
         result.setTarget(json.getInt("target"));
         return result;
     }

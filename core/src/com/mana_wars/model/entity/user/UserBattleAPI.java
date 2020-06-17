@@ -6,6 +6,7 @@ import io.reactivex.subjects.Subject;
 
 public interface UserBattleAPI {
     boolean tryApplyActiveSkill(int skillIndex);
+
     Subject<Integer> getManaAmountObservable();
     Iterable<ActiveSkill> getActiveSkills();
 }

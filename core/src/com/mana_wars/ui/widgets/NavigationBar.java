@@ -9,10 +9,9 @@ import com.mana_wars.ui.factory.UIElementFactory;
 import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.mana_wars.ui.UIElementsSize.NAVIGATION_BAR.*;
+import static com.mana_wars.ui.UIElementsSize.NAVIGATION_BAR.TABS_NUMBER;
+import static com.mana_wars.ui.UIElementsSize.NAVIGATION_BAR.TAB_HEIGHT;
+import static com.mana_wars.ui.UIElementsSize.NAVIGATION_BAR.TAB_WIDTH;
 
 public class NavigationBar implements BuildableUI {
 
@@ -77,7 +76,7 @@ public class NavigationBar implements BuildableUI {
         screenSetter.setScreen(ScreenInstance.SKILLS, null);
     }
 
-    private void onDungeons(){
+    private void onDungeons() {
         screenSetter.setScreen(ScreenInstance.DUNGEONS, null);
     }
 

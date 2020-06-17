@@ -3,10 +3,9 @@ package com.mana_wars.ui.layout_constraints;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

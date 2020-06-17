@@ -6,7 +6,7 @@ import com.mana_wars.presentation.view.BaseView;
 
 import io.reactivex.disposables.CompositeDisposable;
 
-public abstract class BasePresenter <U extends BaseView, T extends BaseInteractor> {
+public abstract class BasePresenter<U extends BaseView, T extends BaseInteractor> {
 
     protected final U view;
     protected final T interactor;
@@ -14,7 +14,7 @@ public abstract class BasePresenter <U extends BaseView, T extends BaseInteracto
     protected final UIThreadHandler uiThreadHandler;
     protected final CompositeDisposable disposable = new CompositeDisposable();
 
-    public BasePresenter(U view, T interactor, UIThreadHandler handler){
+    public BasePresenter(U view, T interactor, UIThreadHandler handler) {
         this.view = view;
         this.interactor = interactor;
         this.uiThreadHandler = handler;

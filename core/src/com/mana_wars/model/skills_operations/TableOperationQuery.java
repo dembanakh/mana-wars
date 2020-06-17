@@ -16,7 +16,8 @@ class TableOperationQuery implements OperationQuery<SkillTable, OperationQuery<S
     }
 
     public OperationQuery<SkillTable, OperationQuery<Skill, Boolean>> from(SkillTable source) {
-        if (this.sourceSet) throw new IllegalStateException("TableOperationQuery cannot have 2 sources");
+        if (this.sourceSet)
+            throw new IllegalStateException("TableOperationQuery cannot have 2 sources");
         this.source = source;
         this.sourceSet = true;
         return this;
@@ -24,7 +25,8 @@ class TableOperationQuery implements OperationQuery<SkillTable, OperationQuery<S
 
     public OperationQuery<SkillTable, OperationQuery<Skill, Boolean>> to(SkillTable target) {
         if (!this.sourceSet) throw new IllegalStateException("TableOperationQuery has no source");
-        if (this.targetSet) throw new IllegalStateException("TableOperationQuery cannot have 2 targets");
+        if (this.targetSet)
+            throw new IllegalStateException("TableOperationQuery cannot have 2 targets");
         this.target = target;
         this.targetSet = true;
         return this;

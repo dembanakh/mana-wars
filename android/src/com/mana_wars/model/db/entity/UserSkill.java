@@ -21,10 +21,11 @@ public class UserSkill {
     @ColumnInfo(name = "chosen_id", defaultValue = "0")
     private int chosen_id;
 
-    public UserSkill(){}
+    public UserSkill() {
+    }
 
     @Ignore
-    public UserSkill(int lvl, int skillID){
+    public UserSkill(int lvl, int skillID) {
         this.lvl = lvl;
         this.skillID = skillID;
     }

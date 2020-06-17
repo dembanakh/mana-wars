@@ -1,7 +1,6 @@
 package com.mana_wars.utils;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.repository.DatabaseUpdater;
@@ -15,7 +14,7 @@ public class DBUpdateChecker implements DatabaseUpdater {
     private final SharedPreferencesRepository preferences;
 
     public DBUpdateChecker(Context context, RoomRepository dbrepository,
-                           SharedPreferencesRepository preferences){
+                           SharedPreferencesRepository preferences) {
         this.dbrepository = dbrepository;
         this.context = context;
         this.preferences = preferences;
@@ -28,7 +27,7 @@ public class DBUpdateChecker implements DatabaseUpdater {
 
         if (GameConstants.DB_VERSION > currentDBversion || true) {
             try {
-                new DBUpdaterParser(context).updateFromJSON(new DBUpdater(dbrepository, ()->{
+                new DBUpdaterParser(context).updateFromJSON(new DBUpdater(dbrepository, () -> {
                     preferences.setDBversion(GameConstants.DB_VERSION);
                     callback.run();
                 }));
@@ -36,7 +35,6 @@ public class DBUpdateChecker implements DatabaseUpdater {
                 //TODO ask about delete and download app again
                 e.printStackTrace();
             }
-        }
-        else callback.run();
+        } else callback.run();
     }
 }

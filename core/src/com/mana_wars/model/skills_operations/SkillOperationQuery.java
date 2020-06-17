@@ -15,7 +15,8 @@ class SkillOperationQuery implements OperationQuery<Skill, Boolean> {
     }
 
     public OperationQuery<Skill, Boolean> from(Skill source) {
-        if (this.sourceSet) throw new IllegalStateException("SkillOperationQuery cannot have 2 sources");
+        if (this.sourceSet)
+            throw new IllegalStateException("SkillOperationQuery cannot have 2 sources");
         this.source = source;
         this.sourceSet = true;
         return this;
@@ -23,7 +24,8 @@ class SkillOperationQuery implements OperationQuery<Skill, Boolean> {
 
     public OperationQuery<Skill, Boolean> to(Skill target) {
         if (!this.sourceSet) throw new IllegalStateException("SkillOperationQuery has no source");
-        if (this.targetSet) throw new IllegalStateException("SkillOperationQuery cannot have 2 targets");
+        if (this.targetSet)
+            throw new IllegalStateException("SkillOperationQuery cannot have 2 targets");
         this.target = target;
         this.targetSet = true;
         return this;

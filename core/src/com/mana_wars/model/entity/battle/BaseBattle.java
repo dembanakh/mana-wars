@@ -36,10 +36,10 @@ public class BaseBattle implements BattleConfig, Battle {
         this.finishBattleObservable = PublishSubject.create();
 
         opponents.put(user, new ArrayList<>(enemySide));
-        for(BattleParticipant userAlly : userSide){
+        for (BattleParticipant userAlly : userSide) {
             opponents.put(userAlly, new ArrayList<>(enemySide));
         }
-        for(BattleParticipant userEnemy : enemySide){
+        for (BattleParticipant userEnemy : enemySide) {
             opponents.put(userEnemy, new ArrayList<>(userSide));
             opponents.get(userEnemy).add(user);
         }
@@ -71,7 +71,7 @@ public class BaseBattle implements BattleConfig, Battle {
         if (isActive.get()) {
             battleTime += timeDelta;
 
-            while (!battleEvents.isEmpty() && battleEvents.peek().targetTime < battleTime){
+            while (!battleEvents.isEmpty() && battleEvents.peek().targetTime < battleTime) {
                 BattleEvent be = battleEvents.poll();
                 if (be.participant.isAlive())
                     activateParticipantSkill(be);
@@ -122,7 +122,7 @@ public class BaseBattle implements BattleConfig, Battle {
 
     private boolean isSideFinished(List<BattleParticipant> side) {
         for (BattleParticipant participant : side) {
-            if (participant.isAlive()){
+            if (participant.isAlive()) {
                 return false;
             }
         }

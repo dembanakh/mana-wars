@@ -1,5 +1,6 @@
 package com.mana_wars.model.db.core_entity_converter;
 
+import com.mana_wars.model.db.entity.DBSkillCharacteristic;
 import com.mana_wars.model.entity.base.ValueChangeType;
 import com.mana_wars.model.entity.battle.Characteristic;
 import com.mana_wars.model.entity.skills.SkillCharacteristic;
@@ -7,12 +8,10 @@ import com.mana_wars.model.entity.skills.SkillCharacteristic;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mana_wars.model.db.entity.DBSkillCharacteristic;
-
 class CharacteristicsConverter {
 
     static List<SkillCharacteristic> toSkillCharacteristics(
-            final List<DBSkillCharacteristic> dbSkillCharacteristics){
+            final List<DBSkillCharacteristic> dbSkillCharacteristics) {
 
         List<SkillCharacteristic> list = new ArrayList<>();
         for (DBSkillCharacteristic dbsc : dbSkillCharacteristics) {

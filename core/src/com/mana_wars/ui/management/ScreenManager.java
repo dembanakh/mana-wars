@@ -4,8 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.mana_wars.model.entity.user.User;
 import com.mana_wars.model.entity.base.Rarity;
+import com.mana_wars.model.entity.user.User;
 import com.mana_wars.model.repository.DatabaseUpdater;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.overlays.OverlayUIFactory;
@@ -15,7 +15,11 @@ import com.mana_wars.ui.storage.RepositoryStorage;
 
 import java.util.Map;
 
-import static com.mana_wars.ui.UIStringConstants.*;
+import static com.mana_wars.ui.UIStringConstants.REGION_NAME;
+import static com.mana_wars.ui.UIStringConstants.SKILLS_FRAMES_FILENAME;
+import static com.mana_wars.ui.UIStringConstants.SKILLS_ICONS_FILENAME;
+import static com.mana_wars.ui.UIStringConstants.TEXTURE_ATLAS_FORMAT;
+import static com.mana_wars.ui.UIStringConstants.UI_SKIN;
 
 public class ScreenManager implements FactoryStorage, ScreenSetter {
 

@@ -11,42 +11,42 @@ import com.mana_wars.ui.storage.RepositoryStorage;
 
 public class ManaWars extends Game implements ScreenHandler, RepositoryStorage {
 
-	private final ScreenManager screenManager;
+    private final ScreenManager screenManager;
 
-	//platform repos
-	private final LocalUserDataRepository localUserDataRepository;
-	private final DatabaseRepository databaseRepository;
+    //platform repos
+    private final LocalUserDataRepository localUserDataRepository;
+    private final DatabaseRepository databaseRepository;
 
-	private final DatabaseUpdater databaseUpdater;
+    private final DatabaseUpdater databaseUpdater;
 
-	public ManaWars(final LocalUserDataRepository localUserDataRepository,
-					final DatabaseRepository databaseRepository,
-					final DatabaseUpdater databaseUpdater) {
-		this.localUserDataRepository = localUserDataRepository;
-		this.databaseRepository = databaseRepository;
-		this.databaseUpdater = databaseUpdater;
-		this.screenManager = new ScreenManager(this);
-	}
-	
-	@Override
-	public void create () {
-		screenManager.start(new User(localUserDataRepository, localUserDataRepository, localUserDataRepository),
-				this, databaseUpdater);
-	}
+    public ManaWars(final LocalUserDataRepository localUserDataRepository,
+                    final DatabaseRepository databaseRepository,
+                    final DatabaseUpdater databaseUpdater) {
+        this.localUserDataRepository = localUserDataRepository;
+        this.databaseRepository = databaseRepository;
+        this.databaseUpdater = databaseUpdater;
+        this.screenManager = new ScreenManager(this);
+    }
 
-	@Override
-	public LocalUserDataRepository getManaBonusRepository() {
-		return localUserDataRepository;
-	}
+    @Override
+    public void create() {
+        screenManager.start(new User(localUserDataRepository, localUserDataRepository, localUserDataRepository),
+                this, databaseUpdater);
+    }
 
-	@Override
-	public DatabaseRepository getDatabaseRepository() {
-		return databaseRepository;
-	}
+    @Override
+    public LocalUserDataRepository getManaBonusRepository() {
+        return localUserDataRepository;
+    }
 
-	@Override
-	public void dispose () {
-		screenManager.dispose();
-	}
+    @Override
+    public DatabaseRepository getDatabaseRepository() {
+        return databaseRepository;
+    }
+
+    @Override
+    public void dispose() {
+        screenManager.dispose();
+    }
 
 }

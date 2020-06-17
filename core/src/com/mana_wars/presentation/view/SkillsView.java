@@ -7,8 +7,7 @@ import com.mana_wars.model.entity.skills.Skill;
 
 import java.util.List;
 
-public interface SkillsView extends BaseView{
-
+public interface SkillsView extends BaseView {
     void setSkillsList(List<ActiveSkill> activeSkills, List<PassiveSkill> passiveSkills, List<Skill> skills);
     void finishMerge(SkillTable table, int index, Skill skill);
     void finishSwap(SkillTable tableSource, SkillTable tableTarget,

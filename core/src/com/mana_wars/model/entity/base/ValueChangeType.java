@@ -6,7 +6,7 @@ public enum ValueChangeType {
 
     private final int value;
 
-    ValueChangeType(int value){
+    ValueChangeType(int value) {
         this.value = value;
     }
 

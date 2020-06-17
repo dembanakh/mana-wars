@@ -13,5 +13,6 @@ public final class GameConstants {
 
     public static final String CHOSEN_BATTLE_BUILDER = "CHOSEN_BATTLE_BUILDER";
 
-    private GameConstants() {}
+    private GameConstants() {
+    }
 }

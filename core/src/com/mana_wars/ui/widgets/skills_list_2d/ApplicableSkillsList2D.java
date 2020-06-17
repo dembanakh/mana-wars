@@ -56,9 +56,9 @@ public class ApplicableSkillsList2D<T extends ActiveSkill> extends ClickableSkil
                 animationController.add(i,
                         Arrays.asList(
                                 new UIAnimationController.KeyFrame<>(SkillIconAnimationController.Type.CAST_APPLIED,
-                                                        appliedSkill.getCastTime()),
+                                        appliedSkill.getCastTime()),
                                 new UIAnimationController.KeyFrame<>(SkillIconAnimationController.Type.COOLDOWN,
-                                                        appliedSkill.getCooldown())));
+                                        appliedSkill.getCooldown())));
             else
                 animationController.add(i,
                         Arrays.asList(

@@ -35,9 +35,9 @@ public class DungeonBattleBuilder extends BaseBattleBuilder {
                             dungeonEnemyFactory.setMobs(mobs);
                             return true;
                         }
-                ).subscribe((x)->{
-                        callback.run();
-                    }, Throwable::printStackTrace)
+                ).subscribe((x) -> {
+                    callback.run();
+                }, Throwable::printStackTrace)
         );
     }
 }

@@ -9,7 +9,7 @@ import androidx.room.Update;
 import java.util.List;
 
 @Dao
-public abstract class BaseDAO <T> {
+public abstract class BaseDAO<T> {
 
     public abstract T getEntityByID(int id);
 

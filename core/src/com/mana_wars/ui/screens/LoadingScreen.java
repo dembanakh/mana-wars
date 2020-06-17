@@ -46,8 +46,8 @@ public class LoadingScreen extends BaseScreen<BaseOverlayUI, BasePresenter> {
     @Override
     public BaseScreen reInit(Map<String, Object> arguments) {
         //TODO activate loading animation
-        updater.checkUpdate(()->{
-            Gdx.app.postRunnable(()->{
+        updater.checkUpdate(() -> {
+            Gdx.app.postRunnable(() -> {
                 setScreen(ScreenInstance.GREETING, null);
             });
         });

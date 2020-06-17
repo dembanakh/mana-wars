@@ -3,6 +3,11 @@ package com.mana_wars.utils;
 import android.content.Context;
 
 import com.mana_wars.model.GameConstants;
+import com.mana_wars.model.db.entity.DBDungeon;
+import com.mana_wars.model.db.entity.DBMob;
+import com.mana_wars.model.db.entity.DBMobSkill;
+import com.mana_wars.model.db.entity.DBSkill;
+import com.mana_wars.model.db.entity.DBSkillCharacteristic;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,25 +20,23 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mana_wars.model.db.entity.DBDungeon;
-import com.mana_wars.model.db.entity.DBMob;
-import com.mana_wars.model.db.entity.DBMobSkill;
-import com.mana_wars.model.db.entity.DBSkill;
-import com.mana_wars.model.db.entity.DBSkillCharacteristic;
-
 public class DBUpdaterParser {
 
     public final Context context;
 
-    DBUpdaterParser(Context context){
+    DBUpdaterParser(Context context) {
         this.context = context;
     }
 
-    public interface DBUpdater{
+    public interface DBUpdater {
         void insertSkills(List<DBSkill> skills);
+
         void insertCharacteristics(List<DBSkillCharacteristic> characteristics);
+
         void insertDungeons(List<DBDungeon> dungeons);
+
         void insertMobs(List<DBMob> mobs);
+
         void insertMobsSkills(List<DBMobSkill> mobSkills);
     }
 
@@ -50,7 +53,7 @@ public class DBUpdaterParser {
         updater.insertMobsSkills(parseJSON(dbjson.getJSONArray("mobs_skills"), DBMobSkill::fromJSON));
     }
 
-    private interface JSONParser<T>{
+    private interface JSONParser<T> {
         T fromJson(JSONObject json) throws JSONException;
     }
 
@@ -58,7 +61,7 @@ public class DBUpdaterParser {
     private <T> List<T> parseJSON(JSONArray jsonArray, JSONParser<T> parser) throws JSONException {
         List<T> list = new ArrayList<>();
 
-        for(int i = 0; i < jsonArray.length(); i++){
+        for (int i = 0; i < jsonArray.length(); i++) {
             list.add(parser.fromJson(jsonArray.getJSONObject(i)));
         }
         return list;

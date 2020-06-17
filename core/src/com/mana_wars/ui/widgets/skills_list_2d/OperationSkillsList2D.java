@@ -24,7 +24,8 @@ public class OperationSkillsList2D extends StaticSkillsList2D<Skill> {
 
     @Override
     public int insert(int index, Skill item) {
-        if (item == null) throw new IllegalArgumentException("SkillsList2D.insert: item cannot be null");
+        if (item == null)
+            throw new IllegalArgumentException("SkillsList2D.insert: item cannot be null");
         if (!ordered && (index < 0 || index >= items.size))
             throw new IllegalArgumentException("SkillsList2D.insert: index is not legal");
 

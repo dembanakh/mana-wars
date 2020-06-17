@@ -4,7 +4,7 @@ public enum ValueType {
     PERCENT {
         @Override
         public int apply(int prev, ValueChangeType type, int diff) {
-            return (int)(prev * (1 + (type.getConstant() * diff) / 100f));
+            return (int) (prev * (1 + (type.getConstant() * diff) / 100f));
         }
     },
     VALUE {

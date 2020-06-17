@@ -6,10 +6,8 @@ public interface UIAnimationController<T, Type> {
     void initBatch(Batch batch);
     void clear();
     void add(T data, Iterable<KeyFrame<Type>> keyFrames);
-
     void update(float delta);
     void animate(T data, float x, float y, float width, float height);
-
     boolean contains(T data);
 
     class KeyFrame<Type> implements Durationable {

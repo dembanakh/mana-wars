@@ -6,24 +6,22 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-
 import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.entity.battle.BattleSummaryData;
+import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.entity.user.UserBattleAPI;
+import com.mana_wars.model.interactor.BattleInteractor;
 import com.mana_wars.model.repository.DatabaseRepository;
+import com.mana_wars.presentation.presenters.BattlePresenter;
+import com.mana_wars.presentation.view.BattleView;
+import com.mana_wars.ui.factory.UIElementFactory;
 import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.BattleBaseOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
-import com.mana_wars.model.entity.skills.ActiveSkill;
-import com.mana_wars.model.interactor.BattleInteractor;
-import com.mana_wars.presentation.presenters.BattlePresenter;
-import com.mana_wars.presentation.view.BattleView;
-import com.mana_wars.ui.factory.UIElementFactory;
 import com.mana_wars.ui.widgets.skills_list_2d.ApplicableSkillsList2D;
 import com.mana_wars.ui.widgets.skills_list_2d.BlockableSkillsList;
-
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,9 +30,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import io.reactivex.functions.Consumer;
 
 import static com.mana_wars.model.GameConstants.CHOSEN_BATTLE_BUILDER;
-import static com.mana_wars.ui.UIStringConstants.*;
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.ACTIVE_SKILLS_TABLE_HEIGHT;
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.SKILLS_TABLES_WIDTH;
+import static com.mana_wars.ui.UIStringConstants.UI_SKIN;
 
 public class BattleScreen extends BaseScreen<BattleBaseOverlayUI, BattlePresenter> implements BattleView {
 

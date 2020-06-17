@@ -6,18 +6,14 @@ import com.mana_wars.model.entity.skills.PassiveSkill;
 
 import io.reactivex.functions.Consumer;
 
-public interface BattleView extends BaseView{
-
+public interface BattleView extends BaseView {
+    void setActiveEnemy(int index);
     void setSkills(Iterable<ActiveSkill> activeSkills);
     void setUser(String name, int initialHealth, Iterable<PassiveSkill> passiveSkills,
                  Consumer<Consumer<? super Integer>> subscribe);
     void addEnemy(String name, int initialHealth, Iterable<PassiveSkill> passiveSkills,
                   Consumer<Consumer<? super Integer>> subscribe);
-    void setActiveEnemy(int index);
-    void finishBattle(BattleSummaryData summaryData);
-
     void blockSkills(int appliedSkillIndex);
-
     void startBattle();
-
+    void finishBattle(BattleSummaryData summaryData);
 }

@@ -1,9 +1,5 @@
 package com.mana_wars.model.db.core_entity_converter;
 
-import android.app.Application;
-
-import androidx.test.core.app.ApplicationProvider;
-
 import com.mana_wars.model.db.entity.DBSkillCharacteristic;
 import com.mana_wars.model.entity.base.ValueChangeType;
 import com.mana_wars.model.entity.battle.Characteristic;
@@ -14,11 +10,11 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class CharacteristicsConverterTest  {
+public class CharacteristicsConverterTest {
     @Test
     public void testToSkillCharacteristics() {
         List<DBSkillCharacteristic> input = new ArrayList<>();

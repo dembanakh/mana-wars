@@ -8,7 +8,7 @@ import com.mana_wars.model.repository.DatabaseRepository;
 
 import io.reactivex.subjects.Subject;
 
-public class BattleInteractor extends BaseInteractor {
+public final class BattleInteractor extends BaseInteractor {
 
     private final UserBattleAPI user;
     private BattleConfig battle;
@@ -20,7 +20,7 @@ public class BattleInteractor extends BaseInteractor {
     }
 
     public void init(final BattleInitializationObserver observer, final BaseBattleBuilder battleBuilder) {
-        battleBuilder.fetchData(disposable, databaseRepository, ()-> {
+        battleBuilder.fetchData(disposable, databaseRepository, () -> {
             this.battle = battleBuilder.build();
             battle.init();
             observer.setSkills(user.getActiveSkills());
@@ -30,7 +30,7 @@ public class BattleInteractor extends BaseInteractor {
         });
     }
 
-    public void updateBattle(float timeDelta){
+    public void updateBattle(float timeDelta) {
         battle.update(timeDelta);
     }
 

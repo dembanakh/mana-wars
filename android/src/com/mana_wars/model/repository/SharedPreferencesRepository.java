@@ -15,7 +15,7 @@ public class SharedPreferencesRepository implements LocalUserDataRepository {
     private final String USER_MANA = "USER_MANA";
     private final String LAST_MANA_BONUS_TIME = "LAST_MANA_BONUS_TIME";
 
-    public SharedPreferencesRepository(Activity hostActivity){
+    public SharedPreferencesRepository(Activity hostActivity) {
         this.hostActivity = hostActivity;
     }
 
@@ -29,7 +29,7 @@ public class SharedPreferencesRepository implements LocalUserDataRepository {
 
     @Override
     public int getDBversion() {
-        return getDefaultManager().getInt(DB_VERSION,0);
+        return getDefaultManager().getInt(DB_VERSION, 0);
     }
 
     @Override

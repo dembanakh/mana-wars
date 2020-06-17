@@ -20,19 +20,23 @@ import com.mana_wars.model.interactor.SkillsInteractor;
 import com.mana_wars.model.repository.DatabaseRepository;
 import com.mana_wars.presentation.presenters.SkillsPresenter;
 import com.mana_wars.presentation.view.SkillsView;
+import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.MenuBaseOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
-import com.mana_wars.ui.factory.AssetFactory;
+import com.mana_wars.ui.widgets.TimeoutDragAndDrop;
 import com.mana_wars.ui.widgets.skills_list_2d.List2D;
 import com.mana_wars.ui.widgets.skills_list_2d.OperationSkillsList2D;
-import com.mana_wars.ui.widgets.TimeoutDragAndDrop;
 
 import java.util.List;
 
 import static com.mana_wars.ui.UIElementsSize.MENU_OVERLAY_UI.USER_LEVEL_FIELD_HEIGHT;
-import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.*;
-import static com.mana_wars.ui.UIStringConstants.*;
+import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.ACTIVE_SKILLS_TABLE_HEIGHT;
+import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.COLUMNS_NUMBER;
+import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.MAIN_SKILLS_TABLE_HEIGHT;
+import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.PASSIVE_SKILLS_TABLE_HEIGHT;
+import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.SKILLS_TABLES_WIDTH;
+import static com.mana_wars.ui.UIStringConstants.UI_SKIN;
 
 public class SkillsScreen extends BaseScreen<MenuBaseOverlayUI, SkillsPresenter> implements SkillsView {
 
@@ -208,6 +212,7 @@ public class SkillsScreen extends BaseScreen<MenuBaseOverlayUI, SkillsPresenter>
         private void setupSource(List2D<Skill> table) {
             dragAndDrop.addSource(new TimeoutDragAndDrop.Source(table) {
                 final TimeoutDragAndDrop.Payload payload = new TimeoutDragAndDrop.Payload();
+
                 @Override
                 public TimeoutDragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
                     int itemIndex = table.getItemIndexAt(x, y);
@@ -229,7 +234,7 @@ public class SkillsScreen extends BaseScreen<MenuBaseOverlayUI, SkillsPresenter>
                 public void dragStop(InputEvent event, float x, float y, int pointer,
                                      TimeoutDragAndDrop.Payload payload, TimeoutDragAndDrop.Target target) {
                     if (target == null) {
-                        table.insert((int)payload.getObject2(), (Skill)payload.getObject1());
+                        table.insert((int) payload.getObject2(), (Skill) payload.getObject1());
                         table.getSelection().clear();
                     }
                 }
@@ -243,9 +248,9 @@ public class SkillsScreen extends BaseScreen<MenuBaseOverlayUI, SkillsPresenter>
                                     float x, float y, int pointer) {
                     Skill from = (Skill) payload.getObject1();
                     Skill to = table.getItemAt(x, y);
-                    return presenter.validateOperation((SkillTable)source.getActor().getUserObject(),
-                                                        (SkillTable)getActor().getUserObject(),
-                                                        from, to);
+                    return presenter.validateOperation((SkillTable) source.getActor().getUserObject(),
+                            (SkillTable) getActor().getUserObject(),
+                            from, to);
                 }
 
                 @Override
@@ -256,9 +261,9 @@ public class SkillsScreen extends BaseScreen<MenuBaseOverlayUI, SkillsPresenter>
                     int toIndex = table.getItemIndexAt(x, y);
                     Skill to = (toIndex == -1) ? null : table.getItem(toIndex);
 
-                    presenter.performOperation((SkillTable)source.getActor().getUserObject(),
-                                                (SkillTable)getActor().getUserObject(),
-                                                from, to, fromIndex, toIndex);
+                    presenter.performOperation((SkillTable) source.getActor().getUserObject(),
+                            (SkillTable) getActor().getUserObject(),
+                            from, to, fromIndex, toIndex);
                 }
             });
         }

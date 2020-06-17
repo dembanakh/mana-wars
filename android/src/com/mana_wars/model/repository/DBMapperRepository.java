@@ -28,7 +28,7 @@ public class DBMapperRepository implements DatabaseRepository {
 
     private final RoomRepository room;
 
-    public DBMapperRepository(RoomRepository room){
+    public DBMapperRepository(RoomRepository room) {
         this.room = room;
     }
 
@@ -36,7 +36,7 @@ public class DBMapperRepository implements DatabaseRepository {
     public Single<List<Skill>> getSkillsList() {
         return room.getSkillsWithCharacteristics().map(dbSkills -> {
             List<Skill> result = new ArrayList<>();
-            for (DBSkillWithCharacteristics skill : dbSkills){
+            for (DBSkillWithCharacteristics skill : dbSkills) {
                 Skill convertedSkill = SkillConverter.toSkill(skill);
                 result.add(convertedSkill);
             }
@@ -63,18 +63,17 @@ public class DBMapperRepository implements DatabaseRepository {
 
                 Skill convertedSkill;
 
-                if (skill.userSkill.getChosen_id()>0){
+                if (skill.userSkill.getChosen_id() > 0) {
                     if (skill.skill.isActive()) {
                         ActiveSkill converted = SkillConverter.toActiveSkill(skill);
-                        result.activeSkills.set(skill.userSkill.getChosen_id()-1, converted);
+                        result.activeSkills.set(skill.userSkill.getChosen_id() - 1, converted);
                         convertedSkill = converted;
                     } else {
                         PassiveSkill converted = SkillConverter.toPassiveSkill(skill);
-                        result.passiveSkills.set(skill.userSkill.getChosen_id()-1, converted);
+                        result.passiveSkills.set(skill.userSkill.getChosen_id() - 1, converted);
                         convertedSkill = converted;
                     }
-                }
-                else {
+                } else {
                     result.allSkills.add(convertedSkill = SkillConverter.toSkill(skill));
                 }
                 lastUserSkillsMap.put(convertedSkill, skill.userSkill);
@@ -93,7 +92,7 @@ public class DBMapperRepository implements DatabaseRepository {
     @Override
     public Completable moveSkill(Skill toUpdate, int index) {
         UserSkill userSkill = lastUserSkillsMap.get(toUpdate);
-        userSkill.setChosen_id(index+1);
+        userSkill.setChosen_id(index + 1);
 
         return room.updateEntity(userSkill, room.userSkillsDAO);
     }
@@ -119,7 +118,7 @@ public class DBMapperRepository implements DatabaseRepository {
         return room.getAllEntities(room.dbDungeonDAO).map(dbDungeons -> {
             lastDungeonsMap.clear();
             List<Dungeon> dungeons = new ArrayList<>();
-            for (DBDungeon dbDungeon : dbDungeons){
+            for (DBDungeon dbDungeon : dbDungeons) {
                 Dungeon dungeon = new Dungeon(dbDungeon.getId(), dbDungeon.getName(), dbDungeon.getRequiredLvl());
                 lastDungeonsMap.put(dungeon, dbDungeon);
                 dungeons.add(dungeon);
@@ -134,19 +133,19 @@ public class DBMapperRepository implements DatabaseRepository {
                 dbMobsWithSkills -> {
 
                     List<Mob> mobs = new ArrayList<>();
-                    for(DBMobWithSkills mob : dbMobsWithSkills){
+                    for (DBMobWithSkills mob : dbMobsWithSkills) {
 
                         List<ActiveSkill> activeSkills = new ArrayList<>();
                         List<PassiveSkill> passiveSkills = new ArrayList<>();
 
-                        for(DBMobSkillWithCharacteristics skill : mob.skills){
+                        for (DBMobSkillWithCharacteristics skill : mob.skills) {
 
-                            if (skill.skill.skill.isActive()){
+                            if (skill.skill.skill.isActive()) {
                                 activeSkills.add(SkillConverter.toActiveSkill(skill.skill, skill.dbMobSkill.getLvl()));
                             } else {
                                 passiveSkills.add(SkillConverter.toPassiveSkill(skill.skill, skill.dbMobSkill.getLvl()));
                             }
-                            
+
                         }
 
                         mobs.add(new Mob(mob.mob.getName(), mob.mob.getInitialHealth(), activeSkills, passiveSkills));

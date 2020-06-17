@@ -12,6 +12,6 @@ public class LoweringRectangleAnimator extends ShapeAnimator {
     @Override
     public void animate(ShapeDrawer shapeDrawer, float x, float y, float width, float height, double timeLeft, double duration) {
         shapeDrawer.setColor(getColor());
-        shapeDrawer.filledRectangle(x, y, width, (float)(height * (timeLeft / duration)));
+        shapeDrawer.filledRectangle(x, y, width, (float) (height * (timeLeft / duration)));
     }
 }

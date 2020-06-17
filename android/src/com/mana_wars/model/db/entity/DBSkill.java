@@ -84,8 +84,8 @@ public class DBSkill {
         result.setName(json.getString("name"));
         result.setRarity(json.getInt("rarity"));
         result.setActive(json.getBoolean("is_active"));
-        result.setCastTime(result.isActive?json.getDouble("cast_time"):0);
-        result.setCooldown(result.isActive?json.getDouble("cooldown"):0);
+        result.setCastTime(result.isActive ? json.getDouble("cast_time") : 0);
+        result.setCooldown(result.isActive ? json.getDouble("cooldown") : 0);
         return result;
     }
 }

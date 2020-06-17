@@ -6,9 +6,7 @@ import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.ui.factory.AssetFactory;
 
 public interface FactoryStorage {
-
     AssetFactory<Integer, TextureRegion> getSkillIconFactory();
     AssetFactory<String, Skin> getSkinFactory();
     AssetFactory<Rarity, TextureRegion> getRarityFrameFactory();
-
 }

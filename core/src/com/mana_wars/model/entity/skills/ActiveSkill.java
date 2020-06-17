@@ -10,7 +10,7 @@ public class ActiveSkill extends Skill {
     private final double cooldown;
     private final double castTime;
 
-    public ActiveSkill(int id, int level, Rarity rarity, double castTime, double cooldown,String name, List<SkillCharacteristic> skillCharacteristics) {
+    public ActiveSkill(int id, int level, Rarity rarity, double castTime, double cooldown, String name, List<SkillCharacteristic> skillCharacteristics) {
         super(id, level, rarity, name, skillCharacteristics);
         this.castTime = castTime;
         this.cooldown = cooldown;
@@ -25,7 +25,7 @@ public class ActiveSkill extends Skill {
     }
 
     private static ActiveSkill Empty = new ActiveSkill(50, 0, Rarity.EMPTY, 0, 0, "EMPTY",
-             new ArrayList<>());
+            new ArrayList<>());
 
     public static ActiveSkill getEmpty() {
         return Empty;
