@@ -17,7 +17,7 @@ public class StaticSkillsList2D<T extends Skill> extends List2D<T> {
     private final AssetFactory<Rarity, TextureRegion> frameFactory;
 
     public StaticSkillsList2D(Skin skin, int cols, AssetFactory<Integer, TextureRegion> iconFactory,
-                        AssetFactory<Rarity, TextureRegion> frameFactory) {
+                              AssetFactory<Rarity, TextureRegion> frameFactory) {
         this(skin.get(List.ListStyle.class), cols, iconFactory, frameFactory);
     }
 
@@ -57,7 +57,7 @@ public class StaticSkillsList2D<T extends Skill> extends List2D<T> {
                     false, "");
         }
     }
-    
+
     protected boolean shouldShowLevel(T item) {
         return item.getRarity() != Rarity.EMPTY;
     }

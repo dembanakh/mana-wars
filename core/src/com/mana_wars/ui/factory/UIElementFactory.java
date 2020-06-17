@@ -16,6 +16,7 @@ public final class UIElementFactory {
         return getButton(skin.get(TextButton.TextButtonStyle.class), label, eventListener);
     }
 
-    private UIElementFactory() {}
+    private UIElementFactory() {
+    }
 
 }

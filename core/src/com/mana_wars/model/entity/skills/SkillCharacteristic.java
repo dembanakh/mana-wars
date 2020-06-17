@@ -16,7 +16,7 @@ public class SkillCharacteristic {
         ENEMY
     }
 
-    public SkillCharacteristic(int value, Characteristic characteristic, ValueChangeType changeType, Target target){
+    public SkillCharacteristic(int value, Characteristic characteristic, ValueChangeType changeType, Target target) {
         this.characteristic = characteristic;
         this.value = value;
         this.changeType = changeType;
@@ -44,7 +44,7 @@ public class SkillCharacteristic {
         return target;
     }
 
-    public int getValue(){
+    public int getValue() {
         return value;
     }
 

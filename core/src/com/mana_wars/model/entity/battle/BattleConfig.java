@@ -7,12 +7,10 @@ import io.reactivex.subjects.Subject;
 public interface BattleConfig {
     void init();
     void start();
-
     void update(float timeDelta);
 
     BattleParticipant getUser();
     List<BattleParticipant> getUserSide();
     List<BattleParticipant> getEnemySide();
-
     Subject<BattleSummaryData> getFinishBattleObservable();
 }

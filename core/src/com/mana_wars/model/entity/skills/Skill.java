@@ -1,8 +1,8 @@
 package com.mana_wars.model.entity.skills;
 
-import com.mana_wars.model.entity.battle.BattleParticipant;
 import com.mana_wars.model.entity.base.GameItem;
 import com.mana_wars.model.entity.base.Rarity;
+import com.mana_wars.model.entity.battle.BattleParticipant;
 import com.mana_wars.model.entity.battle.Characteristic;
 
 import java.util.ArrayList;
@@ -10,26 +10,26 @@ import java.util.List;
 
 public class Skill extends GameItem {
 
-    private final List <SkillCharacteristic> skillCharacteristics;
+    private final List<SkillCharacteristic> skillCharacteristics;
 
-    public Skill(int id, int level, Rarity rarity, String name, List <SkillCharacteristic> skillCharacteristics) {
+    public Skill(int id, int level, Rarity rarity, String name, List<SkillCharacteristic> skillCharacteristics) {
         super(id, level, rarity, name);
         this.skillCharacteristics = skillCharacteristics;
     }
 
-    public void activate(BattleParticipant self, BattleParticipant enemy){
+    public void activate(BattleParticipant self, BattleParticipant enemy) {
         //System.out.println(getName() + " activated");
-        for(SkillCharacteristic sc : skillCharacteristics){
-            if(sc.getTarget()==SkillCharacteristic.Target.SELF)
+        for (SkillCharacteristic sc : skillCharacteristics) {
+            if (sc.getTarget() == SkillCharacteristic.Target.SELF)
                 self.applySkillCharacteristic(sc);
-            else if(sc.getTarget()==SkillCharacteristic.Target.ENEMY)
+            else if (sc.getTarget() == SkillCharacteristic.Target.ENEMY)
                 enemy.applySkillCharacteristic(sc);
         }
     }
 
     public int getManaCost() {
-        for (SkillCharacteristic c : skillCharacteristics){
-            if (c.getCharacteristic() == Characteristic.MANA){
+        for (SkillCharacteristic c : skillCharacteristics) {
+            if (c.getCharacteristic() == Characteristic.MANA) {
                 return c.getValue();
             }
         }

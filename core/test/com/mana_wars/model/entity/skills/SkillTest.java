@@ -10,8 +10,11 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 public class SkillTest {
 
@@ -26,7 +29,7 @@ public class SkillTest {
         List<SkillCharacteristic> scList = new ArrayList<>();
         scList.add(sc1);
         scList.add(sc2);
-        skill = new Skill(1,1, Rarity.COMMON,"name", scList);
+        skill = new Skill(1, 1, Rarity.COMMON, "name", scList);
     }
 
     @Test
@@ -35,7 +38,7 @@ public class SkillTest {
         when(sc2.getTarget()).thenReturn(SkillCharacteristic.Target.ENEMY);
         BattleParticipant self = mock(BattleParticipant.class);
         BattleParticipant enemy = mock(BattleParticipant.class);
-        skill.activate(self,enemy);
+        skill.activate(self, enemy);
 
         verify(self).applySkillCharacteristic(sc1);
         verify(enemy).applySkillCharacteristic(sc2);

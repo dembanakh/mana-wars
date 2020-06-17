@@ -10,15 +10,15 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class OperationSkillsList2DTest {
 
     private Skill skill1, skill3;
 
     @Before
-    public void setup(){
-        skill1 = new Skill(1, 1, Rarity.EPIC, "1",  new ArrayList<>());
+    public void setup() {
+        skill1 = new Skill(1, 1, Rarity.EPIC, "1", new ArrayList<>());
         skill3 = new Skill(3, 1, Rarity.COMMON, "3", new ArrayList<>());
     }
 
@@ -29,7 +29,7 @@ public class OperationSkillsList2DTest {
         Skill skill2 = new Skill(2, 1, Rarity.ARCANE, "2", new ArrayList<>());
         list.setItems(skill1, skill2, skill3);
 
-        Skill skill4 = new Skill(4, 1, Rarity.ARCANE, "4",  new ArrayList<>());
+        Skill skill4 = new Skill(4, 1, Rarity.ARCANE, "4", new ArrayList<>());
         list.insert(0, skill4);
 
         assertEquals(skill4, list.getItem(2));
@@ -39,7 +39,7 @@ public class OperationSkillsList2DTest {
     public void insert_Name_ordered() {
         OperationSkillsList2D list = new OperationSkillsList2D(getStyle(), 5, null, null, true);
 
-        Skill skill2 = new Skill(2, 1, Rarity.ARCANE, "2",  new ArrayList<>());
+        Skill skill2 = new Skill(2, 1, Rarity.ARCANE, "2", new ArrayList<>());
         list.setItems(skill1, skill2, skill3);
 
         Skill skill4 = new Skill(4, 1, Rarity.ARCANE, "4", new ArrayList<>());
@@ -52,10 +52,10 @@ public class OperationSkillsList2DTest {
     public void insert_Level_ordered() {
         OperationSkillsList2D list = new OperationSkillsList2D(getStyle(), 5, null, null, true);
 
-        Skill skill2 = new Skill(2, 1, Rarity.ARCANE, "2",  new ArrayList<>());
+        Skill skill2 = new Skill(2, 1, Rarity.ARCANE, "2", new ArrayList<>());
         list.setItems(skill1, skill2, skill3);
 
-        Skill skill4 = new Skill(4, 4, Rarity.ARCANE, "2",  new ArrayList<>());
+        Skill skill4 = new Skill(4, 4, Rarity.ARCANE, "2", new ArrayList<>());
         list.insert(2, skill4);
 
         assertEquals(skill4, list.getItem(1));
@@ -65,7 +65,7 @@ public class OperationSkillsList2DTest {
     public void removeIndex_ordered() {
         OperationSkillsList2D list = new OperationSkillsList2D(getStyle(), 5, null, null, true);
 
-        Skill skill2 = new Skill(2, 1, Rarity.ARCANE, "2",  new ArrayList<>());
+        Skill skill2 = new Skill(2, 1, Rarity.ARCANE, "2", new ArrayList<>());
         list.setItems(skill1, skill2, skill3);
 
         assertEquals(skill2, list.removeIndex(1));

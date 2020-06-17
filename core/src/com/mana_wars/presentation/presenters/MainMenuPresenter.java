@@ -1,15 +1,14 @@
 package com.mana_wars.presentation.presenters;
 
-import com.mana_wars.model.entity.user.UserMenuAPI;
 import com.mana_wars.model.interactor.MainMenuInteractor;
-
 import com.mana_wars.presentation.util.UIThreadHandler;
 import com.mana_wars.presentation.view.MainMenuView;
+
 import io.reactivex.functions.Consumer;
 
-public class MainMenuPresenter extends BasePresenter<MainMenuView, MainMenuInteractor>{
+public final class MainMenuPresenter extends BasePresenter<MainMenuView, MainMenuInteractor> {
 
-    public MainMenuPresenter(MainMenuView view, UIThreadHandler uiThreadHandler, MainMenuInteractor interactor){
+    public MainMenuPresenter(MainMenuView view, UIThreadHandler uiThreadHandler, MainMenuInteractor interactor) {
         super(view, interactor, uiThreadHandler);
     }
 
@@ -38,7 +37,7 @@ public class MainMenuPresenter extends BasePresenter<MainMenuView, MainMenuInter
 
     public void onOpenSkillCase() {
         disposable.add(interactor.getNewSkill().subscribe(s -> {
-                uiThreadHandler.postRunnable(()->view.openSkillCaseWindow(s.getIconID(),
+            uiThreadHandler.postRunnable(() -> view.openSkillCaseWindow(s.getIconID(),
                     s.getName(), s.getRarity(), s.getDescription()));
         }, Throwable::printStackTrace));
     }

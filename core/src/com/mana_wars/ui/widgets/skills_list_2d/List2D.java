@@ -23,6 +23,7 @@ import java.util.ArrayList;
 
 /**
  * Texture-oriented 2-dimensional list based on the original List implementation in Libgdx.
+ *
  * @param <T>
  */
 public abstract class List2D<T> extends Widget implements Cullable {
@@ -63,7 +64,7 @@ public abstract class List2D<T> extends Widget implements Cullable {
 
     private void addKeyboardListeners() {
         addListener(keyListener = new InputListener() {
-            public boolean keyDown (InputEvent event, int keycode) {
+            public boolean keyDown(InputEvent event, int keycode) {
                 if (items.isEmpty()) return false;
                 int index;
                 switch (keycode) {
@@ -107,7 +108,7 @@ public abstract class List2D<T> extends Widget implements Cullable {
                 return false;
             }
 
-            public boolean keyTyped (InputEvent event, char character) {
+            public boolean keyTyped(InputEvent event, char character) {
                 return false;
             }
         });
@@ -115,7 +116,7 @@ public abstract class List2D<T> extends Widget implements Cullable {
 
     void addTouchListeners() {
         addListener(new InputListener() {
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if (pointer != 0 || button != 0) return true;
                 if (selection.isDisabled()) return true;
                 if (getStage() != null) getStage().setKeyboardFocus(List2D.this);
@@ -130,28 +131,28 @@ public abstract class List2D<T> extends Widget implements Cullable {
                 return true;
             }
 
-            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (pointer != 0 || button != 0) return;
                 pressedIndex = -1;
             }
 
-            public void touchDragged (InputEvent event, float x, float y, int pointer) {
+            public void touchDragged(InputEvent event, float x, float y, int pointer) {
                 overIndex = getItemIndexAt(x, y);
             }
 
-            public boolean mouseMoved (InputEvent event, float x, float y) {
+            public boolean mouseMoved(InputEvent event, float x, float y) {
                 overIndex = getItemIndexAt(x, y);
                 return false;
             }
 
-            public void exit (InputEvent event, float x, float y, int pointer, Actor toActor) {
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                 if (pointer == 0) pressedIndex = -1;
                 if (pointer == -1) overIndex = -1;
             }
         });
     }
 
-    public void layout () {
+    public void layout() {
         // style.selection is null when Unit Testing
         if (style.selection == null) return;
 
@@ -165,7 +166,7 @@ public abstract class List2D<T> extends Widget implements Cullable {
         itemHeight = itemWidth = containerWidth / cols;
 
         prefWidth = getWidth();
-        prefHeight = (float)(Math.ceil((float)items.size / cols) * itemHeight);
+        prefHeight = (float) (Math.ceil((float) items.size / cols) * itemHeight);
 
         prefHeight += selectedDrawable.getTopHeight() + selectedDrawable.getBottomHeight();
         if (background != null) {
@@ -175,7 +176,7 @@ public abstract class List2D<T> extends Widget implements Cullable {
     }
 
     @Override
-    public void draw (Batch batch, float parentAlpha) {
+    public void draw(Batch batch, float parentAlpha) {
         validate();
 
         drawBackground(batch, parentAlpha);
@@ -213,7 +214,8 @@ public abstract class List2D<T> extends Widget implements Cullable {
                         font.setColor(fontColorSelected.r, fontColorSelected.g, fontColorSelected.b, fontColorSelected.a * parentAlpha);
                     } else if (overIndex == j && style.over != null) //
                         drawable = style.over;
-                    if (drawable != null) drawable.draw(batch, x + itemX, y + itemY - itemHeight, itemWidth, itemHeight);
+                    if (drawable != null)
+                        drawable.draw(batch, x + itemX, y + itemY - itemHeight, itemWidth, itemHeight);
                     drawItem(batch, font, item.index, item.data, x + itemX, y + itemY - itemHeight, itemWidth, itemHeight);
                     if (selected) {
                         font.setColor(fontColorUnselected.r, fontColorUnselected.g, fontColorUnselected.b,
@@ -246,7 +248,7 @@ public abstract class List2D<T> extends Widget implements Cullable {
         invalidate();
     }
 
-    public int getCols () {
+    public int getCols() {
         return cols;
     }
 
@@ -264,9 +266,13 @@ public abstract class List2D<T> extends Widget implements Cullable {
         return selection;
     }
 
-    public T getSelected() { return getSelectedItem().data; }
+    public T getSelected() {
+        return getSelectedItem().data;
+    }
 
-    private List2DItem<T> getSelectedItem() { return selection.first(); }
+    private List2DItem<T> getSelectedItem() {
+        return selection.first();
+    }
 
     public int add(T item) {
         if (item == null) throw new IllegalArgumentException("List2D.add: item cannot be null");
@@ -281,7 +287,8 @@ public abstract class List2D<T> extends Widget implements Cullable {
     public int insert(int index, T item) {
         if (item == null) throw new IllegalArgumentException("List2D.insert: item cannot be null");
         if (index < 0) throw new IllegalArgumentException("List2D.insert: index cannot be < 0");
-        if (index >= items.size) throw new IllegalArgumentException("List2D.insert: item cannot be > itemsSize");
+        if (index >= items.size)
+            throw new IllegalArgumentException("List2D.insert: item cannot be > itemsSize");
 
         items.insert(index, new List2DItem<>(items.size, item));
         return index;
@@ -300,12 +307,12 @@ public abstract class List2D<T> extends Widget implements Cullable {
         return items.size;
     }
 
-    public int getSelectedIndex () {
+    public int getSelectedIndex() {
         ObjectSet<List2DItem<T>> selected = selection.items();
         return selected.size == 0 ? -1 : items.indexOf(selected.first(), false);
     }
 
-    public void setSelectedIndex (int index) {
+    public void setSelectedIndex(int index) {
         if (selection.isDisabled()) return;
         if (index < -1 || index >= items.size)
             throw new IllegalArgumentException("index must be >= -1 and < " + items.size + ": " + index);
@@ -327,7 +334,7 @@ public abstract class List2D<T> extends Widget implements Cullable {
         return item == null ? null : item.data;
     }
 
-    private List2DItem<T> getListItemAt (float x, float y) {
+    private List2DItem<T> getListItemAt(float x, float y) {
         try {
             int index = getItemIndexAt(x, y);
             return items.get(index);
@@ -336,7 +343,7 @@ public abstract class List2D<T> extends Widget implements Cullable {
         }
     }
 
-    public int getItemIndexAt (float x, float y) {
+    public int getItemIndexAt(float x, float y) {
         float height = getHeight();
         Drawable background = List2D.this.style.background;
         if (background != null) {
@@ -344,8 +351,8 @@ public abstract class List2D<T> extends Widget implements Cullable {
             y -= background.getBottomHeight();
             x -= background.getLeftWidth();
         }
-        int indexY = (int)((height - y) / itemHeight);
-        int indexX = (int)((x) / itemWidth);
+        int indexY = (int) ((height - y) / itemHeight);
+        int indexX = (int) ((x) / itemWidth);
         if (indexY < 0 || indexX < 0) return -1;
         int index = indexY * cols + indexX;
         if (index >= items.size) return -1;
@@ -364,10 +371,11 @@ public abstract class List2D<T> extends Widget implements Cullable {
         pressedIndex = -1;
 
         invalidate();
-        if (oldPrefWidth != getPrefWidth() || oldPrefHeight != getPrefHeight()) invalidateHierarchy();
+        if (oldPrefWidth != getPrefWidth() || oldPrefHeight != getPrefHeight())
+            invalidateHierarchy();
     }
 
-    public void setItems (Iterable<? extends T> newItems) {
+    public void setItems(Iterable<? extends T> newItems) {
         if (newItems == null) throw new IllegalArgumentException("newItems cannot be null.");
         float oldPrefWidth = getPrefWidth(), oldPrefHeight = getPrefHeight();
 
@@ -378,7 +386,8 @@ public abstract class List2D<T> extends Widget implements Cullable {
         pressedIndex = -1;
 
         invalidate();
-        if (oldPrefWidth != getPrefWidth() || oldPrefHeight != getPrefHeight()) invalidateHierarchy();
+        if (oldPrefWidth != getPrefWidth() || oldPrefHeight != getPrefHeight())
+            invalidateHierarchy();
     }
 
     void clearItems() {
@@ -415,25 +424,25 @@ public abstract class List2D<T> extends Widget implements Cullable {
         this.minHeight = minHeight;
     }
 
-    public float getPrefWidth () {
+    public float getPrefWidth() {
         validate();
         if (minWidth != null)
             prefWidth = Math.max(prefWidth, minWidth);
         return prefWidth;
     }
 
-    public float getPrefHeight () {
+    public float getPrefHeight() {
         validate();
         if (minHeight != null)
             prefHeight = Math.max(prefHeight, minHeight);
         return prefHeight;
     }
 
-    public void setAlignment (int alignment) {
+    public void setAlignment(int alignment) {
         this.alignment = alignment;
     }
 
-    public InputListener getKeyListener () {
+    public InputListener getKeyListener() {
         return keyListener;
     }
 
@@ -442,7 +451,9 @@ public abstract class List2D<T> extends Widget implements Cullable {
         this.cullingArea = cullingArea;
     }
 
-    public Rectangle getCullingArea() { return cullingArea; }
+    public Rectangle getCullingArea() {
+        return cullingArea;
+    }
 
     static class List2DItem<T> {
         final int index;

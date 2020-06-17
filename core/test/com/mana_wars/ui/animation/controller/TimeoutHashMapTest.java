@@ -3,11 +3,13 @@ package com.mana_wars.ui.animation.controller;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collections;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class TimeoutHashMapTest {
 
@@ -260,9 +262,11 @@ public class TimeoutHashMapTest {
 
     private static class D implements Durationable {
         private final double duration;
+
         private D(double duration) {
             this.duration = duration;
         }
+
         @Override
         public double getDuration() {
             return duration;

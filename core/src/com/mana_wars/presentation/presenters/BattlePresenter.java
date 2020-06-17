@@ -3,8 +3,8 @@ package com.mana_wars.presentation.presenters;
 import com.mana_wars.model.entity.battle.BaseBattleBuilder;
 import com.mana_wars.model.entity.battle.BattleParticipant;
 import com.mana_wars.model.entity.skills.ActiveSkill;
-import com.mana_wars.model.interactor.BattleInteractor;
 import com.mana_wars.model.interactor.BattleInitializationObserver;
+import com.mana_wars.model.interactor.BattleInteractor;
 import com.mana_wars.presentation.util.UIThreadHandler;
 import com.mana_wars.presentation.view.BattleView;
 

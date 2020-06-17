@@ -80,11 +80,11 @@ public abstract class BattleParticipant {
         return initialHealth;
     }
 
-    protected int getCharacteristicValue(Characteristic type){
+    protected int getCharacteristicValue(Characteristic type) {
         return characteristics.get(type);
     }
 
-    protected void setCharacteristicValue(Characteristic type, int value){
+    protected void setCharacteristicValue(Characteristic type, int value) {
         characteristics.put(type, value);
     }
 

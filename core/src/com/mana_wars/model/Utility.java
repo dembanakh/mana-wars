@@ -12,6 +12,7 @@ public final class Utility {
         return value;
     }
 
-    private Utility() {}
+    private Utility() {
+    }
 
 }

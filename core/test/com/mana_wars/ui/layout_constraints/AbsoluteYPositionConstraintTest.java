@@ -4,11 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.utils.Align;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static com.mana_wars.ui.UIElementsSize.SCREEN_HEIGHT;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

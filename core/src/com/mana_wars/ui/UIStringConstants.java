@@ -32,5 +32,6 @@ public final class UIStringConstants {
         public static final String CLOSE_BUTTON_TEXT = "GET";
     }
 
-    private UIStringConstants() {}
+    private UIStringConstants() {
+    }
 }

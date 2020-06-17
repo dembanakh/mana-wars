@@ -5,7 +5,7 @@ import com.mana_wars.model.entity.battle.Characteristic;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class SkillCharacteristicTest {
 

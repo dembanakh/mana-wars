@@ -6,20 +6,19 @@ import com.mana_wars.model.db.entity.UserSkill;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
-import com.mana_wars.model.entity.skills.Skill;
-import com.mana_wars.model.entity.skills.SkillCharacteristic;
 
 import org.junit.Test;
 
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class SkillConverterTest {
 
     @Test
-    public void testToActiveSkill(){
+    public void testToActiveSkill() {
         UserSkill insideUserSkill = mock(UserSkill.class);
         DBSkill skill = mock(DBSkill.class);
         when(skill.getId()).thenReturn(2);
@@ -40,13 +39,14 @@ public class SkillConverterTest {
         assertEquals(Rarity.getRarityByID(1), result.getRarity());
         assertEquals(10.0, result.getCastTime(), 0.0001);
         assertEquals(5.0, result.getCooldown(), 0.0001);
-        assertEquals("aaa", result.getName());;
+        assertEquals("aaa", result.getName());
+        ;
 
     }
 
 
-        @Test
-    public void testToPassiveSkill(){
+    @Test
+    public void testToPassiveSkill() {
         UserSkill insideUserSkill = mock(UserSkill.class);
         DBSkill skill = mock(DBSkill.class);
         when(skill.getId()).thenReturn(2);
@@ -63,7 +63,8 @@ public class SkillConverterTest {
 
         assertEquals(30, result.getLevel());
         assertEquals(Rarity.getRarityByID(1), result.getRarity());
-        assertEquals("aaa", result.getName());;
+        assertEquals("aaa", result.getName());
+        ;
 
     }
 

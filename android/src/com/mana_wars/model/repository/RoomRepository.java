@@ -34,8 +34,8 @@ public class RoomRepository {
     public final DBMobDAO dbMobDAO;
     public final DBMobSkillDAO dbMobSkillDAO;
 
-    public static RoomRepository getInstance(Context context){
-        if (instance==null) {
+    public static RoomRepository getInstance(Context context) {
+        if (instance == null) {
             AppDatabase db = AppDatabase.getDatabase(context);
             instance = new RoomRepository(db.userSkillsDAO(), db.dbSkillDAO(),
                     db.dbSkillCharacteristicDAO(), db.dbDungeonDAO(), db.dbMobDAO(), db.dbMobSkillDAO());
@@ -43,11 +43,11 @@ public class RoomRepository {
         return instance;
     }
 
-    public <T> Single<List<T>> getAllEntities(BaseDAO<T> dao){
+    public <T> Single<List<T>> getAllEntities(BaseDAO<T> dao) {
         return Single.create((SingleOnSubscribe<List<T>>) emitter -> {
             try {
                 emitter.onSuccess(dao.getAllEntities());
-            }catch ( Exception e){
+            } catch (Exception e) {
                 emitter.onError(e);
             }
         })
@@ -55,11 +55,11 @@ public class RoomRepository {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Single<List<DBSkillWithCharacteristics>> getSkillsWithCharacteristics(){
+    public Single<List<DBSkillWithCharacteristics>> getSkillsWithCharacteristics() {
         return Single.create((SingleOnSubscribe<List<DBSkillWithCharacteristics>>) emitter -> {
             try {
                 emitter.onSuccess(dbSkillDAO.getSkillsWithCharacteristics());
-            }catch ( Exception e){
+            } catch (Exception e) {
                 emitter.onError(e);
             }
         })
@@ -67,11 +67,11 @@ public class RoomRepository {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Single<List<CompleteUserSkill>> getCompleteUserSkills(){
+    public Single<List<CompleteUserSkill>> getCompleteUserSkills() {
         return Single.create((SingleOnSubscribe<List<CompleteUserSkill>>) emitter -> {
             try {
                 emitter.onSuccess(userSkillsDAO.getUserSkills());
-            }catch ( Exception e){
+            } catch (Exception e) {
                 emitter.onError(e);
             }
         })
@@ -79,11 +79,11 @@ public class RoomRepository {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Single<List<DBMobWithSkills>> getDBMobsWithSkillsByDungeonID(int id){
+    public Single<List<DBMobWithSkills>> getDBMobsWithSkillsByDungeonID(int id) {
         return Single.create((SingleOnSubscribe<List<DBMobWithSkills>>) emitter -> {
             try {
                 emitter.onSuccess(dbMobDAO.getDBMobsWithSkillsByDungeonID(id));
-            }catch ( Exception e){
+            } catch (Exception e) {
                 emitter.onError(e);
             }
         })
@@ -102,33 +102,33 @@ public class RoomRepository {
         this.dbMobSkillDAO = dbMobSkillDAO;
     }
 
-    public <T> Completable insertEntities(final List<T> entities, final BaseDAO<T> dao){
+    public <T> Completable insertEntities(final List<T> entities, final BaseDAO<T> dao) {
         return multithreading(Completable.fromAction(
                 () -> dao.insertEntities(entities)
         ));
     }
 
-    public <T> Completable insertEntity(final T entity, final BaseDAO<T> dao){
+    public <T> Completable insertEntity(final T entity, final BaseDAO<T> dao) {
         return multithreading(Completable.fromAction(
                 () -> dao.insertEntity(entity)
         ));
     }
 
-    public <T> Completable updateEntities(final List<T> entities, final BaseDAO<T> dao){
+    public <T> Completable updateEntities(final List<T> entities, final BaseDAO<T> dao) {
         return multithreading(Completable.fromAction(
                 () -> dao.updateEntities(entities)
         ));
     }
 
-    public <T> Completable updateEntity(final T entity, final BaseDAO<T> dao){
+    public <T> Completable updateEntity(final T entity, final BaseDAO<T> dao) {
         return multithreading(Completable.fromAction(
                 () -> dao.updateEntity(entity)
         ));
     }
 
-    public Completable mergeSkills(UserSkill toUpdate, UserSkill toDelete){
+    public Completable mergeSkills(UserSkill toUpdate, UserSkill toDelete) {
         return multithreading(Completable.fromAction(
-                ()-> userSkillsDAO.mergeUserSkills(toUpdate,toDelete)
+                () -> userSkillsDAO.mergeUserSkills(toUpdate, toDelete)
         ));
     }
 

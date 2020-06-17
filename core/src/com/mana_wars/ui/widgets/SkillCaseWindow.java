@@ -17,7 +17,13 @@ import com.mana_wars.ui.factory.UIElementFactory;
 
 import static com.mana_wars.ui.UIElementsSize.SCREEN_HEIGHT;
 import static com.mana_wars.ui.UIElementsSize.SCREEN_WIDTH;
-import static com.mana_wars.ui.UIElementsSize.SKILL_CASE_WINDOW.*;
+import static com.mana_wars.ui.UIElementsSize.SKILL_CASE_WINDOW.GET_BUTTON_PADDING_BOTTOM;
+import static com.mana_wars.ui.UIElementsSize.SKILL_CASE_WINDOW.GET_BUTTON_PADDING_LEFT;
+import static com.mana_wars.ui.UIElementsSize.SKILL_CASE_WINDOW.GET_BUTTON_PADDING_RIGHT;
+import static com.mana_wars.ui.UIElementsSize.SKILL_CASE_WINDOW.GET_BUTTON_PADDING_TOP;
+import static com.mana_wars.ui.UIElementsSize.SKILL_CASE_WINDOW.SKILL_DESCRIPTION_PADDING;
+import static com.mana_wars.ui.UIElementsSize.SKILL_CASE_WINDOW.SKILL_ICON_PADDING;
+import static com.mana_wars.ui.UIElementsSize.SKILL_CASE_WINDOW.SKILL_NAME_PADDING;
 
 public class SkillCaseWindow extends Window implements BuildableUI {
 
@@ -30,7 +36,7 @@ public class SkillCaseWindow extends Window implements BuildableUI {
     private final AssetFactory<Rarity, TextureRegion> frameFactory;
 
     public SkillCaseWindow(String title, Skin skin, AssetFactory<Integer, TextureRegion> iconFactory,
-                    AssetFactory<Rarity, TextureRegion> frameFactory) {
+                           AssetFactory<Rarity, TextureRegion> frameFactory) {
         super(title, skin);
         this.skillIcon = new Image();
         this.skillFrame = new Image();
@@ -51,7 +57,7 @@ public class SkillCaseWindow extends Window implements BuildableUI {
     @Override
     public Actor build(Skin skin) {
         this.clear();
-        
+
         setSkin(skin);
         setFillParent(false);
         setMovable(false);
@@ -64,11 +70,11 @@ public class SkillCaseWindow extends Window implements BuildableUI {
         add(skillDescription).padTop(SKILL_DESCRIPTION_PADDING).row();
         add(UIElementFactory.getButton(skin, UIStringConstants.SKILL_CASE_WINDOW.CLOSE_BUTTON_TEXT,
                 new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                hideSkill();
-            }
-        })).bottom().pad(GET_BUTTON_PADDING_TOP, GET_BUTTON_PADDING_LEFT,
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        hideSkill();
+                    }
+                })).bottom().pad(GET_BUTTON_PADDING_TOP, GET_BUTTON_PADDING_LEFT,
                 GET_BUTTON_PADDING_BOTTOM, GET_BUTTON_PADDING_RIGHT);
         pack();
         setVisible(false);

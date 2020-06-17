@@ -10,7 +10,7 @@ import com.mana_wars.model.db.entity.DBSkillWithCharacteristics;
 import java.util.List;
 
 @Dao
-public abstract class DBSkillDAO extends BaseDAO<DBSkill>{
+public abstract class DBSkillDAO extends BaseDAO<DBSkill> {
 
     @Override
     @Query("SELECT * FROM skills WHERE skill_id=:id")

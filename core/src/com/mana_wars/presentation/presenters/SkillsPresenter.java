@@ -1,17 +1,15 @@
 package com.mana_wars.presentation.presenters;
 
-import com.mana_wars.model.skills_operations.SkillsOperations;
-
 import com.mana_wars.model.entity.SkillTable;
-
 import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.interactor.SkillsInteractor;
+import com.mana_wars.model.skills_operations.SkillsOperations;
 import com.mana_wars.presentation.util.UIThreadHandler;
 import com.mana_wars.presentation.view.SkillsView;
 
 import io.reactivex.functions.Consumer;
 
-public class SkillsPresenter extends BasePresenter<SkillsView, SkillsInteractor>{
+public final class SkillsPresenter extends BasePresenter<SkillsView, SkillsInteractor> {
 
     public SkillsPresenter(SkillsView view, UIThreadHandler uiThreadHandler, SkillsInteractor interactor) {
         super(view, interactor, uiThreadHandler);

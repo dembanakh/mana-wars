@@ -1,9 +1,8 @@
 package com.mana_wars.model.interactor;
 
 import com.mana_wars.model.entity.user.UserGreetingAPI;
-import com.mana_wars.model.repository.UsernameRepository;
 
-public class GreetingInteractor extends BaseInteractor{
+public final class GreetingInteractor extends BaseInteractor {
 
     private final UserGreetingAPI user;
 

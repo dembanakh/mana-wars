@@ -49,5 +49,7 @@ public enum ScreenInstance {
         }
     }
 
-    public BaseScreen getScreen(Map<String, Object> arguments) { return screen.reInit(arguments); }
+    public BaseScreen getScreen(Map<String, Object> arguments) {
+        return screen.reInit(arguments);
+    }
 }

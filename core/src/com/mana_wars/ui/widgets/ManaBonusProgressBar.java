@@ -27,7 +27,7 @@ public class ManaBonusProgressBar extends ProgressBar implements BuildableUI {
 
     /**
      * @param fullBonusTimeout the time for the all bonus bits to be ready for claim
-     * @param claimCallback called when CLAIM button is pressed
+     * @param claimCallback    called when CLAIM button is pressed
      */
     public ManaBonusProgressBar(int fullBonusTimeout, Runnable claimCallback, Skin skin) {
         this(fullBonusTimeout, claimCallback, skin.get("default-horizontal", ProgressBarStyle.class),

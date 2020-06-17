@@ -12,8 +12,7 @@ import java.util.List;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.Subject;
 
-public class User implements UserManaRepository,
-        UserMenuAPI, UserSkillsAPI, UserDungeonsAPI, UserBattleAPI, UserGreetingAPI, UserBattleSummaryAPI {
+public class User implements UserMenuAPI, UserSkillsAPI, UserDungeonsAPI, UserBattleAPI, UserGreetingAPI, UserBattleSummaryAPI {
 
     private UserBattleParticipant user;
 
@@ -27,7 +26,7 @@ public class User implements UserManaRepository,
     private List<PassiveSkill> passiveSkills;
 
     public User(UserManaRepository userManaRepository, UserLevelRepository userLevelRepository,
-                                 UsernameRepository usernameRepository) {
+                UsernameRepository usernameRepository) {
         this.userManaRepository = userManaRepository;
         this.userLevelRepository = userLevelRepository;
         this.usernameRepository = usernameRepository;
@@ -37,7 +36,8 @@ public class User implements UserManaRepository,
 
     @Override
     public BattleParticipant prepareBattleParticipant() {
-        return user = new UserBattleParticipant(usernameRepository.getUsername(), this, activeSkills, passiveSkills);
+        return user = new UserBattleParticipant(usernameRepository.getUsername(), userManaRepository.getUserMana(),
+                this::setUserMana, activeSkills, passiveSkills);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class User implements UserManaRepository,
 
     @Override
     public void updateManaAmount(int delta) {
-        setUserMana(getUserMana() + delta);
+        setUserMana(userManaRepository.getUserMana() + delta);
     }
 
     @Override
@@ -86,13 +86,7 @@ public class User implements UserManaRepository,
         return user.getActiveSkills();
     }
 
-    @Override
-    public int getUserMana() {
-        return userManaRepository.getUserMana();
-    }
-
-    @Override
-    public void setUserMana(int mana) {
+    private void setUserMana(int mana) {
         userManaRepository.setUserMana(mana);
         manaAmountObservable.onNext(mana);
     }

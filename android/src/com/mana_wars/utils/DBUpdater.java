@@ -22,12 +22,13 @@ public class DBUpdater implements DBUpdaterParser.DBUpdater {
     public interface Callback {
         void afterUpdate();
     }
+
     private Callback callback;
 
     private int updatedInstancesCount = 0;
     private final int instancesToUpdate = 5;
 
-    public DBUpdater(RoomRepository repository, Callback callback){
+    public DBUpdater(RoomRepository repository, Callback callback) {
         this.repository = repository;
         this.callback = callback;
     }
@@ -73,10 +74,10 @@ public class DBUpdater implements DBUpdaterParser.DBUpdater {
         ));
     }
 
-    private synchronized void completeUpdate(){
+    private synchronized void completeUpdate() {
         Log.i("UPDATER", "updated=" + updatedInstancesCount);
 
-        if(++updatedInstancesCount==instancesToUpdate){
+        if (++updatedInstancesCount == instancesToUpdate) {
             disposable.dispose();
             callback.afterUpdate();
         }

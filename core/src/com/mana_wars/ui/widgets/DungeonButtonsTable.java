@@ -48,6 +48,7 @@ public class DungeonButtonsTable extends Table {
     private static class DungeonButton extends Table {
         private final Label requiredLevel;
         private final TextButton button;
+
         DungeonButton(Dungeon dungeon, Consumer<? super Dungeon> onClick, Skin skin) {
             super(skin);
             Label name = new Label(dungeon.getName(), skin);

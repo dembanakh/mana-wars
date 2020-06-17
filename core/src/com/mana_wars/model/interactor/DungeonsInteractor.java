@@ -6,10 +6,9 @@ import com.mana_wars.model.repository.DatabaseRepository;
 
 import java.util.List;
 
-import io.reactivex.Maybe;
 import io.reactivex.Single;
 
-public class DungeonsInteractor extends BaseInteractor {
+public final class DungeonsInteractor extends BaseInteractor {
 
     private final UserDungeonsAPI user;
     private final DatabaseRepository databaseRepository;

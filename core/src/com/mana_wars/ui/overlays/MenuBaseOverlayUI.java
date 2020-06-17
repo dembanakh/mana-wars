@@ -7,9 +7,9 @@ import com.mana_wars.ui.layout_constraints.AbsoluteYPositionConstraint;
 import com.mana_wars.ui.layout_constraints.RelativeWidthConstraint;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.widgets.BuildableUI;
+import com.mana_wars.ui.widgets.NavigationBar;
 import com.mana_wars.ui.widgets.value_field.TextValueField;
 import com.mana_wars.ui.widgets.value_field.ValueField;
-import com.mana_wars.ui.widgets.NavigationBar;
 
 import java.util.Arrays;
 

@@ -21,21 +21,21 @@ import com.mana_wars.model.db.entity.UserSkill;
 
 @Database(version = 1, exportSchema = false,
         entities = {UserSkill.class, DBSkill.class,
-                    DBSkillCharacteristic.class, DBDungeon.class, DBMob.class, DBMobSkill.class})
+                DBSkillCharacteristic.class, DBDungeon.class, DBMob.class, DBMobSkill.class})
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase database;
 
-    public abstract UserSkillsDAO userSkillsDAO();
-    public abstract DBSkillDAO dbSkillDAO();
-    public abstract DBSkillCharacteristicDAO dbSkillCharacteristicDAO();
-    public abstract DBDungeonDAO dbDungeonDAO();
     public abstract DBMobDAO dbMobDAO();
+    public abstract DBSkillDAO dbSkillDAO();
+    public abstract DBDungeonDAO dbDungeonDAO();
+    public abstract UserSkillsDAO userSkillsDAO();
     public abstract DBMobSkillDAO dbMobSkillDAO();
+    public abstract DBSkillCharacteristicDAO dbSkillCharacteristicDAO();
 
-    public static AppDatabase getDatabase(Context context){
-        synchronized(AppDatabase.class) {
-            if(database == null) {
+    public static AppDatabase getDatabase(Context context) {
+        synchronized (AppDatabase.class) {
+            if (database == null) {
                 database = Room.databaseBuilder(context, AppDatabase.class, "MANA_WARS_DB")
                         .build();
             }

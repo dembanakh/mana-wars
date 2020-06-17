@@ -9,8 +9,9 @@ import org.junit.Test;
 import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 public class BattleParticipantTest {
@@ -18,7 +19,7 @@ public class BattleParticipantTest {
     private BattleParticipant bp;
 
     @Before
-    public void setup(){
+    public void setup() {
         bp = new BattleParticipant("a", 100, Collections.emptyList(), Collections.emptyList()) {
 
             @Override

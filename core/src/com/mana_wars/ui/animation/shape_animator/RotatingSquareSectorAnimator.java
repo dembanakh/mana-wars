@@ -86,7 +86,7 @@ public class RotatingSquareSectorAnimator extends ShapeAnimator {
     }
 
     private static float radialInterpolation(float start, float end, double angle) {
-        return (start + end) / 2 + (float)((end - start) * Math.tan(angle) / 2);
+        return (start + end) / 2 + (float) ((end - start) * Math.tan(angle) / 2);
     }
 
     private static void addVertex(float[] vertices, int index, float x, float y) {

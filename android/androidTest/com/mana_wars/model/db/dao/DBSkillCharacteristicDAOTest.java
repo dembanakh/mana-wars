@@ -3,7 +3,8 @@ package com.mana_wars.model.db.dao;
 import android.content.Context;
 
 import androidx.room.Room;
-
+import androidx.test.core.app.ApplicationProvider;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.mana_wars.model.db.AppDatabase;
 import com.mana_wars.model.db.entity.DBSkillCharacteristic;
@@ -13,21 +14,19 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import androidx.test.core.app.ApplicationProvider;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 
 @RunWith(AndroidJUnit4.class)
 public class DBSkillCharacteristicDAOTest {
 
-    private AppDatabase db;
     DBSkillCharacteristicDAO dao;
+    private AppDatabase db;
+
     @Before
-    public void createDB(){
+    public void createDB() {
         Context context = ApplicationProvider.getApplicationContext();
         db = Room.inMemoryDatabaseBuilder(context, AppDatabase.class).build();
         dao = db.dbSkillCharacteristicDAO();
@@ -35,7 +34,7 @@ public class DBSkillCharacteristicDAOTest {
     }
 
     @After
-    public void closeDB(){
+    public void closeDB() {
         db.close();
     }
 

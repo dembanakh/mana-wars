@@ -1,18 +1,17 @@
 package com.mana_wars.model.interactor;
 
 import com.mana_wars.model.SkillsListTriple;
-import com.mana_wars.model.entity.user.UserSkillsAPI;
-import com.mana_wars.model.skills_operations.SkillsOperations;
 import com.mana_wars.model.entity.SkillTable;
-
 import com.mana_wars.model.entity.skills.Skill;
+import com.mana_wars.model.entity.user.UserSkillsAPI;
 import com.mana_wars.model.repository.DatabaseRepository;
+import com.mana_wars.model.skills_operations.SkillsOperations;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.subjects.Subject;
 
-public class SkillsInteractor extends BaseInteractor{
+public final class SkillsInteractor extends BaseInteractor {
 
     private final UserSkillsAPI user;
     private final DatabaseRepository databaseRepository;
@@ -26,11 +25,11 @@ public class SkillsInteractor extends BaseInteractor{
         return databaseRepository.getUserSkills();
     }
 
-    public Completable mergeSkills(Skill toUpdate, Skill toDelete){
+    public Completable mergeSkills(Skill toUpdate, Skill toDelete) {
         return databaseRepository.mergeSkills(toUpdate, toDelete);
     }
 
-    public Completable moveSkill(Skill toUpdate, int index){
+    public Completable moveSkill(Skill toUpdate, int index) {
         return databaseRepository.moveSkill(toUpdate, index);
     }
 
@@ -50,12 +49,12 @@ public class SkillsInteractor extends BaseInteractor{
     public boolean validateOperation(SkillsOperations operation, SkillTable tableSource, SkillTable tableTarget,
                                      Skill skillSource, Skill skillTarget) {
         return SkillsOperations.can(operation)
-                                .from(tableSource)
-                                .to(tableTarget)
-                                .validate()
-                                .from(skillSource)
-                                .to(skillTarget)
-                                .validate();
+                .from(tableSource)
+                .to(tableTarget)
+                .validate()
+                .from(skillSource)
+                .to(skillTarget)
+                .validate();
     }
 
     public Subject<Integer> getManaAmountObservable() {

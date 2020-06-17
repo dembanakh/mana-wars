@@ -100,7 +100,7 @@ public class BattleParticipantValueField extends ValueFieldWithInitialData<Battl
 
     @Override
     public synchronized void accept(Integer value) {
-        int lastValue = (int)healthBar.getValue();
+        int lastValue = (int) healthBar.getValue();
         participantHealth.setText(value);
         healthBar.setValue(value);
         updateHealthChangeLabel(value - lastValue);

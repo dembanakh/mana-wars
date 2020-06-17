@@ -2,8 +2,6 @@ package com.mana_wars.model.mana_bonus;
 
 import com.mana_wars.model.repository.ManaBonusRepository;
 
-import io.reactivex.functions.Consumer;
-
 import static com.mana_wars.model.Utility.clamp;
 import static com.mana_wars.model.Utility.minsToMillis;
 
@@ -19,7 +17,7 @@ public class ManaBonusImpl implements ManaBonus {
     private boolean wasInitialized = false;
 
     public ManaBonusImpl(int bonusBitTimeout, int bonusBitSize, int numBonusBits, final Timer timer,
-                  final ManaBonusRepository manaBonusRepository) {
+                         final ManaBonusRepository manaBonusRepository) {
         this.bonusBitTimeout = bonusBitTimeout;
         this.bonusBitSize = bonusBitSize;
         this.numBonusBits = numBonusBits;
@@ -47,9 +45,9 @@ public class ManaBonusImpl implements ManaBonus {
 
     @Override
     public int evalCurrentBonus() {
-        return bonusBitSize * (int)Math.floor(
+        return bonusBitSize * (int) Math.floor(
                 (clamp(getTimeSinceLastClaim(), 0L, minsToMillis(getFullBonusTimeout())) /
-                        (double)minsToMillis(getFullBonusTimeout())) * numBonusBits);
+                        (double) minsToMillis(getFullBonusTimeout())) * numBonusBits);
     }
 
     @Override

@@ -13,15 +13,17 @@ import com.mana_wars.model.interactor.MainMenuInteractor;
 import com.mana_wars.model.mana_bonus.ManaBonusImpl;
 import com.mana_wars.presentation.presenters.MainMenuPresenter;
 import com.mana_wars.presentation.view.MainMenuView;
+import com.mana_wars.ui.factory.UIElementFactory;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.MenuBaseOverlayUI;
+import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.ui.widgets.ManaBonusProgressBar;
-import com.mana_wars.ui.storage.FactoryStorage;
-import com.mana_wars.ui.factory.UIElementFactory;
 import com.mana_wars.ui.widgets.SkillCaseWindow;
 
-import static com.mana_wars.ui.UIStringConstants.*;
+import static com.mana_wars.ui.UIStringConstants.MAIN_MENU_SCREEN;
+import static com.mana_wars.ui.UIStringConstants.SKILL_CASE_WINDOW;
+import static com.mana_wars.ui.UIStringConstants.UI_SKIN;
 
 public class MainMenuScreen extends BaseScreen<MenuBaseOverlayUI, MainMenuPresenter> implements MainMenuView {
 
@@ -73,11 +75,11 @@ public class MainMenuScreen extends BaseScreen<MenuBaseOverlayUI, MainMenuPresen
 
         TextButton skillCaseButton = UIElementFactory.getButton(skin, MAIN_MENU_SCREEN.OPEN_SKILL_CASE_BUTTON_TEXT,
                 new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                presenter.onOpenSkillCase();
-            }
-        });
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        presenter.onOpenSkillCase();
+                    }
+                });
         layer.add(skillCaseButton).row();
         // TODO: remove constants
         layer.add(manaBonusProgressBar.build(skin)).height(100).width(200);

@@ -72,14 +72,13 @@ public class SkillIconAnimationController implements UIAnimationController<Integ
     public void animate(Integer index, float x, float y, float width, float height) {
         if (emptySkills.contains(index)) {
             Type.EMPTY.animator.animate(shapeDrawer, x, y, width, height, 1, 1);
-        }
-        else if (timeoutMap.containsKey(index)) {
+        } else if (timeoutMap.containsKey(index)) {
             KeyFrame<Type> currentKeyFrame = timeoutMap.get(index);
             double remainingTime = timeoutMap.getRemainingTime(index);
             currentKeyFrame.type.animator.animate(shapeDrawer, x, y, width, height,
                     remainingTime, currentKeyFrame.getDuration());
             font.setColor(Color.BLACK);
-            String remainingTimeText = Integer.toString((int)Math.ceil(remainingTime));
+            String remainingTimeText = Integer.toString((int) Math.ceil(remainingTime));
             font.draw(shapeDrawer.getBatch(), remainingTimeText,
                     x, y + (height + font.getLineHeight()) / 2, 0,
                     remainingTimeText.length(), width, Align.center, false, "");

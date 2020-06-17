@@ -9,7 +9,7 @@ import com.mana_wars.model.repository.DatabaseRepository;
 import io.reactivex.Single;
 import io.reactivex.subjects.Subject;
 
-public class MainMenuInteractor extends BaseInteractor{
+public final class MainMenuInteractor extends BaseInteractor {
 
     private final UserMenuAPI user;
     private final ManaBonus manaBonus;
@@ -30,10 +30,10 @@ public class MainMenuInteractor extends BaseInteractor{
 
     //TODO refactor
     public Single<Skill> getNewSkill() {
-        return databaseRepository.getSkillsList().map((skills)->{
+        return databaseRepository.getSkillsList().map((skills) -> {
 
             Skill s = SkillFactory.getNewSkill(skills);
-            disposable.add(databaseRepository.insertUserSkill(s).subscribe(()->{
+            disposable.add(databaseRepository.insertUserSkill(s).subscribe(() -> {
                 System.out.println("Skill added");
             }, Throwable::printStackTrace));
 

@@ -3,11 +3,10 @@ package com.mana_wars.ui.widgets.skills_list_2d;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
-import com.mana_wars.ui.widgets.skills_list_2d.List2D;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class List2DTest {
 

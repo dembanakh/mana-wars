@@ -1,15 +1,5 @@
 package com.mana_wars.model.entity.skills;
 
-import com.mana_wars.model.entity.base.Rarity;
-import com.mana_wars.model.entity.base.ValueChangeType;
-import com.mana_wars.model.entity.battle.Characteristic;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public class SkillList {
     /*static Map<Rarity,List<Skill>> skillsList = createList();
 

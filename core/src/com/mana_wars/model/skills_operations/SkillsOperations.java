@@ -43,12 +43,14 @@ public enum SkillsOperations {
     }, SWAP {
         @Override
         protected Boolean validate(SkillOperationQuery query) {
-            if (query.source == null || query.target == null || query.target.getRarity() == Rarity.EMPTY) return false;
+            if (query.source == null || query.target == null || query.target.getRarity() == Rarity.EMPTY)
+                return false;
             if (query.tableQuery.source == query.tableQuery.target)
                 return query.source.getRarity() != Rarity.EMPTY && query.target.getRarity() != Rarity.EMPTY;
             return (query.target instanceof ActiveSkill && query.source instanceof ActiveSkill) ||
                     (query.target instanceof PassiveSkill && query.source instanceof PassiveSkill);
         }
+
         @Override
         protected OperationQuery<Skill, Boolean> validate(TableOperationQuery query) {
             OperationQuery<Skill, Boolean> resultQuery = super.validate(query);
@@ -91,6 +93,7 @@ public enum SkillsOperations {
     }
 
     protected abstract Boolean validate(SkillOperationQuery query);
+
     protected OperationQuery<Skill, Boolean> validate(TableOperationQuery query) {
         if (query.source == SkillTable.ACTIVE_SKILLS && query.target == SkillTable.PASSIVE_SKILLS)
             return new EmptySkillOperationQuery();

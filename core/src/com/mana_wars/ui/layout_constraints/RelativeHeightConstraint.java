@@ -16,6 +16,6 @@ public class RelativeHeightConstraint implements SizeConstraint {
 
     @Override
     public float getSize() {
-        return (percent * (float)SCREEN_HEIGHT()) / 100;
+        return (percent * (float) SCREEN_HEIGHT()) / 100;
     }
 }

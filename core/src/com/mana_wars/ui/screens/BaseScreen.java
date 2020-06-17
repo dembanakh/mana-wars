@@ -47,12 +47,14 @@ public abstract class BaseScreen<U extends BaseOverlayUI, T extends BasePresente
     static <T> T getArgument(Map<String, Object> arguments, String key) {
         if (!arguments.containsKey(key))
             throw new NoSuchElementException("There is no argument for key " + key);
-        return (T)arguments.get(key);
+        return (T) arguments.get(key);
     }
 
-    protected Skin getSkin(){
+    protected Skin getSkin() {
         return skin;
-    };
+    }
+
+    ;
 
     void rebuildStage() {
         stage.clear();
@@ -68,6 +70,7 @@ public abstract class BaseScreen<U extends BaseOverlayUI, T extends BasePresente
     }
 
     protected abstract Table buildBackgroundLayer(Skin skin);
+
     protected abstract Table buildForegroundLayer(Skin skin);
 
     @Override
@@ -84,7 +87,7 @@ public abstract class BaseScreen<U extends BaseOverlayUI, T extends BasePresente
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(50.0f/255, 115.0f/255, 220.0f/255, 0.3f);
+        Gdx.gl.glClearColor(50.0f / 255, 115.0f / 255, 220.0f / 255, 0.3f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.act(delta);
