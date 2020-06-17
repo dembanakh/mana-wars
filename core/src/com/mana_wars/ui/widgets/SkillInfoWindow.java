@@ -41,6 +41,7 @@ public class SkillInfoWindow extends Window implements BuildableUI {
         this.skillIcon = new Image();
         this.skillFrame = new Image();
         this.skillName = new Label("", skin);
+        this.skillName.setAlignment(Align.center);
         this.skillDescription = new Label("", skin);
         this.skillDescription.setAlignment(Align.center | Align.right);
         this.skillDescription.setFontScale(1.5f);
@@ -62,7 +63,7 @@ public class SkillInfoWindow extends Window implements BuildableUI {
         setFillParent(false);
         setMovable(false);
         setResizable(false);
-        add(skillName).padTop(SKILL_NAME_PADDING).row();
+        add(skillName).padTop(SKILL_NAME_PADDING).width(800).row();
         Stack stack = new Stack();
         stack.add(skillIcon);
         stack.add(skillFrame);
@@ -77,6 +78,7 @@ public class SkillInfoWindow extends Window implements BuildableUI {
                 })).bottom().pad(GET_BUTTON_PADDING_TOP, GET_BUTTON_PADDING_LEFT,
                 GET_BUTTON_PADDING_BOTTOM, GET_BUTTON_PADDING_RIGHT);
         pack();
+        //setSize(800, 1200);
         setVisible(false);
         setDebug(false);
 

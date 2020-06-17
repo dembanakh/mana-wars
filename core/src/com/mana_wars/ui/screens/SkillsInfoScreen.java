@@ -34,8 +34,13 @@ public class SkillsInfoScreen extends BaseScreen<BaseOverlayUI, SkillsInfoPresen
                             final DatabaseRepository databaseRepository, final BaseOverlayUI overlayUI) {
         super(screenSetter, factoryStorage.getSkinFactory().getAsset(UIStringConstants.UI_SKIN.FREEZING), overlayUI);
         this.presenter = new SkillsInfoPresenter(this, new SkillsInfoInteractor(databaseRepository), Gdx.app::postRunnable);
-        this.skillsList = new ClickableSkillsList2D<>(getSkin(), 5, factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(),
-                System.out::println);
+        this.skillsList = new ClickableSkillsList2D<Skill>(getSkin(), 5, factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(),
+                presenter::prepareSkillInfo) {
+            @Override
+            protected boolean shouldShowLevel(Skill item) {
+                return false;
+            }
+        };
         this.scrollPane = new ScrollPane(skillsList, getSkin());
         this.skillInfoWindow = new SkillInfoWindow("INFO", getSkin(),
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
