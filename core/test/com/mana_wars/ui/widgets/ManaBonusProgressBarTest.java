@@ -3,6 +3,7 @@ package com.mana_wars.ui.widgets;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -11,11 +12,16 @@ import static org.junit.Assert.assertTrue;
 
 public class ManaBonusProgressBarTest {
 
+    private ManaBonusProgressBar bar;
+
+    @Before
+    public void setup() {
+        bar = new ManaBonusProgressBar(100, null, getProgressBarStyle(),
+                null);
+    }
+
     @Test
     public void shouldSynchronizeNow() {
-        ManaBonusProgressBar bar = new ManaBonusProgressBar(100, null,
-                getProgressBarStyle(), null);
-
         // assuming SYNC_EVERY_FRAMES > 1
 
         assertFalse(bar.shouldSynchronizeNow());
@@ -28,9 +34,6 @@ public class ManaBonusProgressBarTest {
 
     @Test
     public void update() {
-        ManaBonusProgressBar bar = new ManaBonusProgressBar(100, null,
-                getProgressBarStyle(), null);
-
         assertEquals(0, bar.getCurrentValue(), Double.MIN_VALUE);
 
         bar.update(0.25f * 60);
@@ -40,8 +43,6 @@ public class ManaBonusProgressBarTest {
 
     @Test
     public void setTimeSinceLastBonusClaim() {
-        ManaBonusProgressBar bar = new ManaBonusProgressBar(100, null,
-                getProgressBarStyle(), null);
         bar.setTimeSinceLastBonusClaim(1000 * 60 * 5);
 
         assertEquals(5, bar.getCurrentValue(), Double.MIN_VALUE);

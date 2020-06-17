@@ -9,20 +9,22 @@ import com.mana_wars.model.db.entity.DBMobWithSkills;
 
 import java.util.List;
 
+import io.reactivex.Single;
+
 
 @Dao
 public abstract class DBMobDAO extends BaseDAO<DBMob> {
 
     @Override
     @Query("SELECT * FROM mobs WHERE mob_id=:id")
-    public abstract DBMob getEntityByID(int id);
+    public abstract Single<DBMob> getEntityByID(int id);
 
     @Override
     @Query("SELECT * FROM mobs")
-    public abstract List<DBMob> getAllEntities();
+    public abstract Single<List<DBMob>> getAllEntities();
 
 
     @Transaction
     @Query("SELECT * from mobs where dungeon_ref_id=:id")
-    public abstract List<DBMobWithSkills> getDBMobsWithSkillsByDungeonID(int id);
+    public abstract Single<List<DBMobWithSkills>> getDBMobsWithSkillsByDungeonID(int id);
 }

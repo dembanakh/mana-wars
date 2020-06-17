@@ -155,6 +155,11 @@ public class DBMapperRepository implements DatabaseRepository {
     }
 
     @Override
+    public Single<Integer> getRequiredManaAmountForBattle() {
+        return room.getRequiredManaAmountForBattle();
+    }
+
+    @Override
     public Completable insertUserSkill(Skill s) {
         return room.insertEntity(new UserSkill(s.getLevel(), s.getIconID()), room.userSkillsDAO);
     }

@@ -6,6 +6,8 @@ import com.mana_wars.model.entity.battle.Characteristic;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,13 +21,14 @@ import static org.mockito.Mockito.when;
 public class SkillTest {
 
     private Skill skill;
+    @Mock
     private SkillCharacteristic sc1;
+    @Mock
     private SkillCharacteristic sc2;
 
     @Before
     public void setup() {
-        sc1 = mock(SkillCharacteristic.class);
-        sc2 = mock(SkillCharacteristic.class);
+        MockitoAnnotations.initMocks(this);
         List<SkillCharacteristic> scList = new ArrayList<>();
         scList.add(sc1);
         scList.add(sc2);

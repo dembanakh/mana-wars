@@ -44,51 +44,24 @@ public class RoomRepository {
     }
 
     public <T> Single<List<T>> getAllEntities(BaseDAO<T> dao) {
-        return Single.create((SingleOnSubscribe<List<T>>) emitter -> {
-            try {
-                emitter.onSuccess(dao.getAllEntities());
-            } catch (Exception e) {
-                emitter.onError(e);
-            }
-        })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        return dao.getAllEntities();
     }
 
     public Single<List<DBSkillWithCharacteristics>> getSkillsWithCharacteristics() {
-        return Single.create((SingleOnSubscribe<List<DBSkillWithCharacteristics>>) emitter -> {
-            try {
-                emitter.onSuccess(dbSkillDAO.getSkillsWithCharacteristics());
-            } catch (Exception e) {
-                emitter.onError(e);
-            }
-        })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        return dbSkillDAO.getSkillsWithCharacteristics();
     }
 
     public Single<List<CompleteUserSkill>> getCompleteUserSkills() {
-        return Single.create((SingleOnSubscribe<List<CompleteUserSkill>>) emitter -> {
-            try {
-                emitter.onSuccess(userSkillsDAO.getUserSkills());
-            } catch (Exception e) {
-                emitter.onError(e);
-            }
-        })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        return userSkillsDAO.getUserSkills();
     }
 
     public Single<List<DBMobWithSkills>> getDBMobsWithSkillsByDungeonID(int id) {
-        return Single.create((SingleOnSubscribe<List<DBMobWithSkills>>) emitter -> {
-            try {
-                emitter.onSuccess(dbMobDAO.getDBMobsWithSkillsByDungeonID(id));
-            } catch (Exception e) {
-                emitter.onError(e);
-            }
-        })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        return dbMobDAO.getDBMobsWithSkillsByDungeonID(id);
+
+    }
+
+    public Single<Integer> getRequiredManaAmountForBattle() {
+        return userSkillsDAO.getRequiredManaAmountForBattle();
     }
 
     private RoomRepository(UserSkillsDAO userSkillsDAO, DBSkillDAO dbSkillDAO,
@@ -137,4 +110,5 @@ public class RoomRepository {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
 }

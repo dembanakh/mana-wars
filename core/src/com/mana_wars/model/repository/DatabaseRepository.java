@@ -21,4 +21,5 @@ public interface DatabaseRepository {
 
     Single<List<Dungeon>> getDungeons();
     Single<List<Mob>> getMobsListByDungeon(Dungeon dungeon);
+    Single<Integer> getRequiredManaAmountForBattle();
 }
