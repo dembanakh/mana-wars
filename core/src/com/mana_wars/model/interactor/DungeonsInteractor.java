@@ -18,9 +18,12 @@ public final class DungeonsInteractor extends BaseInteractor {
         this.databaseRepository = databaseRepository;
     }
 
-
     public Single<List<Dungeon>> getDungeons() {
         return databaseRepository.getDungeons();
+    }
+
+    public Single<Integer> getRequiredManaAmountForBattle(){
+        return databaseRepository.getRequiredManaAmountForBattle();
     }
 
     public UserDungeonsAPI getUser() {

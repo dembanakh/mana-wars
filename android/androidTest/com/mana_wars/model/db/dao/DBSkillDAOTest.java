@@ -17,21 +17,40 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import io.reactivex.observers.TestObserver;
 
 @RunWith(AndroidJUnit4.class)
 public class DBSkillDAOTest {
 
-    DBSkillDAO dao;
+    private DBSkillDAO dao;
     private AppDatabase db;
+
+    private DBSkill skill1, skill2;
 
     @Before
     public void createDB() {
         Context context = ApplicationProvider.getApplicationContext();
         db = Room.inMemoryDatabaseBuilder(context, AppDatabase.class).build();
         dao = db.dbSkillDAO();
+    }
 
+    @Before
+    public void init() {
+        skill1 = new DBSkill();
+        skill1.setName("aaa");
+        skill1.setId(1);
+        dao.insertEntity(skill1);
+
+        skill2 = new DBSkill();
+        skill2.setName("bbb");
+        skill2.setId(2);
+        dao.insertEntity(skill2);
+    }
+
+    @After
+    public void clean() {
+        dao.deleteEntity(skill1);
+        dao.deleteEntity(skill2);
     }
 
     @After
@@ -41,59 +60,26 @@ public class DBSkillDAOTest {
 
     @Test
     public void getEntityByID() {
-        DBSkill skill = new DBSkill();
-        skill.setName("aaa");
-        skill.setId(1);
-        dao.insertEntity(skill);
+        TestObserver<DBSkill> testObserver = dao.getEntityByID(1).test();
 
-        DBSkill result = dao.getEntityByID(1);
-
-        assertEquals("aaa", result.getName());
-        dao.deleteEntity(skill);
+        testObserver.assertValue(s -> s.getName().equals("aaa"));
     }
 
     @Test
     public void getAllEntities() {
-        DBSkill skill = new DBSkill();
-        skill.setName("aaa");
-        skill.setId(1);
-        dao.insertEntity(skill);
+        TestObserver<List<DBSkill>> testObserver = dao.getAllEntities().test();
 
-
-        DBSkill skill2 = new DBSkill();
-        skill2.setName("bbb");
-        skill2.setId(2);
-        dao.insertEntity(skill2);
-
-        List<DBSkill> result = dao.getAllEntities();
-
-        assertEquals(2, result.size());
-        assertTrue(result.get(0).getName().equals("aaa") || result.get(1).getName().equals("aaa"));
-        assertTrue(result.get(0).getName().equals("bbb") || result.get(1).getName().equals("bbb"));
-        dao.deleteEntity(skill);
-        dao.deleteEntity(skill2);
+        testObserver.assertValue(l -> l.size() == 2);
+        testObserver.assertValue(s -> s.get(0).getName().equals("aaa") || s.get(1).getName().equals("aaa"));
+        testObserver.assertValue(s -> s.get(0).getName().equals("bbb") || s.get(1).getName().equals("bbb"));
     }
 
     @Test
     public void getSkillsWithCharacteristics() {
+        TestObserver<List<DBSkillWithCharacteristics>> testObserver = dao.getSkillsWithCharacteristics().test();
 
-        DBSkill skill = new DBSkill();
-        skill.setName("aaa");
-        skill.setId(1);
-        dao.insertEntity(skill);
-
-
-        DBSkill skill2 = new DBSkill();
-        skill2.setName("bbb");
-        skill2.setId(2);
-        dao.insertEntity(skill2);
-
-        List<DBSkillWithCharacteristics> result = dao.getSkillsWithCharacteristics();
-
-        assertEquals(2, result.size());
-        assertTrue(result.get(0).skill.getName().equals("aaa") || result.get(1).skill.getName().equals("aaa"));
-        assertTrue(result.get(0).skill.getName().equals("bbb") || result.get(1).skill.getName().equals("bbb"));
-        dao.deleteEntity(skill);
-        dao.deleteEntity(skill2);
+        testObserver.assertValue(l -> l.size() == 2);
+        testObserver.assertValue(s -> s.get(0).skill.getName().equals("aaa") || s.get(1).skill.getName().equals("aaa"));
+        testObserver.assertValue(s -> s.get(0).skill.getName().equals("bbb") || s.get(1).skill.getName().equals("bbb"));
     }
 }

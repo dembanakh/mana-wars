@@ -18,13 +18,16 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import io.reactivex.observers.TestObserver;
+
 import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
 public class UserSkillsDAOTest {
 
-    UserSkillsDAO dao;
+    private UserSkillsDAO dao;
+    private UserSkill skill1, skill2;
+
     private AppDatabase db;
 
     @Before
@@ -32,7 +35,32 @@ public class UserSkillsDAOTest {
         Context context = ApplicationProvider.getApplicationContext();
         db = Room.inMemoryDatabaseBuilder(context, AppDatabase.class).build();
         dao = db.userSkillsDAO();
+    }
 
+    @Before
+    public void init() {
+        skill1 = new UserSkill();
+        skill1.setLvl(10);
+        skill1.setId(1);
+        skill1.setSkillID(1);
+
+        skill2 = new UserSkill();
+        skill2.setLvl(10);
+        skill2.setId(2);
+        skill2.setSkillID(1);
+
+        dao.insertEntity(skill1);
+        dao.insertEntity(skill2);
+
+        DBSkill dbskill = new DBSkill();
+        dbskill.setId(1);
+        db.dbSkillDAO().insertEntity(dbskill);
+    }
+
+    @After
+    public void clean() {
+        dao.deleteEntity(skill1);
+        dao.deleteEntity(skill2);
     }
 
     @After
@@ -40,91 +68,40 @@ public class UserSkillsDAOTest {
         db.close();
     }
 
+
     @Test
     public void getEntityByID() {
-        UserSkill skill = new UserSkill();
-        skill.setLvl(10);
-        skill.setId(1);
-        dao.insertEntity(skill);
+        TestObserver<UserSkill> testObserver = dao.getEntityByID(1).test();
 
-        UserSkill result = dao.getEntityByID(1);
-
-        assertEquals(10, result.getLvl());
-        dao.deleteEntity(skill);
+        testObserver.assertValue(us -> us.getLvl() == 10);
     }
 
     @Test
     public void getAllEntities() {
-        UserSkill skill = new UserSkill();
-        skill.setLvl(10);
-        skill.setId(1);
-        dao.insertEntity(skill);
+        TestObserver<List<UserSkill>> testObserver = dao.getAllEntities().test();
 
-        UserSkill skill2 = new UserSkill();
-        skill2.setLvl(10);
-        skill2.setId(2);
-        dao.insertEntity(skill2);
-
-
-        List<UserSkill> result = dao.getAllEntities();
-
-        assertEquals(2, result.size());
-        assertEquals(10, result.get(0).getLvl());
-        assertEquals(10, result.get(1).getLvl());
-        dao.deleteEntity(skill);
-        dao.deleteEntity(skill2);
+        testObserver.assertValue(l -> l.size() == 2);
+        testObserver.assertValue(l -> l.get(0).getLvl() == 10);
+        testObserver.assertValue(l -> l.get(1).getLvl() == 10);
     }
 
     @Test
     public void getUserSkills() {
+        TestObserver<List<CompleteUserSkill>> testObserver = dao.getUserSkills().test();
 
-        UserSkill skill = new UserSkill();
-        skill.setLvl(10);
-        skill.setId(1);
-        skill.setSkillID(1);
-        dao.insertEntity(skill);
-
-        UserSkill skill2 = new UserSkill();
-        skill2.setLvl(10);
-        skill2.setId(2);
-        skill2.setSkillID(1);
-        dao.insertEntity(skill2);
-
-        DBSkill dbskill = new DBSkill();
-        dbskill.setId(1);
-        db.dbSkillDAO().insertEntity(dbskill);
-
-
-        List<CompleteUserSkill> result = dao.getUserSkills();
-
-        assertEquals(2, result.size());
-        assertEquals(10, result.get(0).userSkill.getLvl());
-        assertEquals(10, result.get(1).userSkill.getLvl());
-        dao.deleteEntity(skill);
-        dao.deleteEntity(skill2);
+        testObserver.assertValue(l -> l.size() == 2);
+        testObserver.assertValue(l -> l.get(0).userSkill.getLvl() == 10);
+        testObserver.assertValue(l -> l.get(1).userSkill.getLvl() == 10);
     }
 
     @Test
     public void mergeUserSkills() {
+        skill1.setLvl(11);
+        boolean done = dao.mergeUserSkills(skill1, skill2);
 
-        UserSkill skill = new UserSkill();
-        skill.setLvl(10);
-        skill.setId(1);
-        dao.insertEntity(skill);
-
-        UserSkill skill2 = new UserSkill();
-        skill2.setLvl(10);
-        skill2.setId(2);
-        dao.insertEntity(skill2);
-
-
-        skill.setLvl(11);
-        boolean done = dao.mergeUserSkills(skill, skill2);
-        UserSkill result = dao.getEntityByID(1);
+        TestObserver<UserSkill> testObserver = dao.getEntityByID(1).test();
 
         assertTrue(done);
-        assertEquals(11, result.getLvl());
-        dao.deleteEntity(skill);
-
+        testObserver.assertValue(us -> us.getLvl() == 11);
     }
 }

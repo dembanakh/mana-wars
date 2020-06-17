@@ -28,6 +28,20 @@ public final class DungeonsPresenter extends BasePresenter<DungeonsView, Dungeon
         }, Throwable::printStackTrace));
     }
 
+    public void refreshRequiredManaAmount(){
+
+        disposable.add(interactor.getRequiredManaAmountForBattle().subscribe(requiredMana->{
+
+            uiThreadHandler.postRunnable(()->{
+
+                //TODO
+
+            });
+
+        }, Throwable::printStackTrace));
+
+    }
+
     public UserDungeonsAPI getUser() {
         return interactor.getUser();
     }

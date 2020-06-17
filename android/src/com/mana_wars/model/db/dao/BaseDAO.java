@@ -8,12 +8,14 @@ import androidx.room.Update;
 
 import java.util.List;
 
+import io.reactivex.Single;
+
 @Dao
 public abstract class BaseDAO<T> {
 
-    public abstract T getEntityByID(int id);
+    public abstract Single<T> getEntityByID(int id);
 
-    public abstract List<T> getAllEntities();
+    public abstract Single<List<T>> getAllEntities();
 
     @Insert
     public abstract Long insertEntity(T entity);
