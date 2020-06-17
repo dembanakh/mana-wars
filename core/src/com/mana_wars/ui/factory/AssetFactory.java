@@ -1,5 +1,10 @@
 package com.mana_wars.ui.factory;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
 import java.util.HashMap;
 
 public abstract class AssetFactory<V, T> {
@@ -16,5 +21,15 @@ public abstract class AssetFactory<V, T> {
     }
 
     public abstract void loadItems();
+
+    // TEMP
+    private static TextureRegion whiteTexture;
+
+    public static TextureRegion getWhiteTexture() {
+        if (whiteTexture == null) {
+            whiteTexture = new TextureRegion(new Texture(Gdx.files.internal("white.png")));
+        }
+        return whiteTexture;
+    }
 
 }

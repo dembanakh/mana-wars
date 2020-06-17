@@ -18,7 +18,7 @@ import com.mana_wars.presentation.view.BattleView;
 import com.mana_wars.ui.factory.UIElementFactory;
 import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
-import com.mana_wars.ui.overlays.BattleBaseOverlayUI;
+import com.mana_wars.ui.overlays.BattleOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.widgets.skills_list_2d.ApplicableSkillsList2D;
 import com.mana_wars.ui.widgets.skills_list_2d.BlockableSkillsList;
@@ -34,14 +34,14 @@ import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.ACTIVE_SKILLS_TABLE_
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.SKILLS_TABLES_WIDTH;
 import static com.mana_wars.ui.UIStringConstants.UI_SKIN;
 
-public class BattleScreen extends BaseScreen<BattleBaseOverlayUI, BattlePresenter> implements BattleView {
+public class BattleScreen extends BaseScreen<BattleOverlayUI, BattlePresenter> implements BattleView {
 
     private final BlockableSkillsList<ActiveSkill> userActiveSkills;
     private final AtomicBoolean isBattle = new AtomicBoolean(false);
 
     public BattleScreen(final UserBattleAPI user,
                         final ScreenSetter screenSetter, final FactoryStorage factoryStorage,
-                        final DatabaseRepository databaseRepository, final BattleBaseOverlayUI overlayUI) {
+                        final DatabaseRepository databaseRepository, final BattleOverlayUI overlayUI) {
         super(screenSetter, factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING), overlayUI);
 
         presenter = new BattlePresenter(this,
@@ -107,8 +107,9 @@ public class BattleScreen extends BaseScreen<BattleBaseOverlayUI, BattlePresente
                     }
                 });
 
-        layer.add(backButton).pad(200, 0, 100, 0).bottom().expand().row();
-        layer.add(userActiveSkills.toActor()).bottom().expand()
+        layer.center().bottom();
+        layer.add(backButton).row();
+        layer.add(userActiveSkills.toActor()).padTop(200) // 200 is the same as in BattleOverlayUI
                 .height(ACTIVE_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH).row();
         return layer;
     }

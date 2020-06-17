@@ -22,7 +22,7 @@ import com.mana_wars.presentation.presenters.SkillsPresenter;
 import com.mana_wars.presentation.view.SkillsView;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.management.ScreenSetter;
-import com.mana_wars.ui.overlays.MenuBaseOverlayUI;
+import com.mana_wars.ui.overlays.MenuOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.widgets.TimeoutDragAndDrop;
 import com.mana_wars.ui.widgets.skills_list_2d.List2D;
@@ -38,7 +38,7 @@ import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.PASSIVE_SKILLS_TABLE
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.SKILLS_TABLES_WIDTH;
 import static com.mana_wars.ui.UIStringConstants.UI_SKIN;
 
-public class SkillsScreen extends BaseScreen<MenuBaseOverlayUI, SkillsPresenter> implements SkillsView {
+public class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresenter> implements SkillsView {
 
     private final List2D<Skill> mainSkillsTable;
     private final List2D<Skill> activeSkillsTable;
@@ -48,7 +48,7 @@ public class SkillsScreen extends BaseScreen<MenuBaseOverlayUI, SkillsPresenter>
 
     public SkillsScreen(final UserSkillsAPI user,
                         final ScreenSetter screenSetter, final FactoryStorage factoryStorage,
-                        final DatabaseRepository databaseRepository, final MenuBaseOverlayUI overlayUI) {
+                        final DatabaseRepository databaseRepository, final MenuOverlayUI overlayUI) {
         super(screenSetter, factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING), overlayUI);
 
         this.presenter = new SkillsPresenter(this,

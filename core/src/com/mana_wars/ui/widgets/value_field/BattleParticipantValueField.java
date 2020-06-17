@@ -6,12 +6,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.PassiveSkill;
@@ -32,6 +32,8 @@ public class BattleParticipantValueField extends ValueFieldWithInitialData<Battl
 
     private Label healthChangeLabel;
 
+    private Image participantImage;
+
     private final AssetFactory<Integer, TextureRegion> iconFactory;
     private final AssetFactory<Rarity, TextureRegion> frameFactory;
     private final float deltaHealthAnimationDistance;
@@ -50,9 +52,6 @@ public class BattleParticipantValueField extends ValueFieldWithInitialData<Battl
     @Override
     public void init() {
         super.init();
-
-        Table field = new Table();
-        field.setFillParent(true);
 
         participantName = new Label("", new Label.LabelStyle(new BitmapFont(), new Color()));
         participantName.setColor(Color.BLACK);
@@ -85,6 +84,11 @@ public class BattleParticipantValueField extends ValueFieldWithInitialData<Battl
         };
         participantPassiveSkills.setMinHeight(131.4f);
         addActorAndExpandX(participantPassiveSkills);
+
+        TextureRegion tempRegion = new TextureRegion(AssetFactory.getWhiteTexture());
+        tempRegion.setRegion(0, 0, 256, 512);
+        participantImage = new Image(tempRegion);
+        addActorAndPad(participantImage, 50);
     }
 
     @Override

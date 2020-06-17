@@ -23,7 +23,9 @@ import java.util.List;
 
 import io.reactivex.functions.Consumer;
 
-public class BattleBaseOverlayUI extends BaseOverlayUI {
+import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.ACTIVE_SKILLS_TABLE_HEIGHT;
+
+public class BattleOverlayUI extends BaseOverlayUI {
 
     private final ValueField<Integer> userManaAmount;
 
@@ -32,25 +34,32 @@ public class BattleBaseOverlayUI extends BaseOverlayUI {
 
     private final List<ValueFieldWithInitialDataWrapper<BattleParticipantValueField.Data, Integer>> enemyFieldWrappers;
 
-    BattleBaseOverlayUI(final ScreenSetter screenSetter,
-                        final AssetFactory<Integer, TextureRegion> iconFactory,
-                        final AssetFactory<Rarity, TextureRegion> frameFactory) {
-        userField = new BattleParticipantValueField(iconFactory, frameFactory, -200, 1)
+    BattleOverlayUI(final AssetFactory<Integer, TextureRegion> iconFactory,
+                    final AssetFactory<Rarity, TextureRegion> frameFactory) {
+        userField = new BattleParticipantValueField(iconFactory, frameFactory, -200, 1);
+        enemyField = new BattleParticipantValueField(iconFactory, frameFactory, 200, 1);
+        userManaAmount = new TextValueField<>();
+        enemyFieldWrappers = new ArrayList<>();
+    }
+
+    @Override
+    public void init() {
+        userField
                 .setXConstraint(new AbsoluteXPositionConstraint(Align.left, 0))
                 .setYConstraint(new AbsoluteYPositionConstraint(Align.top, 0))
                 .setWidthConstraint(new RelativeWidthConstraint(50))
-                .setHeightConstraint(new AbsoluteSizeConstraint(800));
-        enemyField = new BattleParticipantValueField(iconFactory, frameFactory, 200, 1)
+                .setHeightConstraint(new AbsoluteSizeConstraint(1200));
+        enemyField
                 .setXConstraint(new AbsoluteXPositionConstraint(Align.right, 0))
                 .setYConstraint(new AbsoluteYPositionConstraint(Align.top, 0))
                 .setWidthConstraint(new RelativeWidthConstraint(50))
-                .setHeightConstraint(new AbsoluteSizeConstraint(800));
-        userManaAmount = new TextValueField<Integer>()
+                .setHeightConstraint(new AbsoluteSizeConstraint(1200));
+        userManaAmount
                 .setXConstraint(new AbsoluteXPositionConstraint(Align.left, 0))
-                .setYConstraint(new AbsoluteYPositionConstraint(Align.top, 800))
+                .setYConstraint(new AbsoluteYPositionConstraint(Align.bottom, ACTIVE_SKILLS_TABLE_HEIGHT))
                 .setWidthConstraint(new RelativeWidthConstraint())
                 .setHeightConstraint(new AbsoluteSizeConstraint(200));
-        enemyFieldWrappers = new ArrayList<>();
+        super.init();
     }
 
     @Override

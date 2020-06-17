@@ -15,7 +15,7 @@ import com.mana_wars.presentation.presenters.MainMenuPresenter;
 import com.mana_wars.presentation.view.MainMenuView;
 import com.mana_wars.ui.factory.UIElementFactory;
 import com.mana_wars.ui.management.ScreenSetter;
-import com.mana_wars.ui.overlays.MenuBaseOverlayUI;
+import com.mana_wars.ui.overlays.MenuOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.ui.widgets.ManaBonusProgressBar;
@@ -25,7 +25,7 @@ import static com.mana_wars.ui.UIStringConstants.MAIN_MENU_SCREEN;
 import static com.mana_wars.ui.UIStringConstants.SKILL_CASE_WINDOW;
 import static com.mana_wars.ui.UIStringConstants.UI_SKIN;
 
-public class MainMenuScreen extends BaseScreen<MenuBaseOverlayUI, MainMenuPresenter> implements MainMenuView {
+public class MainMenuScreen extends BaseScreen<MenuOverlayUI, MainMenuPresenter> implements MainMenuView {
 
     private final SkillCaseWindow skillCaseWindow;
     private final ManaBonusProgressBar manaBonusProgressBar;
@@ -34,7 +34,7 @@ public class MainMenuScreen extends BaseScreen<MenuBaseOverlayUI, MainMenuPresen
                           final ScreenSetter screenSetter,
                           final FactoryStorage factoryStorage,
                           final RepositoryStorage repositoryStorage,
-                          final MenuBaseOverlayUI overlayUI) {
+                          final MenuOverlayUI overlayUI) {
         super(screenSetter, factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING), overlayUI);
 
         this.presenter = new MainMenuPresenter(this,

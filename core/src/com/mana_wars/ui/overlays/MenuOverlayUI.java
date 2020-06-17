@@ -18,14 +18,14 @@ import io.reactivex.functions.Consumer;
 import static com.mana_wars.ui.UIElementsSize.MENU_OVERLAY_UI.MANA_AMOUNT_FIELD_HEIGHT;
 import static com.mana_wars.ui.UIElementsSize.MENU_OVERLAY_UI.USER_LEVEL_FIELD_HEIGHT;
 
-public class MenuBaseOverlayUI extends BaseOverlayUI {
+public class MenuOverlayUI extends BaseOverlayUI {
 
     private final ValueField<Integer> manaAmountField;
     private final ValueField<Integer> userLevelField;
     private final ValueField<String> usernameField;
     private final BuildableUI navigationBar;
 
-    MenuBaseOverlayUI(final ScreenSetter screenSetter) {
+    MenuOverlayUI(final ScreenSetter screenSetter) {
         manaAmountField = new TextValueField<Integer>()
                 .setXConstraint(new AbsoluteXPositionConstraint(Align.right, 0))
                 .setYConstraint(new AbsoluteYPositionConstraint(Align.top, 0))

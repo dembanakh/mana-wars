@@ -25,7 +25,7 @@ public class ApplicableSkillsList2D<T extends ActiveSkill> extends ClickableSkil
                                      AssetFactory<Rarity, TextureRegion> frameFactory,
                                      Consumer<? super Integer> onSkillClick) {
         super(skin, cols, iconFactory, frameFactory);
-        this.animationController = new SkillIconAnimationController(iconFactory.getAsset(1),
+        this.animationController = new SkillIconAnimationController(AssetFactory.getWhiteTexture(),
                 getStyle().font);
 
         setOnSkillClick(onSkillClick);

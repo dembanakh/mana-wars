@@ -25,7 +25,7 @@ import static com.mana_wars.ui.UIElementsSize.SKILL_CASE_WINDOW.SKILL_DESCRIPTIO
 import static com.mana_wars.ui.UIElementsSize.SKILL_CASE_WINDOW.SKILL_ICON_PADDING;
 import static com.mana_wars.ui.UIElementsSize.SKILL_CASE_WINDOW.SKILL_NAME_PADDING;
 
-public class SkillCaseWindow extends Window implements BuildableUI {
+public class SkillInfoWindow extends Window implements BuildableUI {
 
     private final Image skillIcon;
     private final Image skillFrame;
@@ -35,7 +35,7 @@ public class SkillCaseWindow extends Window implements BuildableUI {
     private final AssetFactory<Integer, TextureRegion> iconFactory;
     private final AssetFactory<Rarity, TextureRegion> frameFactory;
 
-    public SkillCaseWindow(String title, Skin skin, AssetFactory<Integer, TextureRegion> iconFactory,
+    public SkillInfoWindow(String title, Skin skin, AssetFactory<Integer, TextureRegion> iconFactory,
                            AssetFactory<Rarity, TextureRegion> frameFactory) {
         super(title, skin);
         this.skillIcon = new Image();
@@ -72,7 +72,7 @@ public class SkillCaseWindow extends Window implements BuildableUI {
                 new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
-                        hide();
+                        hideSkill();
                     }
                 })).bottom().pad(GET_BUTTON_PADDING_TOP, GET_BUTTON_PADDING_LEFT,
                 GET_BUTTON_PADDING_BOTTOM, GET_BUTTON_PADDING_RIGHT);
@@ -83,7 +83,7 @@ public class SkillCaseWindow extends Window implements BuildableUI {
         return this;
     }
 
-    private void hide() {
+    private void hideSkill() {
         setVisible(false);
     }
 
