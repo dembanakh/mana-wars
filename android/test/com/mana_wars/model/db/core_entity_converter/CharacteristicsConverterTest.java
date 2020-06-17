@@ -31,7 +31,7 @@ public class CharacteristicsConverterTest {
 
         result = CharacteristicsConverter.toSkillCharacteristics(input);
         assertEquals(1, result.size());
-        assertEquals(2, result.get(0).getValue());
+        assertEquals(2, result.get(0).getValue(1));
         assertEquals(Characteristic.getCharacteristicById(1), result.get(0).getCharacteristic());
         assertEquals(ValueChangeType.INCREASE, result.get(0).getChangeType());
         assertEquals(SkillCharacteristic.Target.SELF, result.get(0).getTarget());

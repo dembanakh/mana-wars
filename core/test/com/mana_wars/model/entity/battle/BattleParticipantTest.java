@@ -41,14 +41,14 @@ public class BattleParticipantTest {
         SkillCharacteristic sc = mock(SkillCharacteristic.class);
 
         when(sc.getCharacteristic()).thenReturn(Characteristic.HEALTH);
-        when(sc.getValue()).thenReturn(10);
+        when(sc.getValue(1)).thenReturn(10);
         when(sc.getChangeType()).thenReturn(ValueChangeType.DECREASE);
-        bp.applySkillCharacteristic(sc);
+        bp.applySkillCharacteristic(sc, 1);
 
         assertEquals(90, bp.getCharacteristicValue(Characteristic.HEALTH));
 
         verify(sc).getCharacteristic();
-        verify(sc).getValue();
+        verify(sc).getValue(1);
         verify(sc).getChangeType();
         verifyNoMoreInteractions(sc);
     }

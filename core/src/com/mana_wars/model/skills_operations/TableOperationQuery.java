@@ -1,6 +1,5 @@
 package com.mana_wars.model.skills_operations;
 
-import com.mana_wars.model.entity.SkillTable;
 import com.mana_wars.model.entity.skills.Skill;
 
 class TableOperationQuery implements OperationQuery<SkillTable, OperationQuery<Skill, Boolean>> {

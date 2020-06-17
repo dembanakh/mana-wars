@@ -47,9 +47,9 @@ public abstract class BattleParticipant {
 
     public abstract void update(final double currentTime);
 
-    public void applySkillCharacteristic(SkillCharacteristic sc) {
+    public void applySkillCharacteristic(SkillCharacteristic sc, int skillLevel) {
         Characteristic c = sc.getCharacteristic();
-        int changedValue = c.changeValue(characteristics.get(c), sc.getChangeType(), sc.getValue());
+        int changedValue = c.changeValue(characteristics.get(c), sc.getChangeType(), sc.getValue(skillLevel));
         if (c == Characteristic.HEALTH) {
             healthObservable.onNext(changedValue);
             changedValue = Math.min(changedValue, initialHealth);

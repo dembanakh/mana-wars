@@ -32,6 +32,11 @@ public final class UIStringConstants {
         public static final String CLOSE_BUTTON_TEXT = "GET";
     }
 
+    public static class SKILL_INFO_WINDOW {
+        public static final String TITLE = "SKILL INFO";
+        public static final String CLOSE_BUTTON_TEXT = "CLOSE";
+    }
+
     private UIStringConstants() {
     }
 }
