@@ -35,14 +35,14 @@ public class SkillsInfoScreen extends BaseScreen<BaseOverlayUI, SkillsInfoPresen
         super(screenSetter, factoryStorage.getSkinFactory().getAsset(UIStringConstants.UI_SKIN.FREEZING), overlayUI);
         this.presenter = new SkillsInfoPresenter(this, new SkillsInfoInteractor(databaseRepository), Gdx.app::postRunnable);
         this.skillsList = new ClickableSkillsList2D<Skill>(getSkin(), 5, factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(),
-                presenter::prepareSkillInfo) {
+                this::openSkillInfoWindow) {
             @Override
             protected boolean shouldShowLevel(Skill item) {
                 return false;
             }
         };
         this.scrollPane = new ScrollPane(skillsList, getSkin());
-        this.skillInfoWindow = new SkillInfoWindow("INFO", getSkin(),
+        this.skillInfoWindow = new SkillInfoWindow(UIStringConstants.SKILL_INFO_WINDOW.TITLE, getSkin(),
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
     }
 
@@ -79,9 +79,8 @@ public class SkillsInfoScreen extends BaseScreen<BaseOverlayUI, SkillsInfoPresen
         return layer;
     }
 
-    @Override
-    public void openSkillInfoWindow(int skillID, String skillName, Rarity skillRarity, String description) {
-        skillInfoWindow.open(skillID, skillName, skillRarity, description);
+    private void openSkillInfoWindow(int skillIndex) {
+        skillInfoWindow.open(skillsList.getItem(skillIndex));
     }
 
     @Override

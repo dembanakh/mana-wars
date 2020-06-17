@@ -92,8 +92,8 @@ public class MainMenuScreen extends BaseScreen<MenuOverlayUI, MainMenuPresenter>
     }
 
     @Override
-    public void openSkillCaseWindow(int skillID, String skillName, Rarity skillRarity, String description) {
-        skillCaseWindow.open(skillID, skillName, skillRarity, description);
+    public void openSkillCaseWindow(int skillID, String skillName, Rarity skillRarity, int manaCost, String description) {
+        skillCaseWindow.open(skillID, skillName, skillRarity, manaCost, description);
     }
 
     @Override

@@ -39,8 +39,8 @@ class UserBattleParticipant extends BattleParticipant {
     }
 
     @Override
-    public void applySkillCharacteristic(SkillCharacteristic sc) {
-        super.applySkillCharacteristic(sc);
+    public void applySkillCharacteristic(SkillCharacteristic sc, int skillLevel) {
+        super.applySkillCharacteristic(sc, skillLevel);
 
         Characteristic c = sc.getCharacteristic();
         if (c == Characteristic.MANA) {

@@ -31,6 +31,7 @@ public class SkillCaseWindow extends Window implements BuildableUI {
     private final Image skillFrame;
     private final Label skillName;
     private final Label skillDescription;
+    private final Label skillManaCost;
 
     private final AssetFactory<Integer, TextureRegion> iconFactory;
     private final AssetFactory<Rarity, TextureRegion> frameFactory;
@@ -41,9 +42,12 @@ public class SkillCaseWindow extends Window implements BuildableUI {
         this.skillIcon = new Image();
         this.skillFrame = new Image();
         this.skillName = new Label("", skin);
+        this.skillName.setAlignment(Align.center);
         this.skillDescription = new Label("", skin);
         this.skillDescription.setAlignment(Align.center | Align.right);
         this.skillDescription.setFontScale(1.5f);
+        this.skillManaCost = new Label("", skin);
+        this.skillManaCost.setFontScale(3);
         this.iconFactory = iconFactory;
         this.frameFactory = frameFactory;
         padTop(32);
@@ -51,7 +55,9 @@ public class SkillCaseWindow extends Window implements BuildableUI {
 
     @Override
     public void init() {
-
+        setFillParent(false);
+        setMovable(false);
+        setResizable(false);
     }
 
     @Override
@@ -59,15 +65,13 @@ public class SkillCaseWindow extends Window implements BuildableUI {
         this.clear();
 
         setSkin(skin);
-        setFillParent(false);
-        setMovable(false);
-        setResizable(false);
-        add(skillName).padTop(SKILL_NAME_PADDING).row();
+        add(skillName).padTop(SKILL_NAME_PADDING).width(800).row();
         Stack stack = new Stack();
         stack.add(skillIcon);
         stack.add(skillFrame);
+        stack.add(skillManaCost);
         add(stack).padTop(SKILL_ICON_PADDING).row();
-        add(skillDescription).padTop(SKILL_DESCRIPTION_PADDING).row();
+        add(skillDescription).padTop(SKILL_DESCRIPTION_PADDING).height(400).row();
         add(UIElementFactory.getButton(skin, UIStringConstants.SKILL_CASE_WINDOW.CLOSE_BUTTON_TEXT,
                 new ChangeListener() {
                     @Override
@@ -87,10 +91,11 @@ public class SkillCaseWindow extends Window implements BuildableUI {
         setVisible(false);
     }
 
-    public void open(int skillID, String skillName, Rarity skillRarity, String skillDescription) {
+    public void open(int skillID, String skillName, Rarity skillRarity, int skillManaCost, String skillDescription) {
         skillIcon.setDrawable(new TextureRegionDrawable(iconFactory.getAsset(skillID)));
         skillFrame.setDrawable(new TextureRegionDrawable(frameFactory.getAsset(skillRarity)));
         this.skillName.setText(skillName);
+        this.skillManaCost.setText(skillManaCost);
         this.skillDescription.setText(skillDescription);
         setPosition((SCREEN_WIDTH() - getWidth()) * 0.5f,
                 (SCREEN_HEIGHT() - getHeight()) * 0.5f);

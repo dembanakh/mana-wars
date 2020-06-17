@@ -40,15 +40,15 @@ public class SkillTest {
         BattleParticipant enemy = mock(BattleParticipant.class);
         skill.activate(self, enemy);
 
-        verify(self).applySkillCharacteristic(sc1);
-        verify(enemy).applySkillCharacteristic(sc2);
+        verify(self).applySkillCharacteristic(sc1, 1);
+        verify(enemy).applySkillCharacteristic(sc2, 1);
         verifyNoMoreInteractions(self, enemy);
     }
 
     @Test
     public void testGetManaCost() {
         when(sc1.getCharacteristic()).thenReturn(Characteristic.MANA);
-        when(sc1.getValue()).thenReturn(10);
+        when(sc1.getValue(1)).thenReturn(10);
         when(sc2.getCharacteristic()).thenReturn(Characteristic.HEALTH);
 
         assertEquals(10, skill.getManaCost());
@@ -57,9 +57,9 @@ public class SkillTest {
     @Test
     public void testGetDescription() {
         when(sc1.getCharacteristic()).thenReturn(Characteristic.MANA);
-        when(sc1.getDescription()).thenReturn("a");
+        when(sc1.getDescription(1)).thenReturn("a");
         when(sc2.getCharacteristic()).thenReturn(Characteristic.HEALTH);
-        when(sc2.getDescription()).thenReturn("b");
+        when(sc2.getDescription(1)).thenReturn("b");
 
         assertEquals("b\n", skill.getDescription());
     }

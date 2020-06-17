@@ -1,7 +1,7 @@
 package com.mana_wars.model.interactor;
 
 import com.mana_wars.model.SkillsListTriple;
-import com.mana_wars.model.entity.SkillTable;
+import com.mana_wars.model.skills_operations.SkillTable;
 import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.entity.user.UserSkillsAPI;
 import com.mana_wars.model.repository.DatabaseRepository;

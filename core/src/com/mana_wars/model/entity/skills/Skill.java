@@ -21,16 +21,16 @@ public class Skill extends GameItem {
         //System.out.println(getName() + " activated");
         for (SkillCharacteristic sc : skillCharacteristics) {
             if (sc.getTarget() == SkillCharacteristic.Target.SELF)
-                self.applySkillCharacteristic(sc);
+                self.applySkillCharacteristic(sc, getLevel());
             else if (sc.getTarget() == SkillCharacteristic.Target.ENEMY)
-                enemy.applySkillCharacteristic(sc);
+                enemy.applySkillCharacteristic(sc, getLevel());
         }
     }
 
     public int getManaCost() {
         for (SkillCharacteristic c : skillCharacteristics) {
             if (c.getCharacteristic() == Characteristic.MANA) {
-                return c.getValue();
+                return c.getValue(1);
             }
         }
         return 0;
@@ -40,7 +40,7 @@ public class Skill extends GameItem {
         StringBuilder result = new StringBuilder();
         for (SkillCharacteristic sc : skillCharacteristics) {
             if (sc.getCharacteristic() == Characteristic.MANA) continue;
-            result.append(sc.getDescription());
+            result.append(sc.getDescription(getLevel()));
             result.append('\n');
         }
         return result.toString();

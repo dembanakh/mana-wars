@@ -41,6 +41,12 @@ public abstract class GameItem implements Comparable<GameItem> {
 
     public void upgradeLevel() {
         level++;
+        if (level > 10) level = 10;
+    }
+
+    public void downgradeLevel() {
+        level--;
+        if (level < 1) level = 1;
     }
 
     @Override

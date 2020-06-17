@@ -13,6 +13,6 @@ public class SkillCharacteristicTest {
     public void getDescription() {
         SkillCharacteristic sc = new SkillCharacteristic(1, Characteristic.COOLDOWN,
                 ValueChangeType.INCREASE, SkillCharacteristic.Target.ENEMY);
-        assertEquals("ENEMY COOLDOWN +1", sc.getDescription());
+        assertEquals("ENEMY COOLDOWN +1", sc.getDescription(1));
     }
 }
