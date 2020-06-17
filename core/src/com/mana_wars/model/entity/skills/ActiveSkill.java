@@ -7,8 +7,8 @@ import java.util.List;
 
 public class ActiveSkill extends Skill {
 
-    private double cooldown;
-    private double castTime;
+    private final double cooldown;
+    private final double castTime;
 
     public ActiveSkill(int id, int level, Rarity rarity, double castTime, double cooldown,String name, List<SkillCharacteristic> skillCharacteristics) {
         super(id, level, rarity, name, skillCharacteristics);

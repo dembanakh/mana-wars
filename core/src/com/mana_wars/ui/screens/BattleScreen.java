@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import com.mana_wars.model.GameConstants;
+import com.mana_wars.model.entity.battle.BattleSummaryData;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.entity.user.UserBattleAPI;
 import com.mana_wars.model.repository.DatabaseRepository;
@@ -24,6 +25,7 @@ import com.mana_wars.ui.widgets.skills_list_2d.ApplicableSkillsList2D;
 import com.mana_wars.ui.widgets.skills_list_2d.BlockableSkillsList;
 
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -149,11 +151,13 @@ public class BattleScreen extends BaseScreen<BattleBaseOverlayUI, BattlePresente
     }
 
     @Override
-    public void finishBattle(Boolean temp) {
+    public void finishBattle(BattleSummaryData summaryData) {
         isBattle.set(false);
         overlayUI.clear();
-        // TODO: replace temp with BattleSummaryData and pass as argument
-        setScreen(ScreenInstance.BATTLE_SUMMARY, null);
+
+        Map<String, Object> arguments = new HashMap<>();
+        arguments.put("BattleSummaryData", summaryData);
+        setScreen(ScreenInstance.BATTLE_SUMMARY, arguments);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.mana_wars.presentation.view;
 
+import com.mana_wars.model.entity.battle.BattleSummaryData;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 
@@ -13,7 +14,7 @@ public interface BattleView extends BaseView{
     void addEnemy(String name, int initialHealth, Iterable<PassiveSkill> passiveSkills,
                   Consumer<Consumer<? super Integer>> subscribe);
     void setActiveEnemy(int index);
-    void finishBattle(Boolean temp);
+    void finishBattle(BattleSummaryData summaryData);
 
     void blockSkills(int appliedSkillIndex);
 

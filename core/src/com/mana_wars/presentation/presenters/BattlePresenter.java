@@ -16,11 +16,11 @@ public final class BattlePresenter extends BasePresenter<BattleView, BattleInter
         super(view, interactor, uiThreadHandler);
     }
 
-    public void addObserver_userHealth(Consumer<? super Integer> observer) {
+    private void addObserver_userHealth(Consumer<? super Integer> observer) {
         disposable.add(interactor.getUserHealthObservable().subscribe(observer));
     }
 
-    public void addObserver_enemyHealth(int index, Consumer<? super Integer> observer) {
+    private void addObserver_enemyHealth(int index, Consumer<? super Integer> observer) {
         disposable.add(interactor.getEnemyHealthObservable(index).subscribe(observer));
     }
 
@@ -29,7 +29,6 @@ public final class BattlePresenter extends BasePresenter<BattleView, BattleInter
     }
 
     public void applyUserSkill(int appliedSkillIndex) {
-        //TODO handle empty
         if (interactor.tryApplyUserSkill(appliedSkillIndex)) {
             view.blockSkills(appliedSkillIndex);
         }
@@ -41,7 +40,9 @@ public final class BattlePresenter extends BasePresenter<BattleView, BattleInter
 
     @Override
     public void onStartBattle() {
-        disposable.add(interactor.getFinishBattleObservable().subscribe(view::finishBattle));
+        disposable.add(interactor.getFinishBattleObservable().subscribe(
+                (data) -> uiThreadHandler.postRunnable(() -> view.finishBattle(data))
+        ));
         view.startBattle();
     }
 

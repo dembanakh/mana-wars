@@ -15,7 +15,7 @@ public class DungeonBattleBuilder extends BaseBattleBuilder {
     private final UserDungeonsAPI user;
     private final DungeonEnemyFactory dungeonEnemyFactory;
 
-    public DungeonBattleBuilder(UserDungeonsAPI user, DungeonEnemyFactory dungeonEnemyFactory){
+    public DungeonBattleBuilder(UserDungeonsAPI user, DungeonEnemyFactory dungeonEnemyFactory) {
         this.user = user;
         this.dungeonEnemyFactory = dungeonEnemyFactory;
     }

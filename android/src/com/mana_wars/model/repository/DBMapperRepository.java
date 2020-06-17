@@ -131,10 +131,10 @@ public class DBMapperRepository implements DatabaseRepository {
     @Override
     public Single<List<Mob>> getMobsListByDungeon(Dungeon dungeon) {
         return room.getDBMobsWithSkillsByDungeonID(lastDungeonsMap.get(dungeon).getId()).map(
-                dbMobWithSkills -> {
+                dbMobsWithSkills -> {
 
                     List<Mob> mobs = new ArrayList<>();
-                    for(DBMobWithSkills mob : dbMobWithSkills){
+                    for(DBMobWithSkills mob : dbMobsWithSkills){
 
                         List<ActiveSkill> activeSkills = new ArrayList<>();
                         List<PassiveSkill> passiveSkills = new ArrayList<>();
@@ -143,11 +143,12 @@ public class DBMapperRepository implements DatabaseRepository {
 
                             if (skill.skill.skill.isActive()){
                                 activeSkills.add(SkillConverter.toActiveSkill(skill.skill, skill.dbMobSkill.getLvl()));
-                            }else {
+                            } else {
                                 passiveSkills.add(SkillConverter.toPassiveSkill(skill.skill, skill.dbMobSkill.getLvl()));
                             }
                             
                         }
+
                         mobs.add(new Mob(mob.mob.getName(), mob.mob.getInitialHealth(), activeSkills, passiveSkills));
                     }
                     return mobs;

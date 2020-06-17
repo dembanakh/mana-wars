@@ -199,25 +199,25 @@
       "lvl" : 1
     },
     {
-      "id" : 1,
+      "id" : 5,
       "mob_id": 3,
       "skill_id": 1,
       "lvl" : 1
     },
     {
-      "id" : 2,
+      "id" : 6,
       "mob_id": 3,
       "skill_id": 3,
       "lvl" : 1
     },
     {
-      "id" : 3,
+      "id" : 7,
       "mob_id": 4,
       "skill_id": 4,
       "lvl" : 1
     },
     {
-      "id" : 4,
+      "id" : 8,
       "mob_id": 4,
       "skill_id": 3,
       "lvl" : 1

@@ -13,16 +13,16 @@ import com.mana_wars.ui.factory.AssetFactory;
 
 public class StaticSkillsList2D<T extends Skill> extends List2D<T> {
 
-    final AssetFactory<Integer, TextureRegion> iconFactory;
-    final AssetFactory<Rarity, TextureRegion> frameFactory;
+    private final AssetFactory<Integer, TextureRegion> iconFactory;
+    private final AssetFactory<Rarity, TextureRegion> frameFactory;
 
     public StaticSkillsList2D(Skin skin, int cols, AssetFactory<Integer, TextureRegion> iconFactory,
                         AssetFactory<Rarity, TextureRegion> frameFactory) {
         this(skin.get(List.ListStyle.class), cols, iconFactory, frameFactory);
     }
 
-    public StaticSkillsList2D(List.ListStyle style, int cols, AssetFactory<Integer, TextureRegion> iconFactory,
-                        AssetFactory<Rarity, TextureRegion> frameFactory) {
+    protected StaticSkillsList2D(List.ListStyle style, int cols, AssetFactory<Integer, TextureRegion> iconFactory,
+                                 AssetFactory<Rarity, TextureRegion> frameFactory) {
         super(style, cols);
         this.iconFactory = iconFactory;
         this.frameFactory = frameFactory;
@@ -34,7 +34,8 @@ public class StaticSkillsList2D<T extends Skill> extends List2D<T> {
                             float x, float y, float width, float height) {
         TextureRegion icon = iconFactory.getAsset(item.getIconID());
         TextureRegion frame = frameFactory.getAsset(item.getRarity());
-        String text = String.valueOf(item.getLevel());
+        String level = String.valueOf(item.getLevel());
+        String manaCost = String.valueOf(item.getManaCost());
 
         float iconOffsetX = (width - icon.getRegionWidth()) / 2;
         float iconOffsetY = (height - icon.getRegionHeight()) / 2;
@@ -45,10 +46,15 @@ public class StaticSkillsList2D<T extends Skill> extends List2D<T> {
         batch.draw(frame, x + frameOffsetX, y + frameOffsetY);
 
         if (shouldShowLevel(item)) {
+            font.getData().setScale(3);
             font.setColor(Color.BLACK);
-            font.getData().setScale(2);
-            font.draw(batch, text, x, y + frameOffsetY, 0, text.length(),
-                    width, Align.center, false, "");
+            font.draw(batch, level, x, y + iconOffsetY + font.getLineHeight() / 2,
+                    0, level.length(), 2 * iconOffsetX, Align.center,
+                    false, "");
+            font.setColor(Color.BLUE);
+            font.draw(batch, manaCost, x + width - 2 * iconOffsetX, y + iconOffsetY + font.getLineHeight() / 2,
+                    0, manaCost.length(), 2 * iconOffsetX, Align.center,
+                    false, "");
         }
     }
     
