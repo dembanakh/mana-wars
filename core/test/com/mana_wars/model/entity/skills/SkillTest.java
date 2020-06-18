@@ -50,7 +50,7 @@ public class SkillTest {
 
     @Test
     public void testGetManaCost() {
-        when(sc1.getCharacteristic()).thenReturn(Characteristic.MANA);
+        when(sc1.isManaCost()).thenReturn(true);
         when(sc1.getValue(1)).thenReturn(10);
         when(sc2.getCharacteristic()).thenReturn(Characteristic.HEALTH);
 

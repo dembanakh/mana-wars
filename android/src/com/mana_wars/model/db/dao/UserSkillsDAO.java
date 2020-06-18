@@ -32,8 +32,7 @@ public abstract class UserSkillsDAO extends BaseDAO<UserSkill> {
         return (deleteEntity(toDelete) > 0) & (updateEntity(toUpdate) > 0);
     }
 
-    @Query("SELECT * FROM user_skills us " +
-            "JOIN skills s ON us.skill_ref_id=s.skill_id " +
-            "WHERE s.is_active=0 AND us.chosen_id>0")
+    @Transaction
+    @Query("SELECT * FROM user_skills us JOIN skills s ON us.skill_ref_id=s.skill_id WHERE s.is_active=0 AND us.chosen_id>0")
     public abstract Single<List<CompleteUserSkill>> getChosenPassiveSkills();
 }
