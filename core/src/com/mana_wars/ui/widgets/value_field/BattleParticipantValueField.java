@@ -86,7 +86,7 @@ public class BattleParticipantValueField extends ValueFieldWithInitialData<Battl
         addActorAndExpandX(participantPassiveSkills);
 
         TextureRegion tempRegion = new TextureRegion(AssetFactory.getWhiteTexture());
-        tempRegion.setRegion(0, 0, 256, 512);
+        tempRegion.setRegion(0, 0, 384, 1024);
         participantImage = new Image(tempRegion);
         addActorAndPad(participantImage, 50);
     }
