@@ -1,16 +1,19 @@
 package com.mana_wars.ui.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.mana_wars.model.entity.base.Rarity;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.interactor.SkillsInfoInteractor;
 import com.mana_wars.model.repository.DatabaseRepository;
 import com.mana_wars.presentation.presenters.SkillsInfoPresenter;
 import com.mana_wars.presentation.view.SkillsInfoView;
 import com.mana_wars.ui.UIStringConstants;
+import com.mana_wars.ui.factory.UIElementFactory;
+import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.BaseOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
@@ -18,6 +21,7 @@ import com.mana_wars.ui.widgets.SkillInfoWindow;
 import com.mana_wars.ui.widgets.skills_list_2d.ClickableSkillsList2D;
 
 import static com.mana_wars.ui.UIElementsSize.SCREEN_HEIGHT;
+import static com.mana_wars.ui.UIElementsSize.SCREEN_WIDTH;
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.SKILLS_TABLES_WIDTH;
 
 public class SkillsInfoScreen extends BaseScreen<BaseOverlayUI, SkillsInfoPresenter> implements SkillsInfoView {
@@ -70,11 +74,18 @@ public class SkillsInfoScreen extends BaseScreen<BaseOverlayUI, SkillsInfoPresen
         Table layer = new Table();
         layer.setFillParent(true);
 
+        layer.add(UIElementFactory.getButton(skin, "TO MAIN MENU", new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                setScreen(ScreenInstance.MAIN_MENU, null);
+            }
+        })).top().expandX().fillX().row();
+
         Table scrollPaneCont = new Table(skin);
         scrollPaneCont.setBackground("list");
-        scrollPaneCont.add(scrollPane).height(SCREEN_HEIGHT()).width(SKILLS_TABLES_WIDTH);
+        scrollPaneCont.add(scrollPane).expand().fill();
 
-        layer.add(skillsList).top().expandX().height(SCREEN_HEIGHT()).width(SKILLS_TABLES_WIDTH);
+        layer.add(scrollPaneCont).top().expand().fill();
 
         return layer;
     }

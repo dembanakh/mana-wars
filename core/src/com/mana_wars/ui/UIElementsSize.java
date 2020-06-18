@@ -42,7 +42,7 @@ public final class UIElementsSize {
         public static final int COLUMNS_NUMBER = 5;
         public static final float ACTIVE_SKILLS_TABLE_HEIGHT = SCREEN_HEIGHT() * 0.1f;
         public static final float PASSIVE_SKILLS_TABLE_HEIGHT = SCREEN_HEIGHT() * 0.1f;
-        public static final float MAIN_SKILLS_TABLE_HEIGHT = SCREEN_HEIGHT() * 0.65f;
+        public static final float MAIN_SKILLS_TABLE_HEIGHT = SCREEN_HEIGHT() * 0.7f;
         public static final float SKILLS_TABLES_WIDTH = SCREEN_WIDTH();
     }
 

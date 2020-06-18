@@ -14,32 +14,19 @@ public final class DungeonsPresenter extends BasePresenter<DungeonsView, Dungeon
 
     public void refreshDungeonsList() {
         disposable.add(interactor.getDungeons().subscribe(dungeons -> {
-
             uiThreadHandler.postRunnable(() -> {
                         view.setDungeonsList(dungeons);
-                        for (int i = 0; i < dungeons.size(); ++i) {
-                            Dungeon dungeon = dungeons.get(i);
-                            view.setDungeonDisabled(i, getUser().getLevel() < dungeon.getRequiredLvl(),
-                                    false);
-                        }
-                    }
-
+            }
             );
         }, Throwable::printStackTrace));
     }
 
-    public void refreshRequiredManaAmount(){
-
+    public void refreshRequiredManaAmount() {
         disposable.add(interactor.getRequiredManaAmountForBattle().subscribe(requiredMana->{
-
             uiThreadHandler.postRunnable(()->{
-
-                //TODO
-
+                view.disableDungeons(getUser().getLevel(), getUser().getManaAmount() < requiredMana);
             });
-
         }, Throwable::printStackTrace));
-
     }
 
     public UserDungeonsAPI getUser() {

@@ -41,8 +41,10 @@ public class DungeonButtonsTable extends Table {
         }
     }
 
-    public void setDisabled(int index, boolean insufficientUserLevel, boolean insufficientManaAmount) {
-        buttons.get(index).setDisabled(insufficientUserLevel, insufficientManaAmount);
+    public void disableDungeons(int userLevel, boolean insufficientManaAmount) {
+        for (DungeonButton button : buttons) {
+            button.setDisabled(userLevel, insufficientManaAmount);
+        }
     }
 
     private static class DungeonButton extends Table {
@@ -71,7 +73,10 @@ public class DungeonButtonsTable extends Table {
             add(button).width(screenWidth / 4);
         }
 
-        private void setDisabled(boolean insufficientUserLevel, boolean insufficientManaAmount) {
+        private void setDisabled(int userLevel, boolean insufficientManaAmount) {
+            System.out.println(userLevel + " " + requiredLevel.getText());
+            boolean insufficientUserLevel = userLevel < Integer.parseInt(requiredLevel.getText().toString());
+
             if (insufficientManaAmount || insufficientUserLevel) {
                 button.setDisabled(true);
                 button.getColor().a = 0.5f;

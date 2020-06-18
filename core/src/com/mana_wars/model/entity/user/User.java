@@ -77,6 +77,11 @@ public class User implements UserMenuAPI, UserSkillsAPI, UserDungeonsAPI, UserBa
     }
 
     @Override
+    public int getManaAmount() {
+        return userManaRepository.getUserMana();
+    }
+
+    @Override
     public boolean tryApplyActiveSkill(int skillIndex) {
         return user.tryApplyActiveSkill(skillIndex);
     }

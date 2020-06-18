@@ -20,6 +20,8 @@ import com.mana_wars.model.interactor.SkillsInteractor;
 import com.mana_wars.model.repository.DatabaseRepository;
 import com.mana_wars.presentation.presenters.SkillsPresenter;
 import com.mana_wars.presentation.view.SkillsView;
+import com.mana_wars.ui.UIElementsSize;
+import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.MenuOverlayUI;
@@ -31,6 +33,8 @@ import com.mana_wars.ui.widgets.skills_list_2d.OperationSkillsList2D;
 import java.util.List;
 
 import static com.mana_wars.ui.UIElementsSize.MENU_OVERLAY_UI.USER_LEVEL_FIELD_HEIGHT;
+import static com.mana_wars.ui.UIElementsSize.SCREEN_HEIGHT;
+import static com.mana_wars.ui.UIElementsSize.SCREEN_WIDTH;
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.ACTIVE_SKILLS_TABLE_HEIGHT;
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.COLUMNS_NUMBER;
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.MAIN_SKILLS_TABLE_HEIGHT;
@@ -86,24 +90,18 @@ public class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresenter> imp
     @Override
     protected Table buildForegroundLayer(Skin skin) {
         Table layer = new Table().top();
+        layer.setFillParent(true);
 
-        mainSkillsTable.getSelection().setMultiple(false);
-        mainSkillsTable.getSelection().setRequired(false);
         Table scrollPaneCont = new Table(skin);
         scrollPaneCont.setBackground("list");
-        scrollPaneCont.add(scrollPane).height(MAIN_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH);
+        scrollPaneCont.add(scrollPane).expand().fill();
 
-        activeSkillsTable.getSelection().setMultiple(false);
-        activeSkillsTable.getSelection().setRequired(false);
-        passiveSkillsTable.getSelection().setMultiple(false);
-        passiveSkillsTable.getSelection().setRequired(false);
-
-        layer.add(activeSkillsTable).top().expandX().padTop(USER_LEVEL_FIELD_HEIGHT() + 15)
-                .height(ACTIVE_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH).row();
-        layer.add(passiveSkillsTable).top().expandX()
-                .height(PASSIVE_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH).row();
-        layer.add(scrollPaneCont).top().expandX()
-                .height(MAIN_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH);
+        layer.add(activeSkillsTable).top().padTop(UIElementsSize.MENU_OVERLAY_UI.USER_LEVEL_FIELD_HEIGHT())
+                .expandX().fillX().row();
+        layer.add(passiveSkillsTable).top()
+                .expandX().fillX().row();
+        layer.add(scrollPaneCont).top().padBottom(UIElementsSize.NAVIGATION_BAR.TAB_HEIGHT)
+                .expandY().fillY().expandX().fillX();
 
         return layer;
     }
