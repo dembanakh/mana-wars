@@ -2,6 +2,7 @@ package com.mana_wars.ui.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -108,6 +109,7 @@ public class BattleScreen extends BaseScreen<BattleOverlayUI, BattlePresenter> i
                 });
 
         layer.center().bottom();
+        layer.add(new Label("Round: %d", skin)).row();
         layer.add(backButton).row();
         layer.add(userActiveSkills.toActor()).padTop(200 + 50) // 200 is the same as in BattleOverlayUI
                 .height(ACTIVE_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH).row();

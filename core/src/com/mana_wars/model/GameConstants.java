@@ -11,6 +11,8 @@ public final class GameConstants {
     public static final int MANA_BONUS_BIT_SIZE = 20;
     public static final int MANA_BONUS_NUM_BITS = 4;
 
+    public static final int SKILL_CASE_PRICE = 100;
+
     public static final String CHOSEN_BATTLE_BUILDER = "CHOSEN_BATTLE_BUILDER";
 
     private GameConstants() {

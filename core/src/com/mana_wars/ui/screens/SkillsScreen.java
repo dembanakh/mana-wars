@@ -21,7 +21,6 @@ import com.mana_wars.model.repository.DatabaseRepository;
 import com.mana_wars.presentation.presenters.SkillsPresenter;
 import com.mana_wars.presentation.view.SkillsView;
 import com.mana_wars.ui.UIElementsSize;
-import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.MenuOverlayUI;
@@ -32,14 +31,7 @@ import com.mana_wars.ui.widgets.skills_list_2d.OperationSkillsList2D;
 
 import java.util.List;
 
-import static com.mana_wars.ui.UIElementsSize.MENU_OVERLAY_UI.USER_LEVEL_FIELD_HEIGHT;
-import static com.mana_wars.ui.UIElementsSize.SCREEN_HEIGHT;
-import static com.mana_wars.ui.UIElementsSize.SCREEN_WIDTH;
-import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.ACTIVE_SKILLS_TABLE_HEIGHT;
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.COLUMNS_NUMBER;
-import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.MAIN_SKILLS_TABLE_HEIGHT;
-import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.PASSIVE_SKILLS_TABLE_HEIGHT;
-import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.SKILLS_TABLES_WIDTH;
 import static com.mana_wars.ui.UIStringConstants.UI_SKIN;
 
 public class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresenter> implements SkillsView {

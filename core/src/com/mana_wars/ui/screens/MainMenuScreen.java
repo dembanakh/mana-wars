@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mana_wars.model.GameConstants;
-import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.entity.user.UserMenuAPI;
 import com.mana_wars.model.interactor.MainMenuInteractor;
@@ -40,7 +39,6 @@ public class MainMenuScreen extends BaseScreen<MenuOverlayUI, MainMenuPresenter>
         super(screenSetter, factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING), overlayUI);
 
         this.presenter = new MainMenuPresenter(this,
-                Gdx.app::postRunnable,
                 new MainMenuInteractor(
                         user, repositoryStorage.getDatabaseRepository(),
                         new ManaBonusImpl(
@@ -48,7 +46,8 @@ public class MainMenuScreen extends BaseScreen<MenuOverlayUI, MainMenuPresenter>
                                 GameConstants.MANA_BONUS_BIT_SIZE,
                                 GameConstants.MANA_BONUS_NUM_BITS,
                                 System::currentTimeMillis,
-                                repositoryStorage.getManaBonusRepository())));
+                                repositoryStorage.getManaBonusRepository())),
+                Gdx.app::postRunnable);
         presenter.addObserver_manaAmount(overlayUI.getManaAmountObserver());
         presenter.addObserver_userLevel(overlayUI.getUserLevelObserver());
         this.skillCaseWindow = new SkillCaseWindow(SKILL_CASE_WINDOW.TITLE, getSkin(),
