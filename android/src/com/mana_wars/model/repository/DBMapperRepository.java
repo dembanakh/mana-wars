@@ -23,6 +23,7 @@ import java.util.Map;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
+import io.reactivex.functions.Function;
 
 public class DBMapperRepository implements DatabaseRepository {
 
@@ -156,7 +157,13 @@ public class DBMapperRepository implements DatabaseRepository {
 
     @Override
     public Single<Integer> getRequiredManaAmountForBattle() {
-        return room.getRequiredManaAmountForBattle();
+        return room.getChosenPassiveSkills().map(userChosenPassiveSkills -> {
+            int result = 0;
+            for (CompleteUserSkill skill : userChosenPassiveSkills) {
+                result += SkillConverter.toSkill(skill).getManaCost();
+            }
+            return result;
+        });
     }
 
     @Override
