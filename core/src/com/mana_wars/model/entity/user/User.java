@@ -12,7 +12,10 @@ import java.util.List;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.Subject;
 
-public class User implements UserMenuAPI, UserSkillsAPI, UserDungeonsAPI, UserBattleAPI, UserGreetingAPI, UserBattleSummaryAPI {
+public class User implements
+        UserMenuAPI, UserSkillsAPI, UserDungeonsAPI,
+        UserBattleAPI, UserGreetingAPI, UserBattleSummaryAPI,
+        UserShopAPI {
 
     private UserBattleParticipant user;
 
@@ -36,8 +39,9 @@ public class User implements UserMenuAPI, UserSkillsAPI, UserDungeonsAPI, UserBa
 
     @Override
     public BattleParticipant prepareBattleParticipant() {
+        if (activeSkills == null || passiveSkills == null) throw new IllegalStateException("User was not provided with active or passive skills");
         return user = new UserBattleParticipant(usernameRepository.getUsername(), userManaRepository.getUserMana(),
-                this::setUserMana, activeSkills, passiveSkills);
+                this::setManaAmount, activeSkills, passiveSkills);
     }
 
     @Override
@@ -63,7 +67,7 @@ public class User implements UserMenuAPI, UserSkillsAPI, UserDungeonsAPI, UserBa
 
     @Override
     public void updateManaAmount(int delta) {
-        setUserMana(userManaRepository.getUserMana() + delta);
+        setManaAmount(userManaRepository.getUserMana() + delta);
     }
 
     @Override
@@ -91,7 +95,7 @@ public class User implements UserMenuAPI, UserSkillsAPI, UserDungeonsAPI, UserBa
         return user.getActiveSkills();
     }
 
-    private void setUserMana(int mana) {
+    private void setManaAmount(int mana) {
         userManaRepository.setUserMana(mana);
         manaAmountObservable.onNext(mana);
     }

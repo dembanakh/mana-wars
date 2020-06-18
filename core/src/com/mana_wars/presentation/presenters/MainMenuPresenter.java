@@ -8,7 +8,7 @@ import io.reactivex.functions.Consumer;
 
 public final class MainMenuPresenter extends BasePresenter<MainMenuView, MainMenuInteractor> {
 
-    public MainMenuPresenter(MainMenuView view, UIThreadHandler uiThreadHandler, MainMenuInteractor interactor) {
+    public MainMenuPresenter(MainMenuView view, MainMenuInteractor interactor, UIThreadHandler uiThreadHandler) {
         super(view, interactor, uiThreadHandler);
     }
 

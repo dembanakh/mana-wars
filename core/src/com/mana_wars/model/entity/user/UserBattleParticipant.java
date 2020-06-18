@@ -42,9 +42,8 @@ class UserBattleParticipant extends BattleParticipant {
     public void applySkillCharacteristic(SkillCharacteristic sc, int skillLevel) {
         super.applySkillCharacteristic(sc, skillLevel);
 
-        Characteristic c = sc.getCharacteristic();
-        if (c == Characteristic.MANA) {
-            setManaAmount(getCharacteristicValue(c));
+        if (sc.isManaCost()) {
+            setManaAmount(getCharacteristicValue(sc.getCharacteristic()));
         }
     }
 
@@ -64,7 +63,7 @@ class UserBattleParticipant extends BattleParticipant {
     private void setManaAmount(int userMana) {
         setCharacteristicValue(Characteristic.MANA, userMana);
         try {
-            this.manaOnChanged.accept(userMana);
+            manaOnChanged.accept(userMana);
         } catch (Exception e) {
             e.printStackTrace();
         }

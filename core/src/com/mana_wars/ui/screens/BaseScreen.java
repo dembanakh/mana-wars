@@ -54,8 +54,6 @@ public abstract class BaseScreen<U extends BaseOverlayUI, T extends BasePresente
         return skin;
     }
 
-    ;
-
     void rebuildStage() {
         stage.clear();
         Stack stack = new Stack();
@@ -72,6 +70,10 @@ public abstract class BaseScreen<U extends BaseOverlayUI, T extends BasePresente
     protected abstract Table buildBackgroundLayer(Skin skin);
 
     protected abstract Table buildForegroundLayer(Skin skin);
+
+    protected void onBackPressed() {
+        Gdx.app.exit();
+    }
 
     @Override
     public void setScreen(ScreenInstance instance, Map<String, Object> arguments) {

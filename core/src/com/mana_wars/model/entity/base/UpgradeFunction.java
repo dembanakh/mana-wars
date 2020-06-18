@@ -3,7 +3,7 @@ package com.mana_wars.model.entity.base;
 public enum UpgradeFunction {
     LINEAR {
         @Override
-        public double func(int value, int level) {
+        protected double func(int value, int level) {
             return value * (level - 1);
         }
     };

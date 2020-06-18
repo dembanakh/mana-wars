@@ -8,6 +8,7 @@ import com.mana_wars.ui.screens.BattleSummaryScreen;
 import com.mana_wars.ui.screens.DungeonsScreen;
 import com.mana_wars.ui.screens.GreetingScreen;
 import com.mana_wars.ui.screens.MainMenuScreen;
+import com.mana_wars.ui.screens.ShopScreen;
 import com.mana_wars.ui.screens.SkillsInfoScreen;
 import com.mana_wars.ui.screens.SkillsScreen;
 import com.mana_wars.ui.storage.FactoryStorage;
@@ -22,7 +23,8 @@ public enum ScreenInstance {
     SKILLS_INFO,
     DUNGEONS,
     BATTLE,
-    BATTLE_SUMMARY;
+    BATTLE_SUMMARY,
+    SHOP;
 
     private BaseScreen screen;
 
@@ -45,6 +47,8 @@ public enum ScreenInstance {
                 overlayUIFactory.getBattleOverlayUI());
         BATTLE_SUMMARY.screen = new BattleSummaryScreen(user, screenSetter, factoryStorage, repositoryStorage,
                 overlayUIFactory.getEmptyOverlayUI());
+        SHOP.screen = new ShopScreen(user, screenSetter, factoryStorage, repositoryStorage.getDatabaseRepository(),
+                overlayUIFactory.getMenuOverlayUI());
     }
 
     public static void dispose() {
