@@ -37,8 +37,7 @@ public final class MainMenuPresenter extends BasePresenter<MainMenuView, MainMen
 
     public void onOpenSkillCase() {
         disposable.add(interactor.getNewSkill().subscribe(s -> {
-            uiThreadHandler.postRunnable(() -> view.openSkillCaseWindow(s.getIconID(),
-                    s.getName(), s.getRarity(), s.getManaCost(), s.getDescription()));
+            uiThreadHandler.postRunnable(() -> view.openSkillCaseWindow(s));
         }, Throwable::printStackTrace));
     }
 

@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.entity.base.Rarity;
+import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.entity.user.UserMenuAPI;
 import com.mana_wars.model.interactor.MainMenuInteractor;
 import com.mana_wars.model.mana_bonus.ManaBonusImpl;
@@ -19,7 +20,8 @@ import com.mana_wars.ui.overlays.MenuOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.ui.widgets.ManaBonusProgressBar;
-import com.mana_wars.ui.widgets.SkillCaseWindow;
+import com.mana_wars.ui.widgets.skill_window.BaseSkillWindow;
+import com.mana_wars.ui.widgets.skill_window.SkillCaseWindow;
 
 import static com.mana_wars.ui.UIStringConstants.MAIN_MENU_SCREEN;
 import static com.mana_wars.ui.UIStringConstants.SKILL_CASE_WINDOW;
@@ -27,7 +29,7 @@ import static com.mana_wars.ui.UIStringConstants.UI_SKIN;
 
 public class MainMenuScreen extends BaseScreen<MenuOverlayUI, MainMenuPresenter> implements MainMenuView {
 
-    private final SkillCaseWindow skillCaseWindow;
+    private final BaseSkillWindow skillCaseWindow;
     private final ManaBonusProgressBar manaBonusProgressBar;
 
     public MainMenuScreen(final UserMenuAPI user,
@@ -92,8 +94,8 @@ public class MainMenuScreen extends BaseScreen<MenuOverlayUI, MainMenuPresenter>
     }
 
     @Override
-    public void openSkillCaseWindow(int skillID, String skillName, Rarity skillRarity, int manaCost, String description) {
-        skillCaseWindow.open(skillID, skillName, skillRarity, manaCost, description);
+    public void openSkillCaseWindow(Skill skill) {
+        skillCaseWindow.open(skill);
     }
 
     @Override
