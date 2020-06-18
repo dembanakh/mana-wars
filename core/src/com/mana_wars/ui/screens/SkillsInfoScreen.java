@@ -17,12 +17,9 @@ import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.BaseOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
-import com.mana_wars.ui.widgets.SkillInfoWindow;
+import com.mana_wars.ui.widgets.skill_window.BaseSkillWindow;
+import com.mana_wars.ui.widgets.skill_window.SkillInfoWindow;
 import com.mana_wars.ui.widgets.skills_list_2d.ClickableSkillsList2D;
-
-import static com.mana_wars.ui.UIElementsSize.SCREEN_HEIGHT;
-import static com.mana_wars.ui.UIElementsSize.SCREEN_WIDTH;
-import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.SKILLS_TABLES_WIDTH;
 
 public class SkillsInfoScreen extends BaseScreen<BaseOverlayUI, SkillsInfoPresenter> implements SkillsInfoView {
 
@@ -30,7 +27,7 @@ public class SkillsInfoScreen extends BaseScreen<BaseOverlayUI, SkillsInfoPresen
 
     private final ScrollPane scrollPane;
 
-    private final SkillInfoWindow skillInfoWindow;
+    private final BaseSkillWindow skillInfoWindow;
 
     private final SkillsInfoPresenter presenter;
 

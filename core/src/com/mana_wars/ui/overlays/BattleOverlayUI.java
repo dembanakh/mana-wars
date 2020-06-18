@@ -8,6 +8,7 @@ import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.layout_constraints.AbsoluteSizeConstraint;
 import com.mana_wars.ui.layout_constraints.AbsoluteXPositionConstraint;
 import com.mana_wars.ui.layout_constraints.AbsoluteYPositionConstraint;
+import com.mana_wars.ui.layout_constraints.RelativeHeightConstraint;
 import com.mana_wars.ui.layout_constraints.RelativeWidthConstraint;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.widgets.BuildableUI;
@@ -48,12 +49,12 @@ public class BattleOverlayUI extends BaseOverlayUI {
                 .setXConstraint(new AbsoluteXPositionConstraint(Align.left, 0))
                 .setYConstraint(new AbsoluteYPositionConstraint(Align.top, 0))
                 .setWidthConstraint(new RelativeWidthConstraint(50))
-                .setHeightConstraint(new AbsoluteSizeConstraint(1200));
+                .setHeightConstraint(new RelativeHeightConstraint(75));
         enemyField
                 .setXConstraint(new AbsoluteXPositionConstraint(Align.right, 0))
                 .setYConstraint(new AbsoluteYPositionConstraint(Align.top, 0))
                 .setWidthConstraint(new RelativeWidthConstraint(50))
-                .setHeightConstraint(new AbsoluteSizeConstraint(1200));
+                .setHeightConstraint(new RelativeHeightConstraint(75));
         userManaAmount
                 .setXConstraint(new AbsoluteXPositionConstraint(Align.left, 0))
                 .setYConstraint(new AbsoluteYPositionConstraint(Align.bottom, ACTIVE_SKILLS_TABLE_HEIGHT))
