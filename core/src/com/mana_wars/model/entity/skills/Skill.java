@@ -29,7 +29,7 @@ public class Skill extends GameItem {
 
     public int getManaCost() {
         for (SkillCharacteristic c : skillCharacteristics) {
-            if (c.getCharacteristic() == Characteristic.MANA) {
+            if (c.isManaCost()) {
                 return c.getValue(1);
             }
         }

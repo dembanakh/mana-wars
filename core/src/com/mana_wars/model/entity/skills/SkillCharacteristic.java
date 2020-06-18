@@ -51,6 +51,10 @@ public class SkillCharacteristic {
         return target;
     }
 
+    public boolean isManaCost(){
+        return characteristic==Characteristic.MANA && target == Target.SELF && changeType == ValueChangeType.DECREASE;
+    }
+
     public int getValue(int skillLevel) {
         return upgradeFunction.apply(value, skillLevel, levelMultiplier);
     }

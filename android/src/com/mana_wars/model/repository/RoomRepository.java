@@ -19,7 +19,6 @@ import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
-import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -60,8 +59,8 @@ public class RoomRepository {
 
     }
 
-    public Single<Integer> getRequiredManaAmountForBattle() {
-        return userSkillsDAO.getRequiredManaAmountForBattle();
+    public Single<List<CompleteUserSkill>> getChosenPassiveSkills() {
+        return userSkillsDAO.getChosenPassiveSkills();
     }
 
     private RoomRepository(UserSkillsDAO userSkillsDAO, DBSkillDAO dbSkillDAO,
