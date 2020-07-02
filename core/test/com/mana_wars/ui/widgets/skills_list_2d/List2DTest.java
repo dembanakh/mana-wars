@@ -1,7 +1,5 @@
 package com.mana_wars.ui.widgets.skills_list_2d;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.mana_wars.ui.widgets.base.List2D;
 
@@ -17,22 +15,11 @@ public class List2DTest {
 
     @Before
     public void setup(){
-        list = new com.mana_wars.ui.widgets.base.List2D<Integer>(new List.ListStyle(), 5) {
-            @Override
-            protected void drawItem(Batch batch, BitmapFont font, int index, Integer item,
-                                    float x, float y, float width, float height) {
-
-            }
-        };
+        list = new com.mana_wars.ui.widgets.base.List2D<>(new List.ListStyle(),
+                (batch, font, index, item, x, y, width, height) -> {}, 5);
         item1 = 1;
         item2 = 2;
         list.setItems(item1, item2);
-    }
-
-    @Test
-    public void getSelected() {
-        list.setSelectedIndex(0);
-        assertEquals(item1, list.getSelected());
     }
 
     @Test
@@ -43,12 +30,6 @@ public class List2DTest {
     }
 
     @Test
-    public void setSelectedIndex_simple() {
-        list.setSelectedIndex(0);
-        assertEquals(0, list.getSelectedIndex());
-    }
-
-    @Test
     public void testSetItems() {
         assertEquals(item1, list.getItem(0));
         assertEquals(item2, list.getItem(1));
@@ -56,12 +37,8 @@ public class List2DTest {
 
     @Test
     public void testGetItems_empty() {
-        com.mana_wars.ui.widgets.base.List2D<Integer> list = new List2D<Integer>(new List.ListStyle(), 5) {
-            @Override
-            protected void drawItem(Batch batch, BitmapFont font, int index, Integer item, float x, float y, float width, float height) {
-
-            }
-        };
+        com.mana_wars.ui.widgets.base.List2D<Integer> list = new List2D<Integer>(new List.ListStyle(),
+                (batch, font, index, item, x, y, width, height) -> {}, 5);
 
         assertEquals(0, list.size());
     }

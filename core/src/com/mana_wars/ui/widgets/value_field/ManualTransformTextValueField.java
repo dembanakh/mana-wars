@@ -1,10 +1,10 @@
 package com.mana_wars.ui.widgets.value_field;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.mana_wars.ui.factory.UIElementFactory;
 
 public class ManualTransformTextValueField<T> extends ManualTransformValueField<T> {
 
@@ -13,7 +13,7 @@ public class ManualTransformTextValueField<T> extends ManualTransformValueField<
     @Override
     public void init() {
         super.init();
-        label = new Label("", new Label.LabelStyle(new BitmapFont(), new Color()));
+        label = new Label("", UIElementFactory.emptyLabelStyle());
         label.setFillParent(true);
         label.setColor(Color.BLACK);
         label.setFontScale(4);

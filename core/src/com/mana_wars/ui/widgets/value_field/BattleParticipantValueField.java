@@ -2,7 +2,6 @@ package com.mana_wars.ui.widgets.value_field;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -17,8 +16,8 @@ import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.ui.factory.AssetFactory;
+import com.mana_wars.ui.factory.UIElementFactory;
 import com.mana_wars.ui.widgets.base.List2D;
-import com.mana_wars.ui.widgets.item_drawer.StandardSkillDrawer;
 
 import java.util.Locale;
 
@@ -60,7 +59,7 @@ public class BattleParticipantValueField extends ManualTransformValueFieldWithIn
     public void init() {
         super.init();
 
-        participantName = new Label("", new Label.LabelStyle(new BitmapFont(), new Color()));
+        participantName = new Label("", UIElementFactory.emptyLabelStyle());
         participantName.setColor(Color.BLACK);
         participantName.setFontScale(4);
         addActor(participantName);
@@ -71,25 +70,19 @@ public class BattleParticipantValueField extends ManualTransformValueFieldWithIn
         healthBar.setScale(4);
         stack.add(healthBar);
 
-        participantHealth = new Label("", new Label.LabelStyle(new BitmapFont(), new Color()));
+        participantHealth = new Label("", UIElementFactory.emptyLabelStyle());
         participantHealth.setFillParent(true);
         participantHealth.setColor(Color.BLACK);
         participantHealth.setFontScale(4);
         stack.add(participantHealth);
         addActor(stack);
 
-        healthChangeLabel = new Label("", new Label.LabelStyle(new BitmapFont(), new Color()));
+        healthChangeLabel = new Label("", UIElementFactory.emptyLabelStyle());
         healthChangeLabel.setFontScale(4);
         addActor(healthChangeLabel);
 
-        participantPassiveSkills = new List2D<>(new List.ListStyle(),
-                new StandardSkillDrawer<PassiveSkill>(iconFactory, frameFactory) {
-                    @Override
-                    protected boolean shouldShowLevel(PassiveSkill item) {
-                        return false;
-                    }
-                },
-                GameConstants.USER_PASSIVE_SKILL_COUNT);
+        participantPassiveSkills = UIElementFactory.skillsListWithoutLevel(GameConstants.USER_PASSIVE_SKILL_COUNT,
+                iconFactory, frameFactory);
         participantPassiveSkills.setMinHeight(131.4f);
         addActorAndExpandX(participantPassiveSkills);
 

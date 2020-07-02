@@ -1,11 +1,11 @@
 package com.mana_wars.ui.widgets.value_field;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.mana_wars.ui.factory.UIElementFactory;
+
 import static com.mana_wars.ui.UIStringConstants.UI_SKIN;
 
 public class NumberOfAliveEnemiesValueField implements ValueField<Integer> {
@@ -18,7 +18,7 @@ public class NumberOfAliveEnemiesValueField implements ValueField<Integer> {
     @Override
     public void init() {
         field = new Table();
-        numberEnemiesAliveLabel = new Label("0", new Label.LabelStyle(new BitmapFont(), new Color()));
+        numberEnemiesAliveLabel = new Label("", UIElementFactory.emptyLabelStyle());
         numberEnemiesAlive = 0;
 
         field.add(numberEnemiesAliveLabel);

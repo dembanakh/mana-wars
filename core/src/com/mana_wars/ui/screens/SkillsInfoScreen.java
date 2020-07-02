@@ -17,14 +17,13 @@ import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.BaseOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
-import com.mana_wars.ui.widgets.item_drawer.StandardSkillDrawer;
+import com.mana_wars.ui.widgets.base.List2D;
 import com.mana_wars.ui.widgets.skill_window.BaseSkillWindow;
 import com.mana_wars.ui.widgets.skill_window.SkillInfoWindow;
-import com.mana_wars.ui.widgets.base.ClickableList2D;
 
 public class SkillsInfoScreen extends BaseScreen<BaseOverlayUI, SkillsInfoPresenter> implements SkillsInfoView {
 
-    private final ClickableList2D<Skill> skillsList;
+    private final List2D<Skill> skillsList;
 
     private final ScrollPane scrollPane;
 
@@ -36,15 +35,9 @@ public class SkillsInfoScreen extends BaseScreen<BaseOverlayUI, SkillsInfoPresen
                             final DatabaseRepository databaseRepository, final BaseOverlayUI overlayUI) {
         super(screenSetter, factoryStorage.getSkinFactory().getAsset(UIStringConstants.UI_SKIN.MANA_WARS), overlayUI);
         this.presenter = new SkillsInfoPresenter(this, new SkillsInfoInteractor(databaseRepository), Gdx.app::postRunnable);
-        this.skillsList = new ClickableList2D<>(getSkin(),
-                new StandardSkillDrawer<Skill>(
-                        factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory()) {
-                    @Override
-                    protected boolean shouldShowLevel(Skill item) {
-                        return false;
-                    }
-                },
-                5, this::openSkillInfoWindow);
+        this.skillsList = UIElementFactory.clickableSkillsListWithoutLevel(getSkin(), 5,
+                factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(),
+                this::openSkillInfoWindow);
         this.scrollPane = new ScrollPane(skillsList, getSkin());
         this.skillInfoWindow = new SkillInfoWindow(UIStringConstants.SKILL_INFO_WINDOW.TITLE, getSkin(),
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());

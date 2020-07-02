@@ -2,7 +2,6 @@ package com.mana_wars.ui.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -19,7 +18,6 @@ import com.mana_wars.model.interactor.BattleInteractor;
 import com.mana_wars.model.repository.DatabaseRepository;
 import com.mana_wars.presentation.presenters.BattlePresenter;
 import com.mana_wars.presentation.view.BattleView;
-import com.mana_wars.ui.animation.controller.SkillIconAnimationController;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.factory.UIElementFactory;
 import com.mana_wars.ui.management.ScreenInstance;
@@ -27,8 +25,6 @@ import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.BattleOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.widgets.value_field.NumberOfAliveEnemiesValueField;
-import com.mana_wars.ui.widgets.item_drawer.ApplicableSkillDrawer;
-import com.mana_wars.ui.widgets.skills_list_2d.ApplicableSkillsList2D;
 import com.mana_wars.ui.widgets.skills_list_2d.BlockableSkillsList;
 
 import java.util.HashMap;
@@ -61,17 +57,10 @@ public class BattleScreen extends BaseScreen<BattleOverlayUI, BattlePresenter> i
                 Gdx.app::postRunnable);
         presenter.addObserver_userManaAmount(overlayUI.getUserManaAmountObserver());
 
-        SkillIconAnimationController animationController =
-                new SkillIconAnimationController(
-                        new TextureRegion(factoryStorage.getImageFactory().getAsset("white")),
-                        getSkin().getFont("font"));
-        userActiveSkills = new ApplicableSkillsList2D<>(getSkin(),
-                new ApplicableSkillDrawer<>(
-                        factoryStorage.getSkillIconFactory(),
-                        factoryStorage.getRarityFrameFactory(),
-                        animationController),
+        userActiveSkills = UIElementFactory.applicableSkillsList(getSkin(),
                 GameConstants.MAX_CHOSEN_ACTIVE_SKILL_COUNT,
-                this::onSkillClick, animationController);
+                factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(),
+                factoryStorage.getImageFactory(), this::onSkillClick);
 
         aliveEnemiesField = new NumberOfAliveEnemiesValueField();
         aliveEnemiesField.setBackgroundColor(UI_SKIN.BACKGROUND_COLOR.BROWN);

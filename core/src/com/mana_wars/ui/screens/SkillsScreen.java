@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.skills_operations.SkillTable;
 import com.mana_wars.model.entity.base.Rarity;
@@ -22,13 +21,12 @@ import com.mana_wars.presentation.presenters.SkillsPresenter;
 import com.mana_wars.presentation.view.SkillsView;
 import com.mana_wars.ui.UIElementsSize;
 import com.mana_wars.ui.factory.AssetFactory;
+import com.mana_wars.ui.factory.UIElementFactory;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.MenuOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.widgets.base.TimeoutDragAndDrop;
 import com.mana_wars.ui.widgets.base.List2D;
-import com.mana_wars.ui.widgets.item_drawer.StandardSkillDrawer;
-import com.mana_wars.ui.widgets.skills_list_2d.OperationSkillsList2D;
 
 import java.util.List;
 
@@ -54,19 +52,16 @@ public class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresenter> imp
         presenter.addObserver_manaAmount(overlayUI.getManaAmountObserver());
         presenter.addObserver_userLevel(overlayUI.getUserLevelObserver());
 
-        mainSkillsTable = new OperationSkillsList2D(getEmptyBackgroundStyle(getSkin()),
-                new StandardSkillDrawer<>(factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory()),
-                COLUMNS_NUMBER, true);
+        mainSkillsTable = UIElementFactory.orderedOperationSkillsList(getSkin(), COLUMNS_NUMBER,
+                factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
         mainSkillsTable.setUserObject(SkillTable.ALL_SKILLS);
 
-        activeSkillsTable = new OperationSkillsList2D(getSkin(),
-                new StandardSkillDrawer<>(factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory()),
-                GameConstants.MAX_CHOSEN_ACTIVE_SKILL_COUNT, false);
+        activeSkillsTable = UIElementFactory.unorderedOperationSkillsList(getSkin(), GameConstants.MAX_CHOSEN_ACTIVE_SKILL_COUNT,
+                factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
         activeSkillsTable.setUserObject(SkillTable.ACTIVE_SKILLS);
 
-        passiveSkillsTable = new OperationSkillsList2D(getSkin(),
-                new StandardSkillDrawer<>(factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory()),
-                GameConstants.USER_PASSIVE_SKILL_COUNT, false);
+        passiveSkillsTable = UIElementFactory.unorderedOperationSkillsList(getSkin(), GameConstants.USER_PASSIVE_SKILL_COUNT,
+                factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
         passiveSkillsTable.setUserObject(SkillTable.PASSIVE_SKILLS);
 
         scrollPane = new ScrollPane(mainSkillsTable, getSkin());
@@ -164,14 +159,6 @@ public class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresenter> imp
         presenter.refreshSkillsList();
     }
 
-    @Override
-    public void hide() {
-        super.hide();
-        activeSkillsTable.setSelectedIndex(-1);
-        passiveSkillsTable.setSelectedIndex(-1);
-        mainSkillsTable.setSelectedIndex(-1);
-    }
-
     @SuppressWarnings("ConstantConditions")
     private class SkillsDragAndDrop {
 
@@ -262,15 +249,6 @@ public class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresenter> imp
             });
         }
 
-    }
-
-    // TODO: move somewhere
-    private static com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle getEmptyBackgroundStyle(Skin skin) {
-        com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle style =
-                new com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle(
-                        skin.get(com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle.class));
-        style.background = new BaseDrawable(style.background);
-        return style;
     }
 
 }
