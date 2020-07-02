@@ -59,4 +59,11 @@ public class SkillCharacteristic {
         return upgradeFunction.apply(value, skillLevel, levelMultiplier);
     }
 
+    public UpgradeFunction getUpgradeFunction() {
+        return upgradeFunction;
+    }
+
+    public double getLevelMultiplier() {
+        return levelMultiplier;
+    }
 }
