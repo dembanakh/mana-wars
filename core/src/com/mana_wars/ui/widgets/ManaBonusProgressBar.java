@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mana_wars.ui.factory.UIElementFactory;
+import com.mana_wars.ui.widgets.base.BuildableUI;
 
 import static com.mana_wars.ui.UIElementsSize.SCREEN_WIDTH;
 
@@ -38,7 +39,7 @@ public class ManaBonusProgressBar extends ProgressBar implements BuildableUI {
                          TextButton.TextButtonStyle tbStyle) {
         super(0f, fullBonusTimeout, GRANULARITY, false, pbStyle);
         getStyle().background.setMinHeight(200);
-        getStyle().knobBefore.setMinHeight(200);
+        //getStyle().knobBefore.setMinHeight(200);
         setAnimateDuration(0.25f);
 
         if (tbStyle != null && Gdx.graphics != null) {

@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
@@ -26,6 +27,7 @@ public class BaseBattle implements BattleConfig, Battle {
     private final PriorityQueue<BattleEvent> battleEvents = new PriorityQueue<>();
 
     private final Subject<BattleSummaryData> finishBattleObservable;
+    private final Subject<Integer> numberEnemiesAliveObservable;
 
     BaseBattle(final BattleParticipant user,
                final List<BattleParticipant> userSide,
@@ -34,6 +36,7 @@ public class BaseBattle implements BattleConfig, Battle {
         this.userSide = userSide;
         this.enemySide = enemySide;
         this.finishBattleObservable = PublishSubject.create();
+        this.numberEnemiesAliveObservable = BehaviorSubject.createDefault(enemySide.size());
 
         opponents.put(user, new ArrayList<>(enemySide));
         for (BattleParticipant userAlly : userSide) {
@@ -93,6 +96,11 @@ public class BaseBattle implements BattleConfig, Battle {
         //TODO think about synchronization
         double activationTime = battleTime + castTime;
         battleEvents.add(new BattleEvent(activationTime, skill, participant));
+    }
+
+    @Override
+    public void informDeath(BattleParticipant participant) {
+        numberEnemiesAliveObservable.onNext(numberEnemiesAliveObservable.blockingLast() - 1);
     }
 
 

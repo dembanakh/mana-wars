@@ -68,7 +68,9 @@
       "value": 10,
       "characteristic" : 1,
       "value_change" : -1,
-      "target" : 2
+      "target" : 2,
+      "upgrade_function" : "LINEAR",
+      "level_multiplier" : 1
     },
     {
       "id" : 2,
@@ -76,7 +78,9 @@
       "value": 40,
       "characteristic" : 1,
       "value_change" : 1,
-      "target" : 1
+      "target" : 1,
+      "upgrade_function" : "LINEAR",
+      "level_multiplier" : 1
     },
     {
       "id" : 3,
@@ -84,7 +88,9 @@
       "value": 10,
       "characteristic" : 3,
       "value_change" : -1,
-      "target" : 1
+      "target" : 1,
+      "upgrade_function" : "LINEAR",
+      "level_multiplier" : 1
     },
     {
       "id" : 4,
@@ -92,7 +98,9 @@
       "value": 20,
       "characteristic" : 1,
       "value_change" : -1,
-      "target" : 2
+      "target" : 2,
+      "upgrade_function" : "LINEAR",
+      "level_multiplier" : 1
     },
     {
       "id" : 5,
@@ -100,7 +108,9 @@
       "value": 10,
       "characteristic" : 1,
       "value_change" : 1,
-      "target" : 1
+      "target" : 1,
+      "upgrade_function" : "LINEAR",
+      "level_multiplier" : 1
     },
     {
       "id" : 6,
@@ -108,7 +118,9 @@
       "value": 10,
       "characteristic" : 2,
       "value_change" : -1,
-      "target" : 1
+      "target" : 1,
+      "upgrade_function" : "LINEAR",
+      "level_multiplier" : 0
     },
     {
       "id" : 7,
@@ -116,7 +128,9 @@
       "value": 10,
       "characteristic" : 2,
       "value_change" : -1,
-      "target" : 1
+      "target" : 1,
+      "upgrade_function" : "LINEAR",
+      "level_multiplier" : 0
     },
     {
       "id" : 8,
@@ -124,7 +138,9 @@
       "value": 50,
       "characteristic" : 2,
       "value_change" : -1,
-      "target" : 1
+      "target" : 1,
+      "upgrade_function" : "LINEAR",
+      "level_multiplier" : 0
     },
     {
       "id" : 8,
@@ -132,7 +148,9 @@
       "value": 20,
       "characteristic" : 2,
       "value_change" : -1,
-      "target" : 1
+      "target" : 1,
+      "upgrade_function" : "LINEAR",
+      "level_multiplier" : 0
     }
   ],
   "dungeons" : [

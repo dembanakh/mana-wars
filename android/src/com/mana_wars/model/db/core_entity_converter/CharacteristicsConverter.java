@@ -1,6 +1,7 @@
 package com.mana_wars.model.db.core_entity_converter;
 
 import com.mana_wars.model.db.entity.DBSkillCharacteristic;
+import com.mana_wars.model.entity.base.UpgradeFunction;
 import com.mana_wars.model.entity.base.ValueChangeType;
 import com.mana_wars.model.entity.battle.Characteristic;
 import com.mana_wars.model.entity.skills.SkillCharacteristic;
@@ -20,7 +21,9 @@ class CharacteristicsConverter {
                     dbsc.getChangeType() ? ValueChangeType.INCREASE :
                             ValueChangeType.DECREASE,
                     dbsc.getTarget() == 1 ? SkillCharacteristic.Target.SELF :
-                            SkillCharacteristic.Target.ENEMY);
+                            SkillCharacteristic.Target.ENEMY,
+                    UpgradeFunction.valueOf(dbsc.getUpgradeFunction()),
+                    dbsc.getLevelMultiplier());
             list.add(skillCharacteristic);
         }
         return list;

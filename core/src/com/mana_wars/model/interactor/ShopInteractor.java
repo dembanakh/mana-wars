@@ -1,5 +1,6 @@
 package com.mana_wars.model.interactor;
 
+import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.entity.user.UserShopAPI;
 import com.mana_wars.model.repository.DatabaseRepository;
 
@@ -27,6 +28,11 @@ public final class ShopInteractor extends BaseInteractor {
 
     public void updateManaAmount(int delta) {
         user.updateManaAmount(delta);
+    }
+
+    public void buySkillCase() {
+        // obtain cases
+        updateManaAmount(- GameConstants.SKILL_CASE_PRICE);
     }
     
 }

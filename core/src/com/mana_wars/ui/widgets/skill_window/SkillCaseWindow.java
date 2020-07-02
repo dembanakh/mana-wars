@@ -8,7 +8,7 @@ import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.factory.UIElementFactory;
-import com.mana_wars.ui.widgets.BuildableUI;
+import com.mana_wars.ui.widgets.base.BuildableUI;
 
 import static com.mana_wars.ui.UIElementsSize.SKILL_CASE_WINDOW.GET_BUTTON_PADDING_BOTTOM;
 import static com.mana_wars.ui.UIElementsSize.SKILL_CASE_WINDOW.GET_BUTTON_PADDING_LEFT;

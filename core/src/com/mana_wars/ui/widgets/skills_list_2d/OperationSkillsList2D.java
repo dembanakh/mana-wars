@@ -1,24 +1,22 @@
 package com.mana_wars.ui.widgets.skills_list_2d;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.Skill;
-import com.mana_wars.ui.factory.AssetFactory;
+import com.mana_wars.ui.widgets.base.List2D;
+import com.mana_wars.ui.widgets.base.ListItemDrawer;
 
-public class OperationSkillsList2D extends StaticSkillsList2D<Skill> {
+public class OperationSkillsList2D extends List2D<Skill> {
 
     private final boolean ordered;
 
-    public OperationSkillsList2D(Skin skin, int cols, AssetFactory<Integer, TextureRegion> iconFactory,
-                                 AssetFactory<Rarity, TextureRegion> frameFactory, boolean ordered) {
-        this(skin.get(List.ListStyle.class), cols, iconFactory, frameFactory, ordered);
+    public OperationSkillsList2D(Skin skin, ListItemDrawer<Skill> listItemDrawer, int cols, boolean ordered) {
+        this(skin.get(List.ListStyle.class), listItemDrawer, cols, ordered);
     }
 
-    public OperationSkillsList2D(List.ListStyle style, int cols, AssetFactory<Integer, TextureRegion> iconFactory,
-                                 AssetFactory<Rarity, TextureRegion> frameFactory, boolean ordered) {
-        super(style, cols, iconFactory, frameFactory);
+    public OperationSkillsList2D(List.ListStyle style, ListItemDrawer<Skill> listItemDrawer, int cols, boolean ordered) {
+        super(style, listItemDrawer, cols);
         this.ordered = ordered;
     }
 
@@ -26,22 +24,18 @@ public class OperationSkillsList2D extends StaticSkillsList2D<Skill> {
     public int insert(int index, Skill item) {
         if (item == null)
             throw new IllegalArgumentException("SkillsList2D.insert: item cannot be null");
-        if (!ordered && (index < 0 || index >= items.size))
+        if (!ordered && (index < 0 || index >= size()))
             throw new IllegalArgumentException("SkillsList2D.insert: index is not legal");
 
         if (ordered) {
-            int indexToInsert = 0;
-            boolean found = false;
-            int availableID = -1;
-            for (List2DItem<Skill> listItem : items) {
-                if (listItem.index > availableID) availableID = listItem.index;
-                if (listItem.data.compareTo(item) <= 0) found = true;
-                if (!found) indexToInsert++;
+            int indexToInsert;
+            for (indexToInsert = 0; indexToInsert < size(); ++indexToInsert) {
+                if (getItem(indexToInsert).compareTo(item) <= 0) break;
             }
-            items.insert(indexToInsert, new List2DItem<>(availableID + 1, item));
+            super.insert(indexToInsert, item);
             return indexToInsert;
         } else {
-            if (items.get(index).data.getRarity() == Rarity.EMPTY) items.get(index).data = item;
+            if (getItem(index).getRarity() == Rarity.EMPTY) setItem(index, item);
             else super.insert(index, item);
             return index;
         }
@@ -52,8 +46,8 @@ public class OperationSkillsList2D extends StaticSkillsList2D<Skill> {
         if (ordered) {
             return super.removeIndex(index);
         } else {
-            Skill result = items.get(index).data;
-            items.get(index).data = Skill.getEmpty();
+            Skill result = getItem(index);
+            setItem(index, Skill.getEmpty());
             return result;
         }
     }

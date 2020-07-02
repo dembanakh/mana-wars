@@ -70,4 +70,8 @@ public final class BattlePresenter extends BasePresenter<BattleView, BattleInter
     public void addObserver_userManaAmount(Consumer<? super Integer> userManaAmountObserver) {
         disposable.add(interactor.getUserManaAmountObservable().subscribe(userManaAmountObserver));
     }
+
+    public void changeActiveEnemy() {
+        view.setActiveEnemy(interactor.changeUserTarget());
+    }
 }

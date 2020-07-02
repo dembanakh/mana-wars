@@ -15,7 +15,8 @@ import java.util.Set;
 
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
-public class SkillIconAnimationController implements UIAnimationController<Integer, SkillIconAnimationController.Type> {
+public class SkillIconAnimationController implements UIAnimator<Integer>,
+        UIAnimationController<Integer, SkillIconAnimationController.Type> {
 
     private final TextureRegion textureRegion;
     private final BitmapFont font;
@@ -83,11 +84,6 @@ public class SkillIconAnimationController implements UIAnimationController<Integ
                     x, y + (height + font.getLineHeight()) / 2, 0,
                     remainingTimeText.length(), width, Align.center, false, "");
         }
-    }
-
-    @Override
-    public boolean contains(Integer data) {
-        return emptySkills.contains(data) || timeoutMap.containsKey(data);
     }
 
     public enum Type {

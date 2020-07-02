@@ -54,4 +54,8 @@ public final class BattleInteractor extends BaseInteractor {
         return battle.getFinishBattleObservable();
     }
 
+    int temp = 0;
+    public int changeUserTarget() {
+        return temp = (temp + 1) % battle.getEnemySide().size();
+    }
 }

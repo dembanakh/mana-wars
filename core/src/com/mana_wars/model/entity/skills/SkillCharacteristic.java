@@ -20,14 +20,14 @@ public class SkillCharacteristic {
         ENEMY
     }
 
-    public SkillCharacteristic(int value, Characteristic characteristic, ValueChangeType changeType, Target target) {
+    public SkillCharacteristic(int value, Characteristic characteristic, ValueChangeType changeType,
+                               Target target, UpgradeFunction upgradeFunction, int levelMultiplier) {
         this.characteristic = characteristic;
         this.value = value;
         this.changeType = changeType;
         this.target = target;
-        // TODO: TEMP
-        this.upgradeFunction = UpgradeFunction.LINEAR;
-        this.levelMultiplier = (characteristic == Characteristic.MANA ? 0 : 1);
+        this.upgradeFunction = upgradeFunction;
+        this.levelMultiplier = levelMultiplier;
     }
 
     String getDescription(int skillLevel) {

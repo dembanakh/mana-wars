@@ -26,7 +26,15 @@ public abstract class BattleParticipant {
 
     private final EnumMap<Characteristic, Integer> characteristics = new EnumMap<>(Characteristic.class);
 
-    public BattleParticipant(String name, int initialHealth, List<ActiveSkill> activeSkills, List<PassiveSkill> passiveSkills) {
+    public BattleParticipant(String name, int initialHealth, Iterable<ActiveSkill> activeSkills, List<PassiveSkill> passiveSkills) {
+        this(name, initialHealth, new ArrayList<BattleSkill>(), passiveSkills);
+
+        for (ActiveSkill s : activeSkills) {
+            battleSkills.add(new BattleSkill(s));
+        }
+    }
+
+    protected BattleParticipant(String name, int initialHealth, List<BattleSkill> battleSkills, List<PassiveSkill> passiveSkills) {
         this.name = name;
         this.initialHealth = initialHealth;
         setCharacteristicValue(Characteristic.HEALTH, initialHealth);
@@ -35,9 +43,8 @@ public abstract class BattleParticipant {
         setCharacteristicValue(Characteristic.COOLDOWN, 100);
         healthObservable = BehaviorSubject.create();
         this.passiveSkills = passiveSkills;
-
-        for (ActiveSkill s : activeSkills) {
-            battleSkills.add(new BattleSkill(s));
+        for (BattleSkill skill : battleSkills) {
+            this.battleSkills.add(new BattleSkill(skill.skill));
         }
     }
 
@@ -53,6 +60,9 @@ public abstract class BattleParticipant {
         if (c == Characteristic.HEALTH) {
             healthObservable.onNext(changedValue);
             changedValue = Math.min(changedValue, initialHealth);
+            if (!isAlive()) {
+
+            }
         }
         setCharacteristicValue(c, changedValue);
     }

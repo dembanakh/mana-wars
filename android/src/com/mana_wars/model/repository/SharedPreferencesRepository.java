@@ -44,7 +44,7 @@ public class SharedPreferencesRepository implements LocalUserDataRepository {
 
     @Override
     public String getUsername() {
-        return getDefaultManager().getString(USERNAME, "");
+        return getDefaultManager().getString(USERNAME, null);
     }
 
     @Override

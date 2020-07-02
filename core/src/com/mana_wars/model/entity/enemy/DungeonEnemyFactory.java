@@ -2,6 +2,7 @@ package com.mana_wars.model.entity.enemy;
 
 import com.mana_wars.model.entity.battle.BattleParticipant;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -26,6 +27,7 @@ public class DungeonEnemyFactory implements EnemyFactory {
     @Override
     public List<BattleParticipant> generateEnemies() {
         Random rand = new Random();
-        return Collections.singletonList(mobs.get(rand.nextInt(mobs.size())));
+        return Arrays.asList(mobs.get(rand.nextInt(mobs.size())).copy(),
+                mobs.get(rand.nextInt(mobs.size())).copy());
     }
 }

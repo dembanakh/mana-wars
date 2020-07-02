@@ -1,7 +1,9 @@
 package com.mana_wars.ui.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -11,6 +13,7 @@ import com.mana_wars.model.entity.user.UserGreetingAPI;
 import com.mana_wars.model.interactor.GreetingInteractor;
 import com.mana_wars.presentation.presenters.GreetingPresenter;
 import com.mana_wars.presentation.view.GreetingView;
+import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.factory.UIElementFactory;
 import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
@@ -24,20 +27,26 @@ import static com.mana_wars.ui.UIStringConstants.UI_SKIN;
 
 public class GreetingScreen extends BaseScreen<BaseOverlayUI, GreetingPresenter> implements GreetingView {
 
+    private final AssetFactory<String, Texture> imageFactory;
+
     public GreetingScreen(final UserGreetingAPI user,
                           final ScreenSetter screenSetter,
                           final FactoryStorage factoryStorage,
                           final BaseOverlayUI overlayUI) {
-        super(screenSetter, factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING), overlayUI);
+        super(screenSetter, factoryStorage.getSkinFactory().getAsset(UI_SKIN.MANA_WARS), overlayUI);
 
         presenter = new GreetingPresenter(this,
                 new GreetingInteractor(user),
                 Gdx.app::postRunnable);
+
+        imageFactory = factoryStorage.getImageFactory();
     }
 
     @Override
     protected Table buildBackgroundLayer(Skin skin) {
         Table layer = new Table();
+
+        layer.add(new Image(imageFactory.getAsset("bg1")));
 
         return layer;
     }

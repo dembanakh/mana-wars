@@ -1,5 +1,6 @@
 package com.mana_wars.ui.overlays;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Align;
 import com.mana_wars.model.entity.base.Rarity;
@@ -10,13 +11,12 @@ import com.mana_wars.ui.layout_constraints.AbsoluteXPositionConstraint;
 import com.mana_wars.ui.layout_constraints.AbsoluteYPositionConstraint;
 import com.mana_wars.ui.layout_constraints.RelativeHeightConstraint;
 import com.mana_wars.ui.layout_constraints.RelativeWidthConstraint;
-import com.mana_wars.ui.management.ScreenSetter;
-import com.mana_wars.ui.widgets.BuildableUI;
+import com.mana_wars.ui.widgets.base.BuildableUI;
 import com.mana_wars.ui.widgets.value_field.BattleParticipantValueField;
-import com.mana_wars.ui.widgets.value_field.TextValueField;
-import com.mana_wars.ui.widgets.value_field.ValueField;
-import com.mana_wars.ui.widgets.value_field.ValueFieldWithInitialData;
-import com.mana_wars.ui.widgets.value_field.ValueFieldWithInitialDataWrapper;
+import com.mana_wars.ui.widgets.value_field.ManualTransformTextValueField;
+import com.mana_wars.ui.widgets.value_field.ManualTransformValueField;
+import com.mana_wars.ui.widgets.value_field.ManualTransformValueFieldWithInitialData;
+import com.mana_wars.ui.widgets.value_field.ManualTransformValueFieldWithInitialDataWrapper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,18 +28,19 @@ import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.ACTIVE_SKILLS_TABLE_
 
 public class BattleOverlayUI extends BaseOverlayUI {
 
-    private final ValueField<Integer> userManaAmount;
+    private final ManualTransformValueField<Integer> userManaAmount;
 
-    private final ValueFieldWithInitialData<BattleParticipantValueField.Data, Integer> userField;
-    private final ValueFieldWithInitialData<BattleParticipantValueField.Data, Integer> enemyField;
+    private final ManualTransformValueFieldWithInitialData<BattleParticipantValueField.Data, Integer> userField;
+    private final ManualTransformValueFieldWithInitialData<BattleParticipantValueField.Data, Integer> enemyField;
 
-    private final List<ValueFieldWithInitialDataWrapper<BattleParticipantValueField.Data, Integer>> enemyFieldWrappers;
+    private final List<ManualTransformValueFieldWithInitialDataWrapper<BattleParticipantValueField.Data, Integer>> enemyFieldWrappers;
 
     BattleOverlayUI(final AssetFactory<Integer, TextureRegion> iconFactory,
-                    final AssetFactory<Rarity, TextureRegion> frameFactory) {
-        userField = new BattleParticipantValueField(iconFactory, frameFactory, -200, 1);
-        enemyField = new BattleParticipantValueField(iconFactory, frameFactory, 200, 1);
-        userManaAmount = new TextValueField<>();
+                    final AssetFactory<Rarity, TextureRegion> frameFactory,
+                    final AssetFactory<String, Texture> imageFactory) {
+        userField = new BattleParticipantValueField(iconFactory, frameFactory, imageFactory, -200, 1);
+        enemyField = new BattleParticipantValueField(iconFactory, frameFactory, imageFactory, 200, 1);
+        userManaAmount = new ManualTransformTextValueField<>();
         enemyFieldWrappers = new ArrayList<>();
     }
 
@@ -80,7 +81,7 @@ public class BattleOverlayUI extends BaseOverlayUI {
 
     public Consumer<? super Integer> addEnemy(String name, int initialHealth,
                                               Iterable<PassiveSkill> passiveSkills) {
-        ValueFieldWithInitialDataWrapper<BattleParticipantValueField.Data, Integer> enemyField = new ValueFieldWithInitialDataWrapper<>();
+        ManualTransformValueFieldWithInitialDataWrapper<BattleParticipantValueField.Data, Integer> enemyField = new ManualTransformValueFieldWithInitialDataWrapper<>();
         enemyFieldWrappers.add(enemyField);
         enemyField.setInitialData(new BattleParticipantValueField.Data(name, initialHealth, passiveSkills));
         return enemyField;

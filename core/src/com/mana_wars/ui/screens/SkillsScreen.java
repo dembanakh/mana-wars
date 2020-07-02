@@ -25,8 +25,9 @@ import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.MenuOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
-import com.mana_wars.ui.widgets.TimeoutDragAndDrop;
-import com.mana_wars.ui.widgets.skills_list_2d.List2D;
+import com.mana_wars.ui.widgets.base.TimeoutDragAndDrop;
+import com.mana_wars.ui.widgets.base.List2D;
+import com.mana_wars.ui.widgets.item_drawer.StandardSkillDrawer;
 import com.mana_wars.ui.widgets.skills_list_2d.OperationSkillsList2D;
 
 import java.util.List;
@@ -45,7 +46,7 @@ public class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresenter> imp
     public SkillsScreen(final UserSkillsAPI user,
                         final ScreenSetter screenSetter, final FactoryStorage factoryStorage,
                         final DatabaseRepository databaseRepository, final MenuOverlayUI overlayUI) {
-        super(screenSetter, factoryStorage.getSkinFactory().getAsset(UI_SKIN.FREEZING), overlayUI);
+        super(screenSetter, factoryStorage.getSkinFactory().getAsset(UI_SKIN.MANA_WARS), overlayUI);
 
         this.presenter = new SkillsPresenter(this,
                 Gdx.app::postRunnable,
@@ -53,15 +54,21 @@ public class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresenter> imp
         presenter.addObserver_manaAmount(overlayUI.getManaAmountObserver());
         presenter.addObserver_userLevel(overlayUI.getUserLevelObserver());
 
-        mainSkillsTable = new OperationSkillsList2D(getEmptyBackgroundStyle(), COLUMNS_NUMBER,
-                factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(), true);
+        mainSkillsTable = new OperationSkillsList2D(getEmptyBackgroundStyle(getSkin()),
+                new StandardSkillDrawer<>(factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory()),
+                COLUMNS_NUMBER, true);
         mainSkillsTable.setUserObject(SkillTable.ALL_SKILLS);
-        activeSkillsTable = new OperationSkillsList2D(getSkin(), GameConstants.MAX_CHOSEN_ACTIVE_SKILL_COUNT,
-                factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(), false);
+
+        activeSkillsTable = new OperationSkillsList2D(getSkin(),
+                new StandardSkillDrawer<>(factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory()),
+                GameConstants.MAX_CHOSEN_ACTIVE_SKILL_COUNT, false);
         activeSkillsTable.setUserObject(SkillTable.ACTIVE_SKILLS);
-        passiveSkillsTable = new OperationSkillsList2D(getSkin(), GameConstants.USER_PASSIVE_SKILL_COUNT,
-                factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(), false);
+
+        passiveSkillsTable = new OperationSkillsList2D(getSkin(),
+                new StandardSkillDrawer<>(factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory()),
+                GameConstants.USER_PASSIVE_SKILL_COUNT, false);
         passiveSkillsTable.setUserObject(SkillTable.PASSIVE_SKILLS);
+
         scrollPane = new ScrollPane(mainSkillsTable, getSkin());
         dragAndDrop = new SkillsDragAndDrop(factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
     }
@@ -110,8 +117,7 @@ public class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresenter> imp
     public void finishMerge(SkillTable table, int index, Skill skill) {
         List2D<Skill> listTarget = getList2D(table);
         listTarget.removeIndex(index);
-        index = listTarget.insert(index, skill);
-        //listTarget.setSelectedIndex(index);
+        listTarget.insert(index, skill);
     }
 
     @Override
@@ -120,8 +126,7 @@ public class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresenter> imp
         List2D<Skill> listSource = getList2D(tableSource);
         List2D<Skill> listTarget = getList2D(tableTarget);
         listTarget.removeIndex(skillTargetIndex);
-        int index = listTarget.insert(skillTargetIndex, skillSource);
-        //listTarget.setSelectedIndex(index);
+        listTarget.insert(skillTargetIndex, skillSource);
         listSource.insert(skillSourceIndex, skillTarget);
     }
 
@@ -225,7 +230,6 @@ public class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresenter> imp
                                      TimeoutDragAndDrop.Payload payload, TimeoutDragAndDrop.Target target) {
                     if (target == null) {
                         table.insert((int) payload.getObject2(), (Skill) payload.getObject1());
-                        table.getSelection().clear();
                     }
                 }
             });
@@ -260,10 +264,11 @@ public class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresenter> imp
 
     }
 
-    private com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle getEmptyBackgroundStyle() {
+    // TODO: move somewhere
+    private static com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle getEmptyBackgroundStyle(Skin skin) {
         com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle style =
                 new com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle(
-                        getSkin().get(com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle.class));
+                        skin.get(com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle.class));
         style.background = new BaseDrawable(style.background);
         return style;
     }
