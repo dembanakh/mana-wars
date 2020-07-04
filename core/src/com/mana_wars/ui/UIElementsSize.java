@@ -23,7 +23,7 @@ public final class UIElementsSize {
     }
 
     public static class SKILL_CASE_WINDOW {
-        public static final int SKILL_NAME_PADDING = 10;
+        public static final int SKILL_NAME_PADDING = 40;
         public static final int SKILL_ICON_PADDING = 50;
         public static final int SKILL_DESCRIPTION_PADDING = 50;
 

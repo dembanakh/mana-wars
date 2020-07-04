@@ -10,7 +10,7 @@ import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.factory.UIElementFactory;
-import com.mana_wars.ui.widgets.BuildableUI;
+import com.mana_wars.ui.widgets.base.BuildableUI;
 
 public class SkillInfoWindow extends BaseSkillWindow implements BuildableUI {
 

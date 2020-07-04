@@ -18,11 +18,10 @@ public class Skill extends GameItem {
     }
 
     public void activate(BattleParticipant self, BattleParticipant enemy) {
-        //System.out.println(getName() + " activated");
         for (SkillCharacteristic sc : skillCharacteristics) {
             if (sc.getTarget() == SkillCharacteristic.Target.SELF)
                 self.applySkillCharacteristic(sc, getLevel());
-            else if (sc.getTarget() == SkillCharacteristic.Target.ENEMY)
+            else if (sc.getTarget() == SkillCharacteristic.Target.ENEMY && enemy.isAlive())
                 enemy.applySkillCharacteristic(sc, getLevel());
         }
     }

@@ -27,4 +27,9 @@ public class AndroidLauncher extends AndroidApplication {
                         new DBUpdateChecker(this, roomRepository, sharedPreferencesRepository)),
                 config);
     }
+
+    @Override
+    public void onBackPressed() {
+        // TODO: NOT handle
+    }
 }

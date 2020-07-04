@@ -1,0 +1,110 @@
+
+mana-wars-ui.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+font-button-export
+  rotate: false
+  xy: 1, 285
+  size: 165, 167
+  orig: 165, 167
+  offset: 0, 0
+  index: -1
+font-export
+  rotate: false
+  xy: 319, 725
+  size: 104, 104
+  orig: 104, 104
+  offset: 0, 0
+  index: -1
+font-title-export
+  rotate: false
+  xy: 1, 454
+  size: 251, 251
+  orig: 251, 251
+  offset: 0, 0
+  index: -1
+list
+  rotate: false
+  xy: 1, 211
+  size: 95, 72
+  split: 10, 74, 15, 51
+  pad: 12, 16, 15, 14
+  orig: 95, 72
+  offset: 0, 0
+  index: -1
+scrollbar-horizontal
+  rotate: false
+  xy: 886, 938
+  size: 97, 43
+  split: 49, 42, 0, 0
+  pad: 0, 0, 0, 0
+  orig: 97, 43
+  offset: 0, 0
+  index: -1
+scrollbar-vertical
+  rotate: false
+  xy: 168, 406
+  size: 22, 46
+  split: 0, 0, 20, 21
+  pad: 0, 0, 0, 0
+  orig: 22, 46
+  offset: 0, 0
+  index: -1
+slider-horizontal
+  rotate: false
+  xy: 568, 844
+  size: 14, 13
+  orig: 14, 13
+  offset: 0, 0
+  index: -1
+textfield
+  rotate: false
+  xy: 254, 676
+  size: 51, 29
+  split: 6, 27, 5, 16
+  pad: 4, 4, 3, 3
+  orig: 51, 29
+  offset: 0, 0
+  index: -1
+white
+  rotate: false
+  xy: 319, 722
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+brown
+  rotate: false
+  xy: 425, 828
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+button
+  rotate: false
+  xy: 1, 707
+  size: 316, 122
+  split: 54, 54, 48, 48
+  pad: 0, 0, 0, 0
+  orig: 316, 122
+  offset: 0, 0
+  index: -1
+button-down
+  rotate: false
+  xy: 568, 859
+  size: 316, 122
+  split: 54, 54, 48, 48
+  pad: 0, 0, 0, 0
+  orig: 316, 122
+  offset: 0, 0
+  index: -1
+window
+  rotate: false
+  xy: 1, 831
+  size: 565, 150
+  split: 40, 40, 78, 24
+  orig: 565, 150
+  offset: 0, 0
+  index: -1

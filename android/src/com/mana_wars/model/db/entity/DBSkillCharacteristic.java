@@ -1,6 +1,5 @@
 package com.mana_wars.model.db.entity;
 
-
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -33,6 +32,12 @@ public class DBSkillCharacteristic {
 
     @ColumnInfo(name = "target")
     private int target;
+
+    @ColumnInfo(name = "upgrade_function")
+    private String upgradeFunction;
+
+    @ColumnInfo(name = "level_multiplier")
+    private int levelMultiplier;
 
 
     public int getId() {
@@ -83,6 +88,22 @@ public class DBSkillCharacteristic {
         this.target = target;
     }
 
+    public String getUpgradeFunction() {
+        return upgradeFunction;
+    }
+
+    public void setUpgradeFunction(String upgradeFunction) {
+        this.upgradeFunction = upgradeFunction;
+    }
+
+    public int getLevelMultiplier() {
+        return levelMultiplier;
+    }
+
+    public void setLevelMultiplier(int levelMultiplier) {
+        this.levelMultiplier = levelMultiplier;
+    }
+
     public DBSkillCharacteristic() {
     }
 
@@ -94,6 +115,8 @@ public class DBSkillCharacteristic {
         result.setType(json.getInt("characteristic"));
         result.setChangeType(json.getInt("value_change") == 1);
         result.setTarget(json.getInt("target"));
+        result.setUpgradeFunction(json.getString("upgrade_function"));
+        result.setLevelMultiplier(json.getInt("level_multiplier"));
         return result;
     }
 }

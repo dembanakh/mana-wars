@@ -9,13 +9,23 @@ public final class UIStringConstants {
     public static final String SKILLS_FRAMES_FILENAME = "Skills_frames";
 
     public static class UI_SKIN {
-        public static final String FORMAT = "skins/%s/skin/%<s-ui.json";
+        public static final String FORMAT = "skins/%s/%<s-ui.json";
 
         public static final String FREEZING = "freezing";
+        public static final String MANA_WARS = "mana-wars";
+
+        public enum BACKGROUND_COLOR {
+            NONE, WHITE, BROWN;
+
+            @Override
+            public String toString() {
+                return super.toString().toLowerCase();
+            }
+        }
     }
 
     public static class NAVIGATION_BAR {
-        public static final String BG_COLOR = "white";
+        public static final String BG_COLOR = "brown";
     }
 
     public static class GREETING_SCREEN {

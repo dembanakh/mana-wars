@@ -9,8 +9,12 @@ import java.util.List;
 
 public class Mob extends BattleParticipant {
 
-    public Mob(String name, int initialHealth, List<ActiveSkill> activeSkills, List<PassiveSkill> passiveSkills) {
+    public Mob(String name, int initialHealth, Iterable<ActiveSkill> activeSkills, List<PassiveSkill> passiveSkills) {
         super(name, initialHealth, activeSkills, passiveSkills);
+    }
+
+    private Mob(String name, int initialHealth, List<PassiveSkill> passiveSkills, List<BattleSkill> battleSkills) {
+        super(name, initialHealth, battleSkills, passiveSkills);
     }
 
     @Override
@@ -21,6 +25,10 @@ public class Mob extends BattleParticipant {
                 break;
             }
         }
+    }
+
+    Mob copy() {
+        return new Mob(getName(), getInitialHealthAmount(), passiveSkills, battleSkills);
     }
 
 }

@@ -1,7 +1,7 @@
 package com.mana_wars.ui.widgets.value_field;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -16,12 +16,12 @@ import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.ui.factory.AssetFactory;
-import com.mana_wars.ui.widgets.skills_list_2d.List2D;
-import com.mana_wars.ui.widgets.skills_list_2d.StaticSkillsList2D;
+import com.mana_wars.ui.factory.UIElementFactory;
+import com.mana_wars.ui.widgets.base.List2D;
 
 import java.util.Locale;
 
-public class BattleParticipantValueField extends ValueFieldWithInitialData<BattleParticipantValueField.Data, Integer> {
+public class BattleParticipantValueField extends ManualTransformValueFieldWithInitialData<BattleParticipantValueField.Data, Integer> {
 
     private Label participantHealth;
     private ProgressBar healthBar;
@@ -36,15 +36,21 @@ public class BattleParticipantValueField extends ValueFieldWithInitialData<Battl
 
     private final AssetFactory<Integer, TextureRegion> iconFactory;
     private final AssetFactory<Rarity, TextureRegion> frameFactory;
+    private final AssetFactory<String, Texture> imageFactory;
+
     private final float deltaHealthAnimationDistance;
     private final float deltaHealthAnimationDuration;
 
+    private boolean initializing = false;
+
     public BattleParticipantValueField(final AssetFactory<Integer, TextureRegion> iconFactory,
                                        final AssetFactory<Rarity, TextureRegion> frameFactory,
+                                       final AssetFactory<String, Texture> imageFactory,
                                        float deltaHealthAnimationDistance,
                                        float deltaHealthAnimationDuration) {
         this.iconFactory = iconFactory;
         this.frameFactory = frameFactory;
+        this.imageFactory = imageFactory;
         this.deltaHealthAnimationDistance = deltaHealthAnimationDistance;
         this.deltaHealthAnimationDuration = deltaHealthAnimationDuration;
     }
@@ -53,7 +59,7 @@ public class BattleParticipantValueField extends ValueFieldWithInitialData<Battl
     public void init() {
         super.init();
 
-        participantName = new Label("", new Label.LabelStyle(new BitmapFont(), new Color()));
+        participantName = new Label("", UIElementFactory.emptyLabelStyle());
         participantName.setColor(Color.BLACK);
         participantName.setFontScale(4);
         addActor(participantName);
@@ -64,31 +70,25 @@ public class BattleParticipantValueField extends ValueFieldWithInitialData<Battl
         healthBar.setScale(4);
         stack.add(healthBar);
 
-        participantHealth = new Label("", new Label.LabelStyle(new BitmapFont(), new Color()));
+        participantHealth = new Label("", UIElementFactory.emptyLabelStyle());
         participantHealth.setFillParent(true);
         participantHealth.setColor(Color.BLACK);
         participantHealth.setFontScale(4);
         stack.add(participantHealth);
         addActor(stack);
 
-        healthChangeLabel = new Label("", new Label.LabelStyle(new BitmapFont(), new Color()));
+        healthChangeLabel = new Label("", UIElementFactory.emptyLabelStyle());
         healthChangeLabel.setFontScale(4);
         addActor(healthChangeLabel);
 
-        participantPassiveSkills = new StaticSkillsList2D<PassiveSkill>(new List.ListStyle(),
-                GameConstants.USER_PASSIVE_SKILL_COUNT, iconFactory, frameFactory) {
-            @Override
-            protected boolean shouldShowLevel(PassiveSkill item) {
-                return false;
-            }
-        };
+        participantPassiveSkills = UIElementFactory.skillsListWithoutLevel(GameConstants.USER_PASSIVE_SKILL_COUNT,
+                iconFactory, frameFactory);
         participantPassiveSkills.setMinHeight(131.4f);
         addActorAndExpandX(participantPassiveSkills);
 
-        TextureRegion tempRegion = new TextureRegion(AssetFactory.getWhiteTexture());
-        tempRegion.setRegion(0, 0, 384, 1024);
+        TextureRegion tempRegion = new TextureRegion(imageFactory.getAsset("player"));
         participantImage = new Image(tempRegion);
-        addActorAndPad(participantImage, 50);
+        addActorAndPad(participantImage, 28);
     }
 
     @Override
@@ -107,7 +107,9 @@ public class BattleParticipantValueField extends ValueFieldWithInitialData<Battl
         int lastValue = (int) healthBar.getValue();
         participantHealth.setText(value);
         healthBar.setValue(value);
-        updateHealthChangeLabel(value - lastValue);
+        if (!initializing)
+            updateHealthChangeLabel(value - lastValue);
+        else initializing = false;
     }
 
     private void updateHealthChangeLabel(int deltaHealth) {
@@ -129,15 +131,16 @@ public class BattleParticipantValueField extends ValueFieldWithInitialData<Battl
 
     @Override
     public void setInitialData(Data data) {
+        initializing = true;
         participantName.setText(data.name);
         healthBar.setRange(0, data.initialHealth);
         participantPassiveSkills.setItems(data.passiveSkills);
-        try {
+        /*try {
             healthBar.setValue(data.initialHealth);
             participantHealth.setText(data.initialHealth);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     public static class Data {

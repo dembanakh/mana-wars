@@ -8,6 +8,7 @@ import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.factory.UIElementFactory;
 import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
+import com.mana_wars.ui.widgets.base.BuildableUI;
 
 import static com.mana_wars.ui.UIElementsSize.NAVIGATION_BAR.TABS_NUMBER;
 import static com.mana_wars.ui.UIElementsSize.NAVIGATION_BAR.TAB_HEIGHT;
@@ -51,7 +52,7 @@ public class NavigationBar implements BuildableUI {
             }
         })).width(TAB_WIDTH).height(TAB_HEIGHT);
 
-        bar.add(UIElementFactory.getButton(skin, "PLACEHOLDER", new ChangeListener() {
+        bar.add(UIElementFactory.getButton(skin, "INFO", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 // TODO: TEMP

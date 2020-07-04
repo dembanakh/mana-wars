@@ -54,7 +54,7 @@ public class ShopScreen extends BaseScreen<MenuOverlayUI, ShopPresenter> impleme
         layer.add(UIElementFactory.getButton(skin, "1 SKILL CASE (" + GameConstants.SKILL_CASE_PRICE + " MANA)", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                presenter.buySkillCases(1);
+                presenter.buySkillCase();
             }
         })).top().padTop(UIElementsSize.MENU_OVERLAY_UI.USER_LEVEL_FIELD_HEIGHT()).expandX().fillX().row();
 

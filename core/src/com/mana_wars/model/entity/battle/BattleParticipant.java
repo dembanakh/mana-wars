@@ -8,6 +8,7 @@ import com.mana_wars.model.entity.skills.SkillCharacteristic;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Random;
 
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.Subject;
@@ -26,7 +27,23 @@ public abstract class BattleParticipant {
 
     private final EnumMap<Characteristic, Integer> characteristics = new EnumMap<>(Characteristic.class);
 
-    public BattleParticipant(String name, int initialHealth, List<ActiveSkill> activeSkills, List<PassiveSkill> passiveSkills) {
+    public int getCurrentTarget() {
+        return currentTarget;
+    }
+
+    private int currentTarget = -1;
+
+    private static Random random = new Random();
+
+    public BattleParticipant(String name, int initialHealth, Iterable<ActiveSkill> activeSkills, List<PassiveSkill> passiveSkills) {
+        this(name, initialHealth, new ArrayList<BattleSkill>(), passiveSkills);
+
+        for (ActiveSkill s : activeSkills) {
+            battleSkills.add(new BattleSkill(s));
+        }
+    }
+
+    protected BattleParticipant(String name, int initialHealth, List<BattleSkill> battleSkills, List<PassiveSkill> passiveSkills) {
         this.name = name;
         this.initialHealth = initialHealth;
         setCharacteristicValue(Characteristic.HEALTH, initialHealth);
@@ -35,14 +52,27 @@ public abstract class BattleParticipant {
         setCharacteristicValue(Characteristic.COOLDOWN, 100);
         healthObservable = BehaviorSubject.create();
         this.passiveSkills = passiveSkills;
-
-        for (ActiveSkill s : activeSkills) {
-            battleSkills.add(new BattleSkill(s));
+        for (BattleSkill skill : battleSkills) {
+            this.battleSkills.add(new BattleSkill(skill.skill));
         }
     }
 
     void start() {
         healthObservable.onNext(initialHealth);
+        changeTarget();
+    }
+
+    public int changeTarget(){
+        List<BattleParticipant> opps = battle.getOpponents(this);
+        ArrayList<Integer> alivaOpps = new ArrayList<>();
+        for (int i = 0; i < opps.size(); i++) {
+            if (opps.get(i).isAlive() && i != currentTarget){
+                alivaOpps.add(i);
+            }
+        }
+        if(alivaOpps.isEmpty()) return currentTarget;
+        currentTarget = alivaOpps.get(random.nextInt(alivaOpps.size()));
+        return currentTarget;
     }
 
     public abstract void update(final double currentTime);
@@ -51,8 +81,8 @@ public abstract class BattleParticipant {
         Characteristic c = sc.getCharacteristic();
         int changedValue = c.changeValue(characteristics.get(c), sc.getChangeType(), sc.getValue(skillLevel));
         if (c == Characteristic.HEALTH) {
-            healthObservable.onNext(changedValue);
             changedValue = Math.min(changedValue, initialHealth);
+            healthObservable.onNext(changedValue);
         }
         setCharacteristicValue(c, changedValue);
     }
@@ -72,7 +102,7 @@ public abstract class BattleParticipant {
         this.battle = battle;
     }
 
-    boolean isAlive() {
+    public boolean isAlive() {
         return getCharacteristicValue(Characteristic.HEALTH) > 0;
     }
 

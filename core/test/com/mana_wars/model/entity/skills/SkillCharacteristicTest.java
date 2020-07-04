@@ -1,5 +1,6 @@
 package com.mana_wars.model.entity.skills;
 
+import com.mana_wars.model.entity.base.UpgradeFunction;
 import com.mana_wars.model.entity.base.ValueChangeType;
 import com.mana_wars.model.entity.battle.Characteristic;
 
@@ -17,7 +18,8 @@ public class SkillCharacteristicTest {
     @Before
     public void setup() {
         sc = new SkillCharacteristic(2, Characteristic.COOLDOWN,
-                ValueChangeType.INCREASE, SkillCharacteristic.Target.ENEMY);
+                ValueChangeType.INCREASE, SkillCharacteristic.Target.ENEMY,
+                UpgradeFunction.LINEAR, 1);
     }
 
     @Test
@@ -40,7 +42,8 @@ public class SkillCharacteristicTest {
     @Test
     public void testIsManaCost_Yes() {
         SkillCharacteristic characteristic = new SkillCharacteristic(2, Characteristic.MANA,
-                ValueChangeType.DECREASE, SkillCharacteristic.Target.SELF);
+                ValueChangeType.DECREASE, SkillCharacteristic.Target.SELF,
+                UpgradeFunction.LINEAR, 0);
         assertTrue(characteristic.isManaCost());
     }
 

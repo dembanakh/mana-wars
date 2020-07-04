@@ -1,6 +1,8 @@
 package com.mana_wars.ui.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.mana_wars.model.entity.battle.DungeonBattleBuilder;
@@ -12,6 +14,7 @@ import com.mana_wars.model.repository.DatabaseRepository;
 import com.mana_wars.presentation.presenters.DungeonsPresenter;
 import com.mana_wars.presentation.view.DungeonsView;
 import com.mana_wars.ui.UIStringConstants;
+import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.BaseOverlayUI;
@@ -27,23 +30,28 @@ import static com.mana_wars.model.GameConstants.CHOSEN_BATTLE_BUILDER;
 public class DungeonsScreen extends BaseScreen<BaseOverlayUI, DungeonsPresenter> implements DungeonsView {
 
     private final DungeonButtonsTable dungeonButtonsTable;
+    private final AssetFactory<String, Texture> imageFactory;
 
     public DungeonsScreen(final UserDungeonsAPI user,
                           final ScreenSetter screenSetter,
                           final FactoryStorage factoryStorage,
                           final DatabaseRepository databaseRepository,
                           final BaseOverlayUI overlayUI) {
-        super(screenSetter, factoryStorage.getSkinFactory().getAsset(UIStringConstants.UI_SKIN.FREEZING), overlayUI);
+        super(screenSetter, factoryStorage.getSkinFactory().getAsset(UIStringConstants.UI_SKIN.MANA_WARS), overlayUI);
         presenter = new DungeonsPresenter(this,
                 new DungeonsInteractor(user, databaseRepository),
                 Gdx.app::postRunnable);
 
-        this.dungeonButtonsTable = new DungeonButtonsTable(getSkin(), this::onDungeon);
+        dungeonButtonsTable = new DungeonButtonsTable(getSkin(), this::onDungeon);
+        imageFactory = factoryStorage.getImageFactory();
     }
 
     @Override
     protected Table buildBackgroundLayer(Skin skin) {
         Table layer = new Table();
+
+        layer.add(new Image(imageFactory.getAsset("bg2")));
+
         return layer;
     }
 

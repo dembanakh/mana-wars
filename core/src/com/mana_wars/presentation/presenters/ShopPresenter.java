@@ -22,9 +22,9 @@ public final class ShopPresenter extends BasePresenter<ShopView, ShopInteractor>
         disposable.add(interactor.getUserLevelObservable().subscribe(observer));
     }
 
-    public void buySkillCases(int count) {
+    public void buySkillCase() {
         // obtain cases
-        interactor.updateManaAmount(- count * GameConstants.SKILL_CASE_PRICE);
+        interactor.buySkillCase();
     }
 
 }

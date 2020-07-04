@@ -95,16 +95,16 @@ public class BaseBattle implements BattleConfig, Battle {
         battleEvents.add(new BattleEvent(activationTime, skill, participant));
     }
 
-
     private void activateParticipantSkill(BattleEvent be) {
         //TODO refactor for multiple targets
-        be.skill.activate(be.participant, getOpponents(be.participant).get(0));
+        be.skill.activate(be.participant, getOpponents(be.participant).get(be.participant.getCurrentTarget()));
     }
 
     private void initParticipants(Iterable<BattleParticipant> participants) {
         for (BattleParticipant participant : participants) {
             participant.setBattle(this);
             for (Skill s : participant.getPassiveSkills()) {
+                //TODO think about it
                 s.activate(participant, getOpponents(participant).get(0));
             }
         }
@@ -129,7 +129,8 @@ public class BaseBattle implements BattleConfig, Battle {
         return true;
     }
 
-    private List<BattleParticipant> getOpponents(BattleParticipant participant) {
+    @Override
+    public List<BattleParticipant> getOpponents(BattleParticipant participant) {
         return opponents.get(participant);
     }
 

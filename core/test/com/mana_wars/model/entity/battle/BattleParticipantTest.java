@@ -1,6 +1,7 @@
 package com.mana_wars.model.entity.battle;
 
 import com.mana_wars.model.entity.base.ValueChangeType;
+import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.SkillCharacteristic;
 
 import org.junit.Before;
@@ -20,7 +21,7 @@ public class BattleParticipantTest {
 
     @Before
     public void setup() {
-        bp = new BattleParticipant("a", 100, Collections.emptyList(), Collections.emptyList()) {
+        bp = new BattleParticipant("a", 100, Collections.<ActiveSkill>emptyList(), Collections.emptyList()) {
 
             @Override
             public void update(double currentTime) {

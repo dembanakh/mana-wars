@@ -1,5 +1,6 @@
 package com.mana_wars.model.entity.user;
 
+import com.mana_wars.model.entity.base.UpgradeFunction;
 import com.mana_wars.model.entity.base.ValueChangeType;
 import com.mana_wars.model.entity.battle.Battle;
 import com.mana_wars.model.entity.battle.Characteristic;
@@ -9,7 +10,6 @@ import com.mana_wars.model.entity.skills.SkillCharacteristic;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 
 import java.util.Collections;
 
@@ -43,7 +43,9 @@ public class UserBattleParticipantTest {
 
     @Test
     public void testApplySkillCharacteristic_MANA() {
-        SkillCharacteristic sc = new SkillCharacteristic(20, Characteristic.MANA, ValueChangeType.DECREASE, SkillCharacteristic.Target.SELF);
+        SkillCharacteristic sc = new SkillCharacteristic(20, Characteristic.MANA,
+                ValueChangeType.DECREASE, SkillCharacteristic.Target.SELF,
+                UpgradeFunction.LINEAR, 0);
         user.applySkillCharacteristic(sc, 2);
         assertEquals(80, changedMana);
     }

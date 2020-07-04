@@ -41,11 +41,11 @@ public class SkillTest {
         when(sc2.getTarget()).thenReturn(SkillCharacteristic.Target.ENEMY);
         BattleParticipant self = mock(BattleParticipant.class);
         BattleParticipant enemy = mock(BattleParticipant.class);
+        when(enemy.isAlive()).thenReturn(true);
         skill.activate(self, enemy);
 
         verify(self).applySkillCharacteristic(sc1, 1);
         verify(enemy).applySkillCharacteristic(sc2, 1);
-        verifyNoMoreInteractions(self, enemy);
     }
 
     @Test
