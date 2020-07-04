@@ -1,5 +1,6 @@
 package com.mana_wars.model.entity.user;
 
+import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.battle.BattleParticipant;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
@@ -7,6 +8,7 @@ import com.mana_wars.model.repository.UserLevelRepository;
 import com.mana_wars.model.repository.UserManaRepository;
 import com.mana_wars.model.repository.UsernameRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.subjects.BehaviorSubject;
@@ -40,8 +42,15 @@ public class User implements
     @Override
     public BattleParticipant prepareBattleParticipant() {
         if (activeSkills == null || passiveSkills == null) throw new IllegalStateException("User was not provided with active or passive skills");
+
+        List<PassiveSkill> cleanedPassiveSkills = new ArrayList<>();
+        for (PassiveSkill ps : passiveSkills){
+            if(ps.getRarity() != Rarity.EMPTY){
+                cleanedPassiveSkills.add(ps);
+            }
+        }
         return user = new UserBattleParticipant(usernameRepository.getUsername(), userManaRepository.getUserMana(),
-                this::setManaAmount, activeSkills, passiveSkills);
+                this::setManaAmount, activeSkills, cleanedPassiveSkills);
     }
 
     @Override

@@ -63,7 +63,7 @@ public final class BattlePresenter extends BasePresenter<BattleView, BattleInter
                     (observer) -> addObserver_enemyHealth(finalIndex, observer));
         }
         uiThreadHandler.postRunnable(() -> {
-            view.setActiveEnemy(0);
+            view.setActiveEnemy(user.getCurrentTarget());
         });
     }
 

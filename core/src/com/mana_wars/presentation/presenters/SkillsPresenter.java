@@ -34,19 +34,16 @@ public final class SkillsPresenter extends BasePresenter<SkillsView, SkillsInter
 
     private void mergeSkills(Skill toUpdate, Skill toDelete) {
         disposable.add(interactor.mergeSkills(toUpdate, toDelete).subscribe(() -> {
-            System.out.println("Skills merged");
         }, Throwable::printStackTrace));
     }
 
     private void swapSkills(Skill skillSource, Skill skillTarget) {
         disposable.add(interactor.swapSkills(skillSource, skillTarget).subscribe(() -> {
-            System.out.println("Skills swapped");
         }, Throwable::printStackTrace));
     }
 
     private void moveSkill(Skill skill, int index) {
         disposable.add(interactor.moveSkill(skill, index).subscribe(() -> {
-            System.out.println("Skills moved");
         }, Throwable::printStackTrace));
     }
 
@@ -57,7 +54,6 @@ public final class SkillsPresenter extends BasePresenter<SkillsView, SkillsInter
 
     public void performOperation(SkillTable tableSource, SkillTable tableTarget,
                                  Skill skillSource, Skill skillTarget, int skillSourceIndex, int skillTargetIndex) {
-        System.out.println(tableSource + " " + tableTarget + " " + skillSource + " " + skillTarget);
         if (interactor.validateOperation(SkillsOperations.MERGE, tableSource, tableTarget,
                 skillSource, skillTarget)) {
             skillTarget.upgradeLevel();

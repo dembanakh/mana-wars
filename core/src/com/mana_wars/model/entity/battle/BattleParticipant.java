@@ -8,6 +8,7 @@ import com.mana_wars.model.entity.skills.SkillCharacteristic;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Random;
 
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.Subject;
@@ -25,6 +26,14 @@ public abstract class BattleParticipant {
     private final Subject<Integer> healthObservable;
 
     private final EnumMap<Characteristic, Integer> characteristics = new EnumMap<>(Characteristic.class);
+
+    public int getCurrentTarget() {
+        return currentTarget;
+    }
+
+    private int currentTarget = -1;
+
+    private static Random random = new Random();
 
     public BattleParticipant(String name, int initialHealth, Iterable<ActiveSkill> activeSkills, List<PassiveSkill> passiveSkills) {
         this(name, initialHealth, new ArrayList<BattleSkill>(), passiveSkills);
@@ -50,6 +59,20 @@ public abstract class BattleParticipant {
 
     void start() {
         healthObservable.onNext(initialHealth);
+        changeTarget();
+    }
+
+    public int changeTarget(){
+        List<BattleParticipant> opps = battle.getOpponents(this);
+        ArrayList<Integer> alivaOpps = new ArrayList<>();
+        for (int i = 0; i < opps.size(); i++) {
+            if (opps.get(i).isAlive() && i != currentTarget){
+                alivaOpps.add(i);
+            }
+        }
+        if(alivaOpps.isEmpty()) return currentTarget;
+        currentTarget = alivaOpps.get(random.nextInt(alivaOpps.size()));
+        return currentTarget;
     }
 
     public abstract void update(final double currentTime);
@@ -58,11 +81,8 @@ public abstract class BattleParticipant {
         Characteristic c = sc.getCharacteristic();
         int changedValue = c.changeValue(characteristics.get(c), sc.getChangeType(), sc.getValue(skillLevel));
         if (c == Characteristic.HEALTH) {
-            healthObservable.onNext(changedValue);
             changedValue = Math.min(changedValue, initialHealth);
-            if (!isAlive()) {
-
-            }
+            healthObservable.onNext(changedValue);
         }
         setCharacteristicValue(c, changedValue);
     }
@@ -82,7 +102,7 @@ public abstract class BattleParticipant {
         this.battle = battle;
     }
 
-    boolean isAlive() {
+    public boolean isAlive() {
         return getCharacteristicValue(Characteristic.HEALTH) > 0;
     }
 

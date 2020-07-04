@@ -34,7 +34,6 @@ public final class MainMenuInteractor extends BaseInteractor {
 
             Skill s = SkillFactory.getNewSkill(skills);
             disposable.add(databaseRepository.insertUserSkill(s).subscribe(() -> {
-                System.out.println("Skill added");
             }, Throwable::printStackTrace));
 
             return s;

@@ -74,7 +74,6 @@ public class DungeonButtonsTable extends Table {
         }
 
         private void setDisabled(int userLevel, boolean insufficientManaAmount) {
-            System.out.println(userLevel + " " + requiredLevel.getText());
             boolean insufficientUserLevel = userLevel < Integer.parseInt(requiredLevel.getText().toString());
 
             if (insufficientManaAmount || insufficientUserLevel) {

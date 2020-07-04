@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
@@ -27,7 +26,6 @@ public class BaseBattle implements BattleConfig, Battle {
     private final PriorityQueue<BattleEvent> battleEvents = new PriorityQueue<>();
 
     private final Subject<BattleSummaryData> finishBattleObservable;
-    private final Subject<Integer> numberEnemiesAliveObservable;
 
     BaseBattle(final BattleParticipant user,
                final List<BattleParticipant> userSide,
@@ -36,7 +34,6 @@ public class BaseBattle implements BattleConfig, Battle {
         this.userSide = userSide;
         this.enemySide = enemySide;
         this.finishBattleObservable = PublishSubject.create();
-        this.numberEnemiesAliveObservable = BehaviorSubject.createDefault(enemySide.size());
 
         opponents.put(user, new ArrayList<>(enemySide));
         for (BattleParticipant userAlly : userSide) {
@@ -98,21 +95,16 @@ public class BaseBattle implements BattleConfig, Battle {
         battleEvents.add(new BattleEvent(activationTime, skill, participant));
     }
 
-    @Override
-    public void informDeath(BattleParticipant participant) {
-        numberEnemiesAliveObservable.onNext(numberEnemiesAliveObservable.blockingLast() - 1);
-    }
-
-
     private void activateParticipantSkill(BattleEvent be) {
         //TODO refactor for multiple targets
-        be.skill.activate(be.participant, getOpponents(be.participant).get(0));
+        be.skill.activate(be.participant, getOpponents(be.participant).get(be.participant.getCurrentTarget()));
     }
 
     private void initParticipants(Iterable<BattleParticipant> participants) {
         for (BattleParticipant participant : participants) {
             participant.setBattle(this);
             for (Skill s : participant.getPassiveSkills()) {
+                //TODO think about it
                 s.activate(participant, getOpponents(participant).get(0));
             }
         }
@@ -137,7 +129,8 @@ public class BaseBattle implements BattleConfig, Battle {
         return true;
     }
 
-    private List<BattleParticipant> getOpponents(BattleParticipant participant) {
+    @Override
+    public List<BattleParticipant> getOpponents(BattleParticipant participant) {
         return opponents.get(participant);
     }
 
