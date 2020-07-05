@@ -7,6 +7,7 @@ import com.mana_wars.model.entity.skills.BattleSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.entity.skills.SkillCharacteristic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.functions.Consumer;
@@ -19,7 +20,7 @@ class UserBattleParticipant extends BattleParticipant {
     private double battleTime;
 
     UserBattleParticipant(String name, int currentUserMana, Consumer<? super Integer> manaOnChanged,
-                          List<ActiveSkill> activeSkills, List<PassiveSkill> passiveSkills) {
+                          List<ActiveSkill> activeSkills, Iterable<PassiveSkill> passiveSkills) {
         super(name, 1000, activeSkills, passiveSkills);
         this.activeSkills = activeSkills;
         this.manaOnChanged = manaOnChanged;
@@ -70,7 +71,11 @@ class UserBattleParticipant extends BattleParticipant {
     }
 
     Iterable<ActiveSkill> getActiveSkills() {
-        return activeSkills;
+        List<ActiveSkill> result = new ArrayList<>();
+        for (ActiveSkill skill : activeSkills) {
+            result.add(initSkill(skill));
+        }
+        return result;
     }
 
 }

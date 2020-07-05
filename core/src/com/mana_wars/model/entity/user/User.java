@@ -43,14 +43,8 @@ public class User implements
     public BattleParticipant prepareBattleParticipant() {
         if (activeSkills == null || passiveSkills == null) throw new IllegalStateException("User was not provided with active or passive skills");
 
-        List<PassiveSkill> cleanedPassiveSkills = new ArrayList<>();
-        for (PassiveSkill ps : passiveSkills){
-            if(ps.getRarity() != Rarity.EMPTY){
-                cleanedPassiveSkills.add(ps);
-            }
-        }
         return user = new UserBattleParticipant(usernameRepository.getUsername(), userManaRepository.getUserMana(),
-                this::setManaAmount, activeSkills, cleanedPassiveSkills);
+                this::setManaAmount, activeSkills, cleanPassiveSkills(passiveSkills));
     }
 
     @Override
@@ -101,12 +95,22 @@ public class User implements
 
     @Override
     public Iterable<ActiveSkill> getActiveSkills() {
+
         return user.getActiveSkills();
     }
 
     private void setManaAmount(int mana) {
         userManaRepository.setUserMana(mana);
         manaAmountObservable.onNext(mana);
+    }
+
+    private Iterable<PassiveSkill> cleanPassiveSkills(Iterable<PassiveSkill> passiveSkills) {
+        List<PassiveSkill> cleaned = new ArrayList<>();
+        for (PassiveSkill skill : passiveSkills) {
+            if (skill.getRarity() != Rarity.EMPTY)
+                cleaned.add(skill);
+        }
+        return cleaned;
     }
 
 }

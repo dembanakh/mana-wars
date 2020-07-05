@@ -5,14 +5,13 @@ import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.battle.BattleParticipant;
 import com.mana_wars.model.entity.battle.Characteristic;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 public class Skill extends GameItem {
 
-    private final List<SkillCharacteristic> skillCharacteristics;
+    private final Iterable<SkillCharacteristic> skillCharacteristics;
 
-    public Skill(int id, int level, Rarity rarity, String name, List<SkillCharacteristic> skillCharacteristics) {
+    public Skill(int id, int level, Rarity rarity, String name, Iterable<SkillCharacteristic> skillCharacteristics) {
         super(id, level, rarity, name);
         this.skillCharacteristics = skillCharacteristics;
     }
@@ -45,8 +44,12 @@ public class Skill extends GameItem {
         return result.toString();
     }
 
+    public Iterable<SkillCharacteristic> getSkillCharacteristics() {
+        return skillCharacteristics;
+    }
+
     private static Skill Empty = new Skill(50, 0, Rarity.EMPTY, "EMPTY",
-            new ArrayList<>());
+            Collections.emptyList());
 
     public static Skill getEmpty() {
         return Empty;

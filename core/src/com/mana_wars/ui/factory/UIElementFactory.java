@@ -38,11 +38,11 @@ public final class UIElementFactory {
         return new Label.LabelStyle(new BitmapFont(), new Color());
     }
 
-    public static List.ListStyle emptyListStyle() {
+    private static List.ListStyle emptyListStyle() {
         return new List.ListStyle();
     }
 
-    private static List.ListStyle emptyListStyle(Skin skin) {
+    public static List.ListStyle emptyListStyle(Skin skin) {
         List.ListStyle style = new List.ListStyle(skin.get(List.ListStyle.class));
         style.background = new BaseDrawable(style.background);
         return style;
@@ -59,7 +59,7 @@ public final class UIElementFactory {
     public static List2D<Skill> unorderedOperationSkillsList(Skin skin, int cols,
                                                            AssetFactory<Integer, TextureRegion> skillIconFactory,
                                                            AssetFactory<Rarity, TextureRegion> rarityFrameFactory) {
-        return new OperationSkillsList2D(emptyListStyle(skin),
+        return new OperationSkillsList2D(skin,
                 new StandardSkillDrawer<>(skillIconFactory, rarityFrameFactory),
                 cols, false);
     }

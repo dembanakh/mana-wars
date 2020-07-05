@@ -6,7 +6,7 @@ filter: Linear,Linear
 repeat: none
 font-button-export
   rotate: false
-  xy: 1, 285
+  xy: 1, 139
   size: 165, 167
   orig: 165, 167
   offset: 0, 0
@@ -25,15 +25,6 @@ font-title-export
   orig: 251, 251
   offset: 0, 0
   index: -1
-list
-  rotate: false
-  xy: 1, 211
-  size: 95, 72
-  split: 10, 74, 15, 51
-  pad: 12, 16, 15, 14
-  orig: 95, 72
-  offset: 0, 0
-  index: -1
 scrollbar-horizontal
   rotate: false
   xy: 886, 938
@@ -45,7 +36,7 @@ scrollbar-horizontal
   index: -1
 scrollbar-vertical
   rotate: false
-  xy: 168, 406
+  xy: 193, 406
   size: 22, 46
   split: 0, 0, 20, 21
   pad: 0, 0, 0, 0
@@ -70,14 +61,14 @@ textfield
   index: -1
 white
   rotate: false
-  xy: 319, 722
+  xy: 1, 136
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 brown
   rotate: false
-  xy: 425, 828
+  xy: 168, 305
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
@@ -87,7 +78,7 @@ button
   xy: 1, 707
   size: 316, 122
   split: 54, 54, 48, 48
-  pad: 0, 0, 0, 0
+  pad: 44, 48, 36, 48
   orig: 316, 122
   offset: 0, 0
   index: -1
@@ -96,8 +87,17 @@ button-down
   xy: 568, 859
   size: 316, 122
   split: 54, 54, 48, 48
-  pad: 0, 0, 0, 0
+  pad: 44, 48, 36, 48
   orig: 316, 122
+  offset: 0, 0
+  index: -1
+list
+  rotate: false
+  xy: 1, 308
+  size: 190, 144
+  split: 8, 8, 8, 8
+  pad: 12, 12, 12, 12
+  orig: 190, 144
   offset: 0, 0
   index: -1
 window

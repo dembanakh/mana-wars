@@ -66,6 +66,8 @@ public class BaseBattleTest {
         disposable.add(battle.getFinishBattleObservable().observeOn(scheduler)
                 .subscribe((data) -> summaryData = data));
         when(user.isAlive()).thenReturn(false);
+        when(user.getPassiveSkills()).thenReturn(Collections.emptyList());
+        when(enemySide.get(0).getPassiveSkills()).thenReturn(Collections.emptyList());
         battle.init();
         battle.start();
         battle.update(1);
@@ -78,6 +80,8 @@ public class BaseBattleTest {
         when(user.isAlive()).thenReturn(true);
         when(enemySide.get(0).isAlive()).thenReturn(true);
         ActiveSkill skill = mock(ActiveSkill.class);
+        when(user.getPassiveSkills()).thenReturn(Collections.emptyList());
+        when(enemySide.get(0).getPassiveSkills()).thenReturn(Collections.emptyList());
         battle.init();
         battle.start();
         battle.requestSkillApplication(user, skill, 1);

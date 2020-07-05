@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
@@ -83,7 +82,7 @@ public class BattleParticipantValueField extends ManualTransformValueFieldWithIn
 
         participantPassiveSkills = UIElementFactory.skillsListWithoutLevel(GameConstants.USER_PASSIVE_SKILL_COUNT,
                 iconFactory, frameFactory);
-        participantPassiveSkills.setMinHeight(131.4f);
+        //participantPassiveSkills.setMinHeight(131.4f); // Do we need this?
         addActorAndExpandX(participantPassiveSkills);
 
         TextureRegion tempRegion = new TextureRegion(imageFactory.getAsset("player"));
@@ -98,7 +97,7 @@ public class BattleParticipantValueField extends ManualTransformValueFieldWithIn
         participantHealth.setStyle(skin.get(Label.LabelStyle.class));
         healthBar.setStyle(skin.get("default-horizontal", ProgressBar.ProgressBarStyle.class));
         healthChangeLabel.setStyle(skin.get(Label.LabelStyle.class));
-        participantPassiveSkills.setStyle(skin.get("default", List.ListStyle.class));
+        participantPassiveSkills.setStyle(UIElementFactory.emptyListStyle(skin));
         return field;
     }
 

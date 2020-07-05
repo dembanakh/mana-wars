@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.entity.battle.BattleSummaryData;
@@ -26,6 +25,8 @@ import com.mana_wars.ui.overlays.BattleOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.widgets.value_field.NumberOfAliveEnemiesValueField;
 import com.mana_wars.ui.widgets.skills_list_2d.BlockableSkillsList;
+import com.mana_wars.ui.widgets.value_field.TextValueField;
+import com.mana_wars.ui.widgets.value_field.ValueField;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +35,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import io.reactivex.functions.Consumer;
 
 import static com.mana_wars.model.GameConstants.CHOSEN_BATTLE_BUILDER;
+import static com.mana_wars.ui.UIElementsSize.SCREEN_WIDTH;
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.ACTIVE_SKILLS_TABLE_HEIGHT;
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.SKILLS_TABLES_WIDTH;
 import static com.mana_wars.ui.UIStringConstants.UI_SKIN;
@@ -43,6 +45,7 @@ public class BattleScreen extends BaseScreen<BattleOverlayUI, BattlePresenter> i
     private final BlockableSkillsList<ActiveSkill> userActiveSkills;
 
     private final NumberOfAliveEnemiesValueField aliveEnemiesField;
+    private final ValueField<Integer> userManaAmount;
 
     private final AtomicBoolean isBattle = new AtomicBoolean(false);
     private final AssetFactory<String, Texture> imageFactory;
@@ -55,7 +58,6 @@ public class BattleScreen extends BaseScreen<BattleOverlayUI, BattlePresenter> i
         presenter = new BattlePresenter(this,
                 new BattleInteractor(user, databaseRepository),
                 Gdx.app::postRunnable);
-        presenter.addObserver_userManaAmount(overlayUI.getUserManaAmountObserver());
 
         userActiveSkills = UIElementFactory.applicableSkillsList(getSkin(),
                 GameConstants.MAX_CHOSEN_ACTIVE_SKILL_COUNT,
@@ -64,6 +66,9 @@ public class BattleScreen extends BaseScreen<BattleOverlayUI, BattlePresenter> i
 
         aliveEnemiesField = new NumberOfAliveEnemiesValueField();
         aliveEnemiesField.setBackgroundColor(UI_SKIN.BACKGROUND_COLOR.BROWN);
+        userManaAmount = new TextValueField<>();
+        userManaAmount.init();
+        presenter.addObserver_userManaAmount(userManaAmount);
 
         imageFactory = factoryStorage.getImageFactory();
     }
@@ -106,26 +111,38 @@ public class BattleScreen extends BaseScreen<BattleOverlayUI, BattlePresenter> i
         Table layer = new Table();
         layer.setFillParent(true);
 
-        TextButton backButton = UIElementFactory.getButton(skin, "BACK",
+        layer.center().bottom();
+
+        int screenWidth = SCREEN_WIDTH();
+        Table battleUtility = new Table();
+
+        Table changeEnemySection = new Table();
+        changeEnemySection.center();
+        changeEnemySection.add(UIElementFactory.getButton(skin, "CHANGE ENEMY", new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                changeActiveEnemy();
+            }
+        })).padRight(20);
+        changeEnemySection.add(aliveEnemiesField.build(skin)).padRight(20);
+        battleUtility.add(changeEnemySection).right().colspan(3).expandX().row();
+
+        Table battleInfoSection = new Table();
+        battleInfoSection.add(userManaAmount.build(skin)).center().uniformX().expandX();
+        battleInfoSection.add(new Label("Round: %d", skin)).center().uniformX().expandX();
+        battleInfoSection.add(UIElementFactory.getButton(skin, "LEAVE",
                 new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
                         isBattle.set(false);
                         setScreen(ScreenInstance.MAIN_MENU, null);
                     }
-                });
+                })).right().uniformX().expandX();
+        battleUtility.add(battleInfoSection).center().growX();
 
-        layer.center().bottom();
-        layer.add(UIElementFactory.getButton(skin, "CHANGE ENEMY", new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                changeActiveEnemy();
-            }
-        })).width(400).row();
-        layer.add(aliveEnemiesField.build(skin)).row();
-        layer.add(new Label("Round: %d", skin)).row();
-        layer.add(backButton).row();
-        layer.add(userActiveSkills.toActor()).padTop(200 + 50) // 200 is the same as in BattleOverlayUI
+        layer.add(battleUtility).width(screenWidth).row();
+
+        layer.add(userActiveSkills.toActor()).padTop(10)
                 .height(ACTIVE_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH).row();
         return layer;
     }
