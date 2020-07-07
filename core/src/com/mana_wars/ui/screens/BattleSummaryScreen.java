@@ -21,9 +21,10 @@ import java.util.Map;
 public class BattleSummaryScreen extends BaseScreen<BaseOverlayUI, BasePresenter> {
 
     public BattleSummaryScreen(final UserBattleSummaryAPI user,
+                               final Skin skin,
                                final ScreenSetter screenSetter, final FactoryStorage factoryStorage,
                                final RepositoryStorage repositoryStorage, final BaseOverlayUI overlayUI) {
-        super(screenSetter, factoryStorage.getSkinFactory().getAsset(UIStringConstants.UI_SKIN.MANA_WARS), overlayUI);
+        super(screenSetter, skin, overlayUI);
     }
 
     @Override

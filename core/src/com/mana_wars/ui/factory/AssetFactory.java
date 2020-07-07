@@ -1,23 +1,17 @@
 package com.mana_wars.ui.factory;
 
-import java.util.HashMap;
+import java.util.Map;
 
-public abstract class AssetFactory<V, T> {
+public class AssetFactory<K, V> {
 
-    private final HashMap<V, T> items = new HashMap<>();
+    private final Map<K, V> items;
 
-    protected AssetFactory(String... fileNames) {
-        loadItems(fileNames);
+    AssetFactory(Map<K, V> items) {
+        this.items = items;
     }
 
-    public T getAsset(V id) {
+    public V getAsset(K id) {
         return items.get(id);
-    }
-
-    protected abstract void loadItems(String[] fileNames);
-
-    protected void addAsset(V key, T asset) {
-        items.put(key, asset);
     }
 
 }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.Skill;
@@ -19,36 +20,39 @@ public class SkillInfoWindow extends BaseSkillWindow implements BuildableUI {
     public SkillInfoWindow(String title, Skin skin, AssetFactory<Integer, TextureRegion> iconFactory,
                            AssetFactory<Rarity, TextureRegion> frameFactory) {
         super(title, skin, iconFactory, frameFactory);
+        init(skin);
     }
 
-    @Override
-    public Actor build(Skin skin) {
-        super.build(skin);
-
+    private void init(Skin skin) {
         Table bottomButtons = new Table();
-        bottomButtons.add(UIElementFactory.getButton(skin, "-", new ChangeListener() {
+        TextButton button;
+
+        button = UIElementFactory.getButton(skin, "-", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 decreaseLevel();
             }
-        })).left();
-        bottomButtons.add(UIElementFactory.getButton(skin, UIStringConstants.SKILL_INFO_WINDOW.CLOSE_BUTTON_TEXT,
+        });
+        bottomButtons.add(button).left();
+
+        button = UIElementFactory.getButton(skin, UIStringConstants.SKILL_INFO_WINDOW.CLOSE_BUTTON_TEXT,
                 new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
                         hide();
                     }
-                })).padLeft(100).padRight(100);
-        bottomButtons.add(UIElementFactory.getButton(skin, "+", new ChangeListener() {
+                });
+        bottomButtons.add(button).padLeft(100).padRight(100);
+
+        button = UIElementFactory.getButton(skin, "+", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 increaseLevel();
             }
-        })).right();
-        add(bottomButtons).bottom().width(800);
-        pack();
+        });
+        bottomButtons.add(button).right();
 
-        return this;
+        add(bottomButtons).bottom().width(800);
     }
 
     @Override

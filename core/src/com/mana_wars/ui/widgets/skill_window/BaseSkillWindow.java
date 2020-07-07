@@ -38,10 +38,10 @@ public abstract class BaseSkillWindow extends Window implements BuildableUI {
     private final AssetFactory<Integer, TextureRegion> iconFactory;
     private final AssetFactory<Rarity, TextureRegion> frameFactory;
 
-    BaseSkillWindow(String title, Skin skin, AssetFactory<Integer, TextureRegion> iconFactory,
+    BaseSkillWindow(String title, Skin skin,
+                    AssetFactory<Integer, TextureRegion> iconFactory,
                     AssetFactory<Rarity, TextureRegion> frameFactory) {
         super(title, skin);
-        getStyle().titleFont.getData().setScale(2);
         this.skillIcon = new Image();
         this.skillFrame = new Image();
         this.skillName = new Label("", skin);
@@ -54,34 +54,31 @@ public abstract class BaseSkillWindow extends Window implements BuildableUI {
         this.font = skin.get(Label.LabelStyle.class).font;
         this.iconFactory = iconFactory;
         this.frameFactory = frameFactory;
-        padTop(32);
+        init();
     }
 
-    @Override
-    public void init() {
+    private void init() {
+        padTop(32);
+        getStyle().titleFont.getData().setScale(2);
         setFillParent(false);
         setMovable(false);
         setResizable(false);
-    }
+        setVisible(false);
 
-    /*
-     * If overriding this method, you should call pack() afterwards
-     */
-    @Override
-    public Actor build(Skin skin) {
-        this.clear();
-
-        setSkin(skin);
         add(skillName).padTop(SKILL_NAME_PADDING).width(800).row();
         Stack stack = new Stack();
         stack.add(skillIcon);
         stack.add(skillFrame);
         add(stack).padTop(SKILL_ICON_PADDING).row();
         add(skillDescription).padTop(SKILL_DESCRIPTION_PADDING).height(400).row();
-        pack();
-        setVisible(false);
-        setDebug(false);
+    }
 
+    /*
+     * If overriding this method, you should call pack() afterwards
+     */
+    @Override
+    public Actor build() {
+        pack();
         return this;
     }
 

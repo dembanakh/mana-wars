@@ -31,22 +31,26 @@ public class SkillsInfoScreen extends BaseScreen<BaseOverlayUI, SkillsInfoPresen
 
     private final SkillsInfoPresenter presenter;
 
-    public SkillsInfoScreen(final ScreenSetter screenSetter, final FactoryStorage factoryStorage,
-                            final DatabaseRepository databaseRepository, final BaseOverlayUI overlayUI) {
-        super(screenSetter, factoryStorage.getSkinFactory().getAsset(UIStringConstants.UI_SKIN.MANA_WARS), overlayUI);
-        this.presenter = new SkillsInfoPresenter(this, new SkillsInfoInteractor(databaseRepository), Gdx.app::postRunnable);
-        this.skillsList = UIElementFactory.clickableSkillsListWithoutLevel(getSkin(), 5,
+    public SkillsInfoScreen(final Skin skin,
+                            final ScreenSetter screenSetter,
+                            final FactoryStorage factoryStorage,
+                            final DatabaseRepository databaseRepository,
+                            final BaseOverlayUI overlayUI) {
+        super(screenSetter, skin, overlayUI);
+        this.presenter = new SkillsInfoPresenter(this,
+                new SkillsInfoInteractor(databaseRepository), Gdx.app::postRunnable);
+        this.skillsList = UIElementFactory.clickableSkillsListWithoutLevel(skin, 5,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(),
                 this::openSkillInfoWindow);
-        this.scrollPane = new ScrollPane(skillsList, getSkin());
-        this.skillInfoWindow = new SkillInfoWindow(UIStringConstants.SKILL_INFO_WINDOW.TITLE, getSkin(),
+        this.scrollPane = new ScrollPane(skillsList, skin);
+        this.skillInfoWindow = new SkillInfoWindow(UIStringConstants.SKILL_INFO_WINDOW.TITLE, skin,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
     }
 
     @Override
     protected void rebuildStage() {
         super.rebuildStage();
-        addActor(skillInfoWindow.build(getSkin()));
+        addActor(skillInfoWindow.build());
     }
 
     @Override

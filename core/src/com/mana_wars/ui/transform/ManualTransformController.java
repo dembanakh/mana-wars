@@ -16,6 +16,6 @@ final class ManualTransformController implements TransformApplier {
     public void applyTransform(Group group) {
         group.setTransform(true);
         group.setSize(transform.getWidth(), transform.getHeight());
-        group.setPosition(transform.getX(), transform.getY());
+        group.setPosition(transform.getX(), transform.getY(), transform.getAlign());
     }
 }

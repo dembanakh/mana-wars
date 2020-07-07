@@ -87,7 +87,7 @@ button-down
   xy: 568, 859
   size: 316, 122
   split: 54, 54, 48, 48
-  pad: 44, 48, 36, 48
+  pad: 44, 48, 40, 48
   orig: 316, 122
   offset: 0, 0
   index: -1

@@ -1,10 +1,7 @@
 package com.mana_wars.ui.factory;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -24,25 +21,19 @@ import com.mana_wars.ui.widgets.skills_list_2d.OperationSkillsList2D;
 
 public final class UIElementFactory {
 
-    public static TextButton getButton(TextButton.TextButtonStyle style, String label, ChangeListener eventListener) {
-        TextButton button = new TextButton(label, style);
+    public static TextButton getButton(Skin skin, String label, ChangeListener eventListener) {
+        TextButton button = new TextButton(label, skin);
         button.addListener(eventListener);
         return button;
     }
 
-    public static TextButton getButton(Skin skin, String label, ChangeListener eventListener) {
-        return getButton(skin.get(TextButton.TextButtonStyle.class), label, eventListener);
+    public static TextButton getButton(String label, ChangeListener eventListener) {
+        TextButton button = new TextButton(label, new TextButton.TextButtonStyle());
+        button.addListener(eventListener);
+        return button;
     }
 
-    public static Label.LabelStyle emptyLabelStyle() {
-        return new Label.LabelStyle(new BitmapFont(), new Color());
-    }
-
-    private static List.ListStyle emptyListStyle() {
-        return new List.ListStyle();
-    }
-
-    public static List.ListStyle emptyListStyle(Skin skin) {
+    private static List.ListStyle emptyListStyle(Skin skin) {
         List.ListStyle style = new List.ListStyle(skin.get(List.ListStyle.class));
         style.background = new BaseDrawable(style.background);
         return style;
@@ -71,25 +62,24 @@ public final class UIElementFactory {
                                                                           ListItemConsumer<ActiveSkill> onSkillClick) {
         SkillIconAnimationController animationController =
                 new SkillIconAnimationController(
-                        new TextureRegion(imageFactory.getAsset("white")),
-                        skin.getFont("font"));
+                        new TextureRegion(imageFactory.getAsset("white")));
         return new ApplicableSkillsList2D<>(skin,
                 new ApplicableSkillDrawer<>(skillIconFactory, rarityFrameFactory, animationController),
-                cols, onSkillClick, animationController);
+                cols, onSkillClick, animationController, "font");
     }
 
-    public static <T extends Skill> List2D<T> skillsListWithLevel(int cols,
+    public static <T extends Skill> List2D<T> skillsListWithLevel(Skin skin, int cols,
                                                              AssetFactory<Integer, TextureRegion> skillIconFactory,
                                                              AssetFactory<Rarity, TextureRegion> rarityFrameFactory) {
-        return new List2D<>(emptyListStyle(),
+        return new List2D<>(skin,
                 new StandardSkillDrawer<>(skillIconFactory, rarityFrameFactory),
                 cols);
     }
 
-    public static <T extends Skill> List2D<T> skillsListWithoutLevel(int cols,
+    public static <T extends Skill> List2D<T> skillsListWithoutLevel(Skin skin, int cols,
                                                                 AssetFactory<Integer, TextureRegion> skillIconFactory,
                                                                 AssetFactory<Rarity, TextureRegion> rarityFrameFactory) {
-        return new List2D<>(emptyListStyle(),
+        return new List2D<>(skin,
                 new StandardSkillDrawer<T>(skillIconFactory, rarityFrameFactory) {
                     @Override
                     protected boolean shouldShowLevel(Skill skill) {
@@ -125,5 +115,4 @@ public final class UIElementFactory {
 
     private UIElementFactory() {
     }
-
 }

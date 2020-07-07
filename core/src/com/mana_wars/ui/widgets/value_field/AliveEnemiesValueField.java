@@ -1,41 +1,35 @@
 package com.mana_wars.ui.widgets.value_field;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mana_wars.ui.UIStringConstants;
-import com.mana_wars.ui.factory.UIElementFactory;
 import com.mana_wars.ui.widgets.value_field.base.TransformApplier;
 import com.mana_wars.ui.widgets.value_field.base.ValueField;
 
 final class AliveEnemiesValueField extends ValueField<Integer, Integer> {
 
-    private Label label;
+    private final Label label;
 
     private int aliveEnemiesNumber;
 
-    AliveEnemiesValueField(TransformApplier transformApplier) {
-        super(transformApplier);
+    AliveEnemiesValueField(final Skin skin, final TransformApplier transformApplier) {
+        super(skin, transformApplier);
+        this.label = new Label("", skin);
+        init();
     }
 
-    AliveEnemiesValueField(UIStringConstants.UI_SKIN.BACKGROUND_COLOR backgroundColor,
+    AliveEnemiesValueField(final Skin skin, UIStringConstants.UI_SKIN.BACKGROUND_COLOR backgroundColor,
                    TransformApplier transformApplier) {
-        super(backgroundColor, transformApplier);
+        super(skin, backgroundColor, transformApplier);
+        this.label = new Label("", skin);
+        init();
     }
 
-    @Override
-    public void init() {
-        super.init();
-        label = new Label("", UIElementFactory.emptyLabelStyle());
+    private void init() {
         label.setColor(Color.BLACK);
         label.setFontScale(4);
-    }
-
-    @Override
-    public Actor build(Skin skin) {
-        label.setStyle(skin.get(Label.LabelStyle.class));
-        return super.build(skin);
+        field.add(label).top().row();
     }
 
     @Override

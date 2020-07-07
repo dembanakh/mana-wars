@@ -3,11 +3,7 @@ package com.mana_wars.ui.widgets.base;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.mana_wars.ui.widgets.base.List2D;
-import com.mana_wars.ui.widgets.base.ListItemConsumer;
-import com.mana_wars.ui.widgets.base.ListItemDrawer;
 
 public class ClickableList2D<T> extends List2D<T> {
 
@@ -15,12 +11,7 @@ public class ClickableList2D<T> extends List2D<T> {
 
     public ClickableList2D(Skin skin, ListItemDrawer<? super T> listItemDrawer,
                            int cols, ListItemConsumer<? super T> onItemClick) {
-        this(skin.get(List.ListStyle.class), listItemDrawer, cols, onItemClick);
-    }
-
-    private ClickableList2D(List.ListStyle style, ListItemDrawer<? super T> listItemDrawer,
-                            int cols, ListItemConsumer<? super T> onItemClick) {
-        super(style, listItemDrawer, cols);
+        super(skin, listItemDrawer, cols);
         this.onItemClick = onItemClick;
     }
 

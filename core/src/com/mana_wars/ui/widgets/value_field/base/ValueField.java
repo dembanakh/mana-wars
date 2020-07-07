@@ -10,18 +10,17 @@ import io.reactivex.functions.Consumer;
 
 public abstract class ValueField<TInitial, TValue> implements BuildableUI, Consumer<TValue> {
 
-    protected Table field;
-    private final BACKGROUND_COLOR backgroundColor;
+    protected final Table field;
 
-    private final TransformApplier transformApplier;
-
-    protected ValueField(TransformApplier transformApplier) {
-        this(BACKGROUND_COLOR.NONE, transformApplier);
+    protected ValueField(Skin skin, TransformApplier transformApplier) {
+        this(skin, BACKGROUND_COLOR.NONE, transformApplier);
     }
 
-    protected ValueField(BACKGROUND_COLOR backgroundColor, TransformApplier transformApplier) {
-        this.backgroundColor = backgroundColor;
-        this.transformApplier = transformApplier;
+    protected ValueField(Skin skin, BACKGROUND_COLOR backgroundColor, TransformApplier transformApplier) {
+        this.field = new Table(skin);
+        if (backgroundColor != BACKGROUND_COLOR.NONE)
+            field.setBackground(backgroundColor.toString());
+        transformApplier.applyTransform(field);
     }
 
     public void setInitialData(TInitial initialData) {
@@ -29,17 +28,7 @@ public abstract class ValueField<TInitial, TValue> implements BuildableUI, Consu
     }
 
     @Override
-    public void init() {
-        field = new Table();
-        transformApplier.applyTransform(field);
-    }
-
-    @Override
-    public Actor build(final Skin skin) {
-        field.setSkin(skin);
-        if (backgroundColor != BACKGROUND_COLOR.NONE)
-            field.setBackground(backgroundColor.toString());
-
+    public Actor build() {
         return field;
     }
 }

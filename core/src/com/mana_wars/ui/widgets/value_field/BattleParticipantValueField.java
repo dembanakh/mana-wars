@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -26,98 +25,86 @@ import java.util.Locale;
 
 public final class BattleParticipantValueField extends ValueField<BattleScreen.BattleParticipantData, Integer> {
 
-    private Label participantHealthLabel;
-    private ProgressBar participantHealthBar;
+    private final Label participantNameLabel;
 
-    private Label participantNameLabel;
+    private final Label participantHealthLabel;
+    private final ProgressBar participantHealthBar;
 
-    private List2D<PassiveSkill> participantPassiveSkillsList;
+    private final List2D<PassiveSkill> participantPassiveSkillsList;
 
-    private Label healthChangeLabel;
+    private final Label healthChangeLabel;
 
-    private Image participantImage;
-
-    private final AssetFactory<Integer, TextureRegion> iconFactory;
-    private final AssetFactory<Rarity, TextureRegion> frameFactory;
-    private final AssetFactory<String, Texture> imageFactory;
+    private final Image participantImage;
 
     private final float deltaHealthAnimationDistance;
     private final float deltaHealthAnimationDuration;
 
     private boolean initializing = false;
 
-    BattleParticipantValueField(TransformApplier transformApplier,
+    BattleParticipantValueField(final Skin skin,
+                                final TransformApplier transformApplier,
                                 final AssetFactory<Integer, TextureRegion> iconFactory,
                                 final AssetFactory<Rarity, TextureRegion> frameFactory,
                                 final AssetFactory<String, Texture> imageFactory,
                                 float deltaHealthAnimationDistance,
                                 float deltaHealthAnimationDuration) {
-        super(transformApplier);
-        this.iconFactory = iconFactory;
-        this.frameFactory = frameFactory;
-        this.imageFactory = imageFactory;
+        super(skin, transformApplier);
         this.deltaHealthAnimationDistance = deltaHealthAnimationDistance;
         this.deltaHealthAnimationDuration = deltaHealthAnimationDuration;
+        this.participantNameLabel = new Label("", skin);
+        this.participantHealthBar = new ProgressBar(0, 100, 1, false, skin);
+        this.participantHealthLabel = new Label("", skin);
+        this.healthChangeLabel = new Label("", skin);
+        this.participantPassiveSkillsList = UIElementFactory.skillsListWithoutLevel(skin,
+                GameConstants.USER_PASSIVE_SKILL_COUNT,
+                iconFactory, frameFactory);
+        participantImage = new Image(new TextureRegion(imageFactory.getAsset("player")));
+        init();
     }
 
-    BattleParticipantValueField(UIStringConstants.UI_SKIN.BACKGROUND_COLOR backgroundColor, TransformApplier transformApplier,
+    BattleParticipantValueField(final Skin skin,
+                                UIStringConstants.UI_SKIN.BACKGROUND_COLOR backgroundColor, TransformApplier transformApplier,
                                 final AssetFactory<Integer, TextureRegion> iconFactory,
                                 final AssetFactory<Rarity, TextureRegion> frameFactory,
                                 final AssetFactory<String, Texture> imageFactory,
                                 float deltaHealthAnimationDistance,
                                 float deltaHealthAnimationDuration) {
-        super(backgroundColor, transformApplier);
-        this.iconFactory = iconFactory;
-        this.frameFactory = frameFactory;
-        this.imageFactory = imageFactory;
+        super(skin, backgroundColor, transformApplier);
         this.deltaHealthAnimationDistance = deltaHealthAnimationDistance;
         this.deltaHealthAnimationDuration = deltaHealthAnimationDuration;
+        this.participantNameLabel = new Label("", skin);
+        this.participantHealthBar = new ProgressBar(0, 100, 1, false, skin);
+        this.participantHealthLabel = new Label("", skin);
+        this.healthChangeLabel = new Label("", skin);
+        this.participantPassiveSkillsList = UIElementFactory.skillsListWithoutLevel(skin,
+                GameConstants.USER_PASSIVE_SKILL_COUNT,
+                iconFactory, frameFactory);
+        participantImage = new Image(new TextureRegion(imageFactory.getAsset("player")));
+        init();
     }
 
-    @Override
-    public void init() {
-        super.init();
-
-        participantNameLabel = new Label("", UIElementFactory.emptyLabelStyle());
+    private void init() {
         participantNameLabel.setColor(Color.BLACK);
         participantNameLabel.setFontScale(4);
         field.add(participantNameLabel).top().row();
 
         Stack stack = new Stack();
-        participantHealthBar = new ProgressBar(0, 100, 1, false,
-                new ProgressBar.ProgressBarStyle());
         participantHealthBar.setScale(4);
         stack.add(participantHealthBar);
 
-        participantHealthLabel = new Label("", UIElementFactory.emptyLabelStyle());
         participantHealthLabel.setFillParent(true);
         participantHealthLabel.setColor(Color.BLACK);
         participantHealthLabel.setFontScale(4);
         stack.add(participantHealthLabel);
         field.add(stack).top().row();
 
-        healthChangeLabel = new Label("", UIElementFactory.emptyLabelStyle());
         healthChangeLabel.setFontScale(4);
         field.add(healthChangeLabel).top().row();
 
-        participantPassiveSkillsList = UIElementFactory.skillsListWithoutLevel(GameConstants.USER_PASSIVE_SKILL_COUNT,
-                iconFactory, frameFactory);
         //participantPassiveSkills.setMinHeight(131.4f); // Do we need this?
-        field.add(participantPassiveSkillsList).top().row();
+        field.add(participantPassiveSkillsList).fillX().top().row();
 
-        TextureRegion tempRegion = new TextureRegion(imageFactory.getAsset("player"));
-        participantImage = new Image(tempRegion);
         field.add(participantImage).pad(28).top().row();
-    }
-
-    @Override
-    public Actor build(Skin skin) {
-        participantNameLabel.setStyle(skin.get(Label.LabelStyle.class));
-        participantHealthLabel.setStyle(skin.get(Label.LabelStyle.class));
-        participantHealthBar.setStyle(skin.get("default-horizontal", ProgressBar.ProgressBarStyle.class));
-        healthChangeLabel.setStyle(skin.get(Label.LabelStyle.class));
-        participantPassiveSkillsList.setStyle(UIElementFactory.emptyListStyle(skin));
-        return super.build(skin);
     }
 
     @Override

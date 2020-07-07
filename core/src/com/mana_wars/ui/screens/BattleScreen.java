@@ -62,15 +62,16 @@ public class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> imp
     private final AssetFactory<String, Texture> imageFactory;
 
     public BattleScreen(final UserBattleAPI user,
+                        final Skin skin,
                         final ScreenSetter screenSetter, final FactoryStorage factoryStorage,
                         final DatabaseRepository databaseRepository, final BaseOverlayUI overlayUI) {
-        super(screenSetter, factoryStorage.getSkinFactory().getAsset(UI_SKIN.MANA_WARS), overlayUI);
+        super(screenSetter, skin, overlayUI);
 
         presenter = new BattlePresenter(this,
                 new BattleInteractor(user, databaseRepository),
                 Gdx.app::postRunnable);
 
-        Transform transform;
+        /*Transform transform;
 
         transform = new TransformBuilder()
                 .setXConstraint(new AbsoluteXPositionConstraint(Align.left, 0))
@@ -78,13 +79,12 @@ public class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> imp
                 .setWidthConstraint(new RelativeWidthConstraint(50))
                 .setHeightConstraint(new RelativeHeightConstraint(75))
                 .build();
-        userField = ValueFieldFactory.battleParticipantValueField(
+        userField = ValueFieldFactory.battleParticipantValueField(skin,
                 TransformFactory.manualTransform(transform),
                 factoryStorage.getSkillIconFactory(),
                 factoryStorage.getRarityFrameFactory(),
                 factoryStorage.getImageFactory(),
                 -200, 1);
-        userField.init();
 
         transform = new TransformBuilder()
                 .setXConstraint(new AbsoluteXPositionConstraint(Align.right, 0))
@@ -92,23 +92,34 @@ public class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> imp
                 .setWidthConstraint(new RelativeWidthConstraint(50))
                 .setHeightConstraint(new RelativeHeightConstraint(75))
                 .build();
-        enemyField = new EnemyValueField(
+        enemyField = new EnemyValueField(skin,
                 TransformFactory.manualTransform(transform),
+                factoryStorage.getSkillIconFactory(),
+                factoryStorage.getRarityFrameFactory(),
+                factoryStorage.getImageFactory());*/
+
+        userField = ValueFieldFactory.battleParticipantValueField(skin,
+                TransformFactory.autoTransform(),
+                factoryStorage.getSkillIconFactory(),
+                factoryStorage.getRarityFrameFactory(),
+                factoryStorage.getImageFactory(),
+                -200, 1);
+
+        enemyField = new EnemyValueField(skin,
+                TransformFactory.autoTransform(),
                 factoryStorage.getSkillIconFactory(),
                 factoryStorage.getRarityFrameFactory(),
                 factoryStorage.getImageFactory());
 
-        userActiveSkills = UIElementFactory.applicableSkillsList(getSkin(),
+        userActiveSkills = UIElementFactory.applicableSkillsList(skin,
                 GameConstants.MAX_CHOSEN_ACTIVE_SKILL_COUNT,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(),
                 factoryStorage.getImageFactory(), this::onSkillClick);
 
-        aliveEnemiesField = ValueFieldFactory.aliveEnemiesValueField(UI_SKIN.BACKGROUND_COLOR.BROWN,
+        aliveEnemiesField = ValueFieldFactory.aliveEnemiesValueField(skin, UI_SKIN.BACKGROUND_COLOR.BROWN,
                 TransformFactory.autoTransform());
-        aliveEnemiesField.init();
 
-        userManaAmountField = ValueFieldFactory.textValueField(TransformFactory.autoTransform());
-        userManaAmountField.init();
+        userManaAmountField = ValueFieldFactory.textValueField(skin, TransformFactory.autoTransform());
         presenter.addObserver_userManaAmount(userManaAmountField);
 
         imageFactory = factoryStorage.getImageFactory();
@@ -122,8 +133,7 @@ public class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> imp
     @Override
     public BaseScreen reInit(Map<String, Object> arguments) {
         super.reInit(arguments);
-        enemyField.init();
-        aliveEnemiesField.init();
+        enemyField.clear();
         presenter.initBattle(getArgument(arguments, CHOSEN_BATTLE_BUILDER));
         return this;
     }
@@ -152,6 +162,11 @@ public class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> imp
         Table layer = new Table();
         layer.setFillParent(true);
 
+        layer.left().top();
+
+        layer.add(userField.build()).uniformX().expandX();
+        layer.add(enemyField.build()).uniformX().expandX();
+
         layer.center().bottom();
 
         int screenWidth = SCREEN_WIDTH();
@@ -165,11 +180,11 @@ public class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> imp
                 changeActiveEnemy();
             }
         })).padRight(20);
-        changeEnemySection.add(aliveEnemiesField.build(skin)).padRight(20);
+        changeEnemySection.add(aliveEnemiesField.build()).padRight(20);
         battleUtility.add(changeEnemySection).right().colspan(3).expandX().row();
 
         Table battleInfoSection = new Table();
-        battleInfoSection.add(userManaAmountField.build(skin)).center().uniformX().expandX();
+        battleInfoSection.add(userManaAmountField.build()).center().uniformX().expandX();
         battleInfoSection.add(new Label("Round: %d", skin)).center().uniformX().expandX();
         battleInfoSection.add(UIElementFactory.getButton(skin, "LEAVE",
                 new ChangeListener() {
@@ -183,11 +198,11 @@ public class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> imp
 
         layer.add(battleUtility).width(screenWidth).row();
 
-        layer.add(userActiveSkills.toActor()).padTop(10)
+        layer.add(userActiveSkills.build()).padTop(10)
                 .height(ACTIVE_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH).row();
 
-        stage.addActor(userField.build(skin));
-        stage.addActor(enemyField.build(skin));
+        /*stage.addActor(userField.build());
+        stage.addActor(enemyField.build());*/
 
         return layer;
     }

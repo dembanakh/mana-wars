@@ -24,8 +24,8 @@ com.badlogic.gdx.graphics.Color: {
 		a: 1
 	}
 	progress-bar: {
-		r: 0
-		g: 0.078431375
+		r: 0,
+		g: 0.07094407,
 		b: 1
 		a: 1
 	}
@@ -40,6 +40,12 @@ com.badlogic.gdx.graphics.Color: {
 		g: 1
 		b: 1
 		a: 1
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
+	slider-horizontal-p: {
+		name: slider-horizontal,
+		color: progress-bar
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
@@ -73,6 +79,7 @@ com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
 	default-horizontal: {
 		background: slider-horizontal
+		knobBefore: slider-horizontal-p
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {

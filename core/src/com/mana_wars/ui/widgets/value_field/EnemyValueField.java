@@ -24,12 +24,13 @@ public final class EnemyValueField implements BuildableUI {
 
     private final ValueField<BattleScreen.BattleParticipantData, Integer> enemyField;
 
-    public EnemyValueField(final TransformApplier transformApplier,
+    public EnemyValueField(final Skin skin,
+                           final TransformApplier transformApplier,
                            final AssetFactory<Integer, TextureRegion> iconFactory,
                            final AssetFactory<Rarity, TextureRegion> frameFactory,
                            final AssetFactory<String, Texture> imageFactory) {
         enemyFieldWrappers = new ArrayList<>();
-        enemyField = ValueFieldFactory.battleParticipantValueField(transformApplier,
+        enemyField = ValueFieldFactory.battleParticipantValueField(skin, transformApplier,
                 iconFactory, frameFactory, imageFactory,
                 200, 1);
     }
@@ -43,17 +44,16 @@ public final class EnemyValueField implements BuildableUI {
         return enemyField;
     }
 
+    public void clear() {
+        enemyFieldWrappers.clear();
+    }
+
     public void setActiveEnemy(int index) {
         enemyFieldWrappers.get(index).setField(enemyField);
     }
 
     @Override
-    public void init() {
-        enemyFieldWrappers.clear();
-    }
-
-    @Override
-    public Actor build(Skin skin) {
-        return enemyField.build(skin);
+    public Actor build() {
+        return enemyField.build();
     }
 }

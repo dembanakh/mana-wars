@@ -1,7 +1,9 @@
 package com.mana_wars.ui.widgets.skills_list_2d;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.ActiveSkill;
@@ -18,18 +20,16 @@ public class ApplicableSkillsList2D<T extends ActiveSkill> extends ClickableList
         implements BlockableSkillsList<T> {
 
     private final UIAnimationController<Integer, SkillIconAnimationController.Type> animationController;
+    private final BitmapFont cooldownFont;
 
     public ApplicableSkillsList2D(Skin skin, ListItemDrawer<? super T> listItemDrawer, int cols,
-                                     ListItemConsumer<? super T> onSkillClick,
-                                     UIAnimationController<Integer, SkillIconAnimationController.Type> animationController) {
+                                  ListItemConsumer<? super T> onSkillClick,
+                                  UIAnimationController<Integer, SkillIconAnimationController.Type> animationController,
+                                  String cooldownFontName) {
         super(skin, listItemDrawer, cols, onSkillClick);
         this.animationController = animationController;
+        this.cooldownFont = skin.getFont(cooldownFontName);
     }
-
-    /*
-    protected boolean isClickable(int index) {
-        return super.isClickable(index) && !animationController.contains(index);
-    }*/
 
     @Override
     public void setItems(Iterable<? extends T> newItems) {
@@ -64,19 +64,18 @@ public class ApplicableSkillsList2D<T extends ActiveSkill> extends ClickableList
     }
 
     @Override
-    public Actor toActor() {
-        return this;
-    }
-
-    @Override
     public void update(float delta) {
         animationController.update(delta);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        animationController.initBatch(batch);
+        animationController.initBatch(batch, cooldownFont);
         super.draw(batch, parentAlpha);
     }
 
+    @Override
+    public Actor build() {
+        return this;
+    }
 }

@@ -95,7 +95,6 @@ public class User implements
 
     @Override
     public Iterable<ActiveSkill> getActiveSkills() {
-
         return user.getActiveSkills();
     }
 

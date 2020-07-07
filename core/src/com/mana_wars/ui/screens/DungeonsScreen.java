@@ -13,7 +13,6 @@ import com.mana_wars.model.interactor.DungeonsInteractor;
 import com.mana_wars.model.repository.DatabaseRepository;
 import com.mana_wars.presentation.presenters.DungeonsPresenter;
 import com.mana_wars.presentation.view.DungeonsView;
-import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
@@ -33,16 +32,17 @@ public class DungeonsScreen extends BaseScreen<BaseOverlayUI, DungeonsPresenter>
     private final AssetFactory<String, Texture> imageFactory;
 
     public DungeonsScreen(final UserDungeonsAPI user,
+                          final Skin skin,
                           final ScreenSetter screenSetter,
                           final FactoryStorage factoryStorage,
                           final DatabaseRepository databaseRepository,
                           final BaseOverlayUI overlayUI) {
-        super(screenSetter, factoryStorage.getSkinFactory().getAsset(UIStringConstants.UI_SKIN.MANA_WARS), overlayUI);
+        super(screenSetter, skin, overlayUI);
         presenter = new DungeonsPresenter(this,
                 new DungeonsInteractor(user, databaseRepository),
                 Gdx.app::postRunnable);
 
-        dungeonButtonsTable = new DungeonButtonsTable(getSkin(), this::onDungeon);
+        dungeonButtonsTable = new DungeonButtonsTable(skin, this::onDungeon);
         imageFactory = factoryStorage.getImageFactory();
     }
 
@@ -60,7 +60,7 @@ public class DungeonsScreen extends BaseScreen<BaseOverlayUI, DungeonsPresenter>
         Table layer = new Table();
         layer.setFillParent(true);
 
-        layer.add(dungeonButtonsTable);
+        layer.add(dungeonButtonsTable.build());
 
         return layer;
     }

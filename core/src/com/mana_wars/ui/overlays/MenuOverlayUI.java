@@ -1,5 +1,6 @@
 package com.mana_wars.ui.overlays;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Align;
 import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.layout_constraints.AbsoluteSizeConstraint;
@@ -29,7 +30,7 @@ public class MenuOverlayUI extends BaseOverlayUI {
     private final ValueField<Void, String> usernameField;
     private final BuildableUI navigationBar;
 
-    MenuOverlayUI(final ScreenSetter screenSetter) {
+    MenuOverlayUI(final Skin skin, final ScreenSetter screenSetter) {
         Transform transform;
 
         transform = new TransformBuilder()
@@ -38,7 +39,7 @@ public class MenuOverlayUI extends BaseOverlayUI {
                 .setWidthConstraint(new AbsoluteSizeConstraint(200))
                 .setHeightConstraint(new AbsoluteSizeConstraint(MANA_AMOUNT_FIELD_HEIGHT()))
                 .build();
-        manaAmountField = ValueFieldFactory.textValueField(
+        manaAmountField = ValueFieldFactory.textValueField(skin,
                 UIStringConstants.UI_SKIN.BACKGROUND_COLOR.WHITE,
                 TransformFactory.manualTransform(transform));
 
@@ -48,7 +49,7 @@ public class MenuOverlayUI extends BaseOverlayUI {
                 .setWidthConstraint(new AbsoluteSizeConstraint(200))
                 .setHeightConstraint(new AbsoluteSizeConstraint(USER_LEVEL_FIELD_HEIGHT()))
                 .build();
-        userLevelField = ValueFieldFactory.textValueField(
+        userLevelField = ValueFieldFactory.textValueField(skin,
                 UIStringConstants.UI_SKIN.BACKGROUND_COLOR.WHITE,
                 TransformFactory.manualTransform(transform));
 
@@ -58,9 +59,9 @@ public class MenuOverlayUI extends BaseOverlayUI {
                 .setWidthConstraint(new RelativeWidthConstraint())
                 .setHeightConstraint(new AbsoluteSizeConstraint(50))
                 .build();
-        usernameField = ValueFieldFactory.textValueField(TransformFactory.manualTransform(transform));
+        usernameField = ValueFieldFactory.textValueField(skin, TransformFactory.manualTransform(transform));
 
-        navigationBar = new NavigationBar(screenSetter);
+        navigationBar = new NavigationBar(skin, screenSetter);
     }
 
     @Override
