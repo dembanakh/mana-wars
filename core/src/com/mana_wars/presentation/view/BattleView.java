@@ -14,6 +14,6 @@ public interface BattleView extends BaseView {
     void addEnemy(String name, int initialHealth, Iterable<PassiveSkill> passiveSkills,
                   Consumer<Consumer<? super Integer>> subscribe);
     void blockSkills(int appliedSkillIndex);
-    void startBattle();
+    void startBattle(int enemiesNumber);
     void finishBattle(BattleSummaryData summaryData);
 }

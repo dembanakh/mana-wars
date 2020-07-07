@@ -9,15 +9,17 @@ import com.mana_wars.ui.factory.UIElementFactory;
 import com.mana_wars.ui.widgets.value_field.base.TransformApplier;
 import com.mana_wars.ui.widgets.value_field.base.ValueField;
 
-final class TextValueField<T> extends ValueField<Void, T> {
+final class AliveEnemiesValueField extends ValueField<Integer, Integer> {
 
     private Label label;
 
-    TextValueField(TransformApplier transformApplier) {
+    private int aliveEnemiesNumber;
+
+    AliveEnemiesValueField(TransformApplier transformApplier) {
         super(transformApplier);
     }
 
-    TextValueField(UIStringConstants.UI_SKIN.BACKGROUND_COLOR backgroundColor,
+    AliveEnemiesValueField(UIStringConstants.UI_SKIN.BACKGROUND_COLOR backgroundColor,
                    TransformApplier transformApplier) {
         super(backgroundColor, transformApplier);
     }
@@ -37,7 +39,20 @@ final class TextValueField<T> extends ValueField<Void, T> {
     }
 
     @Override
-    public void accept(T value) {
-        label.setText(value.toString());
+    public void setInitialData(Integer initialEnemiesNumber) {
+        aliveEnemiesNumber = initialEnemiesNumber;
+        applyChanges();
+    }
+
+    @Override
+    public void accept(Integer newHealth) {
+        if (newHealth <= 0) {
+            aliveEnemiesNumber--;
+            applyChanges();
+        }
+    }
+
+    private void applyChanges() {
+        label.setText(aliveEnemiesNumber);
     }
 }

@@ -36,9 +36,10 @@ public class ScreenManager implements FactoryStorage, ScreenSetter {
     private final AssetFactory<Rarity, TextureRegion> rarityFrameFactory;
     private final AssetFactory<String, Texture> pngImageFactory;
 
-    private final OverlayUIFactory overlayUIFactory;
-
-    public ScreenManager(final ScreenHandler handler) {
+    public ScreenManager(final ScreenHandler handler,
+                         final User user,
+                         final RepositoryStorage repositoryStorage,
+                         final DatabaseUpdater databaseUpdater) {
         this.handler = handler;
         skillIconFactory = new AssetFactory<Integer, TextureRegion>(SKILLS_ICONS_FILENAME) {
             @Override
@@ -80,16 +81,7 @@ public class ScreenManager implements FactoryStorage, ScreenSetter {
                 new FixedSizeTexture("enemy", AdaptiveTexture.ImageFormat.PNG),
                 new FillScreenTexture("bg1", AdaptiveTexture.ImageFormat.PNG),
                 new FillScreenTexture("bg2", AdaptiveTexture.ImageFormat.PNG));
-        this.overlayUIFactory = new OverlayUIFactory(this, this);
-    }
-
-    public void start(final User user, final RepositoryStorage repositoryStorage,
-                      final DatabaseUpdater databaseUpdater) {
-        skillIconFactory.loadItems();
-        skinFactory.loadItems();
-        rarityFrameFactory.loadItems();
-        pngImageFactory.loadItems();
-        overlayUIFactory.init();
+        OverlayUIFactory overlayUIFactory = new OverlayUIFactory(this);
         ScreenInstance.init(user, this, this, repositoryStorage, overlayUIFactory);
         handler.setScreen(new LoadingScreen(this, this,
                 overlayUIFactory.getEmptyOverlayUI(), databaseUpdater).reInit(null));

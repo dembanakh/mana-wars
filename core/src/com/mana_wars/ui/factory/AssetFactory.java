@@ -4,19 +4,14 @@ import java.util.HashMap;
 
 public abstract class AssetFactory<V, T> {
 
-    private final String[] fileNames;
     private final HashMap<V, T> items = new HashMap<>();
 
     protected AssetFactory(String... fileNames) {
-        this.fileNames = fileNames;
+        loadItems(fileNames);
     }
 
     public T getAsset(V id) {
         return items.get(id);
-    }
-
-    public final void loadItems() {
-        loadItems(fileNames);
     }
 
     protected abstract void loadItems(String[] fileNames);

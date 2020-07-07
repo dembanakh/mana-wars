@@ -11,7 +11,7 @@ import com.mana_wars.ui.storage.RepositoryStorage;
 
 public class ManaWars extends Game implements ScreenHandler, RepositoryStorage {
 
-    private final ScreenManager screenManager;
+    private ScreenManager screenManager;
 
     //platform repos
     private final LocalUserDataRepository localUserDataRepository;
@@ -25,12 +25,12 @@ public class ManaWars extends Game implements ScreenHandler, RepositoryStorage {
         this.localUserDataRepository = localUserDataRepository;
         this.databaseRepository = databaseRepository;
         this.databaseUpdater = databaseUpdater;
-        this.screenManager = new ScreenManager(this);
     }
 
     @Override
     public void create() {
-        screenManager.start(new User(localUserDataRepository, localUserDataRepository, localUserDataRepository),
+        screenManager = new ScreenManager(this,
+                new User(localUserDataRepository, localUserDataRepository, localUserDataRepository),
                 this, databaseUpdater);
     }
 

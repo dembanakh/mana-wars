@@ -18,11 +18,11 @@ import java.util.NoSuchElementException;
 
 public abstract class BaseScreen<U extends BaseOverlayUI, T extends BasePresenter> implements Screen, ScreenSetter {
 
-    protected T presenter;
+    T presenter;
     protected final U overlayUI;
 
     private final Skin skin;
-    private final Stage stage;
+    final Stage stage;
     private final ScreenSetter screenSetter;
 
     BaseScreen(ScreenSetter screenSetter, Skin skin, U overlayUI) {
@@ -50,7 +50,7 @@ public abstract class BaseScreen<U extends BaseOverlayUI, T extends BasePresente
         return (T) arguments.get(key);
     }
 
-    protected Skin getSkin() {
+    Skin getSkin() {
         return skin;
     }
 
@@ -70,10 +70,6 @@ public abstract class BaseScreen<U extends BaseOverlayUI, T extends BasePresente
     protected abstract Table buildBackgroundLayer(Skin skin);
 
     protected abstract Table buildForegroundLayer(Skin skin);
-
-    protected void onBackPressed() {
-        Gdx.app.exit();
-    }
 
     @Override
     public void setScreen(ScreenInstance instance, Map<String, Object> arguments) {

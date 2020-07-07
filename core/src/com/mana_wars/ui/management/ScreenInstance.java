@@ -44,7 +44,7 @@ public enum ScreenInstance {
         DUNGEONS.screen = new DungeonsScreen(user, screenSetter, factoryStorage, repositoryStorage.getDatabaseRepository(),
                 overlayUIFactory.getEmptyOverlayUI());
         BATTLE.screen = new BattleScreen(user, screenSetter, factoryStorage, repositoryStorage.getDatabaseRepository(),
-                overlayUIFactory.getBattleOverlayUI());
+                overlayUIFactory.getEmptyOverlayUI());
         BATTLE_SUMMARY.screen = new BattleSummaryScreen(user, screenSetter, factoryStorage, repositoryStorage,
                 overlayUIFactory.getEmptyOverlayUI());
         SHOP.screen = new ShopScreen(user, screenSetter, factoryStorage, repositoryStorage.getDatabaseRepository(),
