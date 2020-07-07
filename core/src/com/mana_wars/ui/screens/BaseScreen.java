@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.mana_wars.presentation.presenters.BasePresenter;
+import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.BaseOverlayUI;
@@ -81,7 +82,7 @@ public abstract class BaseScreen<U extends BaseOverlayUI, T extends BasePresente
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(50.0f / 255, 115.0f / 255, 220.0f / 255, 0.3f);
+        Gdx.gl.glClearColor(184.0f / 255, 122.0f / 255, 86.0f / 255, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.act(delta);

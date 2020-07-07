@@ -23,6 +23,14 @@ public class ActiveSkill extends Skill {
         return castTime;
     }
 
+    public double getCooldown(int percent) {
+        return cooldown * percent / 100;
+    }
+
+    public double getCastTime(int percent) {
+        return castTime * percent / 100;
+    }
+
     private static ActiveSkill Empty = new ActiveSkill(50, 0, Rarity.EMPTY, 0, 0, "EMPTY",
             Collections.emptyList());
 

@@ -44,7 +44,7 @@ class UserBattleParticipant extends BattleParticipant {
         super.applySkillCharacteristic(sc, skillLevel);
 
         if (sc.isManaCost()) {
-            setManaAmount(getCharacteristicValue(sc.getCharacteristic()));
+            updateManaAmount(getCharacteristicValue(sc.getCharacteristic()));
         }
     }
 
@@ -61,7 +61,7 @@ class UserBattleParticipant extends BattleParticipant {
         return false;
     }
 
-    private void setManaAmount(int userMana) {
+    private void updateManaAmount(int userMana) {
         setCharacteristicValue(Characteristic.MANA, userMana);
         try {
             manaOnChanged.accept(userMana);
@@ -71,11 +71,7 @@ class UserBattleParticipant extends BattleParticipant {
     }
 
     Iterable<ActiveSkill> getActiveSkills() {
-        List<ActiveSkill> result = new ArrayList<>();
-        for (ActiveSkill skill : activeSkills) {
-            result.add(initSkill(skill));
-        }
-        return result;
+        return activeSkills;
     }
 
 }

@@ -10,7 +10,7 @@ import io.reactivex.disposables.CompositeDisposable;
 
 import static io.reactivex.Observable.combineLatest;
 
-public class DungeonBattleBuilder extends BaseBattleBuilder {
+public class DungeonBattleBuilder extends BattleBuilder {
 
     private final UserDungeonsAPI user;
     private final DungeonEnemyFactory dungeonEnemyFactory;
@@ -20,9 +20,12 @@ public class DungeonBattleBuilder extends BaseBattleBuilder {
         this.dungeonEnemyFactory = dungeonEnemyFactory;
     }
 
+
     @Override
-    public BattleConfig build() {
-        return new BaseBattle(user.prepareBattleParticipant(), new ArrayList<>(), dungeonEnemyFactory.generateEnemies());
+    public BattleConfig build(BattleStateObserver observer) {
+        //return new BaseBattle(user.prepareBattleParticipant(), new ArrayList<>(), dungeonEnemyFactory.generateEnemies());
+        //TODO get rounds from dungeon
+        return new BattleWithRounds(user.prepareBattleParticipant(), new ArrayList<>(),  dungeonEnemyFactory, 2, observer);
     }
 
     @Override

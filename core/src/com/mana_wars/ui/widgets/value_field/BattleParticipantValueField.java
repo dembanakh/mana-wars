@@ -101,7 +101,7 @@ public final class BattleParticipantValueField extends ValueField<BattleScreen.B
         healthChangeLabel.setFontScale(4);
         field.add(healthChangeLabel).top().row();
 
-        //participantPassiveSkills.setMinHeight(131.4f); // Do we need this?
+        //participantPassiveSkills.setMinHeight(131.4f); // TODO Do we need this?
         field.add(participantPassiveSkillsList).fillX().top().row();
 
         field.add(participantImage).pad(28).top().row();

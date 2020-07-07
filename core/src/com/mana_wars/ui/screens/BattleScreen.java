@@ -71,7 +71,7 @@ public class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> imp
                 new BattleInteractor(user, databaseRepository),
                 Gdx.app::postRunnable);
 
-        /*Transform transform;
+        Transform transform;
 
         transform = new TransformBuilder()
                 .setXConstraint(new AbsoluteXPositionConstraint(Align.left, 0))
@@ -96,9 +96,9 @@ public class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> imp
                 TransformFactory.manualTransform(transform),
                 factoryStorage.getSkillIconFactory(),
                 factoryStorage.getRarityFrameFactory(),
-                factoryStorage.getImageFactory());*/
+                factoryStorage.getImageFactory());//*/
 
-        userField = ValueFieldFactory.battleParticipantValueField(skin,
+        /*userField = ValueFieldFactory.battleParticipantValueField(skin,
                 TransformFactory.autoTransform(),
                 factoryStorage.getSkillIconFactory(),
                 factoryStorage.getRarityFrameFactory(),
@@ -109,7 +109,7 @@ public class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> imp
                 TransformFactory.autoTransform(),
                 factoryStorage.getSkillIconFactory(),
                 factoryStorage.getRarityFrameFactory(),
-                factoryStorage.getImageFactory());
+                factoryStorage.getImageFactory());*/
 
         userActiveSkills = UIElementFactory.applicableSkillsList(skin,
                 GameConstants.MAX_CHOSEN_ACTIVE_SKILL_COUNT,
@@ -139,6 +139,25 @@ public class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> imp
     }
 
     @Override
+    public void cleanEnemies(int enemiesCount) {
+        enemyField.clear();
+        aliveEnemiesField.setInitialData(enemiesCount);
+    }
+
+
+    //TODO delete
+    Label temp;
+    @Override
+    public void setRound(int round) {
+        temp.setText(String.format("Round: %d", round));
+    }
+
+    @Override
+    public void updateDurationCoefficients(int castTime, int cooldown) {
+        userActiveSkills.setDurationCoefficients(castTime, cooldown);
+    }
+
+    @Override
     public void render(float delta) {
         super.render(delta);
         userActiveSkills.update(delta);
@@ -162,10 +181,10 @@ public class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> imp
         Table layer = new Table();
         layer.setFillParent(true);
 
-        layer.left().top();
+        //layer.left().top();
 
-        layer.add(userField.build()).uniformX().expandX();
-        layer.add(enemyField.build()).uniformX().expandX();
+        //layer.add(userField.build()).uniformX().expandX();
+        //layer.add(enemyField.build()).uniformX().expandX();
 
         layer.center().bottom();
 
@@ -185,7 +204,7 @@ public class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> imp
 
         Table battleInfoSection = new Table();
         battleInfoSection.add(userManaAmountField.build()).center().uniformX().expandX();
-        battleInfoSection.add(new Label("Round: %d", skin)).center().uniformX().expandX();
+        battleInfoSection.add(temp = new Label("", skin)).center().uniformX().expandX();
         battleInfoSection.add(UIElementFactory.getButton(skin, "LEAVE",
                 new ChangeListener() {
                     @Override
@@ -198,11 +217,10 @@ public class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> imp
 
         layer.add(battleUtility).width(screenWidth).row();
 
-        layer.add(userActiveSkills.build()).padTop(10)
-                .height(ACTIVE_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH).row();
+        layer.add(userActiveSkills.build()).padTop(10).height(ACTIVE_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH).row();
 
-        /*stage.addActor(userField.build());
-        stage.addActor(enemyField.build());*/
+        stage.addActor(userField.build());
+        stage.addActor(enemyField.build());
 
         return layer;
     }
@@ -241,11 +259,7 @@ public class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> imp
 
     @Override
     public void startBattle(int enemiesNumber) {
-        try {
-            aliveEnemiesField.setInitialData(enemiesNumber);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        aliveEnemiesField.setInitialData(enemiesNumber);
         isBattle.set(true);
     }
 

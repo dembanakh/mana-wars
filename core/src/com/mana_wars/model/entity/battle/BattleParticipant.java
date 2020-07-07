@@ -45,6 +45,9 @@ public abstract class BattleParticipant {
         setCharacteristicValue(Characteristic.MANA, 0);
         setCharacteristicValue(Characteristic.CAST_TIME, 100);
         setCharacteristicValue(Characteristic.COOLDOWN, 100);
+        //game private data
+        setCharacteristicValue(Characteristic._MANA_COST, 100);
+
         healthObservable = BehaviorSubject.create();
         this.passiveSkills = passiveSkills;
         for (BattleSkill skill : battleSkills) {
@@ -71,7 +74,16 @@ public abstract class BattleParticipant {
 
     public void applySkillCharacteristic(SkillCharacteristic sc, int skillLevel) {
         Characteristic c = sc.getCharacteristic();
+
+
         int changedValue = c.changeValue(characteristics.get(c), sc.getChangeType(), sc.getValue(skillLevel));
+
+        //TODO very strongly think about it!
+        if(sc.isManaCost()){
+            changedValue = c.changeValue(characteristics.get(c), sc.getChangeType(),
+                    sc.getValue(skillLevel) * getCharacteristicValue(Characteristic._MANA_COST) / 100);
+        }
+
         if (c == Characteristic.HEALTH) {
             changedValue = Math.min(changedValue, initialHealth);
             healthObservable.onNext(changedValue);
@@ -79,16 +91,9 @@ public abstract class BattleParticipant {
         setCharacteristicValue(c, changedValue);
     }
 
-    protected ActiveSkill initSkill(ActiveSkill skill) {
-        double castTime = skill.getCastTime() * getCharacteristicValue(Characteristic.CAST_TIME) / 100;
-        double cooldown = skill.getCooldown() * getCharacteristicValue(Characteristic.COOLDOWN) / 100;
-        return new ActiveSkill(skill.getIconID(), skill.getLevel(), skill.getRarity(),
-                castTime, cooldown, skill.getName(), skill.getSkillCharacteristics());
-    }
-
     protected synchronized void applySkill(ActiveSkill skill, double currentTime) {
-        double castTime = skill.getCastTime() * getCharacteristicValue(Characteristic.CAST_TIME) / 100;
-        double cooldown = skill.getCooldown() * getCharacteristicValue(Characteristic.COOLDOWN) / 100;
+        double castTime = skill.getCastTime(getCharacteristicValue(Characteristic.CAST_TIME));
+        double cooldown = skill.getCooldown(getCharacteristicValue(Characteristic.COOLDOWN));
         battle.requestSkillApplication(this, skill, castTime);
         for (BattleSkill battleSkill : battleSkills) {
             battleSkill.updateAvailabilityTime(currentTime + castTime +
@@ -136,7 +141,7 @@ public abstract class BattleParticipant {
         return currentTarget;
     }
 
-    protected int getCharacteristicValue(Characteristic type) {
+    public int getCharacteristicValue(Characteristic type) {
         return characteristics.get(type);
     }
 

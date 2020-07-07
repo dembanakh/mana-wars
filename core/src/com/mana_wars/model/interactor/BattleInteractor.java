@@ -1,8 +1,10 @@
 package com.mana_wars.model.interactor;
 
-import com.mana_wars.model.entity.battle.BaseBattleBuilder;
+import com.mana_wars.model.entity.battle.BattleBuilder;
 import com.mana_wars.model.entity.battle.BattleConfig;
+import com.mana_wars.model.entity.battle.BattleStateObserver;
 import com.mana_wars.model.entity.battle.BattleSummaryData;
+import com.mana_wars.model.entity.battle.Characteristic;
 import com.mana_wars.model.entity.user.UserBattleAPI;
 import com.mana_wars.model.repository.DatabaseRepository;
 
@@ -19,12 +21,15 @@ public final class BattleInteractor extends BaseInteractor {
         this.databaseRepository = databaseRepository;
     }
 
-    public void init(final BattleInitializationObserver observer, final BaseBattleBuilder battleBuilder) {
+    public void init(final BattleStateObserver observer, final BattleBuilder battleBuilder) {
         battleBuilder.fetchData(disposable, databaseRepository, () -> {
-            this.battle = battleBuilder.build();
+            this.battle = battleBuilder.build(observer);
 
             battle.init();
             observer.setSkills(user.getActiveSkills());
+            observer.updateDurationCoefficients(
+                    battle.getUser().getCharacteristicValue(Characteristic.CAST_TIME),
+                    battle.getUser().getCharacteristicValue(Characteristic.COOLDOWN));
             observer.setOpponents(battle.getUser(), battle.getUserSide(), battle.getEnemySide());
             battle.start();
             observer.onStartBattle();
@@ -59,7 +64,14 @@ public final class BattleInteractor extends BaseInteractor {
         return battle.getUser().changeTarget();
     }
 
+
     public int getEnemiesNumber() {
         return battle.getEnemySide().size();
+    }
+
+    @Override
+    public void dispose(){
+        super.dispose();
+        this.battle.dispose();
     }
 }
