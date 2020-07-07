@@ -13,4 +13,5 @@ public interface BattleConfig {
     List<BattleParticipant> getUserSide();
     List<BattleParticipant> getEnemySide();
     Subject<BattleSummaryData> getFinishBattleObservable();
+    void dispose();
 }

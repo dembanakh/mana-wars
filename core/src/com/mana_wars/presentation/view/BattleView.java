@@ -16,4 +16,6 @@ public interface BattleView extends BaseView {
     void blockSkills(int appliedSkillIndex);
     void startBattle(int enemiesNumber);
     void finishBattle(BattleSummaryData summaryData);
+    void cleanEnemies(int enemySize);
+    void setRound(int round);
 }

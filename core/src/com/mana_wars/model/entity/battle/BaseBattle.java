@@ -22,6 +22,10 @@ public class BaseBattle implements BattleConfig, Battle {
     private final BattleParticipant user;
     private final AtomicBoolean isActive = new AtomicBoolean(false);
 
+    public double getBattleTime() {
+        return battleTime;
+    }
+
     private double battleTime;
     private final PriorityQueue<BattleEvent> battleEvents = new PriorityQueue<>();
 
@@ -57,6 +61,12 @@ public class BaseBattle implements BattleConfig, Battle {
         battleTime = 0;
         startParticipants(Collections.singletonList(user));
         startParticipants(userSide);
+        startParticipants(enemySide);
+        isActive.set(true);
+    }
+
+    public void start(double startTime) {
+        battleTime = startTime;
         startParticipants(enemySide);
         isActive.set(true);
     }
@@ -171,4 +181,7 @@ public class BaseBattle implements BattleConfig, Battle {
         }
     }
 
+
+    @Override
+    public void dispose() {}
 }
