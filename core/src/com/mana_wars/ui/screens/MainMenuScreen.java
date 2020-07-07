@@ -27,7 +27,6 @@ import com.mana_wars.ui.widgets.skill_window.SkillCaseWindow;
 
 import static com.mana_wars.ui.UIStringConstants.MAIN_MENU_SCREEN;
 import static com.mana_wars.ui.UIStringConstants.SKILL_CASE_WINDOW;
-import static com.mana_wars.ui.UIStringConstants.UI_SKIN;
 
 public class MainMenuScreen extends BaseScreen<MenuOverlayUI, MainMenuPresenter> implements MainMenuView {
 
@@ -37,11 +36,12 @@ public class MainMenuScreen extends BaseScreen<MenuOverlayUI, MainMenuPresenter>
     private final AssetFactory<String, Texture> imageFactory;
 
     public MainMenuScreen(final UserMenuAPI user,
+                          final Skin skin,
                           final ScreenSetter screenSetter,
                           final FactoryStorage factoryStorage,
                           final RepositoryStorage repositoryStorage,
                           final MenuOverlayUI overlayUI) {
-        super(screenSetter, factoryStorage.getSkinFactory().getAsset(UI_SKIN.MANA_WARS), overlayUI);
+        super(screenSetter, skin, overlayUI);
 
         presenter = new MainMenuPresenter(this,
                 new MainMenuInteractor(
@@ -56,17 +56,18 @@ public class MainMenuScreen extends BaseScreen<MenuOverlayUI, MainMenuPresenter>
         presenter.addObserver_manaAmount(overlayUI.getManaAmountObserver());
         presenter.addObserver_userLevel(overlayUI.getUserLevelObserver());
 
-        skillCaseWindow = new SkillCaseWindow(SKILL_CASE_WINDOW.TITLE, getSkin(),
-                factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
-        manaBonusProgressBar = new ManaBonusProgressBar(presenter.getFullManaBonusTimeout(),
-                this::claimBonus, getSkin());
+        skillCaseWindow = new SkillCaseWindow(SKILL_CASE_WINDOW.TITLE, skin,
+                factoryStorage.getSkillIconFactory(),
+                factoryStorage.getRarityFrameFactory());
+        manaBonusProgressBar = new ManaBonusProgressBar(skin, presenter.getFullManaBonusTimeout(),
+                this::claimBonus);
         imageFactory = factoryStorage.getImageFactory();
     }
 
     @Override
     protected void rebuildStage() {
         super.rebuildStage();
-        addActor(skillCaseWindow.build(getSkin()));
+        addActor(skillCaseWindow.build());
     }
 
     @Override
@@ -93,7 +94,7 @@ public class MainMenuScreen extends BaseScreen<MenuOverlayUI, MainMenuPresenter>
                 });
         layer.add(skillCaseButton).row();
         // TODO: remove constants
-        layer.add(manaBonusProgressBar.build(skin)).height(100).width(200);
+        layer.add(manaBonusProgressBar.build()).height(100).width(200);
 
         return layer;
     }

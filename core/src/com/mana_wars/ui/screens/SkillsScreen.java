@@ -31,7 +31,6 @@ import com.mana_wars.ui.widgets.base.List2D;
 import java.util.List;
 
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.COLUMNS_NUMBER;
-import static com.mana_wars.ui.UIStringConstants.UI_SKIN;
 
 public class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresenter> implements SkillsView {
 
@@ -42,9 +41,10 @@ public class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresenter> imp
     private final ScrollPane scrollPane;
 
     public SkillsScreen(final UserSkillsAPI user,
+                        final Skin skin,
                         final ScreenSetter screenSetter, final FactoryStorage factoryStorage,
                         final DatabaseRepository databaseRepository, final MenuOverlayUI overlayUI) {
-        super(screenSetter, factoryStorage.getSkinFactory().getAsset(UI_SKIN.MANA_WARS), overlayUI);
+        super(screenSetter, skin, overlayUI);
 
         this.presenter = new SkillsPresenter(this,
                 Gdx.app::postRunnable,
@@ -52,26 +52,23 @@ public class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresenter> imp
         presenter.addObserver_manaAmount(overlayUI.getManaAmountObserver());
         presenter.addObserver_userLevel(overlayUI.getUserLevelObserver());
 
-        mainSkillsTable = UIElementFactory.orderedOperationSkillsList(getSkin(), COLUMNS_NUMBER,
+        mainSkillsTable = UIElementFactory.orderedOperationSkillsList(skin, COLUMNS_NUMBER,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
         mainSkillsTable.setUserObject(SkillTable.ALL_SKILLS);
 
-        activeSkillsTable = UIElementFactory.unorderedOperationSkillsList(getSkin(), GameConstants.MAX_CHOSEN_ACTIVE_SKILL_COUNT,
+        activeSkillsTable = UIElementFactory.unorderedOperationSkillsList(skin,
+                GameConstants.MAX_CHOSEN_ACTIVE_SKILL_COUNT,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
         activeSkillsTable.setUserObject(SkillTable.ACTIVE_SKILLS);
 
-        passiveSkillsTable = UIElementFactory.unorderedOperationSkillsList(getSkin(), GameConstants.USER_PASSIVE_SKILL_COUNT,
+        passiveSkillsTable = UIElementFactory.unorderedOperationSkillsList(skin,
+                GameConstants.USER_PASSIVE_SKILL_COUNT,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
         passiveSkillsTable.setUserObject(SkillTable.PASSIVE_SKILLS);
 
-        scrollPane = new ScrollPane(mainSkillsTable, getSkin());
-        dragAndDrop = new SkillsDragAndDrop(factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
-    }
-
-    @Override
-    protected void rebuildStage() {
-        super.rebuildStage();
-        dragAndDrop.setup();
+        scrollPane = new ScrollPane(mainSkillsTable, skin);
+        dragAndDrop = new SkillsDragAndDrop(factoryStorage.getSkillIconFactory(),
+                factoryStorage.getRarityFrameFactory());
     }
 
     @Override
@@ -156,6 +153,7 @@ public class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresenter> imp
     @Override
     public void show() {
         super.show();
+        dragAndDrop.setup();
         presenter.refreshSkillsList();
     }
 

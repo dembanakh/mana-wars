@@ -2,7 +2,6 @@ package com.mana_wars.model.interactor;
 
 import com.mana_wars.model.entity.battle.BaseBattleBuilder;
 import com.mana_wars.model.entity.battle.BattleConfig;
-import com.mana_wars.model.entity.battle.BattleParticipant;
 import com.mana_wars.model.entity.battle.BattleSummaryData;
 import com.mana_wars.model.entity.user.UserBattleAPI;
 import com.mana_wars.model.repository.DatabaseRepository;
@@ -58,5 +57,9 @@ public final class BattleInteractor extends BaseInteractor {
 
     public int changeUserTarget() {
         return battle.getUser().changeTarget();
+    }
+
+    public int getEnemiesNumber() {
+        return battle.getEnemySide().size();
     }
 }

@@ -2,15 +2,14 @@ package com.mana_wars.model.entity.skills;
 
 import com.mana_wars.model.entity.base.Rarity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 public class ActiveSkill extends Skill {
 
     private final double cooldown;
     private final double castTime;
 
-    public ActiveSkill(int id, int level, Rarity rarity, double castTime, double cooldown, String name, List<SkillCharacteristic> skillCharacteristics) {
+    public ActiveSkill(int id, int level, Rarity rarity, double castTime, double cooldown, String name, Iterable<SkillCharacteristic> skillCharacteristics) {
         super(id, level, rarity, name, skillCharacteristics);
         this.castTime = castTime;
         this.cooldown = cooldown;
@@ -25,7 +24,7 @@ public class ActiveSkill extends Skill {
     }
 
     private static ActiveSkill Empty = new ActiveSkill(50, 0, Rarity.EMPTY, 0, 0, "EMPTY",
-            new ArrayList<>());
+            Collections.emptyList());
 
     public static ActiveSkill getEmpty() {
         return Empty;

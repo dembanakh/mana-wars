@@ -43,7 +43,7 @@ public final class BattlePresenter extends BasePresenter<BattleView, BattleInter
         disposable.add(interactor.getFinishBattleObservable().subscribe(
                 (data) -> uiThreadHandler.postRunnable(() -> view.finishBattle(data))
         ));
-        view.startBattle();
+        view.startBattle(interactor.getEnemiesNumber());
     }
 
     @Override

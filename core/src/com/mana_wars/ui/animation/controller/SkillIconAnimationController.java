@@ -19,22 +19,22 @@ public class SkillIconAnimationController implements UIAnimator<Integer>,
         UIAnimationController<Integer, SkillIconAnimationController.Type> {
 
     private final TextureRegion textureRegion;
-    private final BitmapFont font;
+    private BitmapFont font;
     private ShapeDrawer shapeDrawer;
 
     private final TimeoutMap<Integer, KeyFrame<Type>> timeoutMap;
     private final Set<Integer> emptySkills;
 
-    public SkillIconAnimationController(TextureRegion textureRegion, BitmapFont font) {
+    public SkillIconAnimationController(TextureRegion textureRegion) {
         this.textureRegion = textureRegion;
-        this.font = font;
         this.timeoutMap = new TimeoutHashMap<>();
         this.emptySkills = new HashSet<>();
     }
 
     @Override
-    public void initBatch(Batch batch) {
+    public void initBatch(Batch batch, BitmapFont font) {
         shapeDrawer = new ShapeDrawer(batch, textureRegion);
+        this.font = font;
     }
 
     @Override

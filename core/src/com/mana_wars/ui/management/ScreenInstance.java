@@ -1,12 +1,15 @@
 package com.mana_wars.ui.management;
 
 import com.mana_wars.model.entity.user.User;
+import com.mana_wars.model.repository.DatabaseUpdater;
+import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.overlays.OverlayUIFactory;
 import com.mana_wars.ui.screens.BaseScreen;
 import com.mana_wars.ui.screens.BattleScreen;
 import com.mana_wars.ui.screens.BattleSummaryScreen;
 import com.mana_wars.ui.screens.DungeonsScreen;
 import com.mana_wars.ui.screens.GreetingScreen;
+import com.mana_wars.ui.screens.LoadingScreen;
 import com.mana_wars.ui.screens.MainMenuScreen;
 import com.mana_wars.ui.screens.ShopScreen;
 import com.mana_wars.ui.screens.SkillsInfoScreen;
@@ -17,6 +20,7 @@ import com.mana_wars.ui.storage.RepositoryStorage;
 import java.util.Map;
 
 public enum ScreenInstance {
+    LOADING,
     GREETING,
     MAIN_MENU,
     SKILLS,
@@ -32,20 +36,35 @@ public enum ScreenInstance {
                             final ScreenSetter screenSetter,
                             final FactoryStorage factoryStorage,
                             final RepositoryStorage repositoryStorage,
-                            final OverlayUIFactory overlayUIFactory) {
+                            final DatabaseUpdater databaseUpdater) {
+        OverlayUIFactory overlayUIFactory = new OverlayUIFactory(factoryStorage.getSkinFactory(), screenSetter);
+        LOADING.screen = new LoadingScreen(screenSetter, factoryStorage,
+                overlayUIFactory.getEmptyOverlayUI(), databaseUpdater);
         GREETING.screen = new GreetingScreen(user, screenSetter, factoryStorage,
                 overlayUIFactory.getEmptyOverlayUI());
-        MAIN_MENU.screen = new MainMenuScreen(user, screenSetter, factoryStorage, repositoryStorage,
+        MAIN_MENU.screen = new MainMenuScreen(user,
+                factoryStorage.getSkinFactory().getAsset(UIStringConstants.UI_SKIN.MANA_WARS),
+                screenSetter, factoryStorage, repositoryStorage,
                 overlayUIFactory.getMenuOverlayUI());
-        SKILLS.screen = new SkillsScreen(user, screenSetter, factoryStorage, repositoryStorage.getDatabaseRepository(),
+        SKILLS.screen = new SkillsScreen(user,
+                factoryStorage.getSkinFactory().getAsset(UIStringConstants.UI_SKIN.MANA_WARS),
+                screenSetter, factoryStorage, repositoryStorage.getDatabaseRepository(),
                 overlayUIFactory.getMenuOverlayUI());
-        SKILLS_INFO.screen = new SkillsInfoScreen(screenSetter, factoryStorage, repositoryStorage.getDatabaseRepository(),
+        SKILLS_INFO.screen = new SkillsInfoScreen(
+                factoryStorage.getSkinFactory().getAsset(UIStringConstants.UI_SKIN.MANA_WARS),
+                screenSetter, factoryStorage, repositoryStorage.getDatabaseRepository(),
                 overlayUIFactory.getEmptyOverlayUI());
-        DUNGEONS.screen = new DungeonsScreen(user, screenSetter, factoryStorage, repositoryStorage.getDatabaseRepository(),
+        DUNGEONS.screen = new DungeonsScreen(user,
+                factoryStorage.getSkinFactory().getAsset(UIStringConstants.UI_SKIN.MANA_WARS),
+                screenSetter, factoryStorage, repositoryStorage.getDatabaseRepository(),
                 overlayUIFactory.getEmptyOverlayUI());
-        BATTLE.screen = new BattleScreen(user, screenSetter, factoryStorage, repositoryStorage.getDatabaseRepository(),
-                overlayUIFactory.getBattleOverlayUI());
-        BATTLE_SUMMARY.screen = new BattleSummaryScreen(user, screenSetter, factoryStorage, repositoryStorage,
+        BATTLE.screen = new BattleScreen(user,
+                factoryStorage.getSkinFactory().getAsset(UIStringConstants.UI_SKIN.MANA_WARS),
+                screenSetter, factoryStorage, repositoryStorage.getDatabaseRepository(),
+                overlayUIFactory.getEmptyOverlayUI());
+        BATTLE_SUMMARY.screen = new BattleSummaryScreen(user,
+                factoryStorage.getSkinFactory().getAsset(UIStringConstants.UI_SKIN.MANA_WARS),
+                screenSetter, factoryStorage, repositoryStorage,
                 overlayUIFactory.getEmptyOverlayUI());
         SHOP.screen = new ShopScreen(user, screenSetter, factoryStorage, repositoryStorage.getDatabaseRepository(),
                 overlayUIFactory.getMenuOverlayUI());

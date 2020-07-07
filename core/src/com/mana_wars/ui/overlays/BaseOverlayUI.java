@@ -6,14 +6,9 @@ import com.mana_wars.ui.widgets.base.BuildableUI;
 
 public abstract class BaseOverlayUI {
 
-    public void init() {
+    public void overlay(Stage stage) {
         for (BuildableUI element : getElements())
-            element.init();
-    }
-
-    public void overlay(Stage stage, Skin skin) {
-        for (BuildableUI element : getElements())
-            stage.addActor(element.build(skin));
+            stage.addActor(element.build());
     }
 
     protected abstract Iterable<BuildableUI> getElements();

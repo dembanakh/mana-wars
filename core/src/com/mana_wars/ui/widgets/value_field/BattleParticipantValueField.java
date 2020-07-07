@@ -4,112 +4,124 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.PassiveSkill;
+import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.factory.UIElementFactory;
+import com.mana_wars.ui.screens.BattleScreen;
 import com.mana_wars.ui.widgets.base.List2D;
+import com.mana_wars.ui.widgets.value_field.base.TransformApplier;
+import com.mana_wars.ui.widgets.value_field.base.ValueField;
 
 import java.util.Locale;
 
-public class BattleParticipantValueField extends ManualTransformValueFieldWithInitialData<BattleParticipantValueField.Data, Integer> {
+public final class BattleParticipantValueField extends ValueField<BattleScreen.BattleParticipantData, Integer> {
 
-    private Label participantHealth;
-    private ProgressBar healthBar;
+    private final Label participantNameLabel;
 
-    private Label participantName;
+    private final Label participantHealthLabel;
+    private final ProgressBar participantHealthBar;
 
-    private List2D<PassiveSkill> participantPassiveSkills;
+    private final List2D<PassiveSkill> participantPassiveSkillsList;
 
-    private Label healthChangeLabel;
+    private final Label healthChangeLabel;
 
-    private Image participantImage;
-
-    private final AssetFactory<Integer, TextureRegion> iconFactory;
-    private final AssetFactory<Rarity, TextureRegion> frameFactory;
-    private final AssetFactory<String, Texture> imageFactory;
+    private final Image participantImage;
 
     private final float deltaHealthAnimationDistance;
     private final float deltaHealthAnimationDuration;
 
     private boolean initializing = false;
 
-    public BattleParticipantValueField(final AssetFactory<Integer, TextureRegion> iconFactory,
-                                       final AssetFactory<Rarity, TextureRegion> frameFactory,
-                                       final AssetFactory<String, Texture> imageFactory,
-                                       float deltaHealthAnimationDistance,
-                                       float deltaHealthAnimationDuration) {
-        this.iconFactory = iconFactory;
-        this.frameFactory = frameFactory;
-        this.imageFactory = imageFactory;
+    BattleParticipantValueField(final Skin skin,
+                                final TransformApplier transformApplier,
+                                final AssetFactory<Integer, TextureRegion> iconFactory,
+                                final AssetFactory<Rarity, TextureRegion> frameFactory,
+                                final AssetFactory<String, Texture> imageFactory,
+                                float deltaHealthAnimationDistance,
+                                float deltaHealthAnimationDuration) {
+        super(skin, transformApplier);
         this.deltaHealthAnimationDistance = deltaHealthAnimationDistance;
         this.deltaHealthAnimationDuration = deltaHealthAnimationDuration;
+        this.participantNameLabel = new Label("", skin);
+        this.participantHealthBar = new ProgressBar(0, 100, 1, false, skin);
+        this.participantHealthLabel = new Label("", skin);
+        this.healthChangeLabel = new Label("", skin);
+        this.participantPassiveSkillsList = UIElementFactory.skillsListWithoutLevel(skin,
+                GameConstants.USER_PASSIVE_SKILL_COUNT,
+                iconFactory, frameFactory);
+        participantImage = new Image(new TextureRegion(imageFactory.getAsset("player")));
+        init();
     }
 
-    @Override
-    public void init() {
-        super.init();
+    BattleParticipantValueField(final Skin skin,
+                                UIStringConstants.UI_SKIN.BACKGROUND_COLOR backgroundColor, TransformApplier transformApplier,
+                                final AssetFactory<Integer, TextureRegion> iconFactory,
+                                final AssetFactory<Rarity, TextureRegion> frameFactory,
+                                final AssetFactory<String, Texture> imageFactory,
+                                float deltaHealthAnimationDistance,
+                                float deltaHealthAnimationDuration) {
+        super(skin, backgroundColor, transformApplier);
+        this.deltaHealthAnimationDistance = deltaHealthAnimationDistance;
+        this.deltaHealthAnimationDuration = deltaHealthAnimationDuration;
+        this.participantNameLabel = new Label("", skin);
+        this.participantHealthBar = new ProgressBar(0, 100, 1, false, skin);
+        this.participantHealthLabel = new Label("", skin);
+        this.healthChangeLabel = new Label("", skin);
+        this.participantPassiveSkillsList = UIElementFactory.skillsListWithoutLevel(skin,
+                GameConstants.USER_PASSIVE_SKILL_COUNT,
+                iconFactory, frameFactory);
+        participantImage = new Image(new TextureRegion(imageFactory.getAsset("player")));
+        init();
+    }
 
-        participantName = new Label("", UIElementFactory.emptyLabelStyle());
-        participantName.setColor(Color.BLACK);
-        participantName.setFontScale(4);
-        addActor(participantName);
+    private void init() {
+        participantNameLabel.setColor(Color.BLACK);
+        participantNameLabel.setFontScale(4);
+        field.add(participantNameLabel).top().row();
 
         Stack stack = new Stack();
-        healthBar = new ProgressBar(0, 100, 1, false,
-                new ProgressBar.ProgressBarStyle());
-        healthBar.setScale(4);
-        stack.add(healthBar);
+        participantHealthBar.setScale(4);
+        stack.add(participantHealthBar);
 
-        participantHealth = new Label("", UIElementFactory.emptyLabelStyle());
-        participantHealth.setFillParent(true);
-        participantHealth.setColor(Color.BLACK);
-        participantHealth.setFontScale(4);
-        stack.add(participantHealth);
-        addActor(stack);
+        participantHealthLabel.setFillParent(true);
+        participantHealthLabel.setColor(Color.BLACK);
+        participantHealthLabel.setFontScale(4);
+        stack.add(participantHealthLabel);
+        field.add(stack).top().row();
 
-        healthChangeLabel = new Label("", UIElementFactory.emptyLabelStyle());
         healthChangeLabel.setFontScale(4);
-        addActor(healthChangeLabel);
+        field.add(healthChangeLabel).top().row();
 
-        participantPassiveSkills = UIElementFactory.skillsListWithoutLevel(GameConstants.USER_PASSIVE_SKILL_COUNT,
-                iconFactory, frameFactory);
-        participantPassiveSkills.setMinHeight(131.4f);
-        addActorAndExpandX(participantPassiveSkills);
+        //participantPassiveSkills.setMinHeight(131.4f); // Do we need this?
+        field.add(participantPassiveSkillsList).fillX().top().row();
 
-        TextureRegion tempRegion = new TextureRegion(imageFactory.getAsset("player"));
-        participantImage = new Image(tempRegion);
-        addActorAndPad(participantImage, 28);
+        field.add(participantImage).pad(28).top().row();
     }
 
     @Override
-    public Actor build(final Skin skin) {
-        Actor field = super.build(skin);
-        participantName.setStyle(skin.get(Label.LabelStyle.class));
-        participantHealth.setStyle(skin.get(Label.LabelStyle.class));
-        healthBar.setStyle(skin.get("default-horizontal", ProgressBar.ProgressBarStyle.class));
-        healthChangeLabel.setStyle(skin.get(Label.LabelStyle.class));
-        participantPassiveSkills.setStyle(skin.get("default", List.ListStyle.class));
-        return field;
-    }
-
-    @Override
-    public synchronized void accept(Integer value) {
-        int lastValue = (int) healthBar.getValue();
-        participantHealth.setText(value);
-        healthBar.setValue(value);
+    public void accept(Integer value) {
+        int lastValue = (int) participantHealthBar.getValue();
+        participantHealthLabel.setText(value);
+        participantHealthBar.setValue(value);
         if (!initializing)
             updateHealthChangeLabel(value - lastValue);
         else initializing = false;
+    }
+
+    public void setInitialData(BattleScreen.BattleParticipantData data) {
+        initializing = true;
+        participantNameLabel.setText(data.name);
+        participantHealthBar.setRange(0, data.initialHealth);
+        participantPassiveSkillsList.setItems(data.passiveSkills);
     }
 
     private void updateHealthChangeLabel(int deltaHealth) {
@@ -127,32 +139,6 @@ public class BattleParticipantValueField extends ManualTransformValueFieldWithIn
                         deltaHealthAnimationDuration, Interpolation.pow2InInverse),
                         Actions.fadeOut(deltaHealthAnimationDuration)),
                 Actions.moveBy(-deltaHealthAnimationDistance, 0)));
-    }
-
-    @Override
-    public void setInitialData(Data data) {
-        initializing = true;
-        participantName.setText(data.name);
-        healthBar.setRange(0, data.initialHealth);
-        participantPassiveSkills.setItems(data.passiveSkills);
-        /*try {
-            healthBar.setValue(data.initialHealth);
-            participantHealth.setText(data.initialHealth);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
-    }
-
-    public static class Data {
-        private final String name;
-        private final int initialHealth;
-        private final Iterable<PassiveSkill> passiveSkills;
-
-        public Data(String name, int initialHealth, Iterable<PassiveSkill> passiveSkills) {
-            this.name = name;
-            this.initialHealth = initialHealth;
-            this.passiveSkills = passiveSkills;
-        }
     }
 
 }

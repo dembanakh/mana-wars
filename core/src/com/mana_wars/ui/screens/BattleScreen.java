@@ -7,8 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.entity.battle.BattleSummaryData;
 import com.mana_wars.model.entity.skills.ActiveSkill;
@@ -20,12 +20,21 @@ import com.mana_wars.presentation.presenters.BattlePresenter;
 import com.mana_wars.presentation.view.BattleView;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.factory.UIElementFactory;
+import com.mana_wars.ui.layout_constraints.AbsoluteXPositionConstraint;
+import com.mana_wars.ui.layout_constraints.AbsoluteYPositionConstraint;
+import com.mana_wars.ui.layout_constraints.RelativeHeightConstraint;
+import com.mana_wars.ui.layout_constraints.RelativeWidthConstraint;
 import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
-import com.mana_wars.ui.overlays.BattleOverlayUI;
+import com.mana_wars.ui.overlays.BaseOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
-import com.mana_wars.ui.widgets.value_field.NumberOfAliveEnemiesValueField;
+import com.mana_wars.ui.transform.TransformFactory;
+import com.mana_wars.ui.transform.base.Transform;
+import com.mana_wars.ui.transform.base.TransformBuilder;
 import com.mana_wars.ui.widgets.skills_list_2d.BlockableSkillsList;
+import com.mana_wars.ui.widgets.value_field.EnemyValueField;
+import com.mana_wars.ui.widgets.value_field.ValueFieldFactory;
+import com.mana_wars.ui.widgets.value_field.base.ValueField;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,36 +43,84 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import io.reactivex.functions.Consumer;
 
 import static com.mana_wars.model.GameConstants.CHOSEN_BATTLE_BUILDER;
+import static com.mana_wars.ui.UIElementsSize.SCREEN_WIDTH;
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.ACTIVE_SKILLS_TABLE_HEIGHT;
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.SKILLS_TABLES_WIDTH;
 import static com.mana_wars.ui.UIStringConstants.UI_SKIN;
 
-public class BattleScreen extends BaseScreen<BattleOverlayUI, BattlePresenter> implements BattleView {
+public class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> implements BattleView {
+
+    private final ValueField<BattleParticipantData, Integer> userField;
+    private final EnemyValueField enemyField;
 
     private final BlockableSkillsList<ActiveSkill> userActiveSkills;
 
-    private final NumberOfAliveEnemiesValueField aliveEnemiesField;
+    private final ValueField<Integer, Integer> aliveEnemiesField;
+    private final ValueField<Void, Integer> userManaAmountField;
 
     private final AtomicBoolean isBattle = new AtomicBoolean(false);
     private final AssetFactory<String, Texture> imageFactory;
 
     public BattleScreen(final UserBattleAPI user,
+                        final Skin skin,
                         final ScreenSetter screenSetter, final FactoryStorage factoryStorage,
-                        final DatabaseRepository databaseRepository, final BattleOverlayUI overlayUI) {
-        super(screenSetter, factoryStorage.getSkinFactory().getAsset(UI_SKIN.MANA_WARS), overlayUI);
+                        final DatabaseRepository databaseRepository, final BaseOverlayUI overlayUI) {
+        super(screenSetter, skin, overlayUI);
 
         presenter = new BattlePresenter(this,
                 new BattleInteractor(user, databaseRepository),
                 Gdx.app::postRunnable);
-        presenter.addObserver_userManaAmount(overlayUI.getUserManaAmountObserver());
 
-        userActiveSkills = UIElementFactory.applicableSkillsList(getSkin(),
+        /*Transform transform;
+
+        transform = new TransformBuilder()
+                .setXConstraint(new AbsoluteXPositionConstraint(Align.left, 0))
+                .setYConstraint(new AbsoluteYPositionConstraint(Align.top, 0))
+                .setWidthConstraint(new RelativeWidthConstraint(50))
+                .setHeightConstraint(new RelativeHeightConstraint(75))
+                .build();
+        userField = ValueFieldFactory.battleParticipantValueField(skin,
+                TransformFactory.manualTransform(transform),
+                factoryStorage.getSkillIconFactory(),
+                factoryStorage.getRarityFrameFactory(),
+                factoryStorage.getImageFactory(),
+                -200, 1);
+
+        transform = new TransformBuilder()
+                .setXConstraint(new AbsoluteXPositionConstraint(Align.right, 0))
+                .setYConstraint(new AbsoluteYPositionConstraint(Align.top, 0))
+                .setWidthConstraint(new RelativeWidthConstraint(50))
+                .setHeightConstraint(new RelativeHeightConstraint(75))
+                .build();
+        enemyField = new EnemyValueField(skin,
+                TransformFactory.manualTransform(transform),
+                factoryStorage.getSkillIconFactory(),
+                factoryStorage.getRarityFrameFactory(),
+                factoryStorage.getImageFactory());*/
+
+        userField = ValueFieldFactory.battleParticipantValueField(skin,
+                TransformFactory.autoTransform(),
+                factoryStorage.getSkillIconFactory(),
+                factoryStorage.getRarityFrameFactory(),
+                factoryStorage.getImageFactory(),
+                -200, 1);
+
+        enemyField = new EnemyValueField(skin,
+                TransformFactory.autoTransform(),
+                factoryStorage.getSkillIconFactory(),
+                factoryStorage.getRarityFrameFactory(),
+                factoryStorage.getImageFactory());
+
+        userActiveSkills = UIElementFactory.applicableSkillsList(skin,
                 GameConstants.MAX_CHOSEN_ACTIVE_SKILL_COUNT,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(),
                 factoryStorage.getImageFactory(), this::onSkillClick);
 
-        aliveEnemiesField = new NumberOfAliveEnemiesValueField();
-        aliveEnemiesField.setBackgroundColor(UI_SKIN.BACKGROUND_COLOR.BROWN);
+        aliveEnemiesField = ValueFieldFactory.aliveEnemiesValueField(skin, UI_SKIN.BACKGROUND_COLOR.BROWN,
+                TransformFactory.autoTransform());
+
+        userManaAmountField = ValueFieldFactory.textValueField(skin, TransformFactory.autoTransform());
+        presenter.addObserver_userManaAmount(userManaAmountField);
 
         imageFactory = factoryStorage.getImageFactory();
     }
@@ -76,8 +133,7 @@ public class BattleScreen extends BaseScreen<BattleOverlayUI, BattlePresenter> i
     @Override
     public BaseScreen reInit(Map<String, Object> arguments) {
         super.reInit(arguments);
-        overlayUI.clear();
-        aliveEnemiesField.init();
+        enemyField.clear();
         presenter.initBattle(getArgument(arguments, CHOSEN_BATTLE_BUILDER));
         return this;
     }
@@ -106,27 +162,48 @@ public class BattleScreen extends BaseScreen<BattleOverlayUI, BattlePresenter> i
         Table layer = new Table();
         layer.setFillParent(true);
 
-        TextButton backButton = UIElementFactory.getButton(skin, "BACK",
+        layer.left().top();
+
+        layer.add(userField.build()).uniformX().expandX();
+        layer.add(enemyField.build()).uniformX().expandX();
+
+        layer.center().bottom();
+
+        int screenWidth = SCREEN_WIDTH();
+        Table battleUtility = new Table();
+
+        Table changeEnemySection = new Table();
+        changeEnemySection.center();
+        changeEnemySection.add(UIElementFactory.getButton(skin, "CHANGE ENEMY", new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                changeActiveEnemy();
+            }
+        })).padRight(20);
+        changeEnemySection.add(aliveEnemiesField.build()).padRight(20);
+        battleUtility.add(changeEnemySection).right().colspan(3).expandX().row();
+
+        Table battleInfoSection = new Table();
+        battleInfoSection.add(userManaAmountField.build()).center().uniformX().expandX();
+        battleInfoSection.add(new Label("Round: %d", skin)).center().uniformX().expandX();
+        battleInfoSection.add(UIElementFactory.getButton(skin, "LEAVE",
                 new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
                         isBattle.set(false);
                         setScreen(ScreenInstance.MAIN_MENU, null);
                     }
-                });
+                })).right().uniformX().expandX();
+        battleUtility.add(battleInfoSection).center().growX();
 
-        layer.center().bottom();
-        layer.add(UIElementFactory.getButton(skin, "CHANGE ENEMY", new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                changeActiveEnemy();
-            }
-        })).width(400).row();
-        layer.add(aliveEnemiesField.build(skin)).row();
-        layer.add(new Label("Round: %d", skin)).row();
-        layer.add(backButton).row();
-        layer.add(userActiveSkills.toActor()).padTop(200 + 50) // 200 is the same as in BattleOverlayUI
+        layer.add(battleUtility).width(screenWidth).row();
+
+        layer.add(userActiveSkills.build()).padTop(10)
                 .height(ACTIVE_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH).row();
+
+        /*stage.addActor(userField.build());
+        stage.addActor(enemyField.build());*/
+
         return layer;
     }
 
@@ -138,8 +215,9 @@ public class BattleScreen extends BaseScreen<BattleOverlayUI, BattlePresenter> i
     @Override
     public void setUser(String name, int initialHealth, Iterable<PassiveSkill> passiveSkills,
                         Consumer<Consumer<? super Integer>> subscribe) {
+        userField.setInitialData(new BattleParticipantData(name, initialHealth, passiveSkills));
         try {
-            subscribe.accept(overlayUI.setUser(name, initialHealth, passiveSkills));
+            subscribe.accept(userField);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -148,9 +226,8 @@ public class BattleScreen extends BaseScreen<BattleOverlayUI, BattlePresenter> i
     @Override
     public void addEnemy(String name, int initialHealth, Iterable<PassiveSkill> passiveSkills,
                          Consumer<Consumer<? super Integer>> subscribe) {
-        aliveEnemiesField.addEnemy();
         try {
-            subscribe.accept(overlayUI.addEnemy(name, initialHealth, passiveSkills));
+            subscribe.accept(enemyField.addEnemy(name, initialHealth, passiveSkills));
             subscribe.accept(aliveEnemiesField);
         } catch (Exception e) {
             e.printStackTrace();
@@ -159,11 +236,16 @@ public class BattleScreen extends BaseScreen<BattleOverlayUI, BattlePresenter> i
 
     @Override
     public void setActiveEnemy(int index) {
-        overlayUI.setActiveEnemy(index);
+        enemyField.setActiveEnemy(index);
     }
 
     @Override
-    public void startBattle() {
+    public void startBattle(int enemiesNumber) {
+        try {
+            aliveEnemiesField.setInitialData(enemiesNumber);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         isBattle.set(true);
     }
 
@@ -183,6 +265,18 @@ public class BattleScreen extends BaseScreen<BattleOverlayUI, BattlePresenter> i
     private void onSkillClick(ActiveSkill skill, int index) {
         if (isBattle.get()) {
             presenter.applyUserSkill(index);
+        }
+    }
+
+    public static class BattleParticipantData {
+        public final String name;
+        public final int initialHealth;
+        public final Iterable<PassiveSkill> passiveSkills;
+
+        public BattleParticipantData(String name, int initialHealth, Iterable<PassiveSkill> passiveSkills) {
+            this.name = name;
+            this.initialHealth = initialHealth;
+            this.passiveSkills = passiveSkills;
         }
     }
 

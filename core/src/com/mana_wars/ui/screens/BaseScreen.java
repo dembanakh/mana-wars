@@ -18,15 +18,17 @@ import java.util.NoSuchElementException;
 
 public abstract class BaseScreen<U extends BaseOverlayUI, T extends BasePresenter> implements Screen, ScreenSetter {
 
-    protected T presenter;
+    T presenter;
     protected final U overlayUI;
 
     private final Skin skin;
-    private final Stage stage;
+    final Stage stage;
     private final ScreenSetter screenSetter;
 
     BaseScreen(ScreenSetter screenSetter, Skin skin, U overlayUI) {
+        this.screenSetter = screenSetter;
         this.skin = skin;
+        this.overlayUI = overlayUI;
         this.stage = new Stage() {
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
@@ -35,8 +37,6 @@ public abstract class BaseScreen<U extends BaseOverlayUI, T extends BasePresente
                 return super.touchDown(screenX, screenY, pointer, button);
             }
         };
-        this.overlayUI = overlayUI;
-        this.screenSetter = screenSetter;
     }
 
     public BaseScreen reInit(Map<String, Object> arguments) {
@@ -50,17 +50,13 @@ public abstract class BaseScreen<U extends BaseOverlayUI, T extends BasePresente
         return (T) arguments.get(key);
     }
 
-    protected Skin getSkin() {
-        return skin;
-    }
-
     void rebuildStage() {
         stage.clear();
         Stack stack = new Stack();
         stage.addActor(stack);
         stack.setFillParent(true);
-        stack.add(buildBackgroundLayer(getSkin()));
-        stack.add(buildForegroundLayer(getSkin()));
+        stack.add(buildBackgroundLayer(skin));
+        stack.add(buildForegroundLayer(skin));
     }
 
     void addActor(Actor actor) {
@@ -71,10 +67,6 @@ public abstract class BaseScreen<U extends BaseOverlayUI, T extends BasePresente
 
     protected abstract Table buildForegroundLayer(Skin skin);
 
-    protected void onBackPressed() {
-        Gdx.app.exit();
-    }
-
     @Override
     public void setScreen(ScreenInstance instance, Map<String, Object> arguments) {
         screenSetter.setScreen(instance, arguments);
@@ -84,7 +76,7 @@ public abstract class BaseScreen<U extends BaseOverlayUI, T extends BasePresente
     public void show() {
         Gdx.input.setInputProcessor(stage);
         rebuildStage();
-        overlayUI.overlay(stage, getSkin());
+        overlayUI.overlay(stage);
     }
 
     @Override
@@ -108,9 +100,7 @@ public abstract class BaseScreen<U extends BaseOverlayUI, T extends BasePresente
 
     @Override
     public void resume() {
-        Gdx.input.setInputProcessor(stage);
-        rebuildStage();
-        overlayUI.overlay(stage, getSkin());
+        show();
     }
 
     @Override
