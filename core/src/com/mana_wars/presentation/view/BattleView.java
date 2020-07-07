@@ -18,4 +18,5 @@ public interface BattleView extends BaseView {
     void finishBattle(BattleSummaryData summaryData);
     void cleanEnemies(int enemySize);
     void setRound(int round);
+    void updateDurationCoefficients(int castTime, int cooldown);
 }

@@ -153,6 +153,11 @@ public class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> imp
     }
 
     @Override
+    public void updateDurationCoefficients(int castTime, int cooldown) {
+        userActiveSkills.setDurationCoefficients(castTime, cooldown);
+    }
+
+    @Override
     public void render(float delta) {
         super.render(delta);
         userActiveSkills.update(delta);

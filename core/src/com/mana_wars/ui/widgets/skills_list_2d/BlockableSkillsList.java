@@ -7,4 +7,5 @@ public interface BlockableSkillsList<T extends Skill> extends BuildableUI {
     void update(float delta);
     void blockSkills(int appliedSkillIndex);
     void setItems(Iterable<? extends T> items);
+    void setDurationCoefficients(int castTime, int cooldown);
 }

@@ -22,6 +22,8 @@ public class ApplicableSkillsList2D<T extends ActiveSkill> extends ClickableList
     private final UIAnimationController<Integer, SkillIconAnimationController.Type> animationController;
     private final BitmapFont cooldownFont;
 
+    private int castTime, cooldown;
+
     public ApplicableSkillsList2D(Skin skin, ListItemDrawer<? super T> listItemDrawer, int cols,
                                   ListItemConsumer<? super T> onSkillClick,
                                   UIAnimationController<Integer, SkillIconAnimationController.Type> animationController,
@@ -44,6 +46,13 @@ public class ApplicableSkillsList2D<T extends ActiveSkill> extends ClickableList
     }
 
     @Override
+    public void setDurationCoefficients(int castTime, int cooldown) {
+        this.castTime = castTime;
+        this.cooldown = cooldown;
+    }
+
+
+    @Override
     public void blockSkills(int appliedSkillIndex) {
         T appliedSkill = getItem(appliedSkillIndex);
         forEachItem((skill, index) -> {
@@ -52,14 +61,14 @@ public class ApplicableSkillsList2D<T extends ActiveSkill> extends ClickableList
                 animationController.add(index,
                         Arrays.asList(
                                 new UIAnimationController.KeyFrame<>(SkillIconAnimationController.Type.CAST_APPLIED,
-                                        appliedSkill.getCastTime()),
+                                        appliedSkill.getCastTime(castTime)),
                                 new UIAnimationController.KeyFrame<>(SkillIconAnimationController.Type.COOLDOWN,
-                                        appliedSkill.getCooldown())));
+                                        appliedSkill.getCooldown(cooldown))));
             else
                 animationController.add(index,
                         Arrays.asList(
                                 new UIAnimationController.KeyFrame<>(SkillIconAnimationController.Type.CAST_NON_APPLIED,
-                                        appliedSkill.getCastTime())));
+                                        appliedSkill.getCastTime(castTime))));
         });
     }
 

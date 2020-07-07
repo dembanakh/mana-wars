@@ -2,9 +2,8 @@ package com.mana_wars.presentation.presenters;
 
 import com.mana_wars.model.entity.battle.BattleBuilder;
 import com.mana_wars.model.entity.battle.BattleParticipant;
-import com.mana_wars.model.entity.battle.BattleRoundsObserver;
 import com.mana_wars.model.entity.skills.ActiveSkill;
-import com.mana_wars.model.entity.battle.BattleInitializationObserver;
+import com.mana_wars.model.entity.battle.BattleStateObserver;
 import com.mana_wars.model.interactor.BattleInteractor;
 import com.mana_wars.presentation.util.UIThreadHandler;
 import com.mana_wars.presentation.view.BattleView;
@@ -14,7 +13,7 @@ import java.util.List;
 import io.reactivex.functions.Consumer;
 
 public final class BattlePresenter extends BasePresenter<BattleView, BattleInteractor>
-        implements BattleInitializationObserver, BattleRoundsObserver {
+        implements BattleStateObserver {
 
     public BattlePresenter(BattleView view, BattleInteractor interactor, UIThreadHandler uiThreadHandler) {
         super(view, interactor, uiThreadHandler);
@@ -29,7 +28,6 @@ public final class BattlePresenter extends BasePresenter<BattleView, BattleInter
     }
 
     public void initBattle(BattleBuilder battleBuilder) {
-        battleBuilder.setObserver(this);
         interactor.init(this, battleBuilder);
     }
 
@@ -42,6 +40,7 @@ public final class BattlePresenter extends BasePresenter<BattleView, BattleInter
     public void updateBattle(float timeDelta) {
         interactor.updateBattle(timeDelta);
     }
+
 
     @Override
     public void onStartBattle() {
@@ -80,6 +79,8 @@ public final class BattlePresenter extends BasePresenter<BattleView, BattleInter
         });
     }
 
+
+
     @Override
     public void setEnemies(BattleParticipant user, List<BattleParticipant> enemySide) {
         view.cleanEnemies(enemySide.size());
@@ -92,5 +93,10 @@ public final class BattlePresenter extends BasePresenter<BattleView, BattleInter
         uiThreadHandler.postRunnable(() -> {
             view.setActiveEnemy(user.getCurrentTarget());
         });
+    }
+
+    @Override
+    public void updateDurationCoefficients(int castTime, int cooldown) {
+        view.updateDurationCoefficients(castTime, cooldown);
     }
 }

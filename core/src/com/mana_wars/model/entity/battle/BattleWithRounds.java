@@ -22,13 +22,13 @@ public class BattleWithRounds implements BattleConfig {
 
     private final List<BattleSummaryData> battleSummaryDataList = new ArrayList<>();
 
-    private final BattleRoundsObserver observer;
+    private final BattleStateObserver observer;
 
     private final int roundsCount;
     private int currentRound;
 
     BattleWithRounds(BattleParticipant user, List<BattleParticipant> userSide, EnemyFactory enemyFactory,
-                     int roundsCount, BattleRoundsObserver observer) {
+                     int roundsCount, BattleStateObserver observer) {
         this.user = user;
         this.userSide = userSide;
         this.enemyFactory = enemyFactory;
@@ -49,7 +49,9 @@ public class BattleWithRounds implements BattleConfig {
 
     private void initRound(){
         this.currentRoundBattle = new BaseBattle(user, userSide, enemyFactory.generateEnemies());
+
         currentRoundBattle.init();
+
         disposable.add(currentRoundBattle.getFinishBattleObservable().subscribe(battleSummaryData -> {
 
             battleSummaryDataList.add(battleSummaryData);
@@ -76,7 +78,19 @@ public class BattleWithRounds implements BattleConfig {
         observer.setCurrentRound(currentRound);
 
         final double battleTime = this.currentRoundBattle.getBattleTime();
+
+        //TODO
+        user.setCharacteristicValue(Characteristic.CAST_TIME, 100);
+        user.setCharacteristicValue(Characteristic.COOLDOWN, 100);
+
+        user.setCharacteristicValue(Characteristic._MANA_COST,0);
         initRound();
+        user.setCharacteristicValue(Characteristic._MANA_COST,100);
+
+        observer.updateDurationCoefficients(
+                user.getCharacteristicValue(Characteristic.CAST_TIME),
+                user.getCharacteristicValue(Characteristic.COOLDOWN));
+
         user.changeTarget();
         for (BattleParticipant bp : userSide){
             bp.changeTarget();

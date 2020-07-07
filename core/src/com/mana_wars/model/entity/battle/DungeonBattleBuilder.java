@@ -14,21 +14,17 @@ public class DungeonBattleBuilder extends BattleBuilder {
 
     private final UserDungeonsAPI user;
     private final DungeonEnemyFactory dungeonEnemyFactory;
-    private BattleRoundsObserver observer;
-
 
     public DungeonBattleBuilder(UserDungeonsAPI user, DungeonEnemyFactory dungeonEnemyFactory) {
         this.user = user;
         this.dungeonEnemyFactory = dungeonEnemyFactory;
     }
 
-    public void setObserver(BattleRoundsObserver observer) {
-        this.observer = observer;
-    }
 
     @Override
-    public BattleConfig build() {
+    public BattleConfig build(BattleStateObserver observer) {
         //return new BaseBattle(user.prepareBattleParticipant(), new ArrayList<>(), dungeonEnemyFactory.generateEnemies());
+        //TODO get rounds from dungeon
         return new BattleWithRounds(user.prepareBattleParticipant(), new ArrayList<>(),  dungeonEnemyFactory, 2, observer);
     }
 
