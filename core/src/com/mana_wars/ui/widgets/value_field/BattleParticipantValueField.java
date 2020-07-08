@@ -12,18 +12,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.entity.base.Rarity;
+import com.mana_wars.model.entity.battle.BattleParticipantData;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.factory.UIElementFactory;
-import com.mana_wars.ui.screens.BattleScreen;
 import com.mana_wars.ui.widgets.base.List2D;
 import com.mana_wars.ui.widgets.value_field.base.TransformApplier;
 import com.mana_wars.ui.widgets.value_field.base.ValueField;
 
 import java.util.Locale;
 
-public final class BattleParticipantValueField extends ValueField<BattleScreen.BattleParticipantData, Integer> {
+public final class BattleParticipantValueField extends ValueField<BattleParticipantData, Integer> {
 
     private final Label participantNameLabel;
 
@@ -92,7 +92,7 @@ public final class BattleParticipantValueField extends ValueField<BattleScreen.B
         participantHealthBar.setScale(4);
         stack.add(participantHealthBar);
 
-        participantHealthLabel.setFillParent(true);
+        //participantHealthLabel.setFillParent(true);
         participantHealthLabel.setColor(Color.BLACK);
         participantHealthLabel.setFontScale(4);
         stack.add(participantHealthLabel);
@@ -101,7 +101,7 @@ public final class BattleParticipantValueField extends ValueField<BattleScreen.B
         healthChangeLabel.setFontScale(4);
         field.add(healthChangeLabel).top().row();
 
-        //participantPassiveSkills.setMinHeight(131.4f); // TODO Do we need this?
+        participantPassiveSkillsList.setMinHeight(131.4f); // Do we need this?
         field.add(participantPassiveSkillsList).fillX().top().row();
 
         field.add(participantImage).pad(28).top().row();
@@ -117,7 +117,7 @@ public final class BattleParticipantValueField extends ValueField<BattleScreen.B
         else initializing = false;
     }
 
-    public void setInitialData(BattleScreen.BattleParticipantData data) {
+    public void setInitialData(BattleParticipantData data) {
         initializing = true;
         participantNameLabel.setText(data.name);
         participantHealthBar.setRange(0, data.initialHealth);

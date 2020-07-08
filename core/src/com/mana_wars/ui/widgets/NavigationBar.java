@@ -34,6 +34,12 @@ public class NavigationBar implements BuildableUI {
                 onSkills();
             }
         }));
+        addButton(UIElementFactory.getButton(skin, "DUNGEONS", new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                onDungeons();
+            }
+        }));
         addButton(UIElementFactory.getButton(skin, "INFO", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -41,10 +47,11 @@ public class NavigationBar implements BuildableUI {
                 onSkillsInfo();
             }
         }));
-        addButton(UIElementFactory.getButton(skin, "DUNGEONS", new ChangeListener() {
+        addButton(UIElementFactory.getButton(skin, "SHOP", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                onDungeons();
+                // TODO: TEMP
+                onShop();
             }
         }));
         init();
@@ -78,6 +85,10 @@ public class NavigationBar implements BuildableUI {
 
     private void onDungeons() {
         screenSetter.setScreen(ScreenInstance.DUNGEONS, null);
+    }
+
+    private void onShop() {
+        screenSetter.setScreen(ScreenInstance.SHOP, null);
     }
 
 }

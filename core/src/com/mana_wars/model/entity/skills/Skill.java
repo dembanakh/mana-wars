@@ -44,10 +44,6 @@ public class Skill extends GameItem {
         return result.toString();
     }
 
-    public Iterable<SkillCharacteristic> getSkillCharacteristics() {
-        return skillCharacteristics;
-    }
-
     private static Skill Empty = new Skill(50, 0, Rarity.EMPTY, "EMPTY",
             Collections.emptyList());
 

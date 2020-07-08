@@ -11,14 +11,23 @@ abstract class AssetFactoryBuilder<K, V, I> {
         this.files = files;
     }
 
-    protected abstract K key(I file);
-    protected abstract V loadAsset(I file);
+    protected abstract Entry<K, V> process(I file);
 
     public AssetFactory<K, V> build() {
         Map<K, V> items = new HashMap<>();
         for (I file : files) {
-            items.put(key(file), loadAsset(file));
+            Entry<K, V> entry = process(file);
+            items.put(entry.key, entry.value);
         }
         return new AssetFactory<>(items);
+    }
+
+    protected static class Entry<K, V> {
+        private final K key;
+        private final V value;
+        protected Entry(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
     }
 }

@@ -3,7 +3,6 @@ package com.mana_wars.ui.widgets.skills_list_2d;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.ActiveSkill;
@@ -51,25 +50,26 @@ public class ApplicableSkillsList2D<T extends ActiveSkill> extends ClickableList
         this.cooldown = cooldown;
     }
 
-
     @Override
     public void blockSkills(int appliedSkillIndex) {
         T appliedSkill = getItem(appliedSkillIndex);
-        forEachItem((skill, index) -> {
-            if (skill.getRarity() == Rarity.EMPTY) return;
-            if (index == appliedSkillIndex)
-                animationController.add(index,
-                        Arrays.asList(
-                                new UIAnimationController.KeyFrame<>(SkillIconAnimationController.Type.CAST_APPLIED,
-                                        appliedSkill.getCastTime(castTime)),
-                                new UIAnimationController.KeyFrame<>(SkillIconAnimationController.Type.COOLDOWN,
-                                        appliedSkill.getCooldown(cooldown))));
-            else
-                animationController.add(index,
-                        Arrays.asList(
-                                new UIAnimationController.KeyFrame<>(SkillIconAnimationController.Type.CAST_NON_APPLIED,
-                                        appliedSkill.getCastTime(castTime))));
-        });
+        if (appliedSkill.getRarity() != Rarity.EMPTY) {
+            forEachItem((skill, index) -> {
+                if (skill.getRarity() == Rarity.EMPTY) return;
+                if (index == appliedSkillIndex)
+                    animationController.add(index,
+                            Arrays.asList(
+                                    new UIAnimationController.KeyFrame<>(SkillIconAnimationController.Type.CAST_APPLIED,
+                                            appliedSkill.getCastTime(castTime)),
+                                    new UIAnimationController.KeyFrame<>(SkillIconAnimationController.Type.COOLDOWN,
+                                            appliedSkill.getCooldown(cooldown))));
+                else
+                    animationController.add(index,
+                            Arrays.asList(
+                                    new UIAnimationController.KeyFrame<>(SkillIconAnimationController.Type.CAST_NON_APPLIED,
+                                            appliedSkill.getCastTime(castTime))));
+            });
+        }
     }
 
     @Override

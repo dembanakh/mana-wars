@@ -16,6 +16,30 @@ public class GameItemTest {
     }
 
     @Test
+    public void testUpgradeLevel_EdgeCase() {
+        GameItem gameItem = new GameItem(1, 10, Rarity.COMMON, "a") {
+        };
+        gameItem.upgradeLevel();
+        assertEquals(10, gameItem.getLevel());
+    }
+
+    @Test
+    public void testDowngradeLevel() {
+        GameItem gameItem = new GameItem(1, 3, Rarity.COMMON, "a") {
+        };
+        gameItem.downgradeLevel();
+        assertEquals(2, gameItem.getLevel());
+    }
+
+    @Test
+    public void testDowngradeLevel_EdgeCase() {
+        GameItem gameItem = new GameItem(1, 1, Rarity.COMMON, "a") {
+        };
+        gameItem.downgradeLevel();
+        assertEquals(1, gameItem.getLevel());
+    }
+
+    @Test
     public void testCompareTo_Rarity() {
         GameItem gameItem1 = new GameItem(1, 1, Rarity.COMMON, "a") {
         };

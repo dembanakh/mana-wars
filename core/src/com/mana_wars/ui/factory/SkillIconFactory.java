@@ -17,13 +17,8 @@ public class SkillIconFactory extends AssetFactoryBuilder<Integer, TextureRegion
     }
 
     @Override
-    protected Integer key(Integer index) {
-        return index;
-    }
-
-    @Override
-    protected TextureRegion loadAsset(Integer index) {
-        return atlas.findRegion(REGION_NAME, index);
+    protected Entry<Integer, TextureRegion> process(Integer index) {
+        return new Entry<>(index, atlas.findRegion(REGION_NAME, index));
     }
 
     private static Integer[] range(int min, int max) {

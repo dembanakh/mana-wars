@@ -1,23 +1,35 @@
 package com.mana_wars.ui.widgets;
 
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.mana_wars.GdxTestRunner;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+@RunWith(GdxTestRunner.class)
 public class ManaBonusProgressBarTest {
 
     private ManaBonusProgressBar bar;
 
     @Before
     public void setup() {
-        bar = new ManaBonusProgressBar(100, null, getProgressBarStyle(),
-                null);
+        Skin skin = new Skin();
+        ProgressBar.ProgressBarStyle style = new ProgressBar.ProgressBarStyle();
+        style.background = new BaseDrawable();
+        style.knobBefore = new BaseDrawable();
+        skin.add("default-horizontal", style);
+        skin.add("default", new TextButton.TextButtonStyle(null, null, null, new BitmapFont()));
+        bar = new ManaBonusProgressBar(skin, 100, null);
     }
 
     @Test
@@ -46,13 +58,6 @@ public class ManaBonusProgressBarTest {
         bar.setTimeSinceLastBonusClaim(1000 * 60 * 5);
 
         assertEquals(5, bar.getCurrentValue(), Double.MIN_VALUE);
-    }
-
-    private ProgressBar.ProgressBarStyle getProgressBarStyle() {
-        ProgressBar.ProgressBarStyle style = new ProgressBar.ProgressBarStyle();
-        style.background = new TextureRegionDrawable();
-        style.knobBefore = new TextureRegionDrawable();
-        return style;
     }
 
 }

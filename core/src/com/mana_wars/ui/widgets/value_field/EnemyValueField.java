@@ -5,9 +5,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mana_wars.model.entity.base.Rarity;
-import com.mana_wars.model.entity.skills.PassiveSkill;
+import com.mana_wars.model.entity.battle.BattleParticipantData;
 import com.mana_wars.ui.factory.AssetFactory;
-import com.mana_wars.ui.screens.BattleScreen;
 import com.mana_wars.ui.widgets.base.BuildableUI;
 import com.mana_wars.ui.widgets.value_field.base.TransformApplier;
 import com.mana_wars.ui.widgets.value_field.base.ValueField;
@@ -20,9 +19,9 @@ import io.reactivex.functions.Consumer;
 
 public final class EnemyValueField implements BuildableUI {
 
-    private final List<ValueFieldWrapper<BattleScreen.BattleParticipantData, Integer>> enemyFieldWrappers;
+    private final List<ValueFieldWrapper<BattleParticipantData, Integer>> enemyFieldWrappers;
 
-    private final ValueField<BattleScreen.BattleParticipantData, Integer> enemyField;
+    private final ValueField<BattleParticipantData, Integer> enemyField;
 
     public EnemyValueField(final Skin skin,
                            final TransformApplier transformApplier,
@@ -35,12 +34,11 @@ public final class EnemyValueField implements BuildableUI {
                 200, 1);
     }
 
-    public Consumer<? super Integer> addEnemy(String name, int initialHealth,
-                                              Iterable<PassiveSkill> passiveSkills) {
-        ValueFieldWrapper<BattleScreen.BattleParticipantData, Integer> enemyField =
+    public Consumer<? super Integer> addEnemy(BattleParticipantData enemyData) {
+        ValueFieldWrapper<BattleParticipantData, Integer> enemyField =
                 new ValueFieldWrapper<>();
         enemyFieldWrappers.add(enemyField);
-        enemyField.setInitialData(new BattleScreen.BattleParticipantData(name, initialHealth, passiveSkills));
+        enemyField.setInitialData(enemyData);
         return enemyField;
     }
 

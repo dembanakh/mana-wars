@@ -48,10 +48,6 @@ public class List2D<T> extends Widget implements Cullable {
         this(skin.get(List.ListStyle.class), listItemDrawer, cols);
     }
 
-    public List2D(Skin skin, String styleName, ListItemDrawer<? super T> listItemDrawer, int cols) {
-        this(skin.get(styleName, List.ListStyle.class), listItemDrawer, cols);
-    }
-
     public List2D(List.ListStyle style, ListItemDrawer<? super T> listItemDrawer, int cols) {
         this.listItemDrawer = listItemDrawer;
 

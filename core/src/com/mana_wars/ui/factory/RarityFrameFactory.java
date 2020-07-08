@@ -17,12 +17,7 @@ public class RarityFrameFactory extends AssetFactoryBuilder<Rarity, TextureRegio
     }
 
     @Override
-    protected Rarity key(Rarity rarity) {
-        return rarity;
-    }
-
-    @Override
-    protected TextureRegion loadAsset(Rarity rarity) {
-        return atlas.findRegion(rarity.toString());
+    protected Entry<Rarity, TextureRegion> process(Rarity rarity) {
+        return new Entry<>(rarity, atlas.findRegion(rarity.toString()));
     }
 }

@@ -7,7 +7,8 @@ import java.util.List;
 public interface BattleStateObserver {
     void onStartBattle();
     void setSkills(Iterable<ActiveSkill> activeSkills);
-    void setOpponents(BattleParticipant user, Iterable<BattleParticipant> userSide, List<BattleParticipant> enemySide);
+    void setOpponents(BattleParticipant user, Iterable<BattleParticipant> userSide,
+                      List<BattleParticipant> enemySide);
 
     void setCurrentRound(int round);
     void setEnemies(BattleParticipant user, List<BattleParticipant> enemySide);

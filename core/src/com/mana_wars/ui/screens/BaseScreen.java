@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.mana_wars.presentation.presenters.BasePresenter;
-import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.BaseOverlayUI;
@@ -23,7 +22,7 @@ public abstract class BaseScreen<U extends BaseOverlayUI, T extends BasePresente
     protected final U overlayUI;
 
     private final Skin skin;
-    final Stage stage;
+    private final Stage stage;
     private final ScreenSetter screenSetter;
 
     BaseScreen(ScreenSetter screenSetter, Skin skin, U overlayUI) {

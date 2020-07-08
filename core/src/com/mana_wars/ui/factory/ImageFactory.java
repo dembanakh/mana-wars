@@ -10,13 +10,8 @@ public class ImageFactory extends AssetFactoryBuilder<String, Texture, AdaptiveT
     }
 
     @Override
-    protected String key(AdaptiveTexture texture) {
-        return texture.getFileName();
-    }
-
-    @Override
-    protected Texture loadAsset(AdaptiveTexture texture) {
-        return texture.adapt();
+    protected Entry<String, Texture> process(AdaptiveTexture texture) {
+        return new Entry<>(texture.getFileName(), texture.adapt());
     }
 
 }

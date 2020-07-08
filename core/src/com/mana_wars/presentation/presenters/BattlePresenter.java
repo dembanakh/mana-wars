@@ -2,6 +2,7 @@ package com.mana_wars.presentation.presenters;
 
 import com.mana_wars.model.entity.battle.BattleBuilder;
 import com.mana_wars.model.entity.battle.BattleParticipant;
+import com.mana_wars.model.entity.battle.BattleParticipantData;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.battle.BattleStateObserver;
 import com.mana_wars.model.interactor.BattleInteractor;
@@ -58,8 +59,7 @@ public final class BattlePresenter extends BasePresenter<BattleView, BattleInter
     @Override
     public void setOpponents(BattleParticipant user, Iterable<BattleParticipant> userSide,
                              List<BattleParticipant> enemySide) {
-        view.setUser(user.getName(), user.getInitialHealthAmount(), user.getPassiveSkills(),
-                this::addObserver_userHealth);
+        view.setUser(user.getData(), this::addObserver_userHealth);
 
         setEnemies(user, enemySide);
     }
@@ -79,16 +79,13 @@ public final class BattlePresenter extends BasePresenter<BattleView, BattleInter
         });
     }
 
-
-
     @Override
     public void setEnemies(BattleParticipant user, List<BattleParticipant> enemySide) {
         view.cleanEnemies(enemySide.size());
         int index = 0;
-        for (BattleParticipant bp : enemySide) {
+        for (BattleParticipant enemy : enemySide) {
             int finalIndex = index++;
-            view.addEnemy(bp.getName(), bp.getInitialHealthAmount(), bp.getPassiveSkills(),
-                    (observer) -> addObserver_enemyHealth(finalIndex, observer));
+            view.addEnemy(enemy.getData(), (observer) -> addObserver_enemyHealth(finalIndex, observer));
         }
         uiThreadHandler.postRunnable(() -> {
             view.setActiveEnemy(user.getCurrentTarget());

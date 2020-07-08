@@ -65,8 +65,8 @@ public class UserBattleParticipantTest {
     @Test
     public void testTryApplyActiveSkillWorks() {
         when(activeSkill.getManaCost()).thenReturn(20);
-        when(activeSkill.getCastTime()).thenReturn(1d);
-        when(activeSkill.getCooldown()).thenReturn(2d);
+        when(activeSkill.getCastTime(100)).thenReturn(1d);
+        when(activeSkill.getCooldown(100)).thenReturn(2d);
         user.tryApplyActiveSkill(0);
         user.update(0.5f);
         verify(battle).requestSkillApplication(user, activeSkill, 1);
@@ -75,8 +75,8 @@ public class UserBattleParticipantTest {
     @Test
     public void testTryApplyActiveSkillBlocksAllSkillsForSomeTime() {
         when(activeSkill.getManaCost()).thenReturn(20);
-        when(activeSkill.getCastTime()).thenReturn(1d);
-        when(activeSkill.getCooldown()).thenReturn(2d);
+        when(activeSkill.getCastTime(100)).thenReturn(1d);
+        when(activeSkill.getCooldown(100)).thenReturn(2d);
         user.tryApplyActiveSkill(0);
         user.update(0.5f);
         user.update(1);

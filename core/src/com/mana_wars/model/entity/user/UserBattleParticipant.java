@@ -7,7 +7,6 @@ import com.mana_wars.model.entity.skills.BattleSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.entity.skills.SkillCharacteristic;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.functions.Consumer;

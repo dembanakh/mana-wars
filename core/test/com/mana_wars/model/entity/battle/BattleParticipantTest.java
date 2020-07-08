@@ -51,6 +51,5 @@ public class BattleParticipantTest {
         verify(sc).getCharacteristic();
         verify(sc).getValue(1);
         verify(sc).getChangeType();
-        verifyNoMoreInteractions(sc);
     }
 }

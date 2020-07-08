@@ -98,6 +98,9 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         api "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
+        testImplementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+        testImplementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+        testImplementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
 
         implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
         implementation "space.earlygrey:shapedrawer:$shapedrawerVersion"

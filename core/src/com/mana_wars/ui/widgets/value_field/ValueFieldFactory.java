@@ -4,9 +4,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mana_wars.model.entity.base.Rarity;
+import com.mana_wars.model.entity.battle.BattleParticipantData;
 import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.factory.AssetFactory;
-import com.mana_wars.ui.screens.BattleScreen;
 import com.mana_wars.ui.widgets.value_field.base.TransformApplier;
 import com.mana_wars.ui.widgets.value_field.base.ValueField;
 
@@ -28,7 +28,7 @@ public final class ValueFieldFactory {
         return new AliveEnemiesValueField(skin, backgroundColor, transformApplier);
     }
 
-    public static ValueField<BattleScreen.BattleParticipantData, Integer> battleParticipantValueField(
+    public static ValueField<BattleParticipantData, Integer> battleParticipantValueField(
             final Skin skin,
             final TransformApplier transformApplier,
             final AssetFactory<Integer, TextureRegion> iconFactory,
@@ -41,7 +41,7 @@ public final class ValueFieldFactory {
                 imageFactory, deltaHealthAnimationDistance, deltaHealthAnimationDuration);
     }
 
-    public static ValueField<BattleScreen.BattleParticipantData, Integer> battleParticipantValueField(
+    public static ValueField<BattleParticipantData, Integer> battleParticipantValueField(
             final Skin skin,
             UIStringConstants.UI_SKIN.BACKGROUND_COLOR backgroundColor,
             final TransformApplier transformApplier,

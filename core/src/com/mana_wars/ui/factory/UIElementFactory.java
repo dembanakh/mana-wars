@@ -79,7 +79,7 @@ public final class UIElementFactory {
     public static <T extends Skill> List2D<T> skillsListWithoutLevel(Skin skin, int cols,
                                                                 AssetFactory<Integer, TextureRegion> skillIconFactory,
                                                                 AssetFactory<Rarity, TextureRegion> rarityFrameFactory) {
-        return new List2D<>(skin,
+        return new List2D<>(emptyListStyle(skin),
                 new StandardSkillDrawer<T>(skillIconFactory, rarityFrameFactory) {
                     @Override
                     protected boolean shouldShowLevel(Skill skill) {

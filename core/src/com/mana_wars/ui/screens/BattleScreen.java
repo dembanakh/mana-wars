@@ -8,11 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Align;
 import com.mana_wars.model.GameConstants;
+import com.mana_wars.model.entity.battle.BattleParticipantData;
 import com.mana_wars.model.entity.battle.BattleSummaryData;
 import com.mana_wars.model.entity.skills.ActiveSkill;
-import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.entity.user.UserBattleAPI;
 import com.mana_wars.model.interactor.BattleInteractor;
 import com.mana_wars.model.repository.DatabaseRepository;
@@ -20,23 +19,18 @@ import com.mana_wars.presentation.presenters.BattlePresenter;
 import com.mana_wars.presentation.view.BattleView;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.factory.UIElementFactory;
-import com.mana_wars.ui.layout_constraints.AbsoluteXPositionConstraint;
-import com.mana_wars.ui.layout_constraints.AbsoluteYPositionConstraint;
-import com.mana_wars.ui.layout_constraints.RelativeHeightConstraint;
-import com.mana_wars.ui.layout_constraints.RelativeWidthConstraint;
 import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.BaseOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.transform.TransformFactory;
-import com.mana_wars.ui.transform.base.Transform;
-import com.mana_wars.ui.transform.base.TransformBuilder;
 import com.mana_wars.ui.widgets.skills_list_2d.BlockableSkillsList;
 import com.mana_wars.ui.widgets.value_field.EnemyValueField;
 import com.mana_wars.ui.widgets.value_field.ValueFieldFactory;
 import com.mana_wars.ui.widgets.value_field.base.ValueField;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -58,6 +52,8 @@ public class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> imp
     private final ValueField<Integer, Integer> aliveEnemiesField;
     private final ValueField<Void, Integer> userManaAmountField;
 
+    private final Label roundLabel;
+
     private final AtomicBoolean isBattle = new AtomicBoolean(false);
     private final AssetFactory<String, Texture> imageFactory;
 
@@ -71,34 +67,7 @@ public class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> imp
                 new BattleInteractor(user, databaseRepository),
                 Gdx.app::postRunnable);
 
-        Transform transform;
-
-        transform = new TransformBuilder()
-                .setXConstraint(new AbsoluteXPositionConstraint(Align.left, 0))
-                .setYConstraint(new AbsoluteYPositionConstraint(Align.top, 0))
-                .setWidthConstraint(new RelativeWidthConstraint(50))
-                .setHeightConstraint(new RelativeHeightConstraint(75))
-                .build();
         userField = ValueFieldFactory.battleParticipantValueField(skin,
-                TransformFactory.manualTransform(transform),
-                factoryStorage.getSkillIconFactory(),
-                factoryStorage.getRarityFrameFactory(),
-                factoryStorage.getImageFactory(),
-                -200, 1);
-
-        transform = new TransformBuilder()
-                .setXConstraint(new AbsoluteXPositionConstraint(Align.right, 0))
-                .setYConstraint(new AbsoluteYPositionConstraint(Align.top, 0))
-                .setWidthConstraint(new RelativeWidthConstraint(50))
-                .setHeightConstraint(new RelativeHeightConstraint(75))
-                .build();
-        enemyField = new EnemyValueField(skin,
-                TransformFactory.manualTransform(transform),
-                factoryStorage.getSkillIconFactory(),
-                factoryStorage.getRarityFrameFactory(),
-                factoryStorage.getImageFactory());//*/
-
-        /*userField = ValueFieldFactory.battleParticipantValueField(skin,
                 TransformFactory.autoTransform(),
                 factoryStorage.getSkillIconFactory(),
                 factoryStorage.getRarityFrameFactory(),
@@ -109,7 +78,7 @@ public class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> imp
                 TransformFactory.autoTransform(),
                 factoryStorage.getSkillIconFactory(),
                 factoryStorage.getRarityFrameFactory(),
-                factoryStorage.getImageFactory());*/
+                factoryStorage.getImageFactory());
 
         userActiveSkills = UIElementFactory.applicableSkillsList(skin,
                 GameConstants.MAX_CHOSEN_ACTIVE_SKILL_COUNT,
@@ -121,6 +90,8 @@ public class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> imp
 
         userManaAmountField = ValueFieldFactory.textValueField(skin, TransformFactory.autoTransform());
         presenter.addObserver_userManaAmount(userManaAmountField);
+
+        roundLabel = new Label("", skin);
 
         imageFactory = factoryStorage.getImageFactory();
     }
@@ -144,12 +115,9 @@ public class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> imp
         aliveEnemiesField.setInitialData(enemiesCount);
     }
 
-
-    //TODO delete
-    Label temp;
     @Override
     public void setRound(int round) {
-        temp.setText(String.format("Round: %d", round));
+        roundLabel.setText(String.format(Locale.US, "Round: %d", round));
     }
 
     @Override
@@ -181,12 +149,14 @@ public class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> imp
         Table layer = new Table();
         layer.setFillParent(true);
 
-        //layer.left().top();
+        layer.top();
+        Table participants = new Table();
+        participants.add(userField.build()).uniformX().expandX();
+        participants.add(enemyField.build()).uniformX().expandX();
+        layer.add(participants).fillX().row();
 
-        //layer.add(userField.build()).uniformX().expandX();
-        //layer.add(enemyField.build()).uniformX().expandX();
-
-        layer.center().bottom();
+        Table bottomPart = new Table();
+        bottomPart.bottom();
 
         int screenWidth = SCREEN_WIDTH();
         Table battleUtility = new Table();
@@ -204,7 +174,7 @@ public class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> imp
 
         Table battleInfoSection = new Table();
         battleInfoSection.add(userManaAmountField.build()).center().uniformX().expandX();
-        battleInfoSection.add(temp = new Label("", skin)).center().uniformX().expandX();
+        battleInfoSection.add(roundLabel).center().uniformX().expandX();
         battleInfoSection.add(UIElementFactory.getButton(skin, "LEAVE",
                 new ChangeListener() {
                     @Override
@@ -215,12 +185,12 @@ public class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> imp
                 })).right().uniformX().expandX();
         battleUtility.add(battleInfoSection).center().growX();
 
-        layer.add(battleUtility).width(screenWidth).row();
+        bottomPart.add(battleUtility).bottom().width(screenWidth).row();
 
-        layer.add(userActiveSkills.build()).padTop(10).height(ACTIVE_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH).row();
+        bottomPart.add(userActiveSkills.build()).padTop(10)
+                .height(ACTIVE_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH).bottom().row();
 
-        stage.addActor(userField.build());
-        stage.addActor(enemyField.build());
+        layer.add(bottomPart).growY().fillX();
 
         return layer;
     }
@@ -231,9 +201,9 @@ public class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> imp
     }
 
     @Override
-    public void setUser(String name, int initialHealth, Iterable<PassiveSkill> passiveSkills,
+    public void setUser(BattleParticipantData userData,
                         Consumer<Consumer<? super Integer>> subscribe) {
-        userField.setInitialData(new BattleParticipantData(name, initialHealth, passiveSkills));
+        userField.setInitialData(userData);
         try {
             subscribe.accept(userField);
         } catch (Exception e) {
@@ -242,10 +212,10 @@ public class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> imp
     }
 
     @Override
-    public void addEnemy(String name, int initialHealth, Iterable<PassiveSkill> passiveSkills,
+    public void addEnemy(BattleParticipantData enemyData,
                          Consumer<Consumer<? super Integer>> subscribe) {
         try {
-            subscribe.accept(enemyField.addEnemy(name, initialHealth, passiveSkills));
+            subscribe.accept(enemyField.addEnemy(enemyData));
             subscribe.accept(aliveEnemiesField);
         } catch (Exception e) {
             e.printStackTrace();
@@ -281,17 +251,4 @@ public class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> imp
             presenter.applyUserSkill(index);
         }
     }
-
-    public static class BattleParticipantData {
-        public final String name;
-        public final int initialHealth;
-        public final Iterable<PassiveSkill> passiveSkills;
-
-        public BattleParticipantData(String name, int initialHealth, Iterable<PassiveSkill> passiveSkills) {
-            this.name = name;
-            this.initialHealth = initialHealth;
-            this.passiveSkills = passiveSkills;
-        }
-    }
-
 }

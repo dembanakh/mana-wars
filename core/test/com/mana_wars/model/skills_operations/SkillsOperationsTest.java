@@ -9,10 +9,132 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class SkillsOperationsTest {
+
+    @Test
+    public void toTable_throwsWhenSourceNotSet() {
+        try {
+            SkillsOperations.can(SkillsOperations.MERGE)
+                    .to(SkillTable.ACTIVE_SKILLS);
+        } catch (Exception e) {
+            assertTrue(true);
+            return;
+        }
+        fail();
+    }
+
+    @Test
+    public void fromTable_throwsWhenSourceSet() {
+        try {
+            SkillsOperations.can(SkillsOperations.MERGE)
+                    .from(SkillTable.ACTIVE_SKILLS)
+                    .from(SkillTable.ALL_SKILLS);
+        } catch (Exception e) {
+            assertTrue(true);
+            return;
+        }
+        fail();
+    }
+
+    @Test
+    public void toTable_throwsWhenTargetSet() {
+        try {
+            SkillsOperations.can(SkillsOperations.MERGE)
+                    .from(SkillTable.ALL_SKILLS)
+                    .to(SkillTable.ACTIVE_SKILLS)
+                    .to(SkillTable.PASSIVE_SKILLS);
+        } catch (Exception e) {
+            assertTrue(true);
+            return;
+        }
+        fail();
+    }
+
+    @Test
+    public void validateTable_throwsWhenSourceTargetNotSet() {
+        try {
+            SkillsOperations.can(SkillsOperations.MERGE)
+                    .validate();
+        } catch (Exception e) {
+            assertTrue(true);
+            return;
+        }
+        fail();
+    }
+
+    @Test
+    public void toSkill_throwsWhenSourceNotSet() {
+        try {
+            Skill skill = mock(Skill.class);
+            SkillsOperations.can(SkillsOperations.MERGE)
+                    .from(SkillTable.ALL_SKILLS)
+                    .to(SkillTable.ALL_SKILLS)
+                    .validate()
+                    .to(skill);
+        } catch (Exception e) {
+            assertTrue(true);
+            return;
+        }
+        fail();
+    }
+
+    @Test
+    public void fromSkill_throwsWhenSourceSet() {
+        try {
+            Skill skill1 = mock(Skill.class);
+            Skill skill2 = mock(Skill.class);
+            SkillsOperations.can(SkillsOperations.MERGE)
+                    .from(SkillTable.ALL_SKILLS)
+                    .to(SkillTable.ALL_SKILLS)
+                    .validate()
+                    .from(skill1)
+                    .from(skill2);
+        } catch (Exception e) {
+            assertTrue(true);
+            return;
+        }
+        fail();
+    }
+
+    @Test
+    public void toSkill_throwsWhenTargetSet() {
+        try {
+            Skill skill0 = mock(Skill.class);
+            Skill skill1 = mock(Skill.class);
+            Skill skill2 = mock(Skill.class);
+            SkillsOperations.can(SkillsOperations.MERGE)
+                    .from(SkillTable.ALL_SKILLS)
+                    .to(SkillTable.ALL_SKILLS)
+                    .validate()
+                    .from(skill0)
+                    .to(skill1)
+                    .to(skill2);
+        } catch (Exception e) {
+            assertTrue(true);
+            return;
+        }
+        fail();
+    }
+
+    @Test
+    public void validateSkill_throwsWhenSourceTargetNotSet() {
+        try {
+            SkillsOperations.can(SkillsOperations.MERGE)
+                    .from(SkillTable.ALL_SKILLS)
+                    .to(SkillTable.ALL_SKILLS)
+                    .validate()
+                    .validate();
+        } catch (Exception e) {
+            assertTrue(true);
+            return;
+        }
+        fail();
+    }
+
 
     @Test
     public void mergeTable_AllToAll() {

@@ -25,9 +25,4 @@ public class ApplicableSkillDrawer<T extends ActiveSkill> extends StandardSkillD
         super.draw(batch, font, index, item, x, y, width, height);
         animator.animate(index, x, y, width, height);
     }
-
-    @Override
-    protected boolean shouldShowLevel(ActiveSkill item) {
-        return false;
-    }
 }

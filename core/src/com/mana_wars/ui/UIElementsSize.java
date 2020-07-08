@@ -47,7 +47,7 @@ public final class UIElementsSize {
     }
 
     public static class NAVIGATION_BAR {
-        public static final int TABS_NUMBER = 4;
+        public static final int TABS_NUMBER = 5;
         public static final float TAB_HEIGHT = SCREEN_HEIGHT() * 0.1f;
         public static final float TAB_WIDTH = (float) SCREEN_WIDTH() / TABS_NUMBER;
     }

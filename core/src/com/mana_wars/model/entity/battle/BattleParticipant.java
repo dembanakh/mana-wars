@@ -149,4 +149,8 @@ public abstract class BattleParticipant {
         characteristics.put(type, value);
     }
 
+    public BattleParticipantData getData() {
+        return new BattleParticipantData(name, initialHealth, passiveSkills);
+    }
+
 }

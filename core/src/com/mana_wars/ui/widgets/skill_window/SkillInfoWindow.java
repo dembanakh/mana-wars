@@ -42,7 +42,7 @@ public class SkillInfoWindow extends BaseSkillWindow implements BuildableUI {
                         hide();
                     }
                 });
-        bottomButtons.add(button).padLeft(100).padRight(100);
+        bottomButtons.add(button).padLeft(10).padRight(10);
 
         button = UIElementFactory.getButton(skin, "+", new ChangeListener() {
             @Override
