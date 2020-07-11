@@ -22,9 +22,9 @@ public class BattleWithRounds implements Battle {
     private final EnemyFactory enemyFactory;
     private final CompositeDisposable disposable = new CompositeDisposable();
 
-    private final SingleSubject<com.mana_wars.model.entity.battle.data.BattleSummaryData> finishBattleObservable;
+    private final SingleSubject<BattleSummaryData> finishBattleObservable;
 
-    private final List<com.mana_wars.model.entity.battle.data.BattleSummaryData> battleSummaryDataList = new ArrayList<>();
+    private final List<BattleSummaryData> battleSummaryDataList = new ArrayList<>();
 
     private final BattleStateObserver observer;
 
@@ -61,9 +61,9 @@ public class BattleWithRounds implements Battle {
                 changeRound();
             }
             else {
-                com.mana_wars.model.entity.battle.data.BattleSummaryData fbsd = new com.mana_wars.model.entity.battle.data.BattleSummaryData();
+                BattleSummaryData fbsd = new BattleSummaryData();
 
-                for (com.mana_wars.model.entity.battle.data.BattleSummaryData bsd : battleSummaryDataList){
+                for (BattleSummaryData bsd : battleSummaryDataList){
                     fbsd.combineWith(bsd);
                 }
                 finishBattleObservable.onSuccess(fbsd);
