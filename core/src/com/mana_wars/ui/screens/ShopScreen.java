@@ -18,7 +18,7 @@ import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.MenuOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
 
-public class ShopScreen extends BaseScreen<MenuOverlayUI, ShopPresenter> implements ShopView {
+public final class ShopScreen extends BaseScreen<MenuOverlayUI, ShopPresenter> implements ShopView {
 
     private final ShopPresenter presenter;
 

@@ -1,5 +1,8 @@
 package com.mana_wars.model.entity.battle;
 
+import com.mana_wars.model.entity.battle.data.BattleRewardData;
+import com.mana_wars.model.entity.battle.data.BattleSummaryData;
+import com.mana_wars.model.entity.battle.participant.BattleParticipant;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 
@@ -22,9 +25,9 @@ public class BaseBattleTest {
 
     private BaseBattle battle;
 
-    private BattleParticipant user;
-    private List<BattleParticipant> userSide;
-    private List<BattleParticipant> enemySide;
+    private com.mana_wars.model.entity.battle.participant.BattleParticipant user;
+    private List<com.mana_wars.model.entity.battle.participant.BattleParticipant> userSide;
+    private List<com.mana_wars.model.entity.battle.participant.BattleParticipant> enemySide;
 
     private BattleSummaryData summaryData;
 
@@ -32,7 +35,7 @@ public class BaseBattleTest {
 
     @Before
     public void setup() {
-        user = mock(BattleParticipant.class);
+        user = mock(com.mana_wars.model.entity.battle.participant.BattleParticipant.class);
         userSide = Collections.emptyList();
         enemySide = Collections.singletonList(mock(BattleParticipant.class));
         battle = new BaseBattle(user, userSide, enemySide);
@@ -68,6 +71,7 @@ public class BaseBattleTest {
         when(user.isAlive()).thenReturn(false);
         when(user.getPassiveSkills()).thenReturn(Collections.emptyList());
         when(enemySide.get(0).getPassiveSkills()).thenReturn(Collections.emptyList());
+        when(enemySide.get(0).getOnDeathReward()).thenReturn(new BattleRewardData(0,0,0));
         battle.init();
         battle.start();
         battle.update(1);

@@ -1,5 +1,8 @@
 package com.mana_wars.model.entity.battle;
 
+import com.mana_wars.model.entity.battle.data.BattleSummaryData;
+import com.mana_wars.model.entity.battle.participant.BattleParticipant;
+import com.mana_wars.model.entity.battle.participant.BattleParticipantBattleAPI;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.Skill;
 
@@ -10,27 +13,22 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import io.reactivex.subjects.PublishSubject;
-import io.reactivex.subjects.Subject;
+import io.reactivex.subjects.SingleSubject;
 
-public class BaseBattle implements BattleConfig, BattleParticipantBattleAPI {
+public class BaseBattle implements Battle, BattleParticipantBattleAPI {
 
     private final Map<BattleParticipant, List<BattleParticipant>> opponents = new HashMap<>();
     private final List<BattleParticipant> userSide;
     private final List<BattleParticipant> enemySide;
     private final BattleParticipant user;
-    private final AtomicBoolean isActive = new AtomicBoolean(false);
-
-    public double getBattleTime() {
-        return battleTime;
-    }
-
-    private double battleTime;
-    private final PriorityQueue<BattleEvent> battleEvents = new PriorityQueue<>();
-
-    private final Subject<BattleSummaryData> finishBattleObservable;
 
     private final BattleSummaryData summaryData = new BattleSummaryData();
+    private final SingleSubject<BattleSummaryData> finishBattleObservable;
+
+    private final AtomicBoolean isActive = new AtomicBoolean(false);
+
+    private final PriorityQueue<BattleEvent> battleEvents = new PriorityQueue<>();
+    private double battleTime;
 
     BaseBattle(final BattleParticipant user,
                final List<BattleParticipant> userSide,
@@ -38,7 +36,7 @@ public class BaseBattle implements BattleConfig, BattleParticipantBattleAPI {
         this.user = user;
         this.userSide = userSide;
         this.enemySide = enemySide;
-        this.finishBattleObservable = PublishSubject.create();
+        this.finishBattleObservable = SingleSubject.create();
 
         opponents.put(user, new ArrayList<>(enemySide));
         for (BattleParticipant userAlly : userSide) {
@@ -50,9 +48,9 @@ public class BaseBattle implements BattleConfig, BattleParticipantBattleAPI {
         }
     }
 
-    @Override
-    public void init() {
+    public BaseBattle init() {
         initParticipants(opponents.keySet());
+        return this;
     }
 
     @Override
@@ -72,7 +70,7 @@ public class BaseBattle implements BattleConfig, BattleParticipantBattleAPI {
     public synchronized void update(float timeDelta) {
         if (checkFinish()) {
             isActive.set(false);
-            finishBattleObservable.onNext(prepareSummaryData());
+            finishBattleObservable.onSuccess(prepareSummaryData());
         }
 
         if (isActive.get()) {
@@ -92,7 +90,6 @@ public class BaseBattle implements BattleConfig, BattleParticipantBattleAPI {
     }
 
     private BattleSummaryData prepareSummaryData(){
-
         for (BattleParticipant bp : enemySide){
             if(!bp.isAlive()){
                 summaryData.addReward(bp.getOnDeathReward());
@@ -110,7 +107,6 @@ public class BaseBattle implements BattleConfig, BattleParticipantBattleAPI {
     }
 
     private void activateParticipantSkill(BattleEvent be) {
-        //TODO refactor for multiple targets
         be.skill.activate(be.participant, getOpponents(be.participant).get(be.participant.getCurrentTarget()));
     }
 
@@ -164,7 +160,7 @@ public class BaseBattle implements BattleConfig, BattleParticipantBattleAPI {
     }
 
     @Override
-    public Subject<BattleSummaryData> getFinishBattleObservable() {
+    public SingleSubject<BattleSummaryData> getFinishBattleObservable() {
         return finishBattleObservable;
     }
 
@@ -183,6 +179,10 @@ public class BaseBattle implements BattleConfig, BattleParticipantBattleAPI {
         public int compareTo(BattleEvent battleEvent) {
             return Double.compare(this.targetTime, battleEvent.targetTime);
         }
+    }
+
+    public double getBattleTime() {
+        return battleTime;
     }
 
 

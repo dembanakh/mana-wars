@@ -1,10 +1,9 @@
 package com.mana_wars.presentation.presenters;
 
+import com.mana_wars.model.entity.battle.BattleStateObserverStarter;
 import com.mana_wars.model.entity.battle.builder.BattleBuilder;
-import com.mana_wars.model.entity.battle.BattleParticipant;
-import com.mana_wars.model.entity.battle.BattleParticipantData;
+import com.mana_wars.model.entity.battle.participant.BattleParticipant;
 import com.mana_wars.model.entity.skills.ActiveSkill;
-import com.mana_wars.model.entity.battle.BattleStateObserver;
 import com.mana_wars.model.interactor.BattleInteractor;
 import com.mana_wars.presentation.util.UIThreadHandler;
 import com.mana_wars.presentation.view.BattleView;
@@ -14,7 +13,7 @@ import java.util.List;
 import io.reactivex.functions.Consumer;
 
 public final class BattlePresenter extends BasePresenter<BattleView, BattleInteractor>
-        implements BattleStateObserver {
+        implements BattleStateObserverStarter {
 
     public BattlePresenter(BattleView view, BattleInteractor interactor, UIThreadHandler uiThreadHandler) {
         super(view, interactor, uiThreadHandler);

@@ -2,7 +2,7 @@ package com.mana_wars.model.entity.user;
 
 import com.mana_wars.model.entity.base.UpgradeFunction;
 import com.mana_wars.model.entity.base.ValueChangeType;
-import com.mana_wars.model.entity.battle.BattleParticipantBattleAPI;
+import com.mana_wars.model.entity.battle.participant.BattleParticipantBattleAPI;
 import com.mana_wars.model.entity.base.Characteristic;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;

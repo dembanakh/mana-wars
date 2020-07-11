@@ -26,7 +26,7 @@ import java.util.Map;
 
 import static com.mana_wars.model.GameConstants.CHOSEN_BATTLE_BUILDER;
 
-public class DungeonsScreen extends BaseScreen<BaseOverlayUI, DungeonsPresenter> implements DungeonsView {
+public final class DungeonsScreen extends BaseScreen<BaseOverlayUI, DungeonsPresenter> implements DungeonsView {
 
     private final DungeonButtonsTable dungeonButtonsTable;
     private final AssetFactory<String, Texture> imageFactory;

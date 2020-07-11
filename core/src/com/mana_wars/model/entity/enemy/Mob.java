@@ -1,7 +1,7 @@
 package com.mana_wars.model.entity.enemy;
 
-import com.mana_wars.model.entity.battle.BattleParticipant;
-import com.mana_wars.model.entity.battle.BattleRewardData;
+import com.mana_wars.model.entity.battle.participant.BattleParticipant;
+import com.mana_wars.model.entity.battle.data.BattleRewardData;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.BattleSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;

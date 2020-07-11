@@ -1,14 +1,12 @@
 package com.mana_wars.model.interactor;
 
-import com.mana_wars.model.entity.battle.BattleSummaryData;
+import com.mana_wars.model.entity.battle.data.BattleSummaryData;
 import com.mana_wars.model.entity.user.UserBattleSummaryAPI;
 
-public class BattleSummaryInteractor extends BaseInteractor {
-
-    private final UserBattleSummaryAPI user;
+public final class BattleSummaryInteractor extends BaseInteractor<UserBattleSummaryAPI> {
 
     public BattleSummaryInteractor(UserBattleSummaryAPI user){
-        this.user = user;
+        super(user);
     }
 
     public void parseSummaryData(BattleSummaryData summaryData) {

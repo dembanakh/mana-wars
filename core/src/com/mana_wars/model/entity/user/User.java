@@ -1,7 +1,7 @@
 package com.mana_wars.model.entity.user;
 
 import com.mana_wars.model.entity.base.Rarity;
-import com.mana_wars.model.entity.battle.BattleParticipant;
+import com.mana_wars.model.entity.battle.participant.BattleParticipant;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.repository.UserLevelExperienceRepository;

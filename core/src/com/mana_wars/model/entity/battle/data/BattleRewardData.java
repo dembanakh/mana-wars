@@ -1,4 +1,4 @@
-package com.mana_wars.model.entity.battle;
+package com.mana_wars.model.entity.battle.data;
 
 public class BattleRewardData {
 

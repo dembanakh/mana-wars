@@ -2,12 +2,10 @@ package com.mana_wars.model.interactor;
 
 import com.mana_wars.model.entity.user.UserGreetingAPI;
 
-public final class GreetingInteractor extends BaseInteractor {
-
-    private final UserGreetingAPI user;
+public final class GreetingInteractor extends BaseInteractor<UserGreetingAPI> {
 
     public GreetingInteractor(final UserGreetingAPI user) {
-        this.user = user;
+        super(user);
     }
 
     public boolean hasUsername() {
@@ -17,15 +15,11 @@ public final class GreetingInteractor extends BaseInteractor {
     public void registerUser(String username) {
         if (!hasUsername()) {
             user.setName(username);
+            user.updateManaAmount(1000);
+            user.checkNextLevel();
         } else {
             // something went wrong
             System.out.println("Has username");
         }
-    }
-
-    public void setStartUserResources() {
-        //TODO think about it
-        user.updateManaAmount(1000);
-        user.checkNextLevel();
     }
 }

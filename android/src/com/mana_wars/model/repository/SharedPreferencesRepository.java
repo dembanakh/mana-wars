@@ -21,7 +21,7 @@ public class SharedPreferencesRepository implements LocalUserDataRepository {
     private final String USER_MANA = "USER_MANA";
     private final String LAST_MANA_BONUS_TIME = "LAST_MANA_BONUS_TIME";
     private final String USER_LVL_REQUIRED_EXPERIENCE = "USER_LVL_REQUIRED_EXPERIENCE";
-    private final String CURRENT_USER_EXPERIENCE  = "CURRENT_USER_EXPERIENCE";
+    private final String CURRENT_USER_EXPERIENCE = "CURRENT_USER_EXPERIENCE";
 
     public SharedPreferencesRepository(Activity hostActivity) {
         this.hostActivity = hostActivity;

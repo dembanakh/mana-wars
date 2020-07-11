@@ -1,6 +1,6 @@
 package com.mana_wars.model.entity.user;
 
-import com.mana_wars.model.entity.battle.BattleParticipant;
+import com.mana_wars.model.entity.battle.participant.BattleParticipant;
 import com.mana_wars.model.entity.base.Characteristic;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.BattleSkill;

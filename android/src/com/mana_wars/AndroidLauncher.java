@@ -18,6 +18,7 @@ public class AndroidLauncher extends AndroidApplication {
         config.useCompass = false;
         config.useAccelerometer = false;
         config.useGyroscope = false;
+        config.useImmersiveMode = true;
 
         SharedPreferencesRepository sharedPreferencesRepository = new SharedPreferencesRepository(this);
         RoomRepository roomRepository = RoomRepository.getInstance(this);

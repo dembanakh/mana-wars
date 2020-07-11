@@ -8,13 +8,12 @@ import java.util.List;
 
 import io.reactivex.Single;
 
-public final class DungeonsInteractor extends BaseInteractor {
+public final class DungeonsInteractor extends BaseInteractor<UserDungeonsAPI> {
 
-    private final UserDungeonsAPI user;
     private final DatabaseRepository databaseRepository;
 
     public DungeonsInteractor(final UserDungeonsAPI user, final DatabaseRepository databaseRepository) {
-        this.user = user;
+        super(user);
         this.databaseRepository = databaseRepository;
     }
 

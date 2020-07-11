@@ -25,7 +25,7 @@ import static com.mana_wars.ui.UIElementsSize.GREETING_SCREEN.BUTTON_PADDING_TOP
 import static com.mana_wars.ui.UIStringConstants.GREETING_SCREEN;
 import static com.mana_wars.ui.UIStringConstants.UI_SKIN;
 
-public class GreetingScreen extends BaseScreen<BaseOverlayUI, GreetingPresenter> implements GreetingView {
+public final class GreetingScreen extends BaseScreen<BaseOverlayUI, GreetingPresenter> implements GreetingView {
 
     private final AssetFactory<String, Texture> imageFactory;
 
@@ -78,14 +78,10 @@ public class GreetingScreen extends BaseScreen<BaseOverlayUI, GreetingPresenter>
     public void show() {
         super.show();
         if (!presenter.isFirstTimeAppOpen()) onStart();
-        else {
-            presenter.setStartUserResources();
-        }
     }
 
     @Override
     public void onStart() {
-
         setScreen(ScreenInstance.MAIN_MENU, null);
     }
 }

@@ -2,6 +2,7 @@ package com.mana_wars.model.entity.battle;
 
 import com.mana_wars.model.entity.base.Characteristic;
 import com.mana_wars.model.entity.base.ValueChangeType;
+import com.mana_wars.model.entity.battle.participant.BattleParticipant;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.SkillCharacteristic;
 
@@ -13,16 +14,15 @@ import java.util.Collections;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 public class BattleParticipantTest {
 
-    private BattleParticipant bp;
+    private com.mana_wars.model.entity.battle.participant.BattleParticipant bp;
 
     @Before
     public void setup() {
-        bp = new BattleParticipant("a", 100, Collections.<ActiveSkill>emptyList(), Collections.emptyList()) {
+        bp = new BattleParticipant("a", 100, Collections.emptyList(), Collections.emptyList(), null) {
 
             @Override
             public void update(double currentTime) {

@@ -55,6 +55,10 @@ public class SkillCharacteristic {
         return characteristic==Characteristic.MANA && target == Target.SELF && changeType == ValueChangeType.DECREASE;
     }
 
+    public boolean isHealth(){
+        return characteristic==Characteristic.HEALTH;
+    }
+
     public int getValue(int skillLevel) {
         return upgradeFunction.apply(value, skillLevel, levelMultiplier);
     }

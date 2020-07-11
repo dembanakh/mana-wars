@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.entity.base.Rarity;
-import com.mana_wars.model.entity.battle.BattleParticipantData;
+import com.mana_wars.model.entity.battle.participant.BattleParticipantData;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.factory.AssetFactory;

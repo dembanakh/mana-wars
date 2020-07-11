@@ -28,7 +28,7 @@ import com.mana_wars.ui.widgets.skill_window.SkillCaseWindow;
 import static com.mana_wars.ui.UIStringConstants.MAIN_MENU_SCREEN;
 import static com.mana_wars.ui.UIStringConstants.SKILL_CASE_WINDOW;
 
-public class MainMenuScreen extends BaseScreen<MenuOverlayUI, MainMenuPresenter> implements MainMenuView {
+public final class MainMenuScreen extends BaseScreen<MenuOverlayUI, MainMenuPresenter> implements MainMenuView {
 
     private final BaseSkillWindow skillCaseWindow;
     private final ManaBonusProgressBar manaBonusProgressBar;

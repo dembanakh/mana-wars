@@ -1,6 +1,6 @@
 package com.mana_wars.model.entity.battle.builder;
 
-import com.mana_wars.model.entity.battle.BattleConfig;
+import com.mana_wars.model.entity.battle.Battle;
 import com.mana_wars.model.entity.battle.BattleStateObserver;
 import com.mana_wars.model.entity.battle.BattleWithRounds;
 import com.mana_wars.model.entity.enemy.DungeonEnemyFactory;
@@ -25,10 +25,10 @@ public class DungeonBattleBuilder extends BattleBuilder {
 
 
     @Override
-    public BattleConfig build(BattleStateObserver observer) {
+    public Battle build(BattleStateObserver observer) {
         //return new BaseBattle(user.prepareBattleParticipant(), new ArrayList<>(), dungeonEnemyFactory.generateEnemies());
         return new BattleWithRounds(user.prepareBattleParticipant(), new ArrayList<>(),  dungeonEnemyFactory,
-                dungeonEnemyFactory.getDungeon().getRounds(), observer);
+                dungeonEnemyFactory.getDungeon().getRounds(), observer).init();
     }
 
     @Override
