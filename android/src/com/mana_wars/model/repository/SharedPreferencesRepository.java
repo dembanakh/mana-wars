@@ -4,6 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class SharedPreferencesRepository implements LocalUserDataRepository {
 
     private Activity hostActivity;
@@ -14,6 +20,8 @@ public class SharedPreferencesRepository implements LocalUserDataRepository {
     private final String USER_LEVEL = "USER_LEVEL";
     private final String USER_MANA = "USER_MANA";
     private final String LAST_MANA_BONUS_TIME = "LAST_MANA_BONUS_TIME";
+    private final String USER_LVL_REQUIRED_EXPERIENCE = "USER_LVL_REQUIRED_EXPERIENCE";
+    private final String CURRENT_USER_EXPERIENCE = "CURRENT_USER_EXPERIENCE";
 
     public SharedPreferencesRepository(Activity hostActivity) {
         this.hostActivity = hostActivity;
@@ -54,12 +62,22 @@ public class SharedPreferencesRepository implements LocalUserDataRepository {
 
     @Override
     public int getUserLevel() {
-        return getDefaultManager().getInt(USER_LEVEL, 1);
+        return getDefaultManager().getInt(USER_LEVEL, 0);
     }
 
     @Override
     public void setUserLevel(int level) {
         getPrefsEditor().putInt(USER_LEVEL, level).apply();
+    }
+
+    @Override
+    public int getCurrentUserExperience() {
+        return getDefaultManager().getInt(CURRENT_USER_EXPERIENCE, 0);
+    }
+
+    @Override
+    public void setCurrentUserExperience(int currentUserExperience) {
+        getPrefsEditor().putInt(CURRENT_USER_EXPERIENCE, currentUserExperience).apply();
     }
 
     @Override
@@ -85,5 +103,26 @@ public class SharedPreferencesRepository implements LocalUserDataRepository {
     @Override
     public void setLastTimeBonusClaimed(long time) {
         getPrefsEditor().putLong(LAST_MANA_BONUS_TIME, time).apply();
+    }
+
+    public void setUserLvlRequiredExperience(String userLvlRequiredExperience) {
+        getPrefsEditor().putString(USER_LVL_REQUIRED_EXPERIENCE, userLvlRequiredExperience).apply();
+    }
+
+    @Override
+    public List<Integer> getUserLevelRequiredExperience(){
+
+        List<Integer> userLvlReq = new ArrayList<>();
+
+        String jsonArrayString = getDefaultManager().getString(USER_LVL_REQUIRED_EXPERIENCE, "[0]");
+        try {
+            JSONArray jsonArray = new JSONArray(jsonArrayString);
+            for(int i = 0 ; i < jsonArray.length(); i++){
+                userLvlReq.add(jsonArray.getInt(i));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return userLvlReq;
     }
 }

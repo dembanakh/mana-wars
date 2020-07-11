@@ -21,7 +21,7 @@ import com.mana_wars.ui.widgets.base.List2D;
 import com.mana_wars.ui.widgets.skill_window.BaseSkillWindow;
 import com.mana_wars.ui.widgets.skill_window.SkillInfoWindow;
 
-public class SkillsInfoScreen extends BaseScreen<BaseOverlayUI, SkillsInfoPresenter> implements SkillsInfoView {
+public final class SkillsInfoScreen extends BaseScreen<BaseOverlayUI, SkillsInfoPresenter> implements SkillsInfoView {
 
     private final List2D<Skill> skillsList;
 

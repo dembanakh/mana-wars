@@ -6,15 +6,12 @@ import com.mana_wars.model.repository.DatabaseRepository;
 
 import io.reactivex.subjects.Subject;
 
-public final class ShopInteractor extends BaseInteractor {
-
-    private final UserShopAPI user;
+public final class ShopInteractor extends BaseInteractor<UserShopAPI> {
 
     private final DatabaseRepository databaseRepository;
 
     public ShopInteractor(final UserShopAPI user, final DatabaseRepository databaseRepository) {
-
-        this.user = user;
+        super(user);
         this.databaseRepository = databaseRepository;
     }
 

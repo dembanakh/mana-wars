@@ -2,7 +2,7 @@ package com.mana_wars.model.entity.skills;
 
 import com.mana_wars.model.entity.base.UpgradeFunction;
 import com.mana_wars.model.entity.base.ValueChangeType;
-import com.mana_wars.model.entity.battle.Characteristic;
+import com.mana_wars.model.entity.base.Characteristic;
 
 public class SkillCharacteristic {
 
@@ -53,6 +53,10 @@ public class SkillCharacteristic {
 
     public boolean isManaCost(){
         return characteristic==Characteristic.MANA && target == Target.SELF && changeType == ValueChangeType.DECREASE;
+    }
+
+    public boolean isHealth(){
+        return characteristic==Characteristic.HEALTH;
     }
 
     public int getValue(int skillLevel) {

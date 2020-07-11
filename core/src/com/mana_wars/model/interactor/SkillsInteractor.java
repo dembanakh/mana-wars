@@ -11,13 +11,12 @@ import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.subjects.Subject;
 
-public final class SkillsInteractor extends BaseInteractor {
+public final class SkillsInteractor extends BaseInteractor<UserSkillsAPI> {
 
-    private final UserSkillsAPI user;
     private final DatabaseRepository databaseRepository;
 
     public SkillsInteractor(final UserSkillsAPI user, final DatabaseRepository databaseRepository) {
-        this.user = user;
+        super(user);
         this.databaseRepository = databaseRepository;
     }
 

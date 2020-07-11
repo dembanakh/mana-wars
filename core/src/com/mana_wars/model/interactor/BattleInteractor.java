@@ -1,31 +1,30 @@
 package com.mana_wars.model.interactor;
 
-import com.mana_wars.model.entity.battle.BattleBuilder;
-import com.mana_wars.model.entity.battle.BattleConfig;
-import com.mana_wars.model.entity.battle.BattleStateObserver;
-import com.mana_wars.model.entity.battle.BattleSummaryData;
-import com.mana_wars.model.entity.battle.Characteristic;
+import com.mana_wars.model.entity.battle.BattleStateObserverStarter;
+import com.mana_wars.model.entity.battle.builder.BattleBuilder;
+import com.mana_wars.model.entity.battle.Battle;
+import com.mana_wars.model.entity.battle.data.BattleSummaryData;
+import com.mana_wars.model.entity.base.Characteristic;
 import com.mana_wars.model.entity.user.UserBattleAPI;
 import com.mana_wars.model.repository.DatabaseRepository;
 
+import io.reactivex.Single;
 import io.reactivex.subjects.Subject;
 
-public final class BattleInteractor extends BaseInteractor {
+public final class BattleInteractor extends BaseInteractor<UserBattleAPI> {
 
-    private final UserBattleAPI user;
-    private BattleConfig battle;
+    private Battle battle;
     private final DatabaseRepository databaseRepository;
 
     public BattleInteractor(final UserBattleAPI user, final DatabaseRepository databaseRepository) {
-        this.user = user;
+        super(user);
         this.databaseRepository = databaseRepository;
     }
 
-    public void init(final BattleStateObserver observer, final BattleBuilder battleBuilder) {
+    public void init(final BattleStateObserverStarter observer, final BattleBuilder battleBuilder) {
         battleBuilder.fetchData(disposable, databaseRepository, () -> {
             this.battle = battleBuilder.build(observer);
 
-            battle.init();
             observer.setSkills(user.getActiveSkills());
             observer.updateDurationCoefficients(
                     battle.getUser().getCharacteristicValue(Characteristic.CAST_TIME),
@@ -56,7 +55,7 @@ public final class BattleInteractor extends BaseInteractor {
         return user.getManaAmountObservable();
     }
 
-    public Subject<BattleSummaryData> getFinishBattleObservable() {
+    public Single<BattleSummaryData> getFinishBattleObservable() {
         return battle.getFinishBattleObservable();
     }
 

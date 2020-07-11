@@ -15,7 +15,7 @@ import com.mana_wars.ui.storage.FactoryStorage;
 import java.util.Map;
 
 //TODO think about Loading Presenter
-public class LoadingScreen extends BaseScreen<BaseOverlayUI, BasePresenter> {
+public final class LoadingScreen extends BaseScreen<BaseOverlayUI, BasePresenter> {
 
     private final DatabaseUpdater updater;
 

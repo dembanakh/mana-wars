@@ -9,8 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mana_wars.model.GameConstants;
-import com.mana_wars.model.entity.battle.BattleParticipantData;
-import com.mana_wars.model.entity.battle.BattleSummaryData;
+import com.mana_wars.model.entity.battle.participant.BattleParticipantData;
+import com.mana_wars.model.entity.battle.data.BattleSummaryData;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.user.UserBattleAPI;
 import com.mana_wars.model.interactor.BattleInteractor;
@@ -42,7 +42,7 @@ import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.ACTIVE_SKILLS_TABLE_
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.SKILLS_TABLES_WIDTH;
 import static com.mana_wars.ui.UIStringConstants.UI_SKIN;
 
-public class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> implements BattleView {
+public final class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> implements BattleView {
 
     private final ValueField<BattleParticipantData, Integer> userField;
     private final EnemyValueField enemyField;

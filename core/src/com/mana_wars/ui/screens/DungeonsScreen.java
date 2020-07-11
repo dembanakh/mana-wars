@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.mana_wars.model.entity.battle.DungeonBattleBuilder;
+import com.mana_wars.model.entity.battle.builder.DungeonBattleBuilder;
 import com.mana_wars.model.entity.enemy.Dungeon;
 import com.mana_wars.model.entity.enemy.DungeonEnemyFactory;
 import com.mana_wars.model.entity.user.UserDungeonsAPI;
@@ -26,7 +26,7 @@ import java.util.Map;
 
 import static com.mana_wars.model.GameConstants.CHOSEN_BATTLE_BUILDER;
 
-public class DungeonsScreen extends BaseScreen<BaseOverlayUI, DungeonsPresenter> implements DungeonsView {
+public final class DungeonsScreen extends BaseScreen<BaseOverlayUI, DungeonsPresenter> implements DungeonsView {
 
     private final DungeonButtonsTable dungeonButtonsTable;
     private final AssetFactory<String, Texture> imageFactory;

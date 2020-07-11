@@ -1,10 +1,19 @@
 package com.mana_wars.model.entity.battle;
 
-import com.mana_wars.model.entity.skills.ActiveSkill;
+import com.mana_wars.model.entity.battle.data.BattleSummaryData;
+import com.mana_wars.model.entity.battle.participant.BattleParticipant;
 
 import java.util.List;
 
+import io.reactivex.Single;
+
 public interface Battle {
-    List<BattleParticipant> getOpponents(BattleParticipant participant);
-    void requestSkillApplication(BattleParticipant participant, ActiveSkill skill, double castTime);
+    void start();
+    void update(float timeDelta);
+    void dispose();
+
+    BattleParticipant getUser();
+    List<BattleParticipant> getUserSide();
+    List<BattleParticipant> getEnemySide();
+    Single<BattleSummaryData> getFinishBattleObservable();
 }

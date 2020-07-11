@@ -2,8 +2,8 @@ package com.mana_wars.model.entity.user;
 
 import com.mana_wars.model.entity.base.UpgradeFunction;
 import com.mana_wars.model.entity.base.ValueChangeType;
-import com.mana_wars.model.entity.battle.Battle;
-import com.mana_wars.model.entity.battle.Characteristic;
+import com.mana_wars.model.entity.battle.participant.BattleParticipantBattleAPI;
+import com.mana_wars.model.entity.base.Characteristic;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.entity.skills.SkillCharacteristic;
@@ -26,7 +26,7 @@ public class UserBattleParticipantTest {
     private ActiveSkill activeSkill;
     private PassiveSkill passiveSkill;
 
-    private Battle battle;
+    private BattleParticipantBattleAPI battleParticipantBattleAPI;
 
     private int changedMana;
 
@@ -34,11 +34,11 @@ public class UserBattleParticipantTest {
     public void setup() {
         activeSkill = mock(ActiveSkill.class);
         passiveSkill = mock(PassiveSkill.class);
-        battle = mock(Battle.class);
+        battleParticipantBattleAPI = mock(BattleParticipantBattleAPI.class);
 
         user = new UserBattleParticipant("a", 100, (mana) -> changedMana = mana,
                 Collections.singletonList(activeSkill), Collections.singletonList(passiveSkill));
-        user.setBattle(battle);
+        user.setBattleParticipantBattleAPI(battleParticipantBattleAPI);
     }
 
     @Test
@@ -53,7 +53,7 @@ public class UserBattleParticipantTest {
     @Test
     public void testUpdateDoesNothingWhenNoSkillIsApplied() {
         user.update(50);
-        verifyNoMoreInteractions(battle);
+        verifyNoMoreInteractions(battleParticipantBattleAPI);
     }
 
     @Test
@@ -69,7 +69,7 @@ public class UserBattleParticipantTest {
         when(activeSkill.getCooldown(100)).thenReturn(2d);
         user.tryApplyActiveSkill(0);
         user.update(0.5f);
-        verify(battle).requestSkillApplication(user, activeSkill, 1);
+        verify(battleParticipantBattleAPI).requestSkillApplication(user, activeSkill, 1);
     }
 
     @Test

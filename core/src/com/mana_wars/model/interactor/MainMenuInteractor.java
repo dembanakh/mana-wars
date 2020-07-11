@@ -9,16 +9,15 @@ import com.mana_wars.model.repository.DatabaseRepository;
 import io.reactivex.Single;
 import io.reactivex.subjects.Subject;
 
-public final class MainMenuInteractor extends BaseInteractor {
+public final class MainMenuInteractor extends BaseInteractor<UserMenuAPI> {
 
-    private final UserMenuAPI user;
     private final ManaBonus manaBonus;
 
     private final DatabaseRepository databaseRepository;
 
     public MainMenuInteractor(final UserMenuAPI user, DatabaseRepository databaseRepository,
                               ManaBonus manaBonus) {
-        this.user = user;
+        super(user);
         this.databaseRepository = databaseRepository;
         this.manaBonus = manaBonus;
     }

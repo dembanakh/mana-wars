@@ -1,7 +1,7 @@
 package com.mana_wars.model.entity.user;
 
-import com.mana_wars.model.entity.battle.BattleParticipant;
-import com.mana_wars.model.entity.battle.Characteristic;
+import com.mana_wars.model.entity.battle.participant.BattleParticipant;
+import com.mana_wars.model.entity.base.Characteristic;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.BattleSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
@@ -20,7 +20,7 @@ class UserBattleParticipant extends BattleParticipant {
 
     UserBattleParticipant(String name, int currentUserMana, Consumer<? super Integer> manaOnChanged,
                           List<ActiveSkill> activeSkills, Iterable<PassiveSkill> passiveSkills) {
-        super(name, 1000, activeSkills, passiveSkills);
+        super(name, 1000, activeSkills, passiveSkills, 0,0,0);
         this.activeSkills = activeSkills;
         this.manaOnChanged = manaOnChanged;
         setCharacteristicValue(Characteristic.MANA, currentUserMana);

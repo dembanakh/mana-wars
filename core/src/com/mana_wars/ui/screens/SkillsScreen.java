@@ -32,7 +32,7 @@ import java.util.List;
 
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.COLUMNS_NUMBER;
 
-public class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresenter> implements SkillsView {
+public final class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresenter> implements SkillsView {
 
     private final List2D<Skill> mainSkillsTable;
     private final List2D<Skill> activeSkillsTable;

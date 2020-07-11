@@ -1,15 +1,19 @@
 package com.mana_wars.model.entity.battle;
 
+
+import com.mana_wars.model.entity.base.Characteristic;
+import com.mana_wars.model.entity.battle.data.BattleSummaryData;
+import com.mana_wars.model.entity.battle.participant.BattleParticipant;
 import com.mana_wars.model.entity.enemy.EnemyFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.subjects.PublishSubject;
-import io.reactivex.subjects.Subject;
+import io.reactivex.subjects.SingleSubject;
 
-public class BattleWithRounds implements BattleConfig {
+public class BattleWithRounds implements Battle {
 
     private BaseBattle currentRoundBattle;
 
@@ -18,7 +22,7 @@ public class BattleWithRounds implements BattleConfig {
     private final EnemyFactory enemyFactory;
     private final CompositeDisposable disposable = new CompositeDisposable();
 
-    private final Subject<BattleSummaryData> finishBattleObservable;
+    private final SingleSubject<BattleSummaryData> finishBattleObservable;
 
     private final List<BattleSummaryData> battleSummaryDataList = new ArrayList<>();
 
@@ -27,8 +31,8 @@ public class BattleWithRounds implements BattleConfig {
     private final int roundsCount;
     private int currentRound;
 
-    BattleWithRounds(BattleParticipant user, List<BattleParticipant> userSide, EnemyFactory enemyFactory,
-                     int roundsCount, BattleStateObserver observer) {
+    public BattleWithRounds(BattleParticipant user, List<BattleParticipant> userSide, EnemyFactory enemyFactory,
+                            int roundsCount, BattleStateObserver observer) {
         this.user = user;
         this.userSide = userSide;
         this.enemyFactory = enemyFactory;
@@ -38,19 +42,16 @@ public class BattleWithRounds implements BattleConfig {
 
         this.currentRound = 0;
 
-        this.finishBattleObservable = PublishSubject.create();
+        this.finishBattleObservable = SingleSubject.create();
     }
 
-
-    @Override
-    public void init() {
+    public Battle init() {
         initRound();
+        return this;
     }
 
     private void initRound(){
-        this.currentRoundBattle = new BaseBattle(user, userSide, enemyFactory.generateEnemies());
-
-        currentRoundBattle.init();
+        this.currentRoundBattle = new BaseBattle(user, userSide, enemyFactory.generateEnemies()).init();
 
         disposable.add(currentRoundBattle.getFinishBattleObservable().subscribe(battleSummaryData -> {
 
@@ -63,10 +64,9 @@ public class BattleWithRounds implements BattleConfig {
                 BattleSummaryData fbsd = new BattleSummaryData();
 
                 for (BattleSummaryData bsd : battleSummaryDataList){
-                    //fbsd.dosmth(bsd)
-                    //TODO combine BattleSummaryData
+                    fbsd.combineWith(bsd);
                 }
-                finishBattleObservable.onNext(fbsd);
+                finishBattleObservable.onSuccess(fbsd);
             }
 
         }, Throwable::printStackTrace));
@@ -75,7 +75,7 @@ public class BattleWithRounds implements BattleConfig {
     private synchronized void changeRound(){
         this.currentRound++;
 
-        observer.setCurrentRound(currentRound);
+        this.observer.setCurrentRound(this.currentRound);
 
         final double battleTime = this.currentRoundBattle.getBattleTime();
 
@@ -126,7 +126,7 @@ public class BattleWithRounds implements BattleConfig {
     }
 
     @Override
-    public Subject<BattleSummaryData> getFinishBattleObservable() {
+    public Single<BattleSummaryData> getFinishBattleObservable() {
         return finishBattleObservable;
     }
 

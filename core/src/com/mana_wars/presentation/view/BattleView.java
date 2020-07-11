@@ -1,9 +1,8 @@
 package com.mana_wars.presentation.view;
 
-import com.mana_wars.model.entity.battle.BattleParticipantData;
-import com.mana_wars.model.entity.battle.BattleSummaryData;
+import com.mana_wars.model.entity.battle.participant.BattleParticipantData;
+import com.mana_wars.model.entity.battle.data.BattleSummaryData;
 import com.mana_wars.model.entity.skills.ActiveSkill;
-import com.mana_wars.model.entity.skills.PassiveSkill;
 
 import io.reactivex.functions.Consumer;
 

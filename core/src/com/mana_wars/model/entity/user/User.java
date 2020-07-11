@@ -1,10 +1,10 @@
 package com.mana_wars.model.entity.user;
 
 import com.mana_wars.model.entity.base.Rarity;
-import com.mana_wars.model.entity.battle.BattleParticipant;
+import com.mana_wars.model.entity.battle.participant.BattleParticipant;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
-import com.mana_wars.model.repository.UserLevelRepository;
+import com.mana_wars.model.repository.UserLevelExperienceRepository;
 import com.mana_wars.model.repository.UserManaRepository;
 import com.mana_wars.model.repository.UsernameRepository;
 
@@ -23,19 +23,29 @@ public class User implements
 
     private final UsernameRepository usernameRepository;
     private final UserManaRepository userManaRepository;
-    private final UserLevelRepository userLevelRepository;
+    private final UserLevelExperienceRepository userLevelExperienceRepository;
 
     private final Subject<Integer> manaAmountObservable;
     private final Subject<Integer> userLevelObservable;
     private List<ActiveSkill> activeSkills;
     private List<PassiveSkill> passiveSkills;
 
-    public User(UserManaRepository userManaRepository, UserLevelRepository userLevelRepository,
+    private int experienceCount;
+    private int nextLevelRequiredExperience;
+
+    public User(UserManaRepository userManaRepository, UserLevelExperienceRepository userLevelExperienceRepository,
                 UsernameRepository usernameRepository) {
         this.userManaRepository = userManaRepository;
-        this.userLevelRepository = userLevelRepository;
+        this.userLevelExperienceRepository = userLevelExperienceRepository;
         this.usernameRepository = usernameRepository;
-        userLevelObservable = BehaviorSubject.createDefault(userLevelRepository.getUserLevel());
+
+        this.experienceCount = userLevelExperienceRepository.getCurrentUserExperience();
+        int userLevel = userLevelExperienceRepository.getUserLevel();
+        this.nextLevelRequiredExperience = userLevelExperienceRepository.getUserLevelRequiredExperience().get(userLevel);
+
+        System.out.println(experienceCount);
+
+        userLevelObservable = BehaviorSubject.createDefault(userLevel);
         manaAmountObservable = BehaviorSubject.createDefault(userManaRepository.getUserMana());
     }
 
@@ -80,7 +90,7 @@ public class User implements
 
     @Override
     public int getLevel() {
-        return userLevelRepository.getUserLevel();
+        return userLevelExperienceRepository.getUserLevel();
     }
 
     @Override
@@ -101,6 +111,23 @@ public class User implements
     private void setManaAmount(int mana) {
         userManaRepository.setUserMana(mana);
         manaAmountObservable.onNext(mana);
+    }
+
+    @Override
+    public void checkNextLevel(){
+        while (experienceCount >= nextLevelRequiredExperience){
+            int userLevel = getLevel() + 1;
+            userLevelExperienceRepository.setUserLevel(userLevel);
+            this.nextLevelRequiredExperience = userLevelExperienceRepository.getUserLevelRequiredExperience().get(userLevel);
+            userLevelObservable.onNext(userLevel);
+        }
+    }
+
+    @Override
+    public void updateExperience(int delta) {
+        experienceCount = userLevelExperienceRepository.getCurrentUserExperience() + delta;
+        userLevelExperienceRepository.setCurrentUserExperience(experienceCount);
+        checkNextLevel();
     }
 
     private Iterable<PassiveSkill> cleanPassiveSkills(Iterable<PassiveSkill> passiveSkills) {

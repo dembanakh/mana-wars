@@ -2,8 +2,8 @@ package com.mana_wars.model.entity.skills;
 
 import com.mana_wars.model.entity.base.GameItem;
 import com.mana_wars.model.entity.base.Rarity;
-import com.mana_wars.model.entity.battle.BattleParticipant;
-import com.mana_wars.model.entity.battle.Characteristic;
+import com.mana_wars.model.entity.battle.participant.BattleParticipant;
+import com.mana_wars.model.entity.base.Characteristic;
 
 import java.util.Collections;
 

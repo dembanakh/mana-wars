@@ -1,9 +1,8 @@
 package com.mana_wars.model.entity.enemy;
 
-import com.mana_wars.model.entity.battle.BattleParticipant;
+import com.mana_wars.model.entity.battle.participant.BattleParticipant;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 

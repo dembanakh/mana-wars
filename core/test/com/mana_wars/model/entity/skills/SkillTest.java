@@ -1,8 +1,8 @@
 package com.mana_wars.model.entity.skills;
 
 import com.mana_wars.model.entity.base.Rarity;
-import com.mana_wars.model.entity.battle.BattleParticipant;
-import com.mana_wars.model.entity.battle.Characteristic;
+import com.mana_wars.model.entity.battle.participant.BattleParticipant;
+import com.mana_wars.model.entity.base.Characteristic;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +15,6 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 public class SkillTest {
