@@ -1,5 +1,6 @@
 package com.mana_wars.ui.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -7,7 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mana_wars.model.entity.battle.BattleSummaryData;
 import com.mana_wars.model.entity.user.UserBattleSummaryAPI;
+import com.mana_wars.model.interactor.BattleSummaryInteractor;
 import com.mana_wars.presentation.presenters.BasePresenter;
+import com.mana_wars.presentation.presenters.BattleSummaryPresenter;
+import com.mana_wars.presentation.view.BattleSummaryView;
 import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.factory.UIElementFactory;
 import com.mana_wars.ui.management.ScreenInstance;
@@ -18,18 +22,23 @@ import com.mana_wars.ui.storage.RepositoryStorage;
 
 import java.util.Map;
 
-public class BattleSummaryScreen extends BaseScreen<BaseOverlayUI, BasePresenter> {
+public class BattleSummaryScreen extends BaseScreen<BaseOverlayUI, BattleSummaryPresenter> implements BattleSummaryView {
 
     public BattleSummaryScreen(final UserBattleSummaryAPI user,
                                final Skin skin,
                                final ScreenSetter screenSetter, final FactoryStorage factoryStorage,
                                final RepositoryStorage repositoryStorage, final BaseOverlayUI overlayUI) {
         super(screenSetter, skin, overlayUI);
+
+        presenter = new BattleSummaryPresenter(this,
+                new BattleSummaryInteractor(user)
+                , Gdx.app::postRunnable);
     }
 
     @Override
     public BaseScreen reInit(Map<String, Object> arguments) {
         BattleSummaryData summaryData = getArgument(arguments, "BattleSummaryData");
+        presenter.parseSummaryData(summaryData);
         // TODO: use summaryData
         return this;
     }

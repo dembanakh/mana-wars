@@ -18,4 +18,8 @@ public final class GreetingPresenter extends BasePresenter<GreetingView, Greetin
     public boolean isFirstTimeAppOpen() {
         return !interactor.hasUsername();
     }
+
+    public void setStartUserResources() {
+        interactor.setStartUserResources();
+    }
 }

@@ -3,7 +3,7 @@ package com.mana_wars.model.entity.user;
 import com.mana_wars.model.entity.battle.BattleParticipant;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
-import com.mana_wars.model.repository.UserLevelRepository;
+import com.mana_wars.model.repository.UserLevelExperienceRepository;
 import com.mana_wars.model.repository.UserManaRepository;
 import com.mana_wars.model.repository.UsernameRepository;
 
@@ -23,18 +23,18 @@ public class UserTest {
     private User user;
 
     private UserManaRepository userManaRepository;
-    private UserLevelRepository userLevelRepository;
+    private UserLevelExperienceRepository userLevelExperienceRepository;
     private UsernameRepository usernameRepository;
 
     @Before
     public void setup() {
         userManaRepository = mock(UserManaRepository.class);
         when(userManaRepository.getUserMana()).thenReturn(100);
-        userLevelRepository = mock(UserLevelRepository.class);
-        when(userLevelRepository.getUserLevel()).thenReturn(1);
+        userLevelExperienceRepository = mock(UserLevelExperienceRepository.class);
+        when(userLevelExperienceRepository.getUserLevel()).thenReturn(1);
         usernameRepository = mock(UsernameRepository.class);
         when(usernameRepository.getUsername()).thenReturn("a");
-        user = new User(userManaRepository,userLevelRepository, usernameRepository);
+        user = new User(userManaRepository, userLevelExperienceRepository, usernameRepository);
     }
 
     @Test(expected = IllegalStateException.class)

@@ -46,8 +46,8 @@ public class BaseBattleTest {
         when(enemySide.get(0).getPassiveSkills()).thenReturn(Collections.singletonList(skill2));
         battle.init();
 
-        verify(user).setBattle(battle);
-        verify(enemySide.get(0)).setBattle(battle);
+        verify(user).setBattleParticipantBattleAPI(battle);
+        verify(enemySide.get(0)).setBattleParticipantBattleAPI(battle);
         verify(skill1).activate(user, enemySide.get(0));
         verify(skill2).activate(enemySide.get(0), user);
     }

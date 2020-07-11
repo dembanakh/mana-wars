@@ -1,5 +1,6 @@
 package com.mana_wars.model.entity.battle;
 
+import com.mana_wars.model.entity.base.Characteristic;
 import com.mana_wars.model.entity.base.ValueChangeType;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.SkillCharacteristic;
@@ -33,7 +34,7 @@ public class BattleParticipantTest {
 
     @Test
     public void testGetCharacteristicValue() {
-        assertEquals(100, bp.getCharacteristicValue(Characteristic.HEALTH));
+        assertEquals(100, bp.getCharacteristicValue(com.mana_wars.model.entity.base.Characteristic.HEALTH));
     }
 
     @Test
@@ -41,7 +42,7 @@ public class BattleParticipantTest {
 
         SkillCharacteristic sc = mock(SkillCharacteristic.class);
 
-        when(sc.getCharacteristic()).thenReturn(Characteristic.HEALTH);
+        when(sc.getCharacteristic()).thenReturn(com.mana_wars.model.entity.base.Characteristic.HEALTH);
         when(sc.getValue(1)).thenReturn(10);
         when(sc.getChangeType()).thenReturn(ValueChangeType.DECREASE);
         bp.applySkillCharacteristic(sc, 1);

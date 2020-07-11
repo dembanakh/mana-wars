@@ -29,15 +29,12 @@ public class DBUpdaterParser {
     }
 
     public interface DBUpdater {
-        void insertSkills(List<DBSkill> skills);
-
-        void insertCharacteristics(List<DBSkillCharacteristic> characteristics);
-
-        void insertDungeons(List<DBDungeon> dungeons);
-
-        void insertMobs(List<DBMob> mobs);
-
-        void insertMobsSkills(List<DBMobSkill> mobSkills);
+        void updateUserLvlRequiredExperience(String userLvlRequiredExperience);
+        void updateSkills(List<DBSkill> skills);
+        void updateCharacteristics(List<DBSkillCharacteristic> characteristics);
+        void updateDungeons(List<DBDungeon> dungeons);
+        void updateMobs(List<DBMob> mobs);
+        void updateMobsSkills(List<DBMobSkill> mobSkills);
     }
 
     void updateFromJSON(DBUpdater updater) throws IOException, JSONException {
@@ -46,11 +43,13 @@ public class DBUpdaterParser {
         if (dbjson.getInt("version") != GameConstants.DB_VERSION)
             throw new JSONException("wrong DB version");
 
-        updater.insertSkills(parseJSON(dbjson.getJSONArray("skills"), DBSkill::fromJSON));
-        updater.insertCharacteristics(parseJSON(dbjson.getJSONArray("skill_characteristics"), DBSkillCharacteristic::fromJSON));
-        updater.insertDungeons(parseJSON(dbjson.getJSONArray("dungeons"), DBDungeon::fromJSON));
-        updater.insertMobs(parseJSON(dbjson.getJSONArray("mobs"), DBMob::fromJSON));
-        updater.insertMobsSkills(parseJSON(dbjson.getJSONArray("mobs_skills"), DBMobSkill::fromJSON));
+        updater.updateUserLvlRequiredExperience(dbjson.getJSONArray("user_lvl_required_experience").toString());
+
+        updater.updateSkills(parseJSON(dbjson.getJSONArray("skills"), DBSkill::fromJSON));
+        updater.updateCharacteristics(parseJSON(dbjson.getJSONArray("skill_characteristics"), DBSkillCharacteristic::fromJSON));
+        updater.updateDungeons(parseJSON(dbjson.getJSONArray("dungeons"), DBDungeon::fromJSON));
+        updater.updateMobs(parseJSON(dbjson.getJSONArray("mobs"), DBMob::fromJSON));
+        updater.updateMobsSkills(parseJSON(dbjson.getJSONArray("mobs_skills"), DBMobSkill::fromJSON));
     }
 
     private interface JSONParser<T> {

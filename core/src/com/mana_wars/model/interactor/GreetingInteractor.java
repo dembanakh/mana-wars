@@ -23,4 +23,9 @@ public final class GreetingInteractor extends BaseInteractor {
         }
     }
 
+    public void setStartUserResources() {
+        //TODO think about it
+        user.updateManaAmount(1000);
+        user.checkNextLevel();
+    }
 }

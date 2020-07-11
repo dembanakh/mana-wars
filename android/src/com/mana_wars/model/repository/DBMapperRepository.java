@@ -120,7 +120,8 @@ public class DBMapperRepository implements DatabaseRepository {
             lastDungeonsMap.clear();
             List<Dungeon> dungeons = new ArrayList<>();
             for (DBDungeon dbDungeon : dbDungeons) {
-                Dungeon dungeon = new Dungeon(dbDungeon.getId(), dbDungeon.getName(), dbDungeon.getRequiredLvl());
+                Dungeon dungeon = new Dungeon(dbDungeon.getId(), dbDungeon.getName(),
+                        dbDungeon.getRequiredLvl(), dbDungeon.getRounds());
                 lastDungeonsMap.put(dungeon, dbDungeon);
                 dungeons.add(dungeon);
             }
@@ -149,7 +150,8 @@ public class DBMapperRepository implements DatabaseRepository {
 
                         }
 
-                        mobs.add(new Mob(mob.mob.getName(), mob.mob.getInitialHealth(), activeSkills, passiveSkills));
+                        mobs.add(new Mob(mob.mob.getName(), mob.mob.getInitialHealth(), activeSkills, passiveSkills,
+                                mob.mob.getManaReward(), mob.mob.getExperienceReward(), mob.mob.getCaseProbabilityReward()));
                     }
                     return mobs;
                 });

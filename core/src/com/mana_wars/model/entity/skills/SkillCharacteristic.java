@@ -2,7 +2,7 @@ package com.mana_wars.model.entity.skills;
 
 import com.mana_wars.model.entity.base.UpgradeFunction;
 import com.mana_wars.model.entity.base.ValueChangeType;
-import com.mana_wars.model.entity.battle.Characteristic;
+import com.mana_wars.model.entity.base.Characteristic;
 
 public class SkillCharacteristic {
 

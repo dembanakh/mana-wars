@@ -1,5 +1,6 @@
 package com.mana_wars.model.entity.battle;
 
+import com.mana_wars.model.entity.base.Characteristic;
 import com.mana_wars.model.entity.enemy.EnemyFactory;
 
 import java.util.ArrayList;
@@ -27,8 +28,8 @@ public class BattleWithRounds implements BattleConfig {
     private final int roundsCount;
     private int currentRound;
 
-    BattleWithRounds(BattleParticipant user, List<BattleParticipant> userSide, EnemyFactory enemyFactory,
-                     int roundsCount, BattleStateObserver observer) {
+    public BattleWithRounds(BattleParticipant user, List<BattleParticipant> userSide, EnemyFactory enemyFactory,
+                            int roundsCount, BattleStateObserver observer) {
         this.user = user;
         this.userSide = userSide;
         this.enemyFactory = enemyFactory;
@@ -63,8 +64,7 @@ public class BattleWithRounds implements BattleConfig {
                 BattleSummaryData fbsd = new BattleSummaryData();
 
                 for (BattleSummaryData bsd : battleSummaryDataList){
-                    //fbsd.dosmth(bsd)
-                    //TODO combine BattleSummaryData
+                    fbsd.combineWith(bsd);
                 }
                 finishBattleObservable.onNext(fbsd);
             }
@@ -80,15 +80,15 @@ public class BattleWithRounds implements BattleConfig {
         final double battleTime = this.currentRoundBattle.getBattleTime();
 
         //TODO
-        user.setCharacteristicValue(Characteristic.CAST_TIME, 100);
-        user.setCharacteristicValue(Characteristic.COOLDOWN, 100);
+        user.setCharacteristicValue(com.mana_wars.model.entity.base.Characteristic.CAST_TIME, 100);
+        user.setCharacteristicValue(com.mana_wars.model.entity.base.Characteristic.COOLDOWN, 100);
 
-        user.setCharacteristicValue(Characteristic._MANA_COST,0);
+        user.setCharacteristicValue(com.mana_wars.model.entity.base.Characteristic._MANA_COST,0);
         initRound();
-        user.setCharacteristicValue(Characteristic._MANA_COST,100);
+        user.setCharacteristicValue(com.mana_wars.model.entity.base.Characteristic._MANA_COST,100);
 
         observer.updateDurationCoefficients(
-                user.getCharacteristicValue(Characteristic.CAST_TIME),
+                user.getCharacteristicValue(com.mana_wars.model.entity.base.Characteristic.CAST_TIME),
                 user.getCharacteristicValue(Characteristic.COOLDOWN));
 
         user.changeTarget();

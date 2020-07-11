@@ -1,6 +1,6 @@
 package com.mana_wars.presentation.presenters;
 
-import com.mana_wars.model.entity.battle.BattleBuilder;
+import com.mana_wars.model.entity.battle.builder.BattleBuilder;
 import com.mana_wars.model.entity.battle.BattleParticipant;
 import com.mana_wars.model.entity.battle.BattleParticipantData;
 import com.mana_wars.model.entity.skills.ActiveSkill;

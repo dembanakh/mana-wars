@@ -4,7 +4,6 @@ import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.Skill;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +13,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
-public class BaseBattle implements BattleConfig, Battle {
+public class BaseBattle implements BattleConfig, BattleParticipantBattleAPI {
 
     private final Map<BattleParticipant, List<BattleParticipant>> opponents = new HashMap<>();
     private final List<BattleParticipant> userSide;
@@ -30,6 +29,8 @@ public class BaseBattle implements BattleConfig, Battle {
     private final PriorityQueue<BattleEvent> battleEvents = new PriorityQueue<>();
 
     private final Subject<BattleSummaryData> finishBattleObservable;
+
+    private final BattleSummaryData summaryData = new BattleSummaryData();
 
     BaseBattle(final BattleParticipant user,
                final List<BattleParticipant> userSide,
@@ -51,17 +52,13 @@ public class BaseBattle implements BattleConfig, Battle {
 
     @Override
     public void init() {
-        initParticipants(Collections.singletonList(user));
-        initParticipants(userSide);
-        initParticipants(enemySide);
+        initParticipants(opponents.keySet());
     }
 
     @Override
     public void start() {
         battleTime = 0;
-        startParticipants(Collections.singletonList(user));
-        startParticipants(userSide);
-        startParticipants(enemySide);
+        startParticipants(opponents.keySet());
         isActive.set(true);
     }
 
@@ -75,7 +72,7 @@ public class BaseBattle implements BattleConfig, Battle {
     public synchronized void update(float timeDelta) {
         if (checkFinish()) {
             isActive.set(false);
-            finishBattleObservable.onNext(new BattleSummaryData());
+            finishBattleObservable.onNext(prepareSummaryData());
         }
 
         if (isActive.get()) {
@@ -83,18 +80,25 @@ public class BaseBattle implements BattleConfig, Battle {
 
             while (!battleEvents.isEmpty() && battleEvents.peek().targetTime < battleTime) {
                 BattleEvent be = battleEvents.poll();
+
                 if (be.participant.isAlive())
                     activateParticipantSkill(be);
             }
 
-            user.update(battleTime);
-            for (BattleParticipant battleParticipant : getUserSide()) {
-                battleParticipant.update(battleTime);
-            }
-            for (BattleParticipant battleParticipant : getEnemySide()) {
+            for (BattleParticipant battleParticipant : opponents.keySet()) {
                 battleParticipant.update(battleTime);
             }
         }
+    }
+
+    private BattleSummaryData prepareSummaryData(){
+
+        for (BattleParticipant bp : enemySide){
+            if(!bp.isAlive()){
+                summaryData.addReward(bp.getOnDeathReward());
+            }
+        }
+        return summaryData;
     }
 
     @Override
@@ -112,7 +116,7 @@ public class BaseBattle implements BattleConfig, Battle {
 
     private void initParticipants(Iterable<BattleParticipant> participants) {
         for (BattleParticipant participant : participants) {
-            participant.setBattle(this);
+            participant.setBattleParticipantBattleAPI(this);
             for (Skill s : participant.getPassiveSkills()) {
                 //TODO think about it
                 s.activate(participant, getOpponents(participant).get(0));
@@ -120,7 +124,7 @@ public class BaseBattle implements BattleConfig, Battle {
         }
     }
 
-    private void startParticipants(List<BattleParticipant> participants) {
+    private void startParticipants(Iterable<BattleParticipant> participants) {
         for (BattleParticipant participant : participants) {
             participant.start();
         }

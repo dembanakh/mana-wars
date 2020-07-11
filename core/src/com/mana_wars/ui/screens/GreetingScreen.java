@@ -38,7 +38,6 @@ public class GreetingScreen extends BaseScreen<BaseOverlayUI, GreetingPresenter>
         presenter = new GreetingPresenter(this,
                 new GreetingInteractor(user),
                 Gdx.app::postRunnable);
-
         imageFactory = factoryStorage.getImageFactory();
     }
 
@@ -79,6 +78,9 @@ public class GreetingScreen extends BaseScreen<BaseOverlayUI, GreetingPresenter>
     public void show() {
         super.show();
         if (!presenter.isFirstTimeAppOpen()) onStart();
+        else {
+            presenter.setStartUserResources();
+        }
     }
 
     @Override
