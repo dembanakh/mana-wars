@@ -3,6 +3,7 @@ package com.mana_wars.model.entity.battle.participant;
 import com.mana_wars.model.entity.base.Characteristic;
 import com.mana_wars.model.entity.battle.data.BattleRewardData;
 import com.mana_wars.model.entity.skills.ActiveSkill;
+import com.mana_wars.model.entity.skills.ImmutableBattleSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.entity.skills.SkillCharacteristic;
 
@@ -18,11 +19,13 @@ public abstract class BattleParticipant {
     protected final SkillsSet skills;
     private final BattleParticipantCharacteristics characteristics;
 
+    private SkillCharacteristicApplicationMode applicator;
+
     private final BattleRewardData onDeathReward;
     private final Subject<Integer> healthObservable;
 
     public BattleParticipant(String name, int initialHealth, Iterable<ActiveSkill> activeSkills, Iterable<PassiveSkill> passiveSkills, int manaReward, int experienceReward, int caseProbabilityReward) {
-        this(name, initialHealth, null, passiveSkills,
+        this(name, initialHealth, new BaseSkillsSet(), passiveSkills,
                 new BattleRewardData(manaReward, experienceReward, caseProbabilityReward));
 
         skills.add(activeSkills);
@@ -32,14 +35,12 @@ public abstract class BattleParticipant {
         this.data = new BattleParticipantData(name, initialHealth, passiveSkills);
         this.currentTarget = new BattleParticipantTarget(this);
         this.characteristics = new BattleParticipantCharacteristics(initialHealth);
-        setCharacteristicApplicator();
+        setCharacteristicApplicator(SkillCharacteristicApplicationMode.DEFAULT);
         this.skills = new BaseSkillsSet();
         this.onDeathReward = onDeathReward;
 
-        if (skills != null) {
-            for (SkillsSet.Entry skill : skills) {
-                this.skills.add(skill.skill);
-            }
+        for (ImmutableBattleSkill skill : skills) {
+            this.skills.add(skill.getSkill());
         }
         healthObservable = BehaviorSubject.create();
     }
@@ -52,7 +53,7 @@ public abstract class BattleParticipant {
     }
 
     public void applySkillCharacteristic(SkillCharacteristic sc, int skillLevel) {
-        characteristics.applySkillCharacteristic(sc,skillLevel);
+        applicator.applySkillCharacteristic(sc, skillLevel, characteristics);
         if (sc.isHealth()) healthObservable.onNext(characteristics.getValue(Characteristic.HEALTH));
     }
 
@@ -64,12 +65,8 @@ public abstract class BattleParticipant {
     }
 
     //region Getters and Setters
-    public void setCharacteristicApplicator(SkillCharacteristicApplicator applicator) {
-        characteristics.setApplicator(applicator);
-    }
-
-    public void setCharacteristicApplicator() {
-        setCharacteristicApplicator(new BaseSkillCharacteristicApplicator());
+    public void setCharacteristicApplicator(SkillCharacteristicApplicationMode applicator) {
+        this.applicator = applicator;
     }
 
     public void setBattleClientAPI(BattleClientAPI battleClientAPI) {

@@ -4,6 +4,7 @@ import com.mana_wars.model.entity.battle.participant.BattleParticipant;
 import com.mana_wars.model.entity.battle.data.BattleRewardData;
 import com.mana_wars.model.entity.battle.participant.SkillsSet;
 import com.mana_wars.model.entity.skills.ActiveSkill;
+import com.mana_wars.model.entity.skills.ImmutableBattleSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 
 public class Mob extends BattleParticipant {
@@ -18,9 +19,9 @@ public class Mob extends BattleParticipant {
 
     @Override
     public void update(double currentTime) {
-        for (SkillsSet.Entry skill : skills) {
+        for (ImmutableBattleSkill skill : skills) {
             if (skill.isAvailableAt(currentTime)) {
-                super.applySkill(skill.skill, currentTime);
+                super.applySkill(skill.getSkill(), currentTime);
                 break;
             }
         }

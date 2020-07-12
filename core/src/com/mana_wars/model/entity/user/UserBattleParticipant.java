@@ -2,8 +2,8 @@ package com.mana_wars.model.entity.user;
 
 import com.mana_wars.model.entity.battle.participant.BattleParticipant;
 import com.mana_wars.model.entity.base.Characteristic;
-import com.mana_wars.model.entity.battle.participant.SkillsSet;
 import com.mana_wars.model.entity.skills.ActiveSkill;
+import com.mana_wars.model.entity.skills.ImmutableBattleSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.entity.skills.SkillCharacteristic;
 
@@ -59,8 +59,8 @@ class UserBattleParticipant extends BattleParticipant {
     }
 
     private boolean isAvailableAt(ActiveSkill appliedSkill) {
-        for (SkillsSet.Entry entry : skills) {
-            if (entry.skill == appliedSkill) return entry.isAvailableAt(battleTime);
+        for (ImmutableBattleSkill skill : skills) {
+            if (skill.getSkill() == appliedSkill) return skill.isAvailableAt(battleTime);
         }
         return false;
     }

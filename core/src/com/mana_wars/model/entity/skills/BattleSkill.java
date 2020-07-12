@@ -1,9 +1,8 @@
 package com.mana_wars.model.entity.skills;
 
-public class BattleSkill {
-
+public class BattleSkill implements ImmutableBattleSkill {
     private double availabilityTime;
-    public final ActiveSkill skill;
+    private final ActiveSkill skill;
 
     public BattleSkill(ActiveSkill skill) {
         this.skill = skill;
@@ -14,7 +13,13 @@ public class BattleSkill {
         availabilityTime = Math.max(possibleTime, availabilityTime);
     }
 
-    public double getAvailabilityTime() {
-        return availabilityTime;
+    @Override
+    public boolean isAvailableAt(double currentTime) {
+        return Double.compare(currentTime, availabilityTime) >= 0;
+    }
+
+    @Override
+    public ActiveSkill getSkill() {
+        return skill;
     }
 }

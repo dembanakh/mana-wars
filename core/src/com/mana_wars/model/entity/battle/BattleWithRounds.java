@@ -3,12 +3,11 @@ package com.mana_wars.model.entity.battle;
 import com.mana_wars.model.entity.base.Characteristic;
 import com.mana_wars.model.entity.battle.base.BaseBattle;
 import com.mana_wars.model.entity.battle.base.Battle;
-import com.mana_wars.model.entity.battle.base.BattleStarter;
+import com.mana_wars.model.entity.battle.base.BattleStartMode;
 import com.mana_wars.model.entity.battle.data.BattleSummaryData;
 import com.mana_wars.model.entity.battle.participant.BattleParticipant;
-import com.mana_wars.model.entity.battle.participant.SkillCharacteristicApplicator;
+import com.mana_wars.model.entity.battle.participant.SkillCharacteristicApplicationMode;
 import com.mana_wars.model.entity.enemy.EnemyFactory;
-import com.mana_wars.model.entity.skills.SkillCharacteristic;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,13 +61,13 @@ public class BattleWithRounds implements Battle {
         user.setCharacteristicValue(Characteristic.CAST_TIME, 100);
         user.setCharacteristicValue(Characteristic.COOLDOWN, 100);
 
-        user.setCharacteristicApplicator(new RoundSkillCharacteristicApplicator());
+        user.setCharacteristicApplicator(SkillCharacteristicApplicationMode.NO_MANA_CONSUMPTION);
 
         currentRoundBattle = new BaseBattle(user, userSide, enemyFactory.generateEnemies(),
-                new RoundBattleStarter(), currentRoundBattle.getBattleTime()).init();
+                BattleStartMode.ROUND, currentRoundBattle.getBattleTime()).init();
         subscribeOnBattleFinish();
 
-        user.setCharacteristicApplicator();
+        user.setCharacteristicApplicator(SkillCharacteristicApplicationMode.DEFAULT);
 
         observer.updateDurationCoefficients(
                 user.getCharacteristicValue(Characteristic.CAST_TIME),
@@ -129,29 +128,5 @@ public class BattleWithRounds implements Battle {
     @Override
     public void dispose() {
         disposable.dispose();
-    }
-
-    private static class RoundSkillCharacteristicApplicator extends SkillCharacteristicApplicator {
-        @Override
-        public void applySkillCharacteristic(SkillCharacteristic sc, int skillLevel) {
-            if (sc.isManaCost()) return;
-
-            Characteristic c = sc.getCharacteristic();
-            int changedValue = c.changeValue(storage.getValue(c), sc.getChangeType(), sc.getValue(skillLevel));
-            storage.setValue(c, changedValue);
-        }
-    }
-
-    private static class RoundBattleStarter implements BattleStarter {
-        @Override
-        public void start(BattleParticipant user, Iterable<BattleParticipant> userSide, Iterable<BattleParticipant> enemySide) {
-            user.changeTarget();
-            for (BattleParticipant participant : userSide) {
-                participant.changeTarget();
-            }
-            for (BattleParticipant participant : enemySide) {
-                participant.start();
-            }
-        }
     }
 }

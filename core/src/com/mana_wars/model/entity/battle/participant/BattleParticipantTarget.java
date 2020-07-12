@@ -16,16 +16,16 @@ class BattleParticipantTarget {
     }
 
     int change(BattleClientAPI battle) {
-        List<Integer> aliveOpponents = aliveOpponents(battle.getOpponents(participant));
+        List<Integer> possibleOpponents = possibleOpponents(battle.getOpponents(participant));
 
-        if (aliveOpponents.isEmpty())
+        if (possibleOpponents.isEmpty())
             return currentTarget;
 
-        currentTarget = aliveOpponents.get(Random.nextInt(aliveOpponents.size()));
+        currentTarget = possibleOpponents.get(Random.nextInt(possibleOpponents.size()));
         return currentTarget;
     }
 
-    private List<Integer> aliveOpponents(List<BattleParticipant> opponents) {
+    private List<Integer> possibleOpponents(List<BattleParticipant> opponents) {
         List<Integer> aliveOpponents = new ArrayList<>();
         for (int i = 0, n = opponents.size(); i < n; i++) {
             if (i != currentTarget && opponents.get(i).isAlive()){

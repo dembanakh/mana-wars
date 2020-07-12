@@ -45,14 +45,6 @@ public final class BattleInteractor extends BaseInteractor<UserBattleAPI> {
         return user.tryApplyActiveSkill(skill);
     }
 
-    public Subject<Integer> getUserHealthObservable() {
-        return battle.getUser().getHealthObservable();
-    }
-
-    public Subject<Integer> getEnemyHealthObservable(int index) {
-        return battle.getEnemySide().get(index).getHealthObservable();
-    }
-
     public Subject<Integer> getUserManaAmountObservable() {
         return user.getManaAmountObservable();
     }

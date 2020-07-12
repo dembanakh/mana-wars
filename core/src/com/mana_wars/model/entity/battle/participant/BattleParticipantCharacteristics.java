@@ -11,8 +11,6 @@ class BattleParticipantCharacteristics implements CharacteristicsStorage {
     private final int initialHealth;
     private final EnumMap<Characteristic, Integer> characteristics = new EnumMap<>(Characteristic.class);
 
-    private SkillCharacteristicApplicator applicator;
-
     BattleParticipantCharacteristics(int initialHealth){
         this.initialHealth = initialHealth;
 
@@ -22,20 +20,9 @@ class BattleParticipantCharacteristics implements CharacteristicsStorage {
         setValue(Characteristic.COOLDOWN, 100);
     }
 
-    void setApplicator(SkillCharacteristicApplicator applicator) {
-        this.applicator = applicator;
-        applicator.setStorage(this);
-    }
-
-    void applySkillCharacteristic(SkillCharacteristic sc, int skillLevel) {
-        applicator.applySkillCharacteristic(sc, skillLevel);
-        if (sc.isHealth())
-            setValue(Characteristic.HEALTH,
-                    Math.min(initialHealth, getValue(Characteristic.HEALTH)));
-    }
-
     @Override
     public void setValue(Characteristic type, int value) {
+        if (type == Characteristic.HEALTH) value = Math.min(initialHealth, value);
         characteristics.put(type, value);
     }
 

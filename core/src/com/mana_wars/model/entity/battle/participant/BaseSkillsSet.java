@@ -2,6 +2,7 @@ package com.mana_wars.model.entity.battle.participant;
 
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.BattleSkill;
+import com.mana_wars.model.entity.skills.ImmutableBattleSkill;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,32 +21,22 @@ class BaseSkillsSet implements SkillsSet {
     public void onSkillApplied(ActiveSkill skill, double currentTime, double castTime, double cooldown) {
         for (BattleSkill battleSkill : skills) {
             battleSkill.updateAvailabilityTime(currentTime + castTime +
-                    (battleSkill.skill == skill ? cooldown : 0));
+                    (battleSkill.getSkill() == skill ? cooldown : 0));
         }
     }
 
     @Override
-    public Iterator<Entry> iterator() {
-        return new BaseSkillsIterator(skills.iterator());
-    }
-
-    private static class BaseSkillsIterator implements Iterator<Entry> {
-
-        private final Iterator<BattleSkill> iterator;
-
-        BaseSkillsIterator(Iterator<BattleSkill> iterator) {
-            this.iterator = iterator;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return iterator.hasNext();
-        }
-
-        @Override
-        public Entry next() {
-            BattleSkill next = iterator.next();
-            return new Entry(next.skill, next.getAvailabilityTime());
-        }
+    public Iterator<ImmutableBattleSkill> iterator() {
+        return new Iterator<ImmutableBattleSkill>() {
+            private final Iterator<BattleSkill> iterator = skills.iterator();
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+            @Override
+            public ImmutableBattleSkill next() {
+                return iterator.next();
+            }
+        };
     }
 }

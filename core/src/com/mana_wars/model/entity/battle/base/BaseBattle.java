@@ -27,27 +27,28 @@ public class BaseBattle implements Battle, BattleClientAPI {
     private final SingleSubject<BattleSummaryData> finishBattleObservable;
 
     private final BattleEventsHandler battleEvents;
-    private final BattleTime battleTime;
-    private final BattleStarter starter;
+    private final BattleStartMode starter;
+
+    private double battleTime;
 
     public BaseBattle(final BattleParticipant user,
                final List<BattleParticipant> userSide,
                final List<BattleParticipant> enemySide) {
-        this(user, userSide, enemySide, new BaseBattleStarter(), new BaseBattleTime());
+        this(user, userSide, enemySide, BattleStartMode.DEFAULT, 0.);
     }
 
     public BaseBattle(final BattleParticipant user,
                final List<BattleParticipant> userSide,
                final List<BattleParticipant> enemySide,
-               final BattleStarter starter,
-               final BattleTime battleTime) {
+               final BattleStartMode starter,
+               final double startTime) {
         this.user = user;
         this.userSide = userSide;
         this.enemySide = enemySide;
         this.starter = starter;
-        this.battleTime = battleTime;
+        this.battleTime = startTime;
         this.finishBattleObservable = SingleSubject.create();
-        this.battleEvents = new BattleEventsHandler(this);
+        this.battleEvents = new BattleEventsHandler();
 
         opponents.put(user, new ArrayList<>(enemySide));
         for (BattleParticipant userAlly : userSide) {
@@ -81,10 +82,11 @@ public class BaseBattle implements Battle, BattleClientAPI {
         }
 
         if (isActive.get()) {
-            battleTime.update(timeDelta);
-            battleEvents.update(battleTime.get());
+            battleTime += timeDelta;
+
+            battleEvents.update(battleTime);
             for (BattleParticipant battleParticipant : opponents.keySet()) {
-                battleParticipant.update(battleTime.get());
+                battleParticipant.update(battleTime);
             }
         }
     }
@@ -94,8 +96,9 @@ public class BaseBattle implements Battle, BattleClientAPI {
                                                      ActiveSkill skill, double castTime) {
         if (!isActive.get()) return;
         //TODO think about synchronization
-        double activationTime = battleTime.get() + castTime;
-        battleEvents.add(activationTime, skill, participant);
+        double activationTime = battleTime + castTime;
+        battleEvents.add(activationTime, skill, participant,
+                getOpponents(participant).get(participant.getCurrentTarget()));
     }
 
 
@@ -156,7 +159,7 @@ public class BaseBattle implements Battle, BattleClientAPI {
         return finishBattleObservable;
     }
 
-    public BattleTime getBattleTime() {
+    public double getBattleTime() {
         return battleTime;
     }
 
