@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class SkillFactory {
 
-    public static Skill getNewSkill(List<Skill> skills) {
+    public static Skill getNewSkill(Iterable<Skill> skills) {
 
         Map<Rarity, List<Skill>> skillsList = new HashMap<>();
 

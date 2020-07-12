@@ -83,9 +83,9 @@ public class BattleWithRounds implements Battle {
         user.setCharacteristicValue(Characteristic.CAST_TIME, 100);
         user.setCharacteristicValue(Characteristic.COOLDOWN, 100);
 
-        user.setCharacteristicValue(Characteristic._MANA_COST,0);
+        user.disableManaConsumption();
         initRound();
-        user.setCharacteristicValue(Characteristic._MANA_COST,100);
+        user.enableManaConsumption();
 
         observer.updateDurationCoefficients(
                 user.getCharacteristicValue(Characteristic.CAST_TIME),

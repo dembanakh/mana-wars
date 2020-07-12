@@ -134,4 +134,12 @@ public abstract class BattleParticipant {
     public BattleRewardData getOnDeathReward() {
         return onDeathReward;
     }
+
+    public void disableManaConsumption() {
+        characteristics.setConsumeMana(false);
+    }
+
+    public void enableManaConsumption() {
+        characteristics.setConsumeMana(true);
+    }
 }

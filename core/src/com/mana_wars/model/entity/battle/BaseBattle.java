@@ -164,6 +164,10 @@ public class BaseBattle implements Battle, BattleParticipantBattleAPI {
         return finishBattleObservable;
     }
 
+    double getBattleTime() {
+        return battleTime;
+    }
+
     private static class BattleEvent implements Comparable<BattleEvent> {
         private final double targetTime;
         private final ActiveSkill skill;
@@ -180,11 +184,6 @@ public class BaseBattle implements Battle, BattleParticipantBattleAPI {
             return Double.compare(this.targetTime, battleEvent.targetTime);
         }
     }
-
-    public double getBattleTime() {
-        return battleTime;
-    }
-
 
     @Override
     public void dispose() {}

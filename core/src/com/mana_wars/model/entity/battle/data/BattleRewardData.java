@@ -12,6 +12,12 @@ public class BattleRewardData {
         this.caseProbabilityReward = caseProbabilityReward;
     }
 
+    public void add(BattleRewardData other) {
+        this.manaReward += other.manaReward;
+        this.experienceReward += other.experienceReward;
+        this.caseProbabilityReward += caseProbabilityReward;
+    }
+
     public int getManaReward() {
         return manaReward;
     }
@@ -22,11 +28,5 @@ public class BattleRewardData {
 
     public int getCaseProbabilityReward() {
         return caseProbabilityReward;
-    }
-
-    public void add(BattleRewardData other){
-        this.manaReward += other.manaReward;
-        this.experienceReward += other.experienceReward;
-        this.caseProbabilityReward += caseProbabilityReward;
     }
 }

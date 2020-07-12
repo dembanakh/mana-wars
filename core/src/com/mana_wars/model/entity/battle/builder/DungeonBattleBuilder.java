@@ -13,7 +13,7 @@ import io.reactivex.disposables.CompositeDisposable;
 
 import static io.reactivex.Observable.combineLatest;
 
-public class DungeonBattleBuilder extends BattleBuilder {
+public class DungeonBattleBuilder implements BattleBuilder {
 
     private final UserDungeonsAPI user;
     private final DungeonEnemyFactory dungeonEnemyFactory;
@@ -22,7 +22,6 @@ public class DungeonBattleBuilder extends BattleBuilder {
         this.user = user;
         this.dungeonEnemyFactory = dungeonEnemyFactory;
     }
-
 
     @Override
     public Battle build(BattleStateObserver observer) {

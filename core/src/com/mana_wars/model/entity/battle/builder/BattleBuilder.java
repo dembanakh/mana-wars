@@ -6,7 +6,7 @@ import com.mana_wars.model.repository.DatabaseRepository;
 
 import io.reactivex.disposables.CompositeDisposable;
 
-public abstract class BattleBuilder {
-    public abstract Battle build(BattleStateObserver observer);
-    public abstract void fetchData(CompositeDisposable disposable, DatabaseRepository databaseRepository, Runnable callback);
+public interface BattleBuilder {
+    Battle build(BattleStateObserver observer);
+    void fetchData(CompositeDisposable disposable, DatabaseRepository databaseRepository, Runnable callback);
 }
