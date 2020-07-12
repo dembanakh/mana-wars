@@ -1,52 +1,36 @@
 package com.mana_wars.model.entity.battle.participant;
 
 import com.mana_wars.model.entity.base.Characteristic;
-import com.mana_wars.model.entity.skills.SkillCharacteristic;
+import com.mana_wars.model.entity.base.CharacteristicsStorage;
 
 import java.util.EnumMap;
 
-class BattleParticipantCharacteristics {
+class BattleParticipantCharacteristics implements CharacteristicsStorage {
 
     private final int initialHealth;
     private final EnumMap<Characteristic, Integer> characteristics = new EnumMap<>(Characteristic.class);
 
-    private boolean consumeMana;
-
     BattleParticipantCharacteristics(int initialHealth){
         this.initialHealth = initialHealth;
-        this.consumeMana = true;
 
-        setCharacteristicValue(Characteristic.HEALTH, initialHealth);
-        setCharacteristicValue(Characteristic.MANA, 0);
-        setCharacteristicValue(Characteristic.CAST_TIME, 100);
-        setCharacteristicValue(Characteristic.COOLDOWN, 100);
+        setValue(Characteristic.HEALTH, initialHealth);
+        setValue(Characteristic.MANA, 0);
+        setValue(Characteristic.CAST_TIME, 100);
+        setValue(Characteristic.COOLDOWN, 100);
     }
 
-    void applySkillCharacteristic(SkillCharacteristic sc, int skillLevel){
-        if (sc.isManaCost() && !consumeMana) return;
-
-        Characteristic c = sc.getCharacteristic();
-        int changedValue = c.changeValue(characteristics.get(c), sc.getChangeType(), sc.getValue(skillLevel));
-
-        if (sc.isHealth()) {
-            changedValue = Math.min(changedValue, initialHealth);
-        }
-        setCharacteristicValue(c, changedValue);
-    }
-
-    void setCharacteristicValue(Characteristic type, int value) {
+    @Override
+    public void setValue(Characteristic type, int value) {
+        if (type == Characteristic.HEALTH) value = Math.min(initialHealth, value);
         characteristics.put(type, value);
     }
 
-    int getCharacteristicValue(Characteristic type) {
+    @Override
+    public int getValue(Characteristic type) {
         return characteristics.get(type);
     }
 
     int getInitialHealth() {
         return initialHealth;
-    }
-
-    void setConsumeMana(boolean consumeMana) {
-        this.consumeMana = consumeMana;
     }
 }

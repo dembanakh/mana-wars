@@ -9,6 +9,4 @@ import java.util.List;
 public interface UserDungeonsAPI extends UserBaseAPI{
     int getLevel();
     int getManaAmount();
-    void initSkills(List<ActiveSkill> activeSkills, List<PassiveSkill> passiveSkills);
-    BattleParticipant prepareBattleParticipant();
 }

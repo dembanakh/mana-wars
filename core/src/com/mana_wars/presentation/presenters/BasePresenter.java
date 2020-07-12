@@ -4,6 +4,7 @@ import com.mana_wars.model.entity.user.UserBaseAPI;
 import com.mana_wars.model.interactor.BaseInteractor;
 import com.mana_wars.presentation.util.UIThreadHandler;
 import com.mana_wars.presentation.view.BaseView;
+import com.mana_wars.ui.widgets.value_field.base.ValueField;
 
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -25,5 +26,4 @@ public abstract class BasePresenter<U extends BaseView, T extends BaseInteractor
         disposable.dispose();
         interactor.dispose();
     }
-
 }

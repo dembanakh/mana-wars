@@ -20,8 +20,6 @@ import com.mana_wars.ui.storage.FactoryStorage;
 
 public final class ShopScreen extends BaseScreen<MenuOverlayUI, ShopPresenter> implements ShopView {
 
-    private final ShopPresenter presenter;
-
     public ShopScreen(final UserShopAPI user,
                       final ScreenSetter screenSetter,
                       final FactoryStorage factoryStorage,
