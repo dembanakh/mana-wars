@@ -1,10 +1,14 @@
 package com.mana_wars.model.entity.battle;
 
-
 import com.mana_wars.model.entity.base.Characteristic;
+import com.mana_wars.model.entity.battle.base.BaseBattle;
+import com.mana_wars.model.entity.battle.base.Battle;
+import com.mana_wars.model.entity.battle.base.BattleStarter;
 import com.mana_wars.model.entity.battle.data.BattleSummaryData;
 import com.mana_wars.model.entity.battle.participant.BattleParticipant;
+import com.mana_wars.model.entity.battle.participant.SkillCharacteristicApplicator;
 import com.mana_wars.model.entity.enemy.EnemyFactory;
+import com.mana_wars.model.entity.skills.SkillCharacteristic;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +24,6 @@ public class BattleWithRounds implements Battle {
     private final BattleParticipant user;
     private final List<BattleParticipant> userSide;
     private final EnemyFactory enemyFactory;
-    private final CompositeDisposable disposable = new CompositeDisposable();
 
     private final SingleSubject<BattleSummaryData> finishBattleObservable;
 
@@ -31,83 +34,76 @@ public class BattleWithRounds implements Battle {
     private final int roundsCount;
     private int currentRound;
 
+    private final CompositeDisposable disposable = new CompositeDisposable();
+
     public BattleWithRounds(BattleParticipant user, List<BattleParticipant> userSide, EnemyFactory enemyFactory,
                             int roundsCount, BattleStateObserver observer) {
         this.user = user;
         this.userSide = userSide;
         this.enemyFactory = enemyFactory;
         this.roundsCount = roundsCount;
-
         this.observer = observer;
 
         this.currentRound = 0;
-
         this.finishBattleObservable = SingleSubject.create();
     }
 
     public Battle init() {
-        initRound();
+        currentRoundBattle = new BaseBattle(user, userSide, enemyFactory.generateEnemies()).init();
+        subscribeOnBattleFinish();
         return this;
     }
 
-    private void initRound(){
-        this.currentRoundBattle = new BaseBattle(user, userSide, enemyFactory.generateEnemies()).init();
+    private synchronized void changeRound() {
+        currentRound++;
+        observer.setCurrentRound(currentRound);
 
+        //TODO
+        user.setCharacteristicValue(Characteristic.CAST_TIME, 100);
+        user.setCharacteristicValue(Characteristic.COOLDOWN, 100);
+
+        user.setCharacteristicApplicator(new RoundSkillCharacteristicApplicator());
+
+        currentRoundBattle = new BaseBattle(user, userSide, enemyFactory.generateEnemies(),
+                new RoundBattleStarter(), currentRoundBattle.getBattleTime()).init();
+        subscribeOnBattleFinish();
+
+        user.setCharacteristicApplicator();
+
+        observer.updateDurationCoefficients(
+                user.getCharacteristicValue(Characteristic.CAST_TIME),
+                user.getCharacteristicValue(Characteristic.COOLDOWN));
+
+        currentRoundBattle.start();
+        observer.setEnemies(currentRoundBattle.getEnemySide(), user.getCurrentTarget());
+    }
+
+    private void subscribeOnBattleFinish() {
         disposable.add(currentRoundBattle.getFinishBattleObservable().subscribe(battleSummaryData -> {
-
             battleSummaryDataList.add(battleSummaryData);
 
             if(user.isAlive() && currentRound < roundsCount){
                 changeRound();
             }
             else {
-                BattleSummaryData fbsd = new BattleSummaryData();
-
+                BattleSummaryData finalSummaryData = new BattleSummaryData();
                 for (BattleSummaryData bsd : battleSummaryDataList){
-                    fbsd.combineWith(bsd);
+                    finalSummaryData.combineWith(bsd);
                 }
-                finishBattleObservable.onSuccess(fbsd);
+                finishBattleObservable.onSuccess(finalSummaryData);
             }
-
         }, Throwable::printStackTrace));
-    }
-
-    private synchronized void changeRound(){
-        this.currentRound++;
-
-        this.observer.setCurrentRound(this.currentRound);
-
-        final double battleTime = this.currentRoundBattle.getBattleTime();
-
-        //TODO
-        user.setCharacteristicValue(Characteristic.CAST_TIME, 100);
-        user.setCharacteristicValue(Characteristic.COOLDOWN, 100);
-
-        user.setCharacteristicValue(Characteristic._MANA_COST,0);
-        initRound();
-        user.setCharacteristicValue(Characteristic._MANA_COST,100);
-
-        observer.updateDurationCoefficients(
-                user.getCharacteristicValue(Characteristic.CAST_TIME),
-                user.getCharacteristicValue(Characteristic.COOLDOWN));
-
-        user.changeTarget();
-        for (BattleParticipant bp : userSide){
-            bp.changeTarget();
-        }
-        this.currentRoundBattle.start(battleTime);
-        observer.setEnemies(user, this.currentRoundBattle.getEnemySide());
     }
 
     @Override
     public void start() {
         observer.setCurrentRound(currentRound);
-        this.currentRoundBattle.start();
+        currentRoundBattle.start();
     }
 
     @Override
     public synchronized void update(float timeDelta) {
-        this.currentRoundBattle.update(timeDelta);
+        currentRoundBattle.update(timeDelta);
     }
 
     @Override
@@ -132,6 +128,30 @@ public class BattleWithRounds implements Battle {
 
     @Override
     public void dispose() {
-        this.disposable.dispose();
+        disposable.dispose();
+    }
+
+    private static class RoundSkillCharacteristicApplicator extends SkillCharacteristicApplicator {
+        @Override
+        public void applySkillCharacteristic(SkillCharacteristic sc, int skillLevel) {
+            if (sc.isManaCost()) return;
+
+            Characteristic c = sc.getCharacteristic();
+            int changedValue = c.changeValue(storage.getValue(c), sc.getChangeType(), sc.getValue(skillLevel));
+            storage.setValue(c, changedValue);
+        }
+    }
+
+    private static class RoundBattleStarter implements BattleStarter {
+        @Override
+        public void start(BattleParticipant user, Iterable<BattleParticipant> userSide, Iterable<BattleParticipant> enemySide) {
+            user.changeTarget();
+            for (BattleParticipant participant : userSide) {
+                participant.changeTarget();
+            }
+            for (BattleParticipant participant : enemySide) {
+                participant.start();
+            }
+        }
     }
 }

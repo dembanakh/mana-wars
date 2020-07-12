@@ -14,7 +14,7 @@ public class BattleSkill {
         availabilityTime = Math.max(possibleTime, availabilityTime);
     }
 
-    public boolean isAvailableAt(double currentTime) {
-        return Double.compare(currentTime, this.availabilityTime) >= 0;
+    public double getAvailabilityTime() {
+        return availabilityTime;
     }
 }

@@ -25,7 +25,11 @@ public final class DungeonsInteractor extends BaseInteractor<UserDungeonsAPI> {
         return databaseRepository.getRequiredManaAmountForBattle();
     }
 
-    public UserDungeonsAPI getUser() {
-        return user;
+    public int getUserLevel() {
+        return user.getLevel();
+    }
+
+    public int getUserAmount() {
+        return user.getManaAmount();
     }
 }

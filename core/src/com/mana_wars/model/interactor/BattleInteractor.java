@@ -2,9 +2,10 @@ package com.mana_wars.model.interactor;
 
 import com.mana_wars.model.entity.battle.BattleStateObserverStarter;
 import com.mana_wars.model.entity.battle.builder.BattleBuilder;
-import com.mana_wars.model.entity.battle.Battle;
+import com.mana_wars.model.entity.battle.base.Battle;
 import com.mana_wars.model.entity.battle.data.BattleSummaryData;
 import com.mana_wars.model.entity.base.Characteristic;
+import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.user.UserBattleAPI;
 import com.mana_wars.model.repository.DatabaseRepository;
 
@@ -22,6 +23,7 @@ public final class BattleInteractor extends BaseInteractor<UserBattleAPI> {
     }
 
     public void init(final BattleStateObserverStarter observer, final BattleBuilder battleBuilder) {
+        battleBuilder.setUser(user);
         battleBuilder.fetchData(disposable, databaseRepository, () -> {
             this.battle = battleBuilder.build(observer);
 
@@ -29,8 +31,8 @@ public final class BattleInteractor extends BaseInteractor<UserBattleAPI> {
             observer.updateDurationCoefficients(
                     battle.getUser().getCharacteristicValue(Characteristic.CAST_TIME),
                     battle.getUser().getCharacteristicValue(Characteristic.COOLDOWN));
-            observer.setOpponents(battle.getUser(), battle.getUserSide(), battle.getEnemySide());
             battle.start();
+            observer.setOpponents(battle.getUser(), battle.getUserSide(), battle.getEnemySide());
             observer.onStartBattle();
         });
     }
@@ -39,8 +41,8 @@ public final class BattleInteractor extends BaseInteractor<UserBattleAPI> {
         battle.update(timeDelta);
     }
 
-    public boolean tryApplyUserSkill(int skillIndex) {
-        return user.tryApplyActiveSkill(skillIndex);
+    public boolean tryApplyUserSkill(ActiveSkill skill) {
+        return user.tryApplyActiveSkill(skill);
     }
 
     public Subject<Integer> getUserHealthObservable() {

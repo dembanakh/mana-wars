@@ -5,9 +5,7 @@ public enum Characteristic {
     HEALTH(1, 0, ValueType.VALUE),
     MANA(2, 0, ValueType.VALUE),
     COOLDOWN(3, 10, ValueType.PERCENT),
-    CAST_TIME(4, 10, ValueType.PERCENT),
-
-    _MANA_COST(-1, 0, ValueType.PERCENT);
+    CAST_TIME(4, 10, ValueType.PERCENT);
 
     private final int id;
     private final int lowerBound;

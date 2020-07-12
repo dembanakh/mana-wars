@@ -85,7 +85,7 @@ public final class DungeonsScreen extends BaseScreen<BaseOverlayUI, DungeonsPres
     private void onDungeon(Dungeon dungeon) {
         Map<String, Object> args = new HashMap<>();
         args.put(CHOSEN_BATTLE_BUILDER,
-                new DungeonBattleBuilder(presenter.getUser(), new DungeonEnemyFactory(dungeon)));
+                new DungeonBattleBuilder(new DungeonEnemyFactory(dungeon)));
         setScreen(ScreenInstance.BATTLE, args);
     }
 

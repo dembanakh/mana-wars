@@ -27,8 +27,6 @@ public class User implements
 
     private final Subject<Integer> manaAmountObservable;
     private final Subject<Integer> userLevelObservable;
-    private List<ActiveSkill> activeSkills;
-    private List<PassiveSkill> passiveSkills;
 
     private int experienceCount;
     private int nextLevelRequiredExperience;
@@ -50,17 +48,9 @@ public class User implements
     }
 
     @Override
-    public BattleParticipant prepareBattleParticipant() {
-        if (activeSkills == null || passiveSkills == null) throw new IllegalStateException("User was not provided with active or passive skills");
-
+    public BattleParticipant prepareBattleParticipant(List<ActiveSkill> activeSkills, Iterable<PassiveSkill> passiveSkills) {
         return user = new UserBattleParticipant(usernameRepository.getUsername(), userManaRepository.getUserMana(),
                 this::setManaAmount, activeSkills, cleanPassiveSkills(passiveSkills));
-    }
-
-    @Override
-    public void initSkills(List<ActiveSkill> activeSkills, List<PassiveSkill> passiveSkills) {
-        this.activeSkills = activeSkills;
-        this.passiveSkills = passiveSkills;
     }
 
     @Override
@@ -99,8 +89,8 @@ public class User implements
     }
 
     @Override
-    public boolean tryApplyActiveSkill(int skillIndex) {
-        return user.tryApplyActiveSkill(skillIndex);
+    public boolean tryApplyActiveSkill(ActiveSkill skill) {
+        return user.tryApplyActiveSkill(skill);
     }
 
     @Override

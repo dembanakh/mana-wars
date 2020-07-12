@@ -1,33 +1,43 @@
 package com.mana_wars.model.entity.battle.builder;
 
-import com.mana_wars.model.entity.battle.Battle;
+import com.mana_wars.model.entity.battle.base.Battle;
 import com.mana_wars.model.entity.battle.BattleStateObserver;
 import com.mana_wars.model.entity.battle.BattleWithRounds;
 import com.mana_wars.model.entity.enemy.DungeonEnemyFactory;
-import com.mana_wars.model.entity.user.UserDungeonsAPI;
+import com.mana_wars.model.entity.skills.ActiveSkill;
+import com.mana_wars.model.entity.skills.PassiveSkill;
+import com.mana_wars.model.entity.user.UserBattleAPI;
 import com.mana_wars.model.repository.DatabaseRepository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.disposables.CompositeDisposable;
 
 import static io.reactivex.Observable.combineLatest;
 
-public class DungeonBattleBuilder extends BattleBuilder {
+public class DungeonBattleBuilder implements BattleBuilder {
 
-    private final UserDungeonsAPI user;
+    private UserBattleAPI user;
     private final DungeonEnemyFactory dungeonEnemyFactory;
 
-    public DungeonBattleBuilder(UserDungeonsAPI user, DungeonEnemyFactory dungeonEnemyFactory) {
-        this.user = user;
+    private List<ActiveSkill> userActiveSkills;
+    private Iterable<PassiveSkill> userPassiveSkills;
+
+    public DungeonBattleBuilder(DungeonEnemyFactory dungeonEnemyFactory) {
         this.dungeonEnemyFactory = dungeonEnemyFactory;
     }
 
+    @Override
+    public void setUser(UserBattleAPI user) {
+        this.user = user;
+    }
 
     @Override
     public Battle build(BattleStateObserver observer) {
         //return new BaseBattle(user.prepareBattleParticipant(), new ArrayList<>(), dungeonEnemyFactory.generateEnemies());
-        return new BattleWithRounds(user.prepareBattleParticipant(), new ArrayList<>(),  dungeonEnemyFactory,
+        return new BattleWithRounds(user.prepareBattleParticipant(userActiveSkills, userPassiveSkills),
+                new ArrayList<>(), dungeonEnemyFactory,
                 dungeonEnemyFactory.getDungeon().getRounds(), observer).init();
     }
 
@@ -37,13 +47,12 @@ public class DungeonBattleBuilder extends BattleBuilder {
                 combineLatest(databaseRepository.getUserSkills().toObservable(),
                         databaseRepository.getMobsListByDungeon(dungeonEnemyFactory.getDungeon()).toObservable(),
                         (skills, mobs) -> {
-                            user.initSkills(skills.activeSkills, skills.passiveSkills);
+                            userActiveSkills = skills.activeSkills;
+                            userPassiveSkills = skills.passiveSkills;
                             dungeonEnemyFactory.setMobs(mobs);
                             return true;
                         }
-                ).subscribe((x) -> {
-                    callback.run();
-                }, Throwable::printStackTrace)
+                ).subscribe((x) -> callback.run(), Throwable::printStackTrace)
         );
     }
 }

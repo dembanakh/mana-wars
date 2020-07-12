@@ -55,7 +55,6 @@ public class DBMapperRepository implements DatabaseRepository {
             SkillsListTriple result = new SkillsListTriple();
 
             for (int i = 0; i < GameConstants.MAX_CHOSEN_ACTIVE_SKILL_COUNT; i++)
-                //TODO refactor
                 result.activeSkills.add(ActiveSkill.getEmpty());
             for (int i = 0; i < GameConstants.USER_PASSIVE_SKILL_COUNT; i++)
                 result.passiveSkills.add(PassiveSkill.getEmpty());

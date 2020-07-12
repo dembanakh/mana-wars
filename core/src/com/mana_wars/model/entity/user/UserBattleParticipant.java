@@ -2,8 +2,8 @@ package com.mana_wars.model.entity.user;
 
 import com.mana_wars.model.entity.battle.participant.BattleParticipant;
 import com.mana_wars.model.entity.base.Characteristic;
+import com.mana_wars.model.entity.battle.participant.SkillsSet;
 import com.mana_wars.model.entity.skills.ActiveSkill;
-import com.mana_wars.model.entity.skills.BattleSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.entity.skills.SkillCharacteristic;
 
@@ -15,7 +15,7 @@ class UserBattleParticipant extends BattleParticipant {
 
     private final List<ActiveSkill> activeSkills;
     private final Consumer<? super Integer> manaOnChanged;
-    private BattleSkill toApply;
+    private ActiveSkill toApply;
     private double battleTime;
 
     UserBattleParticipant(String name, int currentUserMana, Consumer<? super Integer> manaOnChanged,
@@ -31,8 +31,8 @@ class UserBattleParticipant extends BattleParticipant {
         synchronized (this) {
             battleTime = currentTime;
 
-            if (toApply != null && toApply.isAvailableAt(currentTime)) {
-                super.applySkill(toApply.skill, currentTime);
+            if (toApply != null && isAvailableAt(toApply)) {
+                super.applySkill(toApply, currentTime);
             }
             toApply = null;
         }
@@ -47,15 +47,20 @@ class UserBattleParticipant extends BattleParticipant {
         }
     }
 
-    boolean tryApplyActiveSkill(int skillIndex) {
-        BattleSkill targetBattleSkill = battleSkills.get(skillIndex);
-
-        if (getCharacteristicValue(Characteristic.MANA) >= targetBattleSkill.skill.getManaCost()
-                && targetBattleSkill.isAvailableAt(battleTime)) {
+    boolean tryApplyActiveSkill(ActiveSkill skill) {
+        if (getCharacteristicValue(Characteristic.MANA) >= skill.getManaCost()
+                && isAvailableAt(skill)) {
             synchronized (this) {
-                toApply = targetBattleSkill;
+                toApply = skill;
             }
             return true;
+        }
+        return false;
+    }
+
+    private boolean isAvailableAt(ActiveSkill appliedSkill) {
+        for (SkillsSet.Entry entry : skills) {
+            if (entry.skill == appliedSkill) return entry.isAvailableAt(battleTime);
         }
         return false;
     }
