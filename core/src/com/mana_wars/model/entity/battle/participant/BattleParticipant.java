@@ -3,54 +3,46 @@ package com.mana_wars.model.entity.battle.participant;
 import com.mana_wars.model.entity.base.Characteristic;
 import com.mana_wars.model.entity.battle.data.BattleRewardData;
 import com.mana_wars.model.entity.skills.ActiveSkill;
-import com.mana_wars.model.entity.skills.BattleSkill;
+import com.mana_wars.model.entity.skills.ImmutableBattleSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.entity.skills.SkillCharacteristic;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.Subject;
 
 public abstract class BattleParticipant {
 
-    //Target
-    private static Random random = new Random();
-    private int currentTarget = -1;
+    private BattleClientAPI battleClientAPI;
 
-    private BattleParticipantBattleAPI battleParticipantBattleAPI;
-
-    private final String name;
+    private final BattleParticipantData data;
+    private final BattleParticipantTarget currentTarget;
+    protected final SkillsSet skills;
     private final BattleParticipantCharacteristics characteristics;
+
+    private SkillCharacteristicApplicationMode applicator;
+
     private final BattleRewardData onDeathReward;
-
-    protected final List<BattleSkill> battleSkills = new ArrayList<>();
-    protected final Iterable<PassiveSkill> passiveSkills;
-
     private final Subject<Integer> healthObservable;
 
     public BattleParticipant(String name, int initialHealth, Iterable<ActiveSkill> activeSkills, Iterable<PassiveSkill> passiveSkills, int manaReward, int experienceReward, int caseProbabilityReward) {
-        this(name, initialHealth, new ArrayList<>(), passiveSkills,
-                new BattleRewardData(manaReward,experienceReward,caseProbabilityReward));
+        this(name, initialHealth, new BaseSkillsSet(), passiveSkills,
+                new BattleRewardData(manaReward, experienceReward, caseProbabilityReward));
 
-        for (ActiveSkill s : activeSkills) {
-            battleSkills.add(new BattleSkill(s));
-        }
+        skills.add(activeSkills);
     }
 
-    protected BattleParticipant(String name, int initialHealth, List<BattleSkill> battleSkills, Iterable<PassiveSkill> passiveSkills, BattleRewardData onDeathReward) {
-        this.name = name;
-
+    protected BattleParticipant(String name, int initialHealth, SkillsSet skills, Iterable<PassiveSkill> passiveSkills, BattleRewardData onDeathReward) {
+        this.data = new BattleParticipantData(name, initialHealth, passiveSkills);
+        this.currentTarget = new BattleParticipantTarget(this);
         this.characteristics = new BattleParticipantCharacteristics(initialHealth);
+        setCharacteristicApplicator(SkillCharacteristicApplicationMode.DEFAULT);
+        this.skills = new BaseSkillsSet();
+        this.onDeathReward = onDeathReward;
 
-        this.passiveSkills = passiveSkills;
-        for (BattleSkill skill : battleSkills) {
-            this.battleSkills.add(new BattleSkill(skill.skill));
+        for (ImmutableBattleSkill skill : skills) {
+            this.skills.add(skill.getSkill());
         }
         healthObservable = BehaviorSubject.create();
-        this.onDeathReward = onDeathReward;
     }
 
     public abstract void update(final double currentTime);
@@ -60,43 +52,33 @@ public abstract class BattleParticipant {
         changeTarget();
     }
 
-    public int changeTarget(){
-        List<BattleParticipant> opponents = battleParticipantBattleAPI.getOpponents(this);
-        List<Integer> possibleAnotherTargets = new ArrayList<>();
-        for (int i = 0, n = opponents.size(); i < n; i++) {
-            if (i != currentTarget && opponents.get(i).isAlive()){
-                possibleAnotherTargets.add(i);
-            }
-        }
-
-        if (possibleAnotherTargets.isEmpty())
-            return currentTarget;
-
-        currentTarget = possibleAnotherTargets.get(random.nextInt(possibleAnotherTargets.size()));
-        return currentTarget;
-    }
-
     public void applySkillCharacteristic(SkillCharacteristic sc, int skillLevel) {
-        characteristics.applySkillCharacteristic(sc,skillLevel);
-        if (sc.isHealth()) healthObservable.onNext(characteristics.getCharacteristicValue(Characteristic.HEALTH));
+        applicator.applySkillCharacteristic(sc, skillLevel, characteristics);
+        if (sc.isHealth()) healthObservable.onNext(characteristics.getValue(Characteristic.HEALTH));
     }
 
     protected synchronized void applySkill(ActiveSkill skill, double currentTime) {
         double castTime = skill.getCastTime(getCharacteristicValue(Characteristic.CAST_TIME));
         double cooldown = skill.getCooldown(getCharacteristicValue(Characteristic.COOLDOWN));
-        battleParticipantBattleAPI.requestSkillApplication(this, skill, castTime);
-        for (BattleSkill battleSkill : battleSkills) {
-            battleSkill.updateAvailabilityTime(currentTime + castTime +
-                    (battleSkill.skill == skill ? cooldown : 0));
-        }
+        battleClientAPI.requestSkillApplication(this, skill, castTime);
+        skills.onSkillApplied(skill, currentTime, castTime, cooldown);
     }
 
-    public void setBattleParticipantBattleAPI(BattleParticipantBattleAPI battleParticipantBattleAPI) {
-        this.battleParticipantBattleAPI = battleParticipantBattleAPI;
+    //region Getters and Setters
+    public void setCharacteristicApplicator(SkillCharacteristicApplicationMode applicator) {
+        this.applicator = applicator;
+    }
+
+    public void setBattleClientAPI(BattleClientAPI battleClientAPI) {
+        this.battleClientAPI = battleClientAPI;
     }
 
     public boolean isAlive() {
         return getCharacteristicValue(Characteristic.HEALTH) > 0;
+    }
+
+    public int changeTarget() {
+        return currentTarget.change(battleClientAPI);
     }
 
     protected int getInitialHealthAmount() {
@@ -104,7 +86,7 @@ public abstract class BattleParticipant {
     }
 
     public Iterable<PassiveSkill> getPassiveSkills() {
-        return passiveSkills;
+        return data.passiveSkills;
     }
 
     public Subject<Integer> getHealthObservable() {
@@ -112,26 +94,27 @@ public abstract class BattleParticipant {
     }
 
     public String getName() {
-        return name;
+        return data.name;
     }
 
     public int getCurrentTarget() {
-        return currentTarget;
+        return currentTarget.get();
     }
 
     public int getCharacteristicValue(Characteristic type) {
-        return characteristics.getCharacteristicValue(type);
+        return characteristics.getValue(type);
     }
 
     public void setCharacteristicValue(Characteristic type, int value) {
-        characteristics.setCharacteristicValue(type, value);
+        characteristics.setValue(type, value);
     }
 
     public BattleParticipantData getData() {
-        return new BattleParticipantData(name, characteristics.getInitialHealth(), passiveSkills);
+        return data;
     }
 
     public BattleRewardData getOnDeathReward() {
         return onDeathReward;
     }
+    //endregion
 }

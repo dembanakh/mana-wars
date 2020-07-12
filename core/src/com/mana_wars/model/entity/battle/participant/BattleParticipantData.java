@@ -7,7 +7,7 @@ public class BattleParticipantData {
     public final int initialHealth;
     public final Iterable<PassiveSkill> passiveSkills;
 
-    public BattleParticipantData(String name, int initialHealth, Iterable<PassiveSkill> passiveSkills) {
+    BattleParticipantData(String name, int initialHealth, Iterable<PassiveSkill> passiveSkills) {
         this.name = name;
         this.initialHealth = initialHealth;
         this.passiveSkills = passiveSkills;

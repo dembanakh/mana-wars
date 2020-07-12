@@ -9,12 +9,13 @@ import io.reactivex.functions.Consumer;
 public interface BattleView extends BaseView {
     void setActiveEnemy(int index);
     void setSkills(Iterable<ActiveSkill> activeSkills);
-    void setUser(BattleParticipantData userData, Consumer<Consumer<? super Integer>> subscribe);
-    void addEnemy(BattleParticipantData enemyData, Consumer<Consumer<? super Integer>> subscribe);
+    Consumer<? super Integer> setUser(BattleParticipantData userData);
+    Consumer<? super Integer> addEnemy(BattleParticipantData enemyData);
     void blockSkills(int appliedSkillIndex);
     void startBattle(int enemiesNumber);
     void finishBattle(BattleSummaryData summaryData);
-    void cleanEnemies(int enemySize);
+    void cleanEnemies();
+    void setEnemyCount(int count);
     void setRound(int round);
     void updateDurationCoefficients(int castTime, int cooldown);
 }

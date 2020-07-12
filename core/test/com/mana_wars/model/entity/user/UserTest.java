@@ -39,18 +39,12 @@ public class UserTest {
         user = new User(userManaRepository, userLevelExperienceRepository, usernameRepository);
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void testPrepareBattleParticipant_Exception() {
-        user.prepareBattleParticipant();
-    }
-
     @Test
     public void testPrepareBattleParticipant() {
         List<ActiveSkill> activeSkills = Collections.singletonList(mock(ActiveSkill.class));
         List<PassiveSkill> passiveSkills = Collections.singletonList(mock(PassiveSkill.class));
-        user.initSkills(activeSkills, passiveSkills);
 
-        BattleParticipant bp = user.prepareBattleParticipant();
+        BattleParticipant bp = user.prepareBattleParticipant(activeSkills, passiveSkills);
 
         assertEquals("a", bp.getName());
         assertEquals(passiveSkills, bp.getPassiveSkills());

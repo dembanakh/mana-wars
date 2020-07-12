@@ -11,6 +11,6 @@ public interface BattleStateObserver {
                       List<BattleParticipant> enemySide);
 
     void setCurrentRound(int round);
-    void setEnemies(BattleParticipant user, List<BattleParticipant> enemySide);
+    void setEnemies(List<BattleParticipant> enemySide, int userTarget);
     void updateDurationCoefficients(int castTime, int cooldown);
 }

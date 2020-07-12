@@ -1,5 +1,6 @@
 package com.mana_wars.model.entity.battle;
 
+import com.mana_wars.model.entity.battle.base.BaseBattle;
 import com.mana_wars.model.entity.battle.data.BattleRewardData;
 import com.mana_wars.model.entity.battle.data.BattleSummaryData;
 import com.mana_wars.model.entity.battle.participant.BattleParticipant;
@@ -49,8 +50,8 @@ public class BaseBattleTest {
         when(enemySide.get(0).getPassiveSkills()).thenReturn(Collections.singletonList(skill2));
         battle.init();
 
-        verify(user).setBattleParticipantBattleAPI(battle);
-        verify(enemySide.get(0)).setBattleParticipantBattleAPI(battle);
+        verify(user).setBattleClientAPI(battle);
+        verify(enemySide.get(0)).setBattleClientAPI(battle);
         verify(skill1).activate(user, enemySide.get(0));
         verify(skill2).activate(enemySide.get(0), user);
     }

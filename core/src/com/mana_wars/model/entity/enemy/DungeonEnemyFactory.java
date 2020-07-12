@@ -8,6 +8,8 @@ import java.util.Random;
 
 public class DungeonEnemyFactory implements EnemyFactory {
 
+    private static Random Random = new Random();
+
     private final Dungeon dungeon;
     private List<Mob> mobs;
 
@@ -25,8 +27,7 @@ public class DungeonEnemyFactory implements EnemyFactory {
 
     @Override
     public List<BattleParticipant> generateEnemies() {
-        Random rand = new Random();
-        return Arrays.asList(mobs.get(rand.nextInt(mobs.size())).copy(),
-                mobs.get(rand.nextInt(mobs.size())).copy());
+        return Arrays.asList(mobs.get(Random.nextInt(mobs.size())).copy(),
+                mobs.get(Random.nextInt(mobs.size())).copy());
     }
 }

@@ -19,20 +19,12 @@ public final class BattlePresenter extends BasePresenter<BattleView, BattleInter
         super(view, interactor, uiThreadHandler);
     }
 
-    private void addObserver_userHealth(Consumer<? super Integer> observer) {
-        disposable.add(interactor.getUserHealthObservable().subscribe(observer));
-    }
-
-    private void addObserver_enemyHealth(int index, Consumer<? super Integer> observer) {
-        disposable.add(interactor.getEnemyHealthObservable(index).subscribe(observer));
-    }
-
     public void initBattle(BattleBuilder battleBuilder) {
         interactor.init(this, battleBuilder);
     }
 
-    public void applyUserSkill(int appliedSkillIndex) {
-        if (interactor.tryApplyUserSkill(appliedSkillIndex)) {
+    public void applyUserSkill(ActiveSkill skill, int appliedSkillIndex) {
+        if (interactor.tryApplyUserSkill(skill)) {
             view.blockSkills(appliedSkillIndex);
         }
     }
@@ -58,13 +50,9 @@ public final class BattlePresenter extends BasePresenter<BattleView, BattleInter
     @Override
     public void setOpponents(BattleParticipant user, Iterable<BattleParticipant> userSide,
                              List<BattleParticipant> enemySide) {
-        view.setUser(user.getData(), this::addObserver_userHealth);
+        disposable.add(user.getHealthObservable().subscribe(view.setUser(user.getData())));
 
-        setEnemies(user, enemySide);
-    }
-
-    public void addObserver_userManaAmount(Consumer<? super Integer> userManaAmountObserver) {
-        disposable.add(interactor.getUserManaAmountObservable().subscribe(userManaAmountObserver));
+        setEnemies(enemySide, user.getCurrentTarget());
     }
 
     public void changeActiveEnemy() {
@@ -73,26 +61,28 @@ public final class BattlePresenter extends BasePresenter<BattleView, BattleInter
 
     @Override
     public void setCurrentRound(int round) {
-        uiThreadHandler.postRunnable(() -> {
-            view.setRound(round + 1);
-        });
+        uiThreadHandler.postRunnable(() -> view.setRound(round + 1));
     }
 
     @Override
-    public void setEnemies(BattleParticipant user, List<BattleParticipant> enemySide) {
-        view.cleanEnemies(enemySide.size());
-        int index = 0;
+    public void setEnemies(List<BattleParticipant> enemySide, int userTarget) {
+        view.cleanEnemies();
         for (BattleParticipant enemy : enemySide) {
-            int finalIndex = index++;
-            view.addEnemy(enemy.getData(), (observer) -> addObserver_enemyHealth(finalIndex, observer));
+            disposable.add(enemy.getHealthObservable()
+                    .subscribe(view.addEnemy(enemy.getData())));
         }
+        view.setEnemyCount(enemySide.size());
         uiThreadHandler.postRunnable(() -> {
-            view.setActiveEnemy(user.getCurrentTarget());
+            view.setActiveEnemy(userTarget);
         });
     }
 
     @Override
     public void updateDurationCoefficients(int castTime, int cooldown) {
         view.updateDurationCoefficients(castTime, cooldown);
+    }
+
+    public void addObserver_userManaAmount(Consumer<? super Integer> observer) {
+        disposable.add(interactor.getUserManaAmountObservable().subscribe(observer));
     }
 }

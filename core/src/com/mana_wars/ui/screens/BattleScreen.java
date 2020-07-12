@@ -32,7 +32,6 @@ import com.mana_wars.ui.widgets.value_field.base.ValueField;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.reactivex.functions.Consumer;
 
@@ -54,7 +53,6 @@ public final class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresente
 
     private final Label roundLabel;
 
-    private final AtomicBoolean isBattle = new AtomicBoolean(false);
     private final AssetFactory<String, Texture> imageFactory;
 
     public BattleScreen(final UserBattleAPI user,
@@ -110,9 +108,13 @@ public final class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresente
     }
 
     @Override
-    public void cleanEnemies(int enemiesCount) {
+    public void cleanEnemies() {
         enemyField.clear();
-        aliveEnemiesField.setInitialData(enemiesCount);
+    }
+
+    @Override
+    public void setEnemyCount(int count) {
+        aliveEnemiesField.setInitialData(count);
     }
 
     @Override
@@ -130,9 +132,7 @@ public final class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresente
         super.render(delta);
         userActiveSkills.update(delta);
 
-        if (isBattle.get()) {
-            presenter.updateBattle(delta);
-        }
+        presenter.updateBattle(delta);
     }
 
     @Override
@@ -179,7 +179,6 @@ public final class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresente
                 new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
-                        isBattle.set(false);
                         setScreen(ScreenInstance.MAIN_MENU, null);
                     }
                 })).right().uniformX().expandX();
@@ -201,25 +200,18 @@ public final class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresente
     }
 
     @Override
-    public void setUser(BattleParticipantData userData,
-                        Consumer<Consumer<? super Integer>> subscribe) {
+    public Consumer<? super Integer> setUser(BattleParticipantData userData) {
         userField.setInitialData(userData);
-        try {
-            subscribe.accept(userField);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        return userField;
     }
 
     @Override
-    public void addEnemy(BattleParticipantData enemyData,
-                         Consumer<Consumer<? super Integer>> subscribe) {
-        try {
-            subscribe.accept(enemyField.addEnemy(enemyData));
-            subscribe.accept(aliveEnemiesField);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public Consumer<? super Integer> addEnemy(BattleParticipantData enemyData) {
+        Consumer<? super Integer> enemyObserver = enemyField.addEnemy(enemyData);
+        return (x) -> {
+            enemyObserver.accept(x);
+            aliveEnemiesField.accept(x);
+        };
     }
 
     @Override
@@ -230,13 +222,10 @@ public final class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresente
     @Override
     public void startBattle(int enemiesNumber) {
         aliveEnemiesField.setInitialData(enemiesNumber);
-        isBattle.set(true);
     }
 
     @Override
     public void finishBattle(BattleSummaryData summaryData) {
-        isBattle.set(false);
-
         Map<String, Object> arguments = new HashMap<>();
         arguments.put("BattleSummaryData", summaryData);
         setScreen(ScreenInstance.BATTLE_SUMMARY, arguments);
@@ -247,8 +236,6 @@ public final class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresente
     }
 
     private void onSkillClick(ActiveSkill skill, int index) {
-        if (isBattle.get()) {
-            presenter.applyUserSkill(index);
-        }
+        presenter.applyUserSkill(skill, index);
     }
 }
