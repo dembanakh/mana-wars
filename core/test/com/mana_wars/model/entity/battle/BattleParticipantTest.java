@@ -3,13 +3,16 @@ package com.mana_wars.model.entity.battle;
 import com.mana_wars.model.entity.base.Characteristic;
 import com.mana_wars.model.entity.base.ValueChangeType;
 import com.mana_wars.model.entity.battle.participant.BattleParticipant;
+import com.mana_wars.model.entity.battle.participant.SkillsSet;
 import com.mana_wars.model.entity.skills.ActiveSkill;
+import com.mana_wars.model.entity.skills.ImmutableBattleSkill;
 import com.mana_wars.model.entity.skills.SkillCharacteristic;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Collections;
+import java.util.Iterator;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -22,7 +25,22 @@ public class BattleParticipantTest {
 
     @Before
     public void setup() {
-        bp = new BattleParticipant("a", 100, Collections.emptyList(), Collections.emptyList(), null) {
+        bp = new BattleParticipant("a", 100, new SkillsSet() {
+            @Override
+            public void add(ActiveSkill skill) {
+
+            }
+
+            @Override
+            public void onSkillApplied(ActiveSkill skill, double currentTime, double castTime, double cooldown) {
+
+            }
+
+            @Override
+            public Iterator<ImmutableBattleSkill> iterator() {
+                return Collections.emptyIterator();
+            }
+        }, Collections.emptyList(), null) {
 
             @Override
             public void update(double currentTime) {

@@ -59,7 +59,7 @@ public class UserBattleParticipantTest {
     @Test
     public void testTryApplyActiveSkill_Immediate() {
         when(activeSkill.getManaCost()).thenReturn(20);
-        assertTrue(user.tryApplyActiveSkill(0));
+        assertTrue(user.tryApplyActiveSkill(activeSkill));
     }
 
     @Test
@@ -67,7 +67,7 @@ public class UserBattleParticipantTest {
         when(activeSkill.getManaCost()).thenReturn(20);
         when(activeSkill.getCastTime(100)).thenReturn(1d);
         when(activeSkill.getCooldown(100)).thenReturn(2d);
-        user.tryApplyActiveSkill(0);
+        user.tryApplyActiveSkill(activeSkill);
         user.update(0.5f);
         verify(battleClientAPI).requestSkillApplication(user, activeSkill, 1);
     }
@@ -77,10 +77,10 @@ public class UserBattleParticipantTest {
         when(activeSkill.getManaCost()).thenReturn(20);
         when(activeSkill.getCastTime(100)).thenReturn(1d);
         when(activeSkill.getCooldown(100)).thenReturn(2d);
-        user.tryApplyActiveSkill(0);
+        user.tryApplyActiveSkill(activeSkill);
         user.update(0.5f);
         user.update(1);
-        assertFalse(user.tryApplyActiveSkill(0));
+        assertFalse(user.tryApplyActiveSkill(activeSkill));
     }
 
 }
