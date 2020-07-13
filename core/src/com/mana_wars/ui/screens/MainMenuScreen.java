@@ -1,7 +1,7 @@
 package com.mana_wars.ui.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -33,7 +33,7 @@ public final class MainMenuScreen extends BaseScreen<MenuOverlayUI, MainMenuPres
     private final BaseSkillWindow skillCaseWindow;
     private final ManaBonusProgressBar manaBonusProgressBar;
 
-    private final AssetFactory<String, Texture> imageFactory;
+    private final AssetFactory<String, TextureRegion> imageFactory;
 
     public MainMenuScreen(final UserMenuAPI user,
                           final Skin skin,
@@ -85,7 +85,8 @@ public final class MainMenuScreen extends BaseScreen<MenuOverlayUI, MainMenuPres
         Table layer = new Table();
         layer.setFillParent(true);
 
-        TextButton skillCaseButton = UIElementFactory.getButton(skin, MAIN_MENU_SCREEN.OPEN_SKILL_CASE_BUTTON_TEXT,
+        TextButton skillCaseButton = UIElementFactory.getButton(skin,
+                MAIN_MENU_SCREEN.OPEN_SKILL_CASE_BUTTON_TEXT,
                 new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {

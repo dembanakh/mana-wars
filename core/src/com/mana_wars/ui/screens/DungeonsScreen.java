@@ -1,7 +1,7 @@
 package com.mana_wars.ui.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -29,7 +29,7 @@ import static com.mana_wars.model.GameConstants.CHOSEN_BATTLE_BUILDER;
 public final class DungeonsScreen extends BaseScreen<BaseOverlayUI, DungeonsPresenter> implements DungeonsView {
 
     private final DungeonButtonsTable dungeonButtonsTable;
-    private final AssetFactory<String, Texture> imageFactory;
+    private final AssetFactory<String, TextureRegion> imageFactory;
 
     public DungeonsScreen(final UserDungeonsAPI user,
                           final Skin skin,

@@ -149,7 +149,7 @@ public class DBMapperRepository implements DatabaseRepository {
 
                         }
 
-                        mobs.add(new Mob(mob.mob.getName(), mob.mob.getInitialHealth(), activeSkills, passiveSkills,
+                        mobs.add(new Mob(mob.mob.getName(), "enemy~mirrored", mob.mob.getInitialHealth(), activeSkills, passiveSkills,
                                 mob.mob.getManaReward(), mob.mob.getExperienceReward(), mob.mob.getCaseProbabilityReward()));
                     }
                     return mobs;

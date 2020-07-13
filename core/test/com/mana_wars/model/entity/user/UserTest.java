@@ -5,6 +5,7 @@ import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.repository.UserLevelExperienceRepository;
 import com.mana_wars.model.repository.UserManaRepository;
+import com.mana_wars.model.repository.UserSkillCasesRepository;
 import com.mana_wars.model.repository.UsernameRepository;
 
 import org.junit.Before;
@@ -26,6 +27,7 @@ public class UserTest {
     private UserManaRepository userManaRepository;
     private UserLevelExperienceRepository userLevelExperienceRepository;
     private UsernameRepository usernameRepository;
+    private UserSkillCasesRepository userSkillCasesRepository;
 
     @Before
     public void setup() {
@@ -36,7 +38,9 @@ public class UserTest {
         when(userLevelExperienceRepository.getUserLevelRequiredExperience()).thenReturn(Arrays.asList(0, 100));
         usernameRepository = mock(UsernameRepository.class);
         when(usernameRepository.getUsername()).thenReturn("a");
-        user = new User(userManaRepository, userLevelExperienceRepository, usernameRepository);
+        userSkillCasesRepository = mock(UserSkillCasesRepository.class);
+        user = new User(userManaRepository, userLevelExperienceRepository,
+                usernameRepository, userSkillCasesRepository);
     }
 
     @Test
@@ -46,7 +50,6 @@ public class UserTest {
 
         BattleParticipant bp = user.prepareBattleParticipant(activeSkills, passiveSkills);
 
-        assertEquals("a", bp.getName());
         assertEquals(passiveSkills, bp.getPassiveSkills());
     }
 

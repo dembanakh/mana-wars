@@ -22,6 +22,7 @@ public class SharedPreferencesRepository implements LocalUserDataRepository {
     private final String LAST_MANA_BONUS_TIME = "LAST_MANA_BONUS_TIME";
     private final String USER_LVL_REQUIRED_EXPERIENCE = "USER_LVL_REQUIRED_EXPERIENCE";
     private final String CURRENT_USER_EXPERIENCE = "CURRENT_USER_EXPERIENCE";
+    private final String USER_SKILL_CASES = "USER_SKILL_CASES";
 
     public SharedPreferencesRepository(Activity hostActivity) {
         this.hostActivity = hostActivity;
@@ -124,5 +125,15 @@ public class SharedPreferencesRepository implements LocalUserDataRepository {
             e.printStackTrace();
         }
         return userLvlReq;
+    }
+
+    @Override
+    public int getSkillCasesNumber() {
+        return getDefaultManager().getInt(USER_SKILL_CASES, 0);
+    }
+
+    @Override
+    public void updateSkillCasesNumber(int delta) {
+        getPrefsEditor().putInt(USER_SKILL_CASES, getSkillCasesNumber() + delta).apply();
     }
 }

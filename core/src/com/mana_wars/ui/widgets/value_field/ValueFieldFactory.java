@@ -1,6 +1,5 @@
 package com.mana_wars.ui.widgets.value_field;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mana_wars.model.entity.base.Rarity;
@@ -33,7 +32,7 @@ public final class ValueFieldFactory {
             final TransformApplier transformApplier,
             final AssetFactory<Integer, TextureRegion> iconFactory,
             final AssetFactory<Rarity, TextureRegion> frameFactory,
-            final AssetFactory<String, Texture> imageFactory,
+            final AssetFactory<String, TextureRegion> imageFactory,
             float deltaHealthAnimationDistance,
             float deltaHealthAnimationDuration
     ) {
@@ -47,7 +46,7 @@ public final class ValueFieldFactory {
             final TransformApplier transformApplier,
             final AssetFactory<Integer, TextureRegion> iconFactory,
             final AssetFactory<Rarity, TextureRegion> frameFactory,
-            final AssetFactory<String, Texture> imageFactory,
+            final AssetFactory<String, TextureRegion> imageFactory,
             float deltaHealthAnimationDistance,
             float deltaHealthAnimationDuration
     ) {

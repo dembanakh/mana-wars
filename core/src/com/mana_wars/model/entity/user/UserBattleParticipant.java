@@ -20,7 +20,7 @@ class UserBattleParticipant extends BattleParticipant {
 
     UserBattleParticipant(String name, int currentUserMana, Consumer<? super Integer> manaOnChanged,
                           List<ActiveSkill> activeSkills, Iterable<PassiveSkill> passiveSkills) {
-        super(name, 1000, activeSkills, passiveSkills, 0,0,0);
+        super(name, "player", 1000, activeSkills, passiveSkills, 0,0,0);
         this.activeSkills = activeSkills;
         this.manaOnChanged = manaOnChanged;
         setCharacteristicValue(Characteristic.MANA, currentUserMana);

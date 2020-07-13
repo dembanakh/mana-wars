@@ -36,9 +36,12 @@ public final class MainMenuPresenter extends BasePresenter<MainMenuView, MainMen
     }
 
     public void onOpenSkillCase() {
-        disposable.add(interactor.getNewSkill().subscribe(s -> {
-            uiThreadHandler.postRunnable(() -> view.openSkillCaseWindow(s));
-        }, Throwable::printStackTrace));
+        if (interactor.getUserSkillCasesNumber() > 0) {
+            disposable.add(interactor.getNewSkill().subscribe(s -> {
+                interactor.useSkillCase();
+                uiThreadHandler.postRunnable(() -> view.openSkillCaseWindow(s));
+            }, Throwable::printStackTrace));
+        }
     }
 
     public int getFullManaBonusTimeout() {

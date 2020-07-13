@@ -20,7 +20,12 @@ import com.mana_wars.ui.storage.RepositoryStorage;
 
 import java.util.Map;
 
-public final class BattleSummaryScreen extends BaseScreen<BaseOverlayUI, BattleSummaryPresenter> implements BattleSummaryView {
+public final class BattleSummaryScreen extends BaseScreen<BaseOverlayUI, BattleSummaryPresenter>
+        implements BattleSummaryView {
+
+    private final Label manaRewardLabel;
+    private final Label xpRewardLabel;
+    private final Label skillCasesRewardLabel;
 
     public BattleSummaryScreen(final UserBattleSummaryAPI user,
                                final Skin skin,
@@ -29,15 +34,17 @@ public final class BattleSummaryScreen extends BaseScreen<BaseOverlayUI, BattleS
         super(screenSetter, skin, overlayUI);
 
         presenter = new BattleSummaryPresenter(this,
-                new BattleSummaryInteractor(user)
-                , Gdx.app::postRunnable);
+                new BattleSummaryInteractor(user),
+                Gdx.app::postRunnable);
+        manaRewardLabel = new Label("", skin);
+        xpRewardLabel = new Label("", skin);
+        skillCasesRewardLabel = new Label("", skin);
     }
 
     @Override
     public BaseScreen reInit(Map<String, Object> arguments) {
         BattleSummaryData summaryData = getArgument(arguments, "BattleSummaryData");
         presenter.parseSummaryData(summaryData);
-        // TODO: use summaryData
         return this;
     }
 
@@ -54,9 +61,9 @@ public final class BattleSummaryScreen extends BaseScreen<BaseOverlayUI, BattleS
 
         layer.add(new Label("BATTLE FINISHED", skin)).padBottom(100).row();
 
-        layer.add(new Label("INFO 1", skin)).row();
-        layer.add(new Label("INFO 2", skin)).row();
-        layer.add(new Label("INFO 3", skin)).row();
+        layer.add(manaRewardLabel).row();
+        layer.add(xpRewardLabel).row();
+        layer.add(skillCasesRewardLabel).row();
 
         layer.add(UIElementFactory.getButton(skin, "TO MAIN MENU", new ChangeListener() {
             @Override
@@ -72,4 +79,18 @@ public final class BattleSummaryScreen extends BaseScreen<BaseOverlayUI, BattleS
         setScreen(ScreenInstance.MAIN_MENU, null);
     }
 
+    @Override
+    public void setManaReward(int manaReward) {
+        manaRewardLabel.setText("MANA REWARD: " + manaReward);
+    }
+
+    @Override
+    public void setExperienceReward(int experienceReward) {
+        xpRewardLabel.setText("XP REWARD: " + experienceReward);
+    }
+
+    @Override
+    public void setSkillCasesReward(int skillCasesReward) {
+        skillCasesRewardLabel.setText("SKILL CASES: " + skillCasesReward);
+    }
 }

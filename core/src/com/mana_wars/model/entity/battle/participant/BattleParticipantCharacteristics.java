@@ -2,7 +2,6 @@ package com.mana_wars.model.entity.battle.participant;
 
 import com.mana_wars.model.entity.base.Characteristic;
 import com.mana_wars.model.entity.base.CharacteristicsStorage;
-import com.mana_wars.model.entity.skills.SkillCharacteristic;
 
 import java.util.EnumMap;
 

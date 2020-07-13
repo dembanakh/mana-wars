@@ -1,5 +1,7 @@
 package com.mana_wars.presentation.view;
 
-public interface ShopView extends BaseView {
+import com.mana_wars.model.entity.skills.Skill;
 
+public interface ShopView extends BaseView {
+    void openSkillCaseWindow(Skill skill);
 }

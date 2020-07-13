@@ -1,7 +1,6 @@
 package com.mana_wars.ui.widgets.value_field;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -10,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
+import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.battle.participant.BattleParticipantData;
@@ -41,11 +42,13 @@ public final class BattleParticipantValueField extends ValueField<BattleParticip
 
     private boolean initializing = false;
 
+    private final AssetFactory<String, TextureRegion> imageFactory;
+
     BattleParticipantValueField(final Skin skin,
                                 final TransformApplier transformApplier,
                                 final AssetFactory<Integer, TextureRegion> iconFactory,
                                 final AssetFactory<Rarity, TextureRegion> frameFactory,
-                                final AssetFactory<String, Texture> imageFactory,
+                                final AssetFactory<String, TextureRegion> imageFactory,
                                 float deltaHealthAnimationDistance,
                                 float deltaHealthAnimationDuration) {
         super(skin, transformApplier);
@@ -58,7 +61,8 @@ public final class BattleParticipantValueField extends ValueField<BattleParticip
         this.participantPassiveSkillsList = UIElementFactory.skillsListWithoutLevel(skin,
                 GameConstants.USER_PASSIVE_SKILL_COUNT,
                 iconFactory, frameFactory);
-        participantImage = new Image(new TextureRegion(imageFactory.getAsset("player")));
+        this.imageFactory = imageFactory;
+        participantImage = new Image(new BaseDrawable());
         init();
     }
 
@@ -66,7 +70,7 @@ public final class BattleParticipantValueField extends ValueField<BattleParticip
                                 UIStringConstants.UI_SKIN.BACKGROUND_COLOR backgroundColor, TransformApplier transformApplier,
                                 final AssetFactory<Integer, TextureRegion> iconFactory,
                                 final AssetFactory<Rarity, TextureRegion> frameFactory,
-                                final AssetFactory<String, Texture> imageFactory,
+                                final AssetFactory<String, TextureRegion> imageFactory,
                                 float deltaHealthAnimationDistance,
                                 float deltaHealthAnimationDuration) {
         super(skin, backgroundColor, transformApplier);
@@ -79,7 +83,8 @@ public final class BattleParticipantValueField extends ValueField<BattleParticip
         this.participantPassiveSkillsList = UIElementFactory.skillsListWithoutLevel(skin,
                 GameConstants.USER_PASSIVE_SKILL_COUNT,
                 iconFactory, frameFactory);
-        participantImage = new Image(new TextureRegion(imageFactory.getAsset("player")));
+        this.imageFactory = imageFactory;
+        participantImage = new Image(new BaseDrawable());
         init();
     }
 
@@ -122,6 +127,7 @@ public final class BattleParticipantValueField extends ValueField<BattleParticip
         participantNameLabel.setText(data.name);
         participantHealthBar.setRange(0, data.initialHealth);
         participantPassiveSkillsList.setItems(data.passiveSkills);
+        participantImage.setDrawable(new TextureRegionDrawable(imageFactory.getAsset(data.iconID)));
     }
 
     private void updateHealthChangeLabel(int deltaHealth) {

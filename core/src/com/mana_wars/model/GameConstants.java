@@ -8,7 +8,7 @@ public final class GameConstants {
     public static final int USER_PASSIVE_SKILL_COUNT = 5;
 
     public static final int MANA_BONUS_BIT_TIMEOUT = 1;
-    public static final int MANA_BONUS_BIT_SIZE = 20;
+    public static final int MANA_BONUS_BIT_SIZE = 1000; // was 20
     public static final int MANA_BONUS_NUM_BITS = 4;
 
     public static final int SKILL_CASE_PRICE = 100;

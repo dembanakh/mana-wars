@@ -25,7 +25,7 @@ public class BattleParticipantTest {
 
     @Before
     public void setup() {
-        bp = new BattleParticipant("a", 100, new SkillsSet() {
+        bp = new BattleParticipant("a", "player", 100, new SkillsSet() {
             @Override
             public void add(ActiveSkill skill) {
 

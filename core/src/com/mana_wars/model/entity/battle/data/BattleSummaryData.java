@@ -4,10 +4,6 @@ public class BattleSummaryData {
 
     private final BattleRewardData rewardData = new BattleRewardData(0,0,0);
 
-    public BattleSummaryData() {
-
-    }
-
     public void addReward(BattleRewardData rewardData) {
         this.rewardData.add(rewardData);
     }

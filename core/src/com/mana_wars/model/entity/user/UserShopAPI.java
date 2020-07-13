@@ -6,4 +6,5 @@ public interface UserShopAPI extends UserBaseAPI{
     Subject<Integer> getManaAmountObservable();
     Subject<Integer> getUserLevelObservable();
     void updateManaAmount(int delta);
+    void updateSkillCases(int delta);
 }

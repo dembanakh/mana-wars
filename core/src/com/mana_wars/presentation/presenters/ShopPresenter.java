@@ -24,7 +24,8 @@ public final class ShopPresenter extends BasePresenter<ShopView, ShopInteractor>
 
     public void buySkillCase() {
         // obtain cases
-        interactor.buySkillCase();
+        disposable.add(interactor.buySkillCase().subscribe(s -> uiThreadHandler
+                .postRunnable(() -> view.openSkillCaseWindow(s)), Throwable::printStackTrace));
     }
 
 }
