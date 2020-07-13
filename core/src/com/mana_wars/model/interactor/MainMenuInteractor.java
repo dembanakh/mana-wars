@@ -71,4 +71,12 @@ public final class MainMenuInteractor extends BaseInteractor<UserMenuAPI> {
     public Single<String> getUsername() {
         return Single.just(user.getName());
     }
+
+    public int getUserSkillCasesNumber() {
+        return user.getSkillCasesNumber();
+    }
+
+    public void useSkillCase() {
+        user.updateSkillCases(-1);
+    }
 }

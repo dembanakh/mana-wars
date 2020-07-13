@@ -3,6 +3,7 @@ package com.mana_wars.ui.textures;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import static com.mana_wars.ui.UIElementsSize.SCREEN_HEIGHT;
 import static com.mana_wars.ui.UIElementsSize.SCREEN_WIDTH;
@@ -14,11 +15,11 @@ public class FillScreenTexture extends AdaptiveTexture {
     }
 
     @Override
-    protected Texture adapt(FileHandle file) {
+    protected TextureRegion adapt(FileHandle file) {
         Pixmap pixmapFrom = new Pixmap(file);
         Pixmap pixmapTo = new Pixmap(SCREEN_WIDTH(), SCREEN_HEIGHT(), pixmapFrom.getFormat());
         pixmapAdaptiveCopy(pixmapFrom, pixmapTo);
-        Texture result = new Texture(pixmapTo);
+        TextureRegion result = new TextureRegion(new Texture(pixmapTo));
         pixmapFrom.dispose();
         pixmapTo.dispose();
         return result;

@@ -15,7 +15,7 @@ public class BattleRewardData {
     public void add(BattleRewardData other) {
         this.manaReward += other.manaReward;
         this.experienceReward += other.experienceReward;
-        this.caseProbabilityReward += caseProbabilityReward;
+        this.caseProbabilityReward += other.caseProbabilityReward;
     }
 
     public int getManaReward() {

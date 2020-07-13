@@ -30,7 +30,7 @@ public class ManaWars extends Game implements ScreenHandler, RepositoryStorage {
     @Override
     public void create() {
         screenManager = new ScreenManager(this,
-                new User(localUserDataRepository, localUserDataRepository, localUserDataRepository),
+                new User(localUserDataRepository, localUserDataRepository, localUserDataRepository, localUserDataRepository),
                 this, databaseUpdater);
     }
 

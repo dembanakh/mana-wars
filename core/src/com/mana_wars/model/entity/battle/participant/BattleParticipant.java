@@ -24,15 +24,15 @@ public abstract class BattleParticipant {
     private final BattleRewardData onDeathReward;
     private final Subject<Integer> healthObservable;
 
-    public BattleParticipant(String name, int initialHealth, Iterable<ActiveSkill> activeSkills, Iterable<PassiveSkill> passiveSkills, int manaReward, int experienceReward, int caseProbabilityReward) {
-        this(name, initialHealth, new BaseSkillsSet(), passiveSkills,
+    public BattleParticipant(String name, String iconID, int initialHealth, Iterable<ActiveSkill> activeSkills, Iterable<PassiveSkill> passiveSkills, int manaReward, int experienceReward, int caseProbabilityReward) {
+        this(name, iconID, initialHealth, new BaseSkillsSet(), passiveSkills,
                 new BattleRewardData(manaReward, experienceReward, caseProbabilityReward));
 
         skills.add(activeSkills);
     }
 
-    protected BattleParticipant(String name, int initialHealth, SkillsSet skills, Iterable<PassiveSkill> passiveSkills, BattleRewardData onDeathReward) {
-        this.data = new BattleParticipantData(name, initialHealth, passiveSkills);
+    protected BattleParticipant(String name, String iconID, int initialHealth, SkillsSet skills, Iterable<PassiveSkill> passiveSkills, BattleRewardData onDeathReward) {
+        this.data = new BattleParticipantData(name, iconID, initialHealth, passiveSkills);
         this.currentTarget = new BattleParticipantTarget(this);
         this.characteristics = new BattleParticipantCharacteristics(initialHealth);
         setCharacteristicApplicator(SkillCharacteristicApplicationMode.DEFAULT);
@@ -81,20 +81,12 @@ public abstract class BattleParticipant {
         return currentTarget.change(battleClientAPI);
     }
 
-    protected int getInitialHealthAmount() {
-        return characteristics.getInitialHealth();
-    }
-
     public Iterable<PassiveSkill> getPassiveSkills() {
         return data.passiveSkills;
     }
 
     public Subject<Integer> getHealthObservable() {
         return healthObservable;
-    }
-
-    public String getName() {
-        return data.name;
     }
 
     public int getCurrentTarget() {

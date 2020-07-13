@@ -2,6 +2,7 @@ package com.mana_wars.model.entity.enemy;
 
 import com.mana_wars.model.entity.battle.participant.BattleParticipant;
 import com.mana_wars.model.entity.battle.data.BattleRewardData;
+import com.mana_wars.model.entity.battle.participant.BattleParticipantData;
 import com.mana_wars.model.entity.battle.participant.SkillsSet;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.ImmutableBattleSkill;
@@ -9,12 +10,12 @@ import com.mana_wars.model.entity.skills.PassiveSkill;
 
 public class Mob extends BattleParticipant {
 
-    public Mob(String name, int initialHealth, Iterable<ActiveSkill> activeSkills, Iterable<PassiveSkill> passiveSkills, int manaReward, int experienceReward, int caseProbabilityReward) {
-        super(name, initialHealth, activeSkills, passiveSkills, manaReward, experienceReward, caseProbabilityReward);
+    public Mob(String name, String iconID, int initialHealth, Iterable<ActiveSkill> activeSkills, Iterable<PassiveSkill> passiveSkills, int manaReward, int experienceReward, int caseProbabilityReward) {
+        super(name, iconID, initialHealth, activeSkills, passiveSkills, manaReward, experienceReward, caseProbabilityReward);
     }
 
-    private Mob(String name, int initialHealth, SkillsSet skills, Iterable<PassiveSkill> passiveSkills, BattleRewardData onDeathReward) {
-        super(name, initialHealth, skills, passiveSkills, onDeathReward);
+    private Mob(String name, String iconID, int initialHealth, SkillsSet skills, Iterable<PassiveSkill> passiveSkills, BattleRewardData onDeathReward) {
+        super(name, iconID, initialHealth, skills, passiveSkills, onDeathReward);
     }
 
     @Override
@@ -28,7 +29,9 @@ public class Mob extends BattleParticipant {
     }
 
     Mob copy() {
-        return new Mob(getName(), getInitialHealthAmount(), skills, getPassiveSkills(), getOnDeathReward());
+        BattleParticipantData mobData = getData();
+        return new Mob(mobData.name, mobData.iconID, mobData.initialHealth,
+                skills, getPassiveSkills(), getOnDeathReward());
     }
 
 }

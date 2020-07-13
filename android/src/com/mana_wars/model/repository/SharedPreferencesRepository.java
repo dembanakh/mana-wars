@@ -134,6 +134,6 @@ public class SharedPreferencesRepository implements LocalUserDataRepository {
 
     @Override
     public void updateSkillCasesNumber(int delta) {
-        getPrefsEditor().putInt(USER_SKILL_CASES, getSkillCasesNumber() + delta);
+        getPrefsEditor().putInt(USER_SKILL_CASES, getSkillCasesNumber() + delta).apply();
     }
 }

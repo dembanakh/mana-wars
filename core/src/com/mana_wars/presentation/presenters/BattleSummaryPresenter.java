@@ -15,5 +15,6 @@ public final class BattleSummaryPresenter extends BasePresenter<BattleSummaryVie
         interactor.parseSummaryData(summaryData);
         view.setManaReward(interactor.getManaReward());
         view.setExperienceReward(interactor.getExperienceReward());
+        view.setSkillCasesReward(interactor.getGainedSkillCases());
     }
 }

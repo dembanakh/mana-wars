@@ -1,6 +1,5 @@
 package com.mana_wars.ui.management;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mana_wars.model.entity.base.Rarity;
@@ -15,6 +14,7 @@ import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.ui.textures.AdaptiveTexture;
 import com.mana_wars.ui.textures.FillScreenTexture;
+import com.mana_wars.ui.textures.FixedSizeMirroredTexture;
 import com.mana_wars.ui.textures.FixedSizeTexture;
 
 import java.util.Map;
@@ -28,7 +28,7 @@ public class ScreenManager implements FactoryStorage, ScreenSetter {
     private final AssetFactory<Integer, TextureRegion> skillIconFactory;
     private final AssetFactory<String, Skin> skinFactory;
     private final AssetFactory<Rarity, TextureRegion> rarityFrameFactory;
-    private final AssetFactory<String, Texture> pngImageFactory;
+    private final AssetFactory<String, TextureRegion> pngImageFactory;
 
     public ScreenManager(final ScreenHandler handler,
                          final User user,
@@ -42,6 +42,7 @@ public class ScreenManager implements FactoryStorage, ScreenSetter {
                 new FixedSizeTexture("white", AdaptiveTexture.ImageFormat.PNG),
                 new FixedSizeTexture("player", AdaptiveTexture.ImageFormat.PNG),
                 new FixedSizeTexture("enemy", AdaptiveTexture.ImageFormat.PNG),
+                new FixedSizeMirroredTexture("enemy", AdaptiveTexture.ImageFormat.PNG),
                 new FillScreenTexture("bg1", AdaptiveTexture.ImageFormat.PNG),
                 new FillScreenTexture("bg2", AdaptiveTexture.ImageFormat.PNG))
                 .build();
@@ -73,7 +74,7 @@ public class ScreenManager implements FactoryStorage, ScreenSetter {
     }
 
     @Override
-    public AssetFactory<String, Texture> getImageFactory() {
+    public AssetFactory<String, TextureRegion> getImageFactory() {
         return pngImageFactory;
     }
 

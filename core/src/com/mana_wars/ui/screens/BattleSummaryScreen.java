@@ -25,6 +25,7 @@ public final class BattleSummaryScreen extends BaseScreen<BaseOverlayUI, BattleS
 
     private final Label manaRewardLabel;
     private final Label xpRewardLabel;
+    private final Label skillCasesRewardLabel;
 
     public BattleSummaryScreen(final UserBattleSummaryAPI user,
                                final Skin skin,
@@ -37,6 +38,7 @@ public final class BattleSummaryScreen extends BaseScreen<BaseOverlayUI, BattleS
                 Gdx.app::postRunnable);
         manaRewardLabel = new Label("", skin);
         xpRewardLabel = new Label("", skin);
+        skillCasesRewardLabel = new Label("", skin);
     }
 
     @Override
@@ -61,7 +63,7 @@ public final class BattleSummaryScreen extends BaseScreen<BaseOverlayUI, BattleS
 
         layer.add(manaRewardLabel).row();
         layer.add(xpRewardLabel).row();
-        layer.add(new Label("INFO 3", skin)).row();
+        layer.add(skillCasesRewardLabel).row();
 
         layer.add(UIElementFactory.getButton(skin, "TO MAIN MENU", new ChangeListener() {
             @Override
@@ -85,5 +87,10 @@ public final class BattleSummaryScreen extends BaseScreen<BaseOverlayUI, BattleS
     @Override
     public void setExperienceReward(int experienceReward) {
         xpRewardLabel.setText("XP REWARD: " + experienceReward);
+    }
+
+    @Override
+    public void setSkillCasesReward(int skillCasesReward) {
+        skillCasesRewardLabel.setText("SKILL CASES: " + skillCasesReward);
     }
 }

@@ -2,7 +2,7 @@ package com.mana_wars.ui.textures;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public abstract class AdaptiveTexture {
 
@@ -14,11 +14,11 @@ public abstract class AdaptiveTexture {
         this.format = format;
     }
 
-    public Texture adapt() {
+    public TextureRegion adapt() {
         return adapt(Gdx.files.internal(fileName + format));
     }
 
-    protected abstract Texture adapt(FileHandle file);
+    protected abstract TextureRegion adapt(FileHandle file);
 
     public String getFileName() {
         return fileName;

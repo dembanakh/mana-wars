@@ -1,7 +1,7 @@
 package com.mana_wars.ui.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -53,7 +53,7 @@ public final class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresente
 
     private final Label roundLabel;
 
-    private final AssetFactory<String, Texture> imageFactory;
+    private final AssetFactory<String, TextureRegion> imageFactory;
 
     public BattleScreen(final UserBattleAPI user,
                         final Skin skin,

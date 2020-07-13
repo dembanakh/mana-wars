@@ -1,6 +1,5 @@
 package com.mana_wars.ui.factory;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -58,7 +57,7 @@ public final class UIElementFactory {
     public static ApplicableSkillsList2D<ActiveSkill> applicableSkillsList(Skin skin, int cols,
                                                                           AssetFactory<Integer, TextureRegion> skillIconFactory,
                                                                           AssetFactory<Rarity, TextureRegion> rarityFrameFactory,
-                                                                          AssetFactory<String, Texture> imageFactory,
+                                                                          AssetFactory<String, TextureRegion> imageFactory,
                                                                           ListItemConsumer<ActiveSkill> onSkillClick) {
         SkillIconAnimationController animationController =
                 new SkillIconAnimationController(
