@@ -70,7 +70,7 @@ public class User implements
     }
 
     @Override
-    public void checkNextLevel(){
+    public void checkNextLevel() {
         int experienceCount = userLevelExperienceRepository.getCurrentUserExperience();
         while (experienceCount >= nextLevelRequiredExperience){
             int userLevel = getLevel() + 1;

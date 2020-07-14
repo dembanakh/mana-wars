@@ -59,7 +59,7 @@ class UserBattleParticipant extends BattleParticipant {
     }
 
     private boolean isAvailableAt(ActiveSkill appliedSkill) {
-        for (ImmutableBattleSkill skill : skills) {
+        for (ImmutableBattleSkill skill : skills.elements()) {
             if (skill.getSkill() == appliedSkill) return skill.isAvailableAt(battleTime);
         }
         return false;

@@ -14,6 +14,9 @@ import com.mana_wars.ui.widgets.base.ClickableList2D;
 import com.mana_wars.ui.widgets.base.List2D;
 import com.mana_wars.ui.widgets.base.ListItemConsumer;
 import com.mana_wars.ui.widgets.item_drawer.ApplicableSkillDrawer;
+import com.mana_wars.ui.widgets.item_drawer.SkillLevelDrawer;
+import com.mana_wars.ui.widgets.item_drawer.SkillManaCostDrawer;
+import com.mana_wars.ui.widgets.item_drawer.SkillTypeDrawer;
 import com.mana_wars.ui.widgets.item_drawer.StandardSkillDrawer;
 import com.mana_wars.ui.widgets.skills_list_2d.ApplicableSkillsList2D;
 import com.mana_wars.ui.widgets.skills_list_2d.OperationSkillsList2D;
@@ -42,7 +45,10 @@ public final class UIElementFactory {
                                                     AssetFactory<Integer, TextureRegion> skillIconFactory,
                                                     AssetFactory<Rarity, TextureRegion> rarityFrameFactory) {
         return new OperationSkillsList2D(emptyListStyle(skin),
-                new StandardSkillDrawer<>(skillIconFactory, rarityFrameFactory),
+                new StandardSkillDrawer<>(skillIconFactory, rarityFrameFactory,
+                        new SkillLevelDrawer(skillIconFactory.getAsset(1)),
+                        new SkillManaCostDrawer(skillIconFactory.getAsset(1)),
+                        new SkillTypeDrawer(skillIconFactory.getAsset(1))),
                 cols, true);
     }
 
@@ -50,7 +56,10 @@ public final class UIElementFactory {
                                                            AssetFactory<Integer, TextureRegion> skillIconFactory,
                                                            AssetFactory<Rarity, TextureRegion> rarityFrameFactory) {
         return new OperationSkillsList2D(skin,
-                new StandardSkillDrawer<>(skillIconFactory, rarityFrameFactory),
+                new StandardSkillDrawer<>(skillIconFactory, rarityFrameFactory,
+                        new SkillLevelDrawer(skillIconFactory.getAsset(1)),
+                        new SkillManaCostDrawer(skillIconFactory.getAsset(1)),
+                        new SkillTypeDrawer(skillIconFactory.getAsset(1))),
                 cols, false);
     }
 
@@ -67,34 +76,12 @@ public final class UIElementFactory {
                 cols, onSkillClick, animationController, "font");
     }
 
-    public static <T extends Skill> List2D<T> skillsListWithLevel(Skin skin, int cols,
-                                                             AssetFactory<Integer, TextureRegion> skillIconFactory,
-                                                             AssetFactory<Rarity, TextureRegion> rarityFrameFactory) {
-        return new List2D<>(skin,
-                new StandardSkillDrawer<>(skillIconFactory, rarityFrameFactory),
-                cols);
-    }
-
     public static <T extends Skill> List2D<T> skillsListWithoutLevel(Skin skin, int cols,
                                                                 AssetFactory<Integer, TextureRegion> skillIconFactory,
                                                                 AssetFactory<Rarity, TextureRegion> rarityFrameFactory) {
         return new List2D<>(emptyListStyle(skin),
-                new StandardSkillDrawer<T>(skillIconFactory, rarityFrameFactory) {
-                    @Override
-                    protected boolean shouldShowLevel(Skill skill) {
-                        return false;
-                    }
-                },
+                new StandardSkillDrawer<T>(skillIconFactory, rarityFrameFactory),
                 cols);
-    }
-
-    public static <T extends Skill> List2D<T> clickableSkillsListWithLevel(Skin skin, int cols,
-                                                                AssetFactory<Integer, TextureRegion> skillIconFactory,
-                                                                AssetFactory<Rarity, TextureRegion> rarityFrameFactory,
-                                                                ListItemConsumer<Skill> onSkillClick) {
-        return new ClickableList2D<>(skin,
-                new StandardSkillDrawer<>(skillIconFactory, rarityFrameFactory),
-                cols, onSkillClick);
     }
 
     public static <T extends Skill> List2D<T> clickableSkillsListWithoutLevel(Skin skin, int cols,
@@ -102,12 +89,8 @@ public final class UIElementFactory {
                                                     AssetFactory<Rarity, TextureRegion> rarityFrameFactory,
                                                     ListItemConsumer<Skill> onSkillClick) {
         return new ClickableList2D<>(skin,
-                new StandardSkillDrawer<T>(skillIconFactory, rarityFrameFactory) {
-                    @Override
-                    protected boolean shouldShowLevel(Skill skill) {
-                        return false;
-                    }
-                },
+                new StandardSkillDrawer<T>(skillIconFactory, rarityFrameFactory,
+                        new SkillTypeDrawer(skillIconFactory.getAsset(1))),
                 cols, onSkillClick);
     }
 

@@ -11,13 +11,13 @@ public class DungeonEnemyFactory implements EnemyFactory {
     private static Random Random = new Random();
 
     private final Dungeon dungeon;
-    private List<Mob> mobs;
+    private List<MobBlueprint> mobs;
 
     public DungeonEnemyFactory(Dungeon dungeon) {
         this.dungeon = dungeon;
     }
 
-    public void setMobs(List<Mob> mobs) {
+    public void setMobs(List<MobBlueprint> mobs) {
         this.mobs = mobs;
     }
 
@@ -27,7 +27,7 @@ public class DungeonEnemyFactory implements EnemyFactory {
 
     @Override
     public List<BattleParticipant> generateEnemies() {
-        return Arrays.asList(mobs.get(Random.nextInt(mobs.size())).copy(),
-                mobs.get(Random.nextInt(mobs.size())).copy());
+        return Arrays.asList(new Mob(mobs.get(Random.nextInt(mobs.size()))),
+                new Mob(mobs.get(Random.nextInt(mobs.size()))));
     }
 }

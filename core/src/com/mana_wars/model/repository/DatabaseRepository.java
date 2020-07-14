@@ -2,7 +2,7 @@ package com.mana_wars.model.repository;
 
 import com.mana_wars.model.SkillsListTriple;
 import com.mana_wars.model.entity.enemy.Dungeon;
-import com.mana_wars.model.entity.enemy.Mob;
+import com.mana_wars.model.entity.enemy.MobBlueprint;
 import com.mana_wars.model.entity.skills.Skill;
 
 import java.util.List;
@@ -20,6 +20,6 @@ public interface DatabaseRepository {
     Completable swapSkills(Skill skillSource, Skill skillTarget);
 
     Single<List<Dungeon>> getDungeons();
-    Single<List<Mob>> getMobsListByDungeon(Dungeon dungeon);
+    Single<List<MobBlueprint>> getMobsListByDungeon(Dungeon dungeon);
     Single<Integer> getRequiredManaAmountForBattle();
 }

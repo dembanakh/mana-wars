@@ -12,7 +12,7 @@ public abstract class ShapeAnimator {
         this.color = color;
     }
 
-    protected Color getColor() {
+    Color getColor() {
         return color;
     }
 

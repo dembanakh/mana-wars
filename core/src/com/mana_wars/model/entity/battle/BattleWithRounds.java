@@ -53,6 +53,17 @@ public class BattleWithRounds implements Battle {
         return this;
     }
 
+    @Override
+    public void start() {
+        observer.setCurrentRound(currentRound);
+        currentRoundBattle.start();
+    }
+
+    @Override
+    public synchronized void update(float timeDelta) {
+        currentRoundBattle.update(timeDelta);
+    }
+
     private synchronized void changeRound() {
         currentRound++;
         observer.setCurrentRound(currentRound);
@@ -61,13 +72,13 @@ public class BattleWithRounds implements Battle {
         user.setCharacteristicValue(Characteristic.CAST_TIME, 100);
         user.setCharacteristicValue(Characteristic.COOLDOWN, 100);
 
-        user.setCharacteristicApplicator(SkillCharacteristicApplicationMode.NO_MANA_CONSUMPTION);
+        user.setCharacteristicApplicationMode(SkillCharacteristicApplicationMode.NO_MANA_CONSUMPTION);
 
         currentRoundBattle = new BaseBattle(user, userSide, enemyFactory.generateEnemies(),
                 BattleStartMode.ROUND, currentRoundBattle.getBattleTime()).init();
         subscribeOnBattleFinish();
 
-        user.setCharacteristicApplicator(SkillCharacteristicApplicationMode.DEFAULT);
+        user.setCharacteristicApplicationMode(SkillCharacteristicApplicationMode.DEFAULT);
 
         observer.updateDurationCoefficients(
                 user.getCharacteristicValue(Characteristic.CAST_TIME),
@@ -81,7 +92,7 @@ public class BattleWithRounds implements Battle {
         disposable.add(currentRoundBattle.getFinishBattleObservable().subscribe(battleSummaryData -> {
             battleSummaryDataList.add(battleSummaryData);
 
-            if(user.isAlive() && currentRound < roundsCount){
+            if (user.isAlive() && currentRound < roundsCount) {
                 changeRound();
             }
             else {
@@ -94,17 +105,7 @@ public class BattleWithRounds implements Battle {
         }, Throwable::printStackTrace));
     }
 
-    @Override
-    public void start() {
-        observer.setCurrentRound(currentRound);
-        currentRoundBattle.start();
-    }
-
-    @Override
-    public synchronized void update(float timeDelta) {
-        currentRoundBattle.update(timeDelta);
-    }
-
+    //region Getters
     @Override
     public BattleParticipant getUser() {
         return user;
@@ -124,6 +125,7 @@ public class BattleWithRounds implements Battle {
     public Single<BattleSummaryData> getFinishBattleObservable() {
         return finishBattleObservable;
     }
+    //endregion
 
     @Override
     public void dispose() {

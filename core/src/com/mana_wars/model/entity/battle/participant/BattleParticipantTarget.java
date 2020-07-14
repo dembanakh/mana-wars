@@ -38,5 +38,4 @@ class BattleParticipantTarget {
     int get() {
         return currentTarget;
     }
-
 }

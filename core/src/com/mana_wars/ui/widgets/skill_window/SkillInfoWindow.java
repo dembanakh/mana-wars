@@ -70,13 +70,13 @@ public class SkillInfoWindow extends BaseSkillWindow implements BuildableUI {
     private void decreaseLevel() {
         currentSkill.downgradeLevel();
         setSkillLevel(currentSkill.getLevel());
-        setSkillDescription(currentSkill.getDescription());
+        setSkillDescription(getDescription(currentSkill));
     }
 
     private void increaseLevel() {
         currentSkill.upgradeLevel();
         setSkillLevel(currentSkill.getLevel());
-        setSkillDescription(currentSkill.getDescription());
+        setSkillDescription(getDescription(currentSkill));
     }
 
 }

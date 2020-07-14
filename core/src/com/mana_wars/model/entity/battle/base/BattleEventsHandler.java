@@ -10,12 +10,12 @@ class BattleEventsHandler {
 
     private final Queue<BattleEvent> battleEvents = new PriorityQueue<>();
 
-    void add(double activationTime, ActiveSkill skill, BattleParticipant participant, BattleParticipant target) {
+    synchronized void add(double activationTime, ActiveSkill skill, BattleParticipant participant, BattleParticipant target) {
         battleEvents.add(new BattleEvent(activationTime, skill, participant, target));
     }
 
     void update(double currentTime) {
-        while (!battleEvents.isEmpty() && battleEvents.peek().targetTime < currentTime) {
+        while (!battleEvents.isEmpty() && battleEvents.peek().targetTime <= currentTime) {
             BattleEvent be = battleEvents.poll();
             if (be.source.isAlive())
                 be.skill.activate(be.source, be.target);

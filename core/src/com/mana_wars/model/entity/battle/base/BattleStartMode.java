@@ -5,7 +5,9 @@ import com.mana_wars.model.entity.battle.participant.BattleParticipant;
 public enum BattleStartMode {
     DEFAULT {
         @Override
-        public void start(BattleParticipant user, Iterable<BattleParticipant> userSide, Iterable<BattleParticipant> enemySide) {
+        public void start(BattleParticipant user,
+                          Iterable<? extends BattleParticipant> userSide,
+                          Iterable<? extends BattleParticipant> enemySide) {
             user.start();
             for (BattleParticipant participant : userSide) {
                 participant.start();
@@ -17,7 +19,9 @@ public enum BattleStartMode {
     },
     ROUND {
         @Override
-        public void start(BattleParticipant user, Iterable<BattleParticipant> userSide, Iterable<BattleParticipant> enemySide) {
+        public void start(BattleParticipant user,
+                          Iterable<? extends BattleParticipant> userSide,
+                          Iterable<? extends BattleParticipant> enemySide) {
             user.changeTarget();
             for (BattleParticipant participant : userSide) {
                 participant.changeTarget();
@@ -27,5 +31,8 @@ public enum BattleStartMode {
             }
         }
     };
-    public abstract void start(BattleParticipant user, Iterable<BattleParticipant> userSide, Iterable<BattleParticipant> enemySide);
+
+    public abstract void start(BattleParticipant user,
+                               Iterable<? extends BattleParticipant> userSide,
+                               Iterable<? extends BattleParticipant> enemySide);
 }

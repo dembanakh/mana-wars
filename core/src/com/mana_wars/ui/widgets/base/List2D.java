@@ -241,25 +241,21 @@ public class List2D<T> extends Widget implements Cullable {
         }
     }
 
-    protected void drawItem(Batch batch, BitmapFont font, int index, T item,
-                                     float x, float y, float width, float height) {
+    private void drawItem(Batch batch, BitmapFont font, int index, T item,
+                          float x, float y, float width, float height) {
         listItemDrawer.draw(batch, font, index, item, x, y, width, height);
     }
 
-    protected void setCols(int cols) {
+    private void setCols(int cols) {
         if (cols <= 0) throw new IllegalArgumentException("cols cannot be <= 0.");
         this.cols = cols;
         invalidate();
     }
 
-    public void setStyle(List.ListStyle style) {
+    private void setStyle(List.ListStyle style) {
         if (style == null) throw new IllegalArgumentException("style cannot be null.");
         this.style = style;
         invalidateHierarchy();
-    }
-
-    public List.ListStyle getStyle() {
-        return style;
     }
 
     public Selection<List2DItem<T>> getSelection() {
