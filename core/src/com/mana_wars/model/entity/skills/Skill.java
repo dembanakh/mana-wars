@@ -5,7 +5,9 @@ import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.battle.participant.BattleParticipant;
 import com.mana_wars.model.entity.base.Characteristic;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class Skill extends GameItem {
 
@@ -34,14 +36,13 @@ public class Skill extends GameItem {
         return 0;
     }
 
-    public String getDescription() {
-        StringBuilder result = new StringBuilder();
+    public Iterable<SkillCharacteristic> getCharacteristics() {
+        List<SkillCharacteristic> result = new ArrayList<>();
         for (SkillCharacteristic sc : skillCharacteristics) {
-            if (sc.getCharacteristic() == Characteristic.MANA) continue;
-            result.append(sc.getDescription(getLevel()));
-            result.append('\n');
+            if (sc.isManaCost()) continue;
+            result.add(sc);
         }
-        return result.toString();
+        return result;
     }
 
     private static Skill Empty = new Skill(50, 0, Rarity.EMPTY, "EMPTY",

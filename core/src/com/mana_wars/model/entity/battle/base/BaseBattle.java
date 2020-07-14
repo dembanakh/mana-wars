@@ -34,7 +34,7 @@ public class BaseBattle implements Battle, BattleClientAPI {
     public BaseBattle(final BattleParticipant user,
                final List<BattleParticipant> userSide,
                final List<BattleParticipant> enemySide) {
-        this(user, userSide, enemySide, BattleStartMode.DEFAULT, 0.);
+        this(user, userSide, enemySide, BattleStartMode.DEFAULT, 0);
     }
 
     public BaseBattle(final BattleParticipant user,
@@ -92,16 +92,16 @@ public class BaseBattle implements Battle, BattleClientAPI {
     }
 
     @Override
-    public synchronized void requestSkillApplication(BattleParticipant participant,
+    public void requestSkillApplication(BattleParticipant participant,
                                                      ActiveSkill skill, double castTime) {
         if (!isActive.get()) return;
-        //TODO think about synchronization
+
         double activationTime = battleTime + castTime;
         battleEvents.add(activationTime, skill, participant,
                 getOpponents(participant).get(participant.getCurrentTarget()));
     }
 
-
+    //region Private methods
     private BattleSummaryData prepareSummaryData() {
         for (BattleParticipant bp : enemySide){
             if (!bp.isAlive()) {
@@ -133,7 +133,9 @@ public class BaseBattle implements Battle, BattleClientAPI {
         }
         return true;
     }
+    //endregion
 
+    //region Getters and Setters
     @Override
     public List<BattleParticipant> getOpponents(BattleParticipant participant) {
         return opponents.get(participant);
@@ -162,6 +164,7 @@ public class BaseBattle implements Battle, BattleClientAPI {
     public double getBattleTime() {
         return battleTime;
     }
+    //endregion
 
     @Override
     public void dispose() {}

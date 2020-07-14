@@ -10,11 +10,12 @@ import com.mana_wars.model.entity.skills.SkillCharacteristic;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Collections;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -23,19 +24,19 @@ public class UserBattleParticipantTest {
 
     private UserBattleParticipant user;
 
+    @Mock
     private ActiveSkill activeSkill;
+    @Mock
     private PassiveSkill passiveSkill;
 
+    @Mock
     private BattleClientAPI battleClientAPI;
 
     private int changedMana;
 
     @Before
     public void setup() {
-        activeSkill = mock(ActiveSkill.class);
-        passiveSkill = mock(PassiveSkill.class);
-        battleClientAPI = mock(BattleClientAPI.class);
-
+        MockitoAnnotations.initMocks(this);
         user = new UserBattleParticipant("a", 100, (mana) -> changedMana = mana,
                 Collections.singletonList(activeSkill), Collections.singletonList(passiveSkill));
         user.setBattleClientAPI(battleClientAPI);

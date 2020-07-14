@@ -30,15 +30,6 @@ public class SkillCharacteristic {
         this.levelMultiplier = levelMultiplier;
     }
 
-    String getDescription(int skillLevel) {
-        String result = String.valueOf(target);
-        result += " ";
-        result += String.valueOf(characteristic);
-        result += (changeType == ValueChangeType.DECREASE) ? " -" : " +";
-        result += String.valueOf(getValue(skillLevel));
-        return result;
-    }
-
     public Characteristic getCharacteristic() {
         return characteristic;
     }

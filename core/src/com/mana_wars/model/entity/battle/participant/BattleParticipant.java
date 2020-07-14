@@ -3,7 +3,6 @@ package com.mana_wars.model.entity.battle.participant;
 import com.mana_wars.model.entity.base.Characteristic;
 import com.mana_wars.model.entity.battle.data.BattleRewardData;
 import com.mana_wars.model.entity.skills.ActiveSkill;
-import com.mana_wars.model.entity.skills.ImmutableBattleSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.entity.skills.SkillCharacteristic;
 
@@ -24,24 +23,16 @@ public abstract class BattleParticipant {
     private final BattleRewardData onDeathReward;
     private final Subject<Integer> healthObservable;
 
-    public BattleParticipant(String name, String iconID, int initialHealth, Iterable<ActiveSkill> activeSkills, Iterable<PassiveSkill> passiveSkills, int manaReward, int experienceReward, int caseProbabilityReward) {
-        this(name, iconID, initialHealth, new BaseSkillsSet(), passiveSkills,
-                new BattleRewardData(manaReward, experienceReward, caseProbabilityReward));
-
-        skills.add(activeSkills);
-    }
-
-    protected BattleParticipant(String name, String iconID, int initialHealth, SkillsSet skills, Iterable<PassiveSkill> passiveSkills, BattleRewardData onDeathReward) {
+    public BattleParticipant(String name, String iconID, int initialHealth,
+                             Iterable<? extends ActiveSkill> activeSkills,
+                             Iterable<? extends PassiveSkill> passiveSkills,
+                             int manaReward, int experienceReward, int caseProbabilityReward) {
         this.data = new BattleParticipantData(name, iconID, initialHealth, passiveSkills);
         this.currentTarget = new BattleParticipantTarget(this);
         this.characteristics = new BattleParticipantCharacteristics(initialHealth);
-        setCharacteristicApplicator(SkillCharacteristicApplicationMode.DEFAULT);
-        this.skills = new BaseSkillsSet();
-        this.onDeathReward = onDeathReward;
-
-        for (ImmutableBattleSkill skill : skills) {
-            this.skills.add(skill.getSkill());
-        }
+        setCharacteristicApplicationMode(SkillCharacteristicApplicationMode.DEFAULT);
+        this.skills = new BaseSkillsSet(activeSkills);
+        this.onDeathReward = new BattleRewardData(manaReward, experienceReward, caseProbabilityReward);
         healthObservable = BehaviorSubject.create();
     }
 
@@ -65,8 +56,8 @@ public abstract class BattleParticipant {
     }
 
     //region Getters and Setters
-    public void setCharacteristicApplicator(SkillCharacteristicApplicationMode applicator) {
-        this.applicator = applicator;
+    public void setCharacteristicApplicationMode(SkillCharacteristicApplicationMode applicationMode) {
+        this.applicator = applicationMode;
     }
 
     public void setBattleClientAPI(BattleClientAPI battleClientAPI) {
@@ -81,7 +72,7 @@ public abstract class BattleParticipant {
         return currentTarget.change(battleClientAPI);
     }
 
-    public Iterable<PassiveSkill> getPassiveSkills() {
+    public Iterable<? extends PassiveSkill> getPassiveSkills() {
         return data.passiveSkills;
     }
 

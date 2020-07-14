@@ -14,7 +14,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.mana_wars.model.entity.base.Rarity;
+import com.mana_wars.model.entity.base.ValueChangeType;
 import com.mana_wars.model.entity.skills.Skill;
+import com.mana_wars.model.entity.skills.SkillCharacteristic;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.widgets.base.BuildableUI;
 
@@ -87,10 +89,12 @@ public abstract class BaseSkillWindow extends Window implements BuildableUI {
     }
 
     public void open(Skill skill) {
-        open(skill.getIconID(), skill.getName(), skill.getRarity(), skill.getLevel(), skill.getManaCost(), skill.getDescription());
+        open(skill.getIconID(), skill.getName(), skill.getRarity(), skill.getLevel(),
+                skill.getManaCost(), getDescription(skill));
     }
 
-    private void open(int skillID, String skillName, Rarity skillRarity, int skillLevel, int skillManaCost, String skillDescription) {
+    private void open(int skillID, String skillName, Rarity skillRarity, int skillLevel,
+                      int skillManaCost, String skillDescription) {
         skillIcon.setDrawable(new TextureRegionDrawable(iconFactory.getAsset(skillID)));
         skillFrame.setDrawable(new TextureRegionDrawable(frameFactory.getAsset(skillRarity)));
         this.skillName.setText(skillName);
@@ -132,6 +136,24 @@ public abstract class BaseSkillWindow extends Window implements BuildableUI {
                 0, manaCost.length(), frameWidth * 2, Align.center, false, "");
 
         font.getData().setScale(initialFontScale.x, initialFontScale.y);
+    }
+
+    String getDescription(Skill skill) {
+        StringBuilder result = new StringBuilder();
+        for (SkillCharacteristic sc : skill.getCharacteristics()) {
+            result.append(getDescription(sc, skill.getLevel()));
+            result.append('\n');
+        }
+        return result.toString();
+    }
+
+    private String getDescription(SkillCharacteristic sc, int skillLevel) {
+        String result = String.valueOf(sc.getTarget());
+        result += " ";
+        result += String.valueOf(sc.getCharacteristic());
+        result += (sc.getChangeType() == ValueChangeType.DECREASE) ? " -" : " +";
+        result += String.valueOf(sc.getValue(skillLevel));
+        return result;
     }
 
 }

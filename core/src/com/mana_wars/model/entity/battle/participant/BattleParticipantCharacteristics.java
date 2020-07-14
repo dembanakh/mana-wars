@@ -10,7 +10,7 @@ class BattleParticipantCharacteristics implements CharacteristicsStorage {
     private final int initialHealth;
     private final EnumMap<Characteristic, Integer> characteristics = new EnumMap<>(Characteristic.class);
 
-    BattleParticipantCharacteristics(int initialHealth){
+    BattleParticipantCharacteristics(int initialHealth) {
         this.initialHealth = initialHealth;
 
         setValue(Characteristic.HEALTH, initialHealth);

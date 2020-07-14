@@ -1,20 +1,19 @@
 package com.mana_wars.model.entity.battle.participant;
 
 import com.mana_wars.model.entity.skills.ActiveSkill;
-import com.mana_wars.model.entity.skills.BattleSkill;
 import com.mana_wars.model.entity.skills.ImmutableBattleSkill;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 class BaseSkillsSet implements SkillsSet {
 
     private final List<BattleSkill> skills = new ArrayList<>();
 
-    @Override
-    public void add(ActiveSkill skill) {
-        skills.add(new BattleSkill(skill));
+    BaseSkillsSet(Iterable<? extends ActiveSkill> activeSkills) {
+        for (ActiveSkill skill : activeSkills) {
+            skills.add(new BattleSkill(skill));
+        }
     }
 
     @Override
@@ -25,18 +24,31 @@ class BaseSkillsSet implements SkillsSet {
         }
     }
 
-    @Override
-    public Iterator<ImmutableBattleSkill> iterator() {
-        return new Iterator<ImmutableBattleSkill>() {
-            private final Iterator<BattleSkill> iterator = skills.iterator();
-            @Override
-            public boolean hasNext() {
-                return iterator.hasNext();
-            }
-            @Override
-            public ImmutableBattleSkill next() {
-                return iterator.next();
-            }
-        };
+    public Iterable<? extends ImmutableBattleSkill> elements() {
+        return skills;
+    }
+
+    private static class BattleSkill implements ImmutableBattleSkill {
+        private double availabilityTime;
+        private final ActiveSkill skill;
+
+        BattleSkill(ActiveSkill skill) {
+            this.skill = skill;
+            this.availabilityTime = 0;
+        }
+
+        void updateAvailabilityTime(double possibleTime) {
+            availabilityTime = Math.max(possibleTime, availabilityTime);
+        }
+
+        @Override
+        public boolean isAvailableAt(double currentTime) {
+            return Double.compare(currentTime, availabilityTime) >= 0;
+        }
+
+        @Override
+        public ActiveSkill getSkill() {
+            return skill;
+        }
     }
 }

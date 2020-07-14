@@ -23,12 +23,6 @@ public class SkillCharacteristicTest {
     }
 
     @Test
-    public void testGetDescription() {
-        assertEquals("ENEMY COOLDOWN +2", sc.getDescription(1));
-        assertEquals("ENEMY COOLDOWN +4", sc.getDescription(2));
-    }
-
-    @Test
     public void testGetValue() {
         assertEquals(2, sc.getValue(1));
         assertEquals(4, sc.getValue(2));

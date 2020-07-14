@@ -57,13 +57,19 @@ public class SkillTest {
     }
 
     @Test
-    public void testGetDescription() {
-        when(sc1.getCharacteristic()).thenReturn(Characteristic.MANA);
-        when(sc1.getDescription(1)).thenReturn("a");
-        when(sc2.getCharacteristic()).thenReturn(Characteristic.HEALTH);
-        when(sc2.getDescription(1)).thenReturn("b");
+    public void testGetCharacteristics() {
+        when(sc1.isManaCost()).thenReturn(true);
+        when(sc2.isManaCost()).thenReturn(false);
 
-        assertEquals("b\n", skill.getDescription());
+        int size = 0;
+        SkillCharacteristic characteristic = null;
+        for (SkillCharacteristic sc : skill.getCharacteristics()) {
+            size++;
+            characteristic = sc;
+        }
+
+        assertEquals(1, size);
+        assertEquals(sc2, characteristic);
     }
 
 }

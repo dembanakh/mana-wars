@@ -10,7 +10,7 @@ import com.mana_wars.model.db.entity.DBMobWithSkills;
 import com.mana_wars.model.db.entity.DBSkillWithCharacteristics;
 import com.mana_wars.model.db.entity.UserSkill;
 import com.mana_wars.model.entity.enemy.Dungeon;
-import com.mana_wars.model.entity.enemy.Mob;
+import com.mana_wars.model.entity.enemy.MobBlueprint;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.entity.skills.Skill;
@@ -23,7 +23,6 @@ import java.util.Map;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
-import io.reactivex.functions.Function;
 
 public class DBMapperRepository implements DatabaseRepository {
 
@@ -129,11 +128,11 @@ public class DBMapperRepository implements DatabaseRepository {
     }
 
     @Override
-    public Single<List<Mob>> getMobsListByDungeon(Dungeon dungeon) {
+    public Single<List<MobBlueprint>> getMobsListByDungeon(Dungeon dungeon) {
         return room.getDBMobsWithSkillsByDungeonID(lastDungeonsMap.get(dungeon).getId()).map(
                 dbMobsWithSkills -> {
 
-                    List<Mob> mobs = new ArrayList<>();
+                    List<MobBlueprint> mobs = new ArrayList<>();
                     for (DBMobWithSkills mob : dbMobsWithSkills) {
 
                         List<ActiveSkill> activeSkills = new ArrayList<>();
@@ -149,8 +148,10 @@ public class DBMapperRepository implements DatabaseRepository {
 
                         }
 
-                        mobs.add(new Mob(mob.mob.getName(), "enemy~mirrored", mob.mob.getInitialHealth(), activeSkills, passiveSkills,
-                                mob.mob.getManaReward(), mob.mob.getExperienceReward(), mob.mob.getCaseProbabilityReward()));
+                        mobs.add(new MobBlueprint(mob.mob.getName(), "enemy~mirrored",
+                                mob.mob.getInitialHealth(), activeSkills, passiveSkills,
+                                mob.mob.getManaReward(), mob.mob.getExperienceReward(),
+                                mob.mob.getCaseProbabilityReward()));
                     }
                     return mobs;
                 });

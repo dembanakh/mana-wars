@@ -17,8 +17,8 @@ public enum Characteristic {
         this.type = type;
     }
 
-    public int changeValue(int prev, ValueChangeType type, int diff) {
-        prev = this.type.apply(prev, type, diff);
+    public int changeValue(int prev, ValueChangeType changeType, int diff) {
+        prev = type.apply(prev, changeType, diff);
         return validateValue(prev);
     }
 
