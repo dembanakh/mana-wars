@@ -6,12 +6,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mana_wars.ui.UIStringConstants;
+import com.mana_wars.ui.factory.LocalizedStringFactory;
 import com.mana_wars.ui.factory.UIElementFactory;
 import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.widgets.base.BuildableUI;
 
 import static com.mana_wars.ui.UIElementsSize.NAVIGATION_BAR.*;
+import static com.mana_wars.ui.UIStringConstants.NAVIGATION_BAR.DUNGEONS_KEY;
+import static com.mana_wars.ui.UIStringConstants.NAVIGATION_BAR.INFO_KEY;
+import static com.mana_wars.ui.UIStringConstants.NAVIGATION_BAR.MAIN_KEY;
+import static com.mana_wars.ui.UIStringConstants.NAVIGATION_BAR.SHOP_KEY;
+import static com.mana_wars.ui.UIStringConstants.NAVIGATION_BAR.SKILLS_KEY;
 
 public class NavigationBar implements BuildableUI {
 
@@ -19,35 +25,36 @@ public class NavigationBar implements BuildableUI {
 
     private final ScreenSetter screenSetter;
 
-    public NavigationBar(final Skin skin, final ScreenSetter screenSetter) {
+    public NavigationBar(final Skin skin, final ScreenSetter screenSetter,
+                         final LocalizedStringFactory localizedStringFactory) {
         this.screenSetter = screenSetter;
         this.bar = new Table(skin);
-        addButton(UIElementFactory.getButton(skin, "MAIN", new ChangeListener() {
+        addButton(UIElementFactory.getButton(skin, localizedStringFactory.get(MAIN_KEY), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 onMain();
             }
         }));
-        addButton(UIElementFactory.getButton(skin, "SKILLS", new ChangeListener() {
+        addButton(UIElementFactory.getButton(skin, localizedStringFactory.get(SKILLS_KEY), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 onSkills();
             }
         }));
-        addButton(UIElementFactory.getButton(skin, "DUNGEONS", new ChangeListener() {
+        addButton(UIElementFactory.getButton(skin, localizedStringFactory.get(DUNGEONS_KEY), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 onDungeons();
             }
         }));
-        addButton(UIElementFactory.getButton(skin, "INFO", new ChangeListener() {
+        addButton(UIElementFactory.getButton(skin, localizedStringFactory.get(INFO_KEY), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 // TODO: TEMP
                 onSkillsInfo();
             }
         }));
-        addButton(UIElementFactory.getButton(skin, "SHOP", new ChangeListener() {
+        addButton(UIElementFactory.getButton(skin, localizedStringFactory.get(SHOP_KEY), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 // TODO: TEMP

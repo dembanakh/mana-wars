@@ -14,6 +14,7 @@ import com.mana_wars.model.interactor.GreetingInteractor;
 import com.mana_wars.presentation.presenters.GreetingPresenter;
 import com.mana_wars.presentation.view.GreetingView;
 import com.mana_wars.ui.factory.AssetFactory;
+import com.mana_wars.ui.factory.LocalizedStringFactory;
 import com.mana_wars.ui.factory.UIElementFactory;
 import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
@@ -28,6 +29,7 @@ import static com.mana_wars.ui.UIStringConstants.UI_SKIN;
 public final class GreetingScreen extends BaseScreen<BaseOverlayUI, GreetingPresenter> implements GreetingView {
 
     private final AssetFactory<String, TextureRegion> imageFactory;
+    private final LocalizedStringFactory localizedStringFactory;
 
     public GreetingScreen(final UserGreetingAPI user,
                           final ScreenSetter screenSetter,
@@ -38,7 +40,9 @@ public final class GreetingScreen extends BaseScreen<BaseOverlayUI, GreetingPres
         presenter = new GreetingPresenter(this,
                 new GreetingInteractor(user),
                 Gdx.app::postRunnable);
-        imageFactory = factoryStorage.getImageFactory();
+
+        this.imageFactory = factoryStorage.getImageFactory();
+        this.localizedStringFactory = factoryStorage.getLocalizedStringFactory();
     }
 
     @Override
@@ -53,14 +57,14 @@ public final class GreetingScreen extends BaseScreen<BaseOverlayUI, GreetingPres
     @Override
     protected Table buildForegroundLayer(Skin skin) {
         Table layer = new Table();
-        Label label = new Label(GREETING_SCREEN.LABEL_TEXT, skin);
+        Label label = new Label(localizedStringFactory.get(GREETING_SCREEN.LABEL_KEY), skin);
         TextField usernameField = new TextField("", skin);
-        usernameField.setMessageText("Username");
+        usernameField.setMessageText(localizedStringFactory.get(GREETING_SCREEN.INPUT_FIELD_KEY));
 
-        label.setFontScale(2);
+        //label.setFontScale(2);
         layer.add(label).row();
         layer.add(usernameField).padTop(BUTTON_PADDING_TOP).height(64).row();
-        layer.add(UIElementFactory.getButton(skin, GREETING_SCREEN.BUTTON_TEXT, new ChangeListener() {
+        layer.add(UIElementFactory.getButton(skin, GREETING_SCREEN.BUTTON_KEY, new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (usernameField.getText().length() > 0) {

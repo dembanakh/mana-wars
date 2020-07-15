@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Align;
+import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.ui.widgets.base.ListItemDrawer;
@@ -22,6 +23,8 @@ public class SkillTypeDrawer implements ListItemDrawer<Skill> {
 
     @Override
     public void draw(Batch batch, BitmapFont font, int index, Skill item, float x, float y, float width, float height) {
+        if (!shouldShowType(item)) return;
+
         String type = (item instanceof ActiveSkill) ? "A" : "P";
 
         font.getData().setScale(3);
@@ -37,5 +40,9 @@ public class SkillTypeDrawer implements ListItemDrawer<Skill> {
         font.draw(batch, type, x, y + height + halfLineHeight,
                 0, 1, 2 * width, Align.center,
                 false, "");
+    }
+
+    private boolean shouldShowType(Skill skill) {
+        return skill.getRarity() != Rarity.EMPTY;
     }
 }

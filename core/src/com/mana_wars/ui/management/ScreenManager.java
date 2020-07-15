@@ -7,6 +7,7 @@ import com.mana_wars.model.entity.user.User;
 import com.mana_wars.model.repository.DatabaseUpdater;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.factory.ImageFactory;
+import com.mana_wars.ui.factory.LocalizedStringFactory;
 import com.mana_wars.ui.factory.RarityFrameFactory;
 import com.mana_wars.ui.factory.SkillIconFactory;
 import com.mana_wars.ui.factory.SkinFactory;
@@ -17,6 +18,7 @@ import com.mana_wars.ui.textures.FillScreenTexture;
 import com.mana_wars.ui.textures.FixedSizeMirroredTexture;
 import com.mana_wars.ui.textures.FixedSizeTexture;
 
+import java.util.Locale;
 import java.util.Map;
 
 import static com.mana_wars.ui.UIStringConstants.UI_SKIN;
@@ -29,6 +31,7 @@ public class ScreenManager implements FactoryStorage, ScreenSetter {
     private final AssetFactory<String, Skin> skinFactory;
     private final AssetFactory<Rarity, TextureRegion> rarityFrameFactory;
     private final AssetFactory<String, TextureRegion> pngImageFactory;
+    private final LocalizedStringFactory localizedStringFactory;
 
     public ScreenManager(final ScreenHandler handler,
                          final User user,
@@ -46,6 +49,7 @@ public class ScreenManager implements FactoryStorage, ScreenSetter {
                 new FillScreenTexture("bg1", AdaptiveTexture.ImageFormat.PNG),
                 new FillScreenTexture("bg2", AdaptiveTexture.ImageFormat.PNG))
                 .build();
+        localizedStringFactory = new LocalizedStringFactory("localization/Bundle");
         ScreenInstance.init(user, this, this, repositoryStorage, databaseUpdater);
         start();
     }
@@ -76,6 +80,11 @@ public class ScreenManager implements FactoryStorage, ScreenSetter {
     @Override
     public AssetFactory<String, TextureRegion> getImageFactory() {
         return pngImageFactory;
+    }
+
+    @Override
+    public LocalizedStringFactory getLocalizedStringFactory() {
+        return localizedStringFactory;
     }
 
     @Override

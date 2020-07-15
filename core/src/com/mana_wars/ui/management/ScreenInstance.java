@@ -37,7 +37,8 @@ public enum ScreenInstance {
                             final FactoryStorage factoryStorage,
                             final RepositoryStorage repositoryStorage,
                             final DatabaseUpdater databaseUpdater) {
-        OverlayUIFactory overlayUIFactory = new OverlayUIFactory(factoryStorage.getSkinFactory(), screenSetter);
+        OverlayUIFactory overlayUIFactory = new OverlayUIFactory(factoryStorage.getSkinFactory(), screenSetter,
+                factoryStorage.getLocalizedStringFactory());
         LOADING.screen = new LoadingScreen(screenSetter, factoryStorage,
                 overlayUIFactory.getEmptyOverlayUI(), databaseUpdater);
         GREETING.screen = new GreetingScreen(user, screenSetter, factoryStorage,

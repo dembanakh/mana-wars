@@ -82,7 +82,7 @@ public class DungeonButtonsTable extends Table implements BuildableUI {
         }
 
         private void init() {
-            nameLabel.setFontScale(2);
+            //nameLabel.setFontScale(2);
             nameLabel.setAlignment(Align.center);
             float screenWidth = SCREEN_WIDTH();
             add(nameLabel).width(screenWidth / 2);

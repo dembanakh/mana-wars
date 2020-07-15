@@ -28,7 +28,7 @@ final class AliveEnemiesValueField extends ValueField<Integer, Integer> {
 
     private void init() {
         label.setColor(Color.BLACK);
-        label.setFontScale(4);
+        label.setFontScale(2);
         field.add(label).top().row();
     }
 

@@ -90,7 +90,7 @@ public final class BattleParticipantValueField extends ValueField<BattleParticip
 
     private void init() {
         participantNameLabel.setColor(Color.BLACK);
-        participantNameLabel.setFontScale(4);
+        participantNameLabel.setFontScale(2);
         field.add(participantNameLabel).top().row();
 
         Stack stack = new Stack();
@@ -99,11 +99,11 @@ public final class BattleParticipantValueField extends ValueField<BattleParticip
 
         //participantHealthLabel.setFillParent(true);
         participantHealthLabel.setColor(Color.BLACK);
-        participantHealthLabel.setFontScale(4);
+        participantHealthLabel.setFontScale(2);
         stack.add(participantHealthLabel);
         field.add(stack).top().row();
 
-        healthChangeLabel.setFontScale(4);
+        healthChangeLabel.setFontScale(2);
         field.add(healthChangeLabel).top().row();
 
         participantPassiveSkillsList.setMinHeight(131.4f); // Do we need this?

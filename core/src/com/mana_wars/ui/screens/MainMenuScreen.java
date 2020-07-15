@@ -16,6 +16,7 @@ import com.mana_wars.model.mana_bonus.ManaBonusImpl;
 import com.mana_wars.presentation.presenters.MainMenuPresenter;
 import com.mana_wars.presentation.view.MainMenuView;
 import com.mana_wars.ui.factory.AssetFactory;
+import com.mana_wars.ui.factory.LocalizedStringFactory;
 import com.mana_wars.ui.factory.UIElementFactory;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.MenuOverlayUI;
@@ -34,6 +35,7 @@ public final class MainMenuScreen extends BaseScreen<MenuOverlayUI, MainMenuPres
     private final ManaBonusProgressBar manaBonusProgressBar;
 
     private final AssetFactory<String, TextureRegion> imageFactory;
+    private final LocalizedStringFactory localizedStringFactory;
 
     public MainMenuScreen(final UserMenuAPI user,
                           final Skin skin,
@@ -56,12 +58,13 @@ public final class MainMenuScreen extends BaseScreen<MenuOverlayUI, MainMenuPres
         presenter.addObserver_manaAmount(overlayUI.getManaAmountObserver());
         presenter.addObserver_userLevel(overlayUI.getUserLevelObserver());
 
-        skillCaseWindow = new SkillCaseWindow(SKILL_CASE_WINDOW.TITLE, skin,
+        this.skillCaseWindow = new SkillCaseWindow(SKILL_CASE_WINDOW.TITLE, skin,
                 factoryStorage.getSkillIconFactory(),
                 factoryStorage.getRarityFrameFactory());
-        manaBonusProgressBar = new ManaBonusProgressBar(skin, presenter.getFullManaBonusTimeout(),
+        this.manaBonusProgressBar = new ManaBonusProgressBar(skin, presenter.getFullManaBonusTimeout(),
                 this::claimBonus);
-        imageFactory = factoryStorage.getImageFactory();
+        this.imageFactory = factoryStorage.getImageFactory();
+        this.localizedStringFactory = factoryStorage.getLocalizedStringFactory();
     }
 
     @Override
@@ -86,7 +89,7 @@ public final class MainMenuScreen extends BaseScreen<MenuOverlayUI, MainMenuPres
         layer.setFillParent(true);
 
         TextButton skillCaseButton = UIElementFactory.getButton(skin,
-                MAIN_MENU_SCREEN.OPEN_SKILL_CASE_BUTTON_TEXT,
+                localizedStringFactory.get(MAIN_MENU_SCREEN.OPEN_SKILL_CASE_BUTTON_KEY),
                 new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
