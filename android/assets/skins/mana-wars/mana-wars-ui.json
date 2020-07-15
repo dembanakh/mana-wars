@@ -6,6 +6,9 @@ com.badlogic.gdx.graphics.g2d.BitmapFont: {
 	font: {
 		file: font-export.fnt
 	}
+	Roboto-Medium: {
+		file: Roboto-Medium.fnt
+	}
 	title: {
 		file: font-title-export.fnt
 	}
@@ -24,8 +27,8 @@ com.badlogic.gdx.graphics.Color: {
 		a: 1
 	}
 	progress-bar: {
-		r: 0,
-		g: 0.07094407,
+		r: 0
+		g: 0.07094407
 		b: 1
 		a: 1
 	}
@@ -44,7 +47,7 @@ com.badlogic.gdx.graphics.Color: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
 	slider-horizontal-p: {
-		name: slider-horizontal,
+		name: slider-horizontal
 		color: progress-bar
 	}
 }
@@ -56,7 +59,7 @@ com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
-		font: font
+		font: Roboto-Medium
 		fontColor: white
 	}
 	button: {
@@ -69,7 +72,7 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 	default: {
-		font: font
+		font: Roboto-Medium
 		fontColorSelected: white
 		fontColorUnselected: white
 		selection: list
@@ -90,7 +93,7 @@ com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 	default: {
-		font: button
+		font: Roboto-Medium
 		fontColor: button
 		up: button
 		down: button-down
@@ -98,7 +101,7 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 	default: {
-		font: font
+		font: Roboto-Medium
 		fontColor: button
 		background: textfield
 		cursor: white
@@ -112,7 +115,7 @@ com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 	default: {
 		background: window
-		titleFont: font
+		titleFont: Roboto-Medium
 	}
 }
 }

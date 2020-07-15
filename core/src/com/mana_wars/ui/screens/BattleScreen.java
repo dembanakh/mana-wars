@@ -18,6 +18,7 @@ import com.mana_wars.model.repository.DatabaseRepository;
 import com.mana_wars.presentation.presenters.BattlePresenter;
 import com.mana_wars.presentation.view.BattleView;
 import com.mana_wars.ui.factory.AssetFactory;
+import com.mana_wars.ui.factory.LocalizedStringFactory;
 import com.mana_wars.ui.factory.UIElementFactory;
 import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
@@ -30,7 +31,6 @@ import com.mana_wars.ui.widgets.value_field.ValueFieldFactory;
 import com.mana_wars.ui.widgets.value_field.base.ValueField;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import io.reactivex.functions.Consumer;
@@ -39,6 +39,9 @@ import static com.mana_wars.model.GameConstants.CHOSEN_BATTLE_BUILDER;
 import static com.mana_wars.ui.UIElementsSize.SCREEN_WIDTH;
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.ACTIVE_SKILLS_TABLE_HEIGHT;
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.SKILLS_TABLES_WIDTH;
+import static com.mana_wars.ui.UIStringConstants.BATTLE_SCREEN.CHANGE_ENEMY_KEY;
+import static com.mana_wars.ui.UIStringConstants.BATTLE_SCREEN.LEAVE_KEY;
+import static com.mana_wars.ui.UIStringConstants.BATTLE_SCREEN.ROUND_KEY;
 import static com.mana_wars.ui.UIStringConstants.UI_SKIN;
 
 public final class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresenter> implements BattleView {
@@ -54,6 +57,7 @@ public final class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresente
     private final Label roundLabel;
 
     private final AssetFactory<String, TextureRegion> imageFactory;
+    private final LocalizedStringFactory localizedStringFactory;
 
     public BattleScreen(final UserBattleAPI user,
                         final Skin skin,
@@ -65,33 +69,34 @@ public final class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresente
                 new BattleInteractor(user, databaseRepository),
                 Gdx.app::postRunnable);
 
-        userField = ValueFieldFactory.battleParticipantValueField(skin,
+        this.userField = ValueFieldFactory.battleParticipantValueField(skin,
                 TransformFactory.autoTransform(),
                 factoryStorage.getSkillIconFactory(),
                 factoryStorage.getRarityFrameFactory(),
                 factoryStorage.getImageFactory(),
                 -200, 1);
 
-        enemyField = new EnemyValueField(skin,
+        this.enemyField = new EnemyValueField(skin,
                 TransformFactory.autoTransform(),
                 factoryStorage.getSkillIconFactory(),
                 factoryStorage.getRarityFrameFactory(),
                 factoryStorage.getImageFactory());
 
-        userActiveSkills = UIElementFactory.applicableSkillsList(skin,
+        this.userActiveSkills = UIElementFactory.applicableSkillsList(skin,
                 GameConstants.MAX_CHOSEN_ACTIVE_SKILL_COUNT,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(),
                 factoryStorage.getImageFactory(), this::onSkillClick);
 
-        aliveEnemiesField = ValueFieldFactory.aliveEnemiesValueField(skin, UI_SKIN.BACKGROUND_COLOR.BROWN,
+        this.aliveEnemiesField = ValueFieldFactory.aliveEnemiesValueField(skin, UI_SKIN.BACKGROUND_COLOR.BROWN,
                 TransformFactory.autoTransform());
 
-        userManaAmountField = ValueFieldFactory.textValueField(skin, TransformFactory.autoTransform());
+        this.userManaAmountField = ValueFieldFactory.textValueField(skin, TransformFactory.autoTransform());
         presenter.addObserver_userManaAmount(userManaAmountField);
 
-        roundLabel = new Label("", skin);
+        this.roundLabel = new Label("", skin);
 
-        imageFactory = factoryStorage.getImageFactory();
+        this.imageFactory = factoryStorage.getImageFactory();
+        this.localizedStringFactory = factoryStorage.getLocalizedStringFactory();
     }
 
     @Override
@@ -119,7 +124,7 @@ public final class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresente
 
     @Override
     public void setRound(int round) {
-        roundLabel.setText(String.format(Locale.US, "Round: %d", round));
+        roundLabel.setText(localizedStringFactory.format(ROUND_KEY, round));
     }
 
     @Override
@@ -163,7 +168,8 @@ public final class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresente
 
         Table changeEnemySection = new Table();
         changeEnemySection.center();
-        changeEnemySection.add(UIElementFactory.getButton(skin, "CHANGE ENEMY", new ChangeListener() {
+        changeEnemySection.add(UIElementFactory.getButton(skin,
+                localizedStringFactory.get(CHANGE_ENEMY_KEY), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 changeActiveEnemy();
@@ -175,7 +181,8 @@ public final class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresente
         Table battleInfoSection = new Table();
         battleInfoSection.add(userManaAmountField.build()).center().uniformX().expandX();
         battleInfoSection.add(roundLabel).center().uniformX().expandX();
-        battleInfoSection.add(UIElementFactory.getButton(skin, "LEAVE",
+        battleInfoSection.add(UIElementFactory.getButton(skin,
+                localizedStringFactory.get(LEAVE_KEY),
                 new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {

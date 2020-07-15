@@ -72,7 +72,9 @@ public final class UIElementFactory {
                 new SkillIconAnimationController(
                         new TextureRegion(imageFactory.getAsset("white")));
         return new ApplicableSkillsList2D<>(skin,
-                new ApplicableSkillDrawer<>(skillIconFactory, rarityFrameFactory, animationController),
+                new ApplicableSkillDrawer<>(skillIconFactory, rarityFrameFactory, animationController,
+                        new SkillLevelDrawer(skillIconFactory.getAsset(1)),
+                        new SkillManaCostDrawer(skillIconFactory.getAsset(1))),
                 cols, onSkillClick, animationController, "font");
     }
 
@@ -80,7 +82,7 @@ public final class UIElementFactory {
                                                                 AssetFactory<Integer, TextureRegion> skillIconFactory,
                                                                 AssetFactory<Rarity, TextureRegion> rarityFrameFactory) {
         return new List2D<>(emptyListStyle(skin),
-                new StandardSkillDrawer<T>(skillIconFactory, rarityFrameFactory),
+                new StandardSkillDrawer<>(skillIconFactory, rarityFrameFactory),
                 cols);
     }
 
@@ -89,7 +91,7 @@ public final class UIElementFactory {
                                                     AssetFactory<Rarity, TextureRegion> rarityFrameFactory,
                                                     ListItemConsumer<Skill> onSkillClick) {
         return new ClickableList2D<>(skin,
-                new StandardSkillDrawer<T>(skillIconFactory, rarityFrameFactory,
+                new StandardSkillDrawer<>(skillIconFactory, rarityFrameFactory,
                         new SkillTypeDrawer(skillIconFactory.getAsset(1))),
                 cols, onSkillClick);
     }

@@ -14,6 +14,7 @@ import com.mana_wars.presentation.presenters.ShopPresenter;
 import com.mana_wars.presentation.view.ShopView;
 import com.mana_wars.ui.UIElementsSize;
 import com.mana_wars.ui.UIStringConstants;
+import com.mana_wars.ui.factory.LocalizedStringFactory;
 import com.mana_wars.ui.factory.UIElementFactory;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.MenuOverlayUI;
@@ -21,9 +22,13 @@ import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.widgets.skill_window.BaseSkillWindow;
 import com.mana_wars.ui.widgets.skill_window.SkillCaseWindow;
 
+import static com.mana_wars.ui.UIStringConstants.SHOP_SCREEN.*;
+
 public final class ShopScreen extends BaseScreen<MenuOverlayUI, ShopPresenter> implements ShopView {
 
     private final BaseSkillWindow skillCaseWindow;
+
+    private final LocalizedStringFactory localizedStringFactory;
 
     public ShopScreen(final UserShopAPI user,
                       final Skin skin,
@@ -37,9 +42,10 @@ public final class ShopScreen extends BaseScreen<MenuOverlayUI, ShopPresenter> i
         presenter.addObserver_manaAmount(overlayUI.getManaAmountObserver());
         presenter.addObserver_userLevel(overlayUI.getUserLevelObserver());
 
-        skillCaseWindow = new SkillCaseWindow(UIStringConstants.SKILL_CASE_WINDOW.TITLE, skin,
+        this.skillCaseWindow = new SkillCaseWindow(UIStringConstants.SKILL_CASE_WINDOW.TITLE, skin,
                 factoryStorage.getSkillIconFactory(),
                 factoryStorage.getRarityFrameFactory());
+        this.localizedStringFactory = factoryStorage.getLocalizedStringFactory();
     }
 
     @Override
@@ -66,7 +72,8 @@ public final class ShopScreen extends BaseScreen<MenuOverlayUI, ShopPresenter> i
         Table layer = new Table();
         layer.setFillParent(true);
 
-        layer.add(UIElementFactory.getButton(skin, "1 SKILL CASE (" + GameConstants.SKILL_CASE_PRICE + " MANA)", new ChangeListener() {
+        layer.add(UIElementFactory.getButton(skin,
+                localizedStringFactory.format(ONE_SKILL_CASE_KEY, GameConstants.SKILL_CASE_PRICE), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 presenter.buySkillCase();

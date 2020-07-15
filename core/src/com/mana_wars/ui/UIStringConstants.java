@@ -24,17 +24,49 @@ public final class UIStringConstants {
         }
     }
 
-    public static class NAVIGATION_BAR {
-        public static final String BG_COLOR = "brown";
+    public static class LOADING_SCREEN {
+        public static final String LOADING_KEY = "Loading";
     }
 
     public static class GREETING_SCREEN {
-        public static final String LABEL_TEXT = "HELLO, USER";
-        public static final String BUTTON_TEXT = "START";
+        public static final String LABEL_KEY = "HelloUser";
+        public static final String INPUT_FIELD_KEY = "Username";
+        public static final String BUTTON_KEY = "Start";
     }
 
     public static class MAIN_MENU_SCREEN {
-        public static final String OPEN_SKILL_CASE_BUTTON_TEXT = "OPEN SKILL CASE";
+        public static final String OPEN_SKILL_CASE_BUTTON_KEY = "OpenSkillCase";
+    }
+
+    public static class SHOP_SCREEN {
+        public static final String ONE_SKILL_CASE_KEY = "1SkillCase";
+    }
+
+    public static class SKILLS_INFO_SCREEN {
+        public static final String TO_MAIN_MENU_KEY = "ToMainMenu";
+    }
+
+    public static class BATTLE_SCREEN {
+        public static final String ROUND_KEY = "Round";
+        public static final String CHANGE_ENEMY_KEY = "ChangeEnemy";
+        public static final String LEAVE_KEY = "Leave";
+    }
+
+    public static class BATTLE_SUMMARY_SCREEN {
+        public static final String BATTLE_FINISHED_KEY = "BattleFinished";
+        public static final String TO_MAIN_MENU_KEY = "ToMainMenu";
+        public static final String MANA_REWARD_KEY = "ManaReward";
+        public static final String XP_REWARD_KEY = "XpReward";
+        public static final String CASES_REWARD_KEY = "CasesReward";
+    }
+
+    public static class NAVIGATION_BAR {
+        public static final String BG_COLOR = "brown";
+        public static final String MAIN_KEY = "Main";
+        public static final String SKILLS_KEY = "Skills";
+        public static final String DUNGEONS_KEY = "Dungeons";
+        public static final String INFO_KEY = "Info";
+        public static final String SHOP_KEY = "Shop";
     }
 
     public static class SKILL_CASE_WINDOW {

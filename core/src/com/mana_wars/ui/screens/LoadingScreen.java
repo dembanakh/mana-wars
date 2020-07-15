@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.mana_wars.model.repository.DatabaseUpdater;
 import com.mana_wars.presentation.presenters.BasePresenter;
 import com.mana_wars.ui.UIStringConstants;
+import com.mana_wars.ui.factory.LocalizedStringFactory;
 import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.BaseOverlayUI;
@@ -14,10 +15,10 @@ import com.mana_wars.ui.storage.FactoryStorage;
 
 import java.util.Map;
 
-//TODO think about Loading Presenter
 public final class LoadingScreen extends BaseScreen<BaseOverlayUI, BasePresenter> {
 
     private final DatabaseUpdater updater;
+    private final LocalizedStringFactory localizedStringFactory;
 
     public LoadingScreen(ScreenSetter screenSetter, FactoryStorage factoryStorage,
                          BaseOverlayUI overlayUI, DatabaseUpdater updater) {
@@ -25,6 +26,7 @@ public final class LoadingScreen extends BaseScreen<BaseOverlayUI, BasePresenter
                 factoryStorage.getSkinFactory().getAsset(UIStringConstants.UI_SKIN.FREEZING),
                 overlayUI);
         this.updater = updater;
+        this.localizedStringFactory = factoryStorage.getLocalizedStringFactory();
     }
 
     @Override
@@ -38,7 +40,7 @@ public final class LoadingScreen extends BaseScreen<BaseOverlayUI, BasePresenter
     protected Table buildForegroundLayer(Skin skin) {
         Table layer = new Table();
 
-        layer.add(new Label("LOADING", skin));
+        layer.add(new Label(localizedStringFactory.get(UIStringConstants.LOADING_SCREEN.LOADING_KEY), skin));
 
         return layer;
     }

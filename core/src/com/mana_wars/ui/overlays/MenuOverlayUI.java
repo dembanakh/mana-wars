@@ -3,6 +3,7 @@ package com.mana_wars.ui.overlays;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Align;
 import com.mana_wars.ui.UIStringConstants;
+import com.mana_wars.ui.factory.LocalizedStringFactory;
 import com.mana_wars.ui.layout_constraints.AbsoluteSizeConstraint;
 import com.mana_wars.ui.layout_constraints.AbsoluteXPositionConstraint;
 import com.mana_wars.ui.layout_constraints.AbsoluteYPositionConstraint;
@@ -30,7 +31,8 @@ public class MenuOverlayUI extends BaseOverlayUI {
     private final ValueField<Void, String> usernameField;
     private final BuildableUI navigationBar;
 
-    MenuOverlayUI(final Skin skin, final ScreenSetter screenSetter) {
+    MenuOverlayUI(final Skin skin, final ScreenSetter screenSetter,
+                  final LocalizedStringFactory localizedStringFactory) {
         Transform transform;
 
         transform = new TransformBuilder()
@@ -61,7 +63,7 @@ public class MenuOverlayUI extends BaseOverlayUI {
                 .build();
         usernameField = ValueFieldFactory.textValueField(skin, TransformFactory.manualTransform(transform));
 
-        navigationBar = new NavigationBar(skin, screenSetter);
+        navigationBar = new NavigationBar(skin, screenSetter, localizedStringFactory);
     }
 
     @Override

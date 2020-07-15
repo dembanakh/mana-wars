@@ -12,6 +12,7 @@ import com.mana_wars.model.repository.DatabaseRepository;
 import com.mana_wars.presentation.presenters.SkillsInfoPresenter;
 import com.mana_wars.presentation.view.SkillsInfoView;
 import com.mana_wars.ui.UIStringConstants;
+import com.mana_wars.ui.factory.LocalizedStringFactory;
 import com.mana_wars.ui.factory.UIElementFactory;
 import com.mana_wars.ui.management.ScreenInstance;
 import com.mana_wars.ui.management.ScreenSetter;
@@ -21,15 +22,15 @@ import com.mana_wars.ui.widgets.base.List2D;
 import com.mana_wars.ui.widgets.skill_window.BaseSkillWindow;
 import com.mana_wars.ui.widgets.skill_window.SkillInfoWindow;
 
+import static com.mana_wars.ui.UIStringConstants.SKILLS_INFO_SCREEN.TO_MAIN_MENU_KEY;
+
 public final class SkillsInfoScreen extends BaseScreen<BaseOverlayUI, SkillsInfoPresenter> implements SkillsInfoView {
 
     private final List2D<Skill> skillsList;
-
     private final ScrollPane scrollPane;
-
     private final BaseSkillWindow skillInfoWindow;
 
-    private final SkillsInfoPresenter presenter;
+    private final LocalizedStringFactory localizedStringFactory;
 
     public SkillsInfoScreen(final Skin skin,
                             final ScreenSetter screenSetter,
@@ -45,6 +46,7 @@ public final class SkillsInfoScreen extends BaseScreen<BaseOverlayUI, SkillsInfo
         this.scrollPane = new ScrollPane(skillsList, skin);
         this.skillInfoWindow = new SkillInfoWindow(UIStringConstants.SKILL_INFO_WINDOW.TITLE, skin,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
+        this.localizedStringFactory = factoryStorage.getLocalizedStringFactory();
     }
 
     @Override
@@ -71,7 +73,8 @@ public final class SkillsInfoScreen extends BaseScreen<BaseOverlayUI, SkillsInfo
         Table layer = new Table();
         layer.setFillParent(true);
 
-        layer.add(UIElementFactory.getButton(skin, "TO MAIN MENU", new ChangeListener() {
+        layer.add(UIElementFactory.getButton(skin,
+                localizedStringFactory.get(TO_MAIN_MENU_KEY), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 setScreen(ScreenInstance.MAIN_MENU, null);

@@ -3,6 +3,7 @@ package com.mana_wars.ui.overlays;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.factory.AssetFactory;
+import com.mana_wars.ui.factory.LocalizedStringFactory;
 import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.widgets.base.BuildableUI;
 
@@ -13,9 +14,10 @@ public class OverlayUIFactory {
     private final MenuOverlayUI menuOverlayUI;
     private final BaseOverlayUI emptyOverlayUI;
 
-    public OverlayUIFactory(final AssetFactory<String, Skin> skinFactory, final ScreenSetter screenSetter) {
+    public OverlayUIFactory(final AssetFactory<String, Skin> skinFactory, final ScreenSetter screenSetter,
+                            final LocalizedStringFactory localizedStringFactory) {
         menuOverlayUI = new MenuOverlayUI(skinFactory.getAsset(UIStringConstants.UI_SKIN.MANA_WARS),
-                screenSetter);
+                screenSetter, localizedStringFactory);
         emptyOverlayUI = new BaseOverlayUI() {
             @Override
             protected Iterable<BuildableUI> getElements() {

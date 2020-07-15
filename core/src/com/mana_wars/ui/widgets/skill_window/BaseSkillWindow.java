@@ -51,7 +51,7 @@ public abstract class BaseSkillWindow extends Window implements BuildableUI {
         this.skillName.setColor(Color.BLACK);
         this.skillDescription = new Label("", skin);
         this.skillDescription.setAlignment(Align.center | Align.right);
-        this.skillDescription.setFontScale(2.5f);
+        //this.skillDescription.setFontScale(2.5f);
         this.skillDescription.setColor(Color.BLACK);
         this.font = skin.get(Label.LabelStyle.class).font;
         this.iconFactory = iconFactory;
