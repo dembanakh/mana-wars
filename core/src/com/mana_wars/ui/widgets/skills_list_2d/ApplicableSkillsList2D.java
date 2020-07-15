@@ -15,8 +15,9 @@ import com.mana_wars.ui.widgets.base.ListItemDrawer;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class ApplicableSkillsList2D<T extends ActiveSkill> extends ClickableList2D<T>
-        implements BlockableSkillsList<T> {
+public class ApplicableSkillsList2D<T extends ActiveSkill> implements BlockableSkillsList<T> {
+
+    private final ClickableList2D<T> list;
 
     private final UIAnimationController<Integer, SkillIconAnimationController.Type> animationController;
     private final BitmapFont cooldownFont;
@@ -27,21 +28,29 @@ public class ApplicableSkillsList2D<T extends ActiveSkill> extends ClickableList
                                   ListItemConsumer<? super T> onSkillClick,
                                   UIAnimationController<Integer, SkillIconAnimationController.Type> animationController,
                                   String cooldownFontName) {
-        super(skin, listItemDrawer, cols, onSkillClick);
+        this.list = new ClickableList2D<T>(skin, listItemDrawer, cols, onSkillClick) {
+            @Override
+            public void draw(Batch batch, float parentAlpha) {
+                animationController.initBatch(batch, cooldownFont);
+                super.draw(batch, parentAlpha);
+            }
+        };
         this.animationController = animationController;
         this.cooldownFont = skin.getFont(cooldownFontName);
     }
 
     @Override
     public void setItems(Iterable<? extends T> newItems) {
-        super.setItems(newItems);
+        list.setItems(newItems);
         animationController.clear();
 
-        forEachItem((skill, index) -> {
+        int i = 0;
+        for (T skill : list.getItemsCopy()) {
             if (skill.getRarity() == Rarity.EMPTY) {
-                animationController.add(index, Collections.emptyList());
+                animationController.add(i, Collections.emptyList());
             }
-        });
+            i++;
+        }
     }
 
     @Override
@@ -52,23 +61,24 @@ public class ApplicableSkillsList2D<T extends ActiveSkill> extends ClickableList
 
     @Override
     public void blockSkills(int appliedSkillIndex) {
-        T appliedSkill = getItem(appliedSkillIndex);
+        T appliedSkill = list.getItem(appliedSkillIndex);
         if (appliedSkill.getRarity() != Rarity.EMPTY) {
-            forEachItem((skill, index) -> {
+            int i = 0;
+            for (T skill : list.getItemsCopy()) {
                 if (skill.getRarity() == Rarity.EMPTY) return;
-                if (index == appliedSkillIndex)
-                    animationController.add(index,
+                if (i == appliedSkillIndex)
+                    animationController.add(i,
                             Arrays.asList(
                                     new UIAnimationController.KeyFrame<>(SkillIconAnimationController.Type.CAST_APPLIED,
                                             appliedSkill.getCastTime(castTime)),
                                     new UIAnimationController.KeyFrame<>(SkillIconAnimationController.Type.COOLDOWN,
                                             appliedSkill.getCooldown(cooldown))));
                 else
-                    animationController.add(index,
+                    animationController.add(i,
                             Arrays.asList(
                                     new UIAnimationController.KeyFrame<>(SkillIconAnimationController.Type.CAST_NON_APPLIED,
                                             appliedSkill.getCastTime(castTime))));
-            });
+            }
         }
     }
 
@@ -78,13 +88,7 @@ public class ApplicableSkillsList2D<T extends ActiveSkill> extends ClickableList
     }
 
     @Override
-    public void draw(Batch batch, float parentAlpha) {
-        animationController.initBatch(batch, cooldownFont);
-        super.draw(batch, parentAlpha);
-    }
-
-    @Override
     public Actor build() {
-        return this;
+        return list;
     }
 }

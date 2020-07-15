@@ -52,7 +52,9 @@ public class List2D<T> extends Widget implements Cullable {
         this.listItemDrawer = listItemDrawer;
 
         selection.setActor(this);
-        selection.setDisabled(true);
+        selection.setRequired(false);
+        selection.setMultiple(true);
+        //selection.setDisabled(true);
 
         setCols(cols);
         setStyle(style);
@@ -127,10 +129,10 @@ public class List2D<T> extends Widget implements Cullable {
                 if (items.size == 0) return true;
                 int index = getItemIndexAt(x, y);
                 if (index == -1) return true;
-                if (selection.contains(items.get(index)))
+                /*if (selection.contains(items.get(index)))
                     selection.remove(items.get(index));
                 else
-                    selection.choose(items.get(index));
+                    selection.choose(items.get(index));*/
                 pressedIndex = index;
                 return true;
             }
@@ -324,6 +326,10 @@ public class List2D<T> extends Widget implements Cullable {
         }
     }
 
+    public void setSelectedIndices(Iterable<? extends Integer> indices) {
+        for (Integer index : indices) selection.add(items.get(index));
+    }
+
     public T removeIndex(int index) {
         if (index < 0 || index >= items.size)
             throw new IllegalArgumentException("index must be >= 0 and < " + items.size + ": " + index);
@@ -404,7 +410,7 @@ public class List2D<T> extends Widget implements Cullable {
         return item == null ? null : item.data;
     }
 
-    protected java.util.List<T> getItemsCopy() {
+    public Iterable<T> getItemsCopy() {
         java.util.List<T> itemsArr = new ArrayList<>();
         for (List2DItem<T> item : items) itemsArr.add(item.data);
         return itemsArr;
@@ -472,16 +478,4 @@ public class List2D<T> extends Widget implements Cullable {
             return id;
         }
     }
-
-    @FunctionalInterface
-    protected interface List2DItemAction<T> {
-        void perform(T item, int index);
-    }
-
-    protected void forEachItem(List2DItemAction<T> action) {
-        for (int i = 0; i < items.size; ++i) {
-            action.perform(getItem(i), i);
-        }
-    }
-
 }

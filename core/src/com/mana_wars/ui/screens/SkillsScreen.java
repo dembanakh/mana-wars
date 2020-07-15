@@ -26,19 +26,21 @@ import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.MenuOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.widgets.base.TimeoutDragAndDrop;
-import com.mana_wars.ui.widgets.base.List2D;
+import com.mana_wars.ui.widgets.skills_list_2d.OperationSkillsList;
 
-import java.util.List;
+import java.util.EnumMap;
 
 import static com.mana_wars.ui.UIElementsSize.SKILLS_SCREEN.COLUMNS_NUMBER;
 
 public final class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresenter> implements SkillsView {
 
-    private final List2D<Skill> mainSkillsTable;
-    private final List2D<Skill> activeSkillsTable;
-    private final List2D<Skill> passiveSkillsTable;
+    private final OperationSkillsList<Skill> mainSkillsTable;
+    private final OperationSkillsList<Skill> activeSkillsTable;
+    private final OperationSkillsList<Skill> passiveSkillsTable;
     private final SkillsDragAndDrop dragAndDrop;
     private final ScrollPane scrollPane;
+
+    private final EnumMap<SkillTable, OperationSkillsList<Skill>> tables = new EnumMap<>(SkillTable.class);
 
     public SkillsScreen(final UserSkillsAPI user,
                         final Skin skin,
@@ -53,29 +55,31 @@ public final class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresente
         presenter.addObserver_userLevel(overlayUI.getUserLevelObserver());
 
         mainSkillsTable = UIElementFactory.orderedOperationSkillsList(skin, COLUMNS_NUMBER,
-                factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
-        mainSkillsTable.setUserObject(SkillTable.ALL_SKILLS);
+                factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(),
+                SkillTable.ALL_SKILLS);
 
         activeSkillsTable = UIElementFactory.unorderedOperationSkillsList(skin,
                 GameConstants.MAX_CHOSEN_ACTIVE_SKILL_COUNT,
-                factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
-        activeSkillsTable.setUserObject(SkillTable.ACTIVE_SKILLS);
+                factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(),
+                SkillTable.ACTIVE_SKILLS);
 
         passiveSkillsTable = UIElementFactory.unorderedOperationSkillsList(skin,
                 GameConstants.USER_PASSIVE_SKILL_COUNT,
-                factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory());
-        passiveSkillsTable.setUserObject(SkillTable.PASSIVE_SKILLS);
+                factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(),
+                SkillTable.PASSIVE_SKILLS);
 
-        scrollPane = new ScrollPane(mainSkillsTable, skin);
+        tables.put(SkillTable.ALL_SKILLS, mainSkillsTable);
+        tables.put(SkillTable.ACTIVE_SKILLS, activeSkillsTable);
+        tables.put(SkillTable.PASSIVE_SKILLS, passiveSkillsTable);
+
+        scrollPane = new ScrollPane(mainSkillsTable.build(), skin);
         dragAndDrop = new SkillsDragAndDrop(factoryStorage.getSkillIconFactory(),
                 factoryStorage.getRarityFrameFactory());
     }
 
     @Override
     protected Table buildBackgroundLayer(Skin skin) {
-        Table layer = new Table();
-
-        return layer;
+        return new Table();
     }
 
     @Override
@@ -87,9 +91,9 @@ public final class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresente
         scrollPaneCont.setBackground("list");
         scrollPaneCont.add(scrollPane).expand().fill();
 
-        layer.add(activeSkillsTable).top().padTop(UIElementsSize.MENU_OVERLAY_UI.USER_LEVEL_FIELD_HEIGHT())
+        layer.add(activeSkillsTable.build()).top().padTop(UIElementsSize.MENU_OVERLAY_UI.USER_LEVEL_FIELD_HEIGHT())
                 .expandX().fillX().row();
-        layer.add(passiveSkillsTable).top()
+        layer.add(passiveSkillsTable.build()).top()
                 .expandX().fillX().row();
         layer.add(scrollPaneCont).top().padBottom(UIElementsSize.NAVIGATION_BAR.TAB_HEIGHT)
                 .expandY().fillY().expandX().fillX();
@@ -98,7 +102,9 @@ public final class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresente
     }
 
     @Override
-    public void setSkillsList(List<ActiveSkill> activeSkills, List<PassiveSkill> passiveSkills, List<Skill> skills) {
+    public void setSkillsList(Iterable<ActiveSkill> activeSkills,
+                              Iterable<PassiveSkill> passiveSkills,
+                              Iterable<Skill> skills) {
         mainSkillsTable.setItems(skills);
         activeSkillsTable.setItems(activeSkills);
         passiveSkillsTable.setItems(passiveSkills);
@@ -107,7 +113,7 @@ public final class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresente
 
     @Override
     public void finishMerge(SkillTable table, int index, Skill skill) {
-        List2D<Skill> listTarget = getList2D(table);
+        OperationSkillsList<Skill> listTarget = getList2D(table);
         listTarget.removeIndex(index);
         listTarget.insert(index, skill);
     }
@@ -115,8 +121,8 @@ public final class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresente
     @Override
     public void finishSwap(SkillTable tableSource, SkillTable tableTarget,
                            int skillSourceIndex, int skillTargetIndex, Skill skillSource, Skill skillTarget) {
-        List2D<Skill> listSource = getList2D(tableSource);
-        List2D<Skill> listTarget = getList2D(tableTarget);
+        OperationSkillsList<Skill> listSource = getList2D(tableSource);
+        OperationSkillsList<Skill> listTarget = getList2D(tableTarget);
         listTarget.removeIndex(skillTargetIndex);
         listTarget.insert(skillTargetIndex, skillSource);
         listSource.insert(skillSourceIndex, skillTarget);
@@ -124,24 +130,24 @@ public final class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresente
 
     @Override
     public void finishMove(SkillTable tableTarget, int skillTargetIndex, Skill skillSource) {
-        List2D<Skill> listTarget = getList2D(tableTarget);
-        if (tableTarget == SkillTable.ALL_SKILLS) {
-            listTarget.insert(skillTargetIndex, skillSource);
-        } else {
-            listTarget.setItem(skillTargetIndex, skillSource);
-        }
+        OperationSkillsList<Skill> listTarget = getList2D(tableTarget);
+        listTarget.finishMoveOperation(skillTargetIndex, skillSource);
     }
 
-    private List2D<Skill> getList2D(SkillTable table) {
-        switch (table) {
-            case ALL_SKILLS:
-                return mainSkillsTable;
-            case ACTIVE_SKILLS:
-                return activeSkillsTable;
-            case PASSIVE_SKILLS:
-                return passiveSkillsTable;
-        }
-        return mainSkillsTable;
+    @Override
+    public void selectSkills(SkillTable table, Iterable<? extends Integer> mergeableIndices) {
+        getList2D(table).setSelectedIndices(mergeableIndices);
+    }
+
+    @Override
+    public void clearSelection() {
+        mainSkillsTable.clearSelection();
+        activeSkillsTable.clearSelection();
+        passiveSkillsTable.clearSelection();
+    }
+
+    private OperationSkillsList<Skill> getList2D(SkillTable table) {
+        return tables.get(table);
     }
 
     @Override
@@ -157,7 +163,6 @@ public final class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresente
         presenter.refreshSkillsList();
     }
 
-    @SuppressWarnings("ConstantConditions")
     private class SkillsDragAndDrop {
 
         private final TimeoutDragAndDrop dragAndDrop;
@@ -189,8 +194,8 @@ public final class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresente
             setupTarget(passiveSkillsTable);
         }
 
-        private void setupSource(List2D<Skill> table) {
-            dragAndDrop.addSource(new TimeoutDragAndDrop.Source(table) {
+        private void setupSource(OperationSkillsList<?> table) {
+            dragAndDrop.addSource(new TimeoutDragAndDrop.Source(table.build()) {
                 final TimeoutDragAndDrop.Payload payload = new TimeoutDragAndDrop.Payload();
 
                 @Override
@@ -203,6 +208,13 @@ public final class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresente
                     payload.setObject1(skill);
                     payload.setObject2(itemIndex);
                     table.removeIndex(itemIndex);
+
+                    EnumMap<SkillTable, Iterable<? extends Skill>> items = new EnumMap<>(SkillTable.class);
+                    items.put(SkillTable.ALL_SKILLS, mainSkillsTable.getItems());
+                    items.put(SkillTable.ACTIVE_SKILLS, activeSkillsTable.getItems());
+                    items.put(SkillTable.PASSIVE_SKILLS, passiveSkillsTable.getItems());
+                    new Thread(() -> presenter.onSkillDragStart(skill, table.getTableType(), items)).start();
+
                     Stack stack = new Stack();
                     stack.add(new Image(skillIconFactory.getAsset(skill.getIconID())));
                     stack.add(new Image(skillFrameFactory.getAsset(skill.getRarity())));
@@ -216,18 +228,20 @@ public final class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresente
                     if (target == null) {
                         table.insert((int) payload.getObject2(), (Skill) payload.getObject1());
                     }
+                    presenter.onSkillDragStop();
                 }
             });
         }
 
-        private void setupTarget(List2D<Skill> table) {
-            dragAndDrop.addTarget(new TimeoutDragAndDrop.Target(table) {
+        private void setupTarget(OperationSkillsList<?> table) {
+            dragAndDrop.addTarget(new TimeoutDragAndDrop.Target(table.build()) {
                 @Override
                 public boolean drag(TimeoutDragAndDrop.Source source, TimeoutDragAndDrop.Payload payload,
                                     float x, float y, int pointer) {
                     Skill from = (Skill) payload.getObject1();
                     Skill to = table.getItemAt(x, y);
-                    return presenter.validateOperation((SkillTable) source.getActor().getUserObject(),
+                    return presenter.validateOperation(
+                            (SkillTable) source.getActor().getUserObject(),
                             (SkillTable) getActor().getUserObject(),
                             from, to);
                 }
@@ -240,7 +254,8 @@ public final class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresente
                     int toIndex = table.getItemIndexAt(x, y);
                     Skill to = (toIndex == -1) ? null : table.getItem(toIndex);
 
-                    presenter.performOperation((SkillTable) source.getActor().getUserObject(),
+                    presenter.performOperation(
+                            (SkillTable) source.getActor().getUserObject(),
                             (SkillTable) getActor().getUserObject(),
                             from, to, fromIndex, toIndex);
                 }

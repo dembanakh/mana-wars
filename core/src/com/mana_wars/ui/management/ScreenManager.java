@@ -49,7 +49,8 @@ public class ScreenManager implements FactoryStorage, ScreenSetter {
                 new FillScreenTexture("bg1", AdaptiveTexture.ImageFormat.PNG),
                 new FillScreenTexture("bg2", AdaptiveTexture.ImageFormat.PNG))
                 .build();
-        localizedStringFactory = new LocalizedStringFactory("localization/Bundle");
+        localizedStringFactory = new LocalizedStringFactory("localization/Bundle",
+                new Locale("en", "US"));
         ScreenInstance.init(user, this, this, repositoryStorage, databaseUpdater);
         start();
     }
