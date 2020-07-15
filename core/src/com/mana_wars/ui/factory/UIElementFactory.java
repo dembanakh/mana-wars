@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.Skill;
+import com.mana_wars.model.skills_operations.SkillTable;
 import com.mana_wars.ui.animation.controller.SkillIconAnimationController;
 import com.mana_wars.ui.widgets.base.ClickableList2D;
 import com.mana_wars.ui.widgets.base.List2D;
@@ -20,6 +21,7 @@ import com.mana_wars.ui.widgets.item_drawer.SkillTypeDrawer;
 import com.mana_wars.ui.widgets.item_drawer.StandardSkillDrawer;
 import com.mana_wars.ui.widgets.skills_list_2d.ApplicableSkillsList2D;
 import com.mana_wars.ui.widgets.skills_list_2d.OperationSkillsList2D;
+import com.mana_wars.ui.widgets.skills_list_2d.OperationSkillsList;
 
 public final class UIElementFactory {
 
@@ -41,26 +43,28 @@ public final class UIElementFactory {
         return style;
     }
 
-    public static List2D<Skill> orderedOperationSkillsList(Skin skin, int cols,
-                                                    AssetFactory<Integer, TextureRegion> skillIconFactory,
-                                                    AssetFactory<Rarity, TextureRegion> rarityFrameFactory) {
+    public static OperationSkillsList<Skill> orderedOperationSkillsList(Skin skin, int cols,
+                                                                        AssetFactory<Integer, TextureRegion> skillIconFactory,
+                                                                        AssetFactory<Rarity, TextureRegion> rarityFrameFactory,
+                                                                        SkillTable tableType) {
         return new OperationSkillsList2D(emptyListStyle(skin),
                 new StandardSkillDrawer<>(skillIconFactory, rarityFrameFactory,
                         new SkillLevelDrawer(skillIconFactory.getAsset(1)),
                         new SkillManaCostDrawer(skillIconFactory.getAsset(1)),
                         new SkillTypeDrawer(skillIconFactory.getAsset(1))),
-                cols, true);
+                cols, true, tableType);
     }
 
-    public static List2D<Skill> unorderedOperationSkillsList(Skin skin, int cols,
-                                                           AssetFactory<Integer, TextureRegion> skillIconFactory,
-                                                           AssetFactory<Rarity, TextureRegion> rarityFrameFactory) {
+    public static OperationSkillsList<Skill> unorderedOperationSkillsList(Skin skin, int cols,
+                                                                          AssetFactory<Integer, TextureRegion> skillIconFactory,
+                                                                          AssetFactory<Rarity, TextureRegion> rarityFrameFactory,
+                                                                          SkillTable tableType) {
         return new OperationSkillsList2D(skin,
                 new StandardSkillDrawer<>(skillIconFactory, rarityFrameFactory,
                         new SkillLevelDrawer(skillIconFactory.getAsset(1)),
                         new SkillManaCostDrawer(skillIconFactory.getAsset(1)),
                         new SkillTypeDrawer(skillIconFactory.getAsset(1))),
-                cols, false);
+                cols, false, tableType);
     }
 
     public static ApplicableSkillsList2D<ActiveSkill> applicableSkillsList(Skin skin, int cols,

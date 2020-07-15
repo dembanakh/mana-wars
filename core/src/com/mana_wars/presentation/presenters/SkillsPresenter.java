@@ -7,6 +7,10 @@ import com.mana_wars.model.skills_operations.SkillsOperations;
 import com.mana_wars.presentation.util.UIThreadHandler;
 import com.mana_wars.presentation.view.SkillsView;
 
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+
 import io.reactivex.functions.Consumer;
 
 public final class SkillsPresenter extends BasePresenter<SkillsView, SkillsInteractor> {
@@ -72,5 +76,25 @@ public final class SkillsPresenter extends BasePresenter<SkillsView, SkillsInter
             moveSkill(skillSource, (tableTarget == SkillTable.ALL_SKILLS) ? -1 : skillTargetIndex);
             view.finishMove(tableTarget, skillTargetIndex, skillSource);
         }
+    }
+
+    public void onSkillDragStart(Skill sourceSkill, SkillTable sourceTable,
+                                 EnumMap<SkillTable, Iterable<? extends Skill>> tables) {
+        for (SkillTable table : tables.keySet()) {
+            int index = 0;
+            List<Integer> mergeableIndices = new ArrayList<>();
+            for (Skill possibleSkill : tables.get(table)) {
+                if (interactor.validateOperation(SkillsOperations.MERGE, sourceTable, table,
+                        sourceSkill, possibleSkill)) {
+                    mergeableIndices.add(index);
+                }
+                index++;
+            }
+            uiThreadHandler.postRunnable(() -> view.selectSkills(table, mergeableIndices));
+        }
+    }
+
+    public void onSkillDragStop() {
+        view.clearSelection();
     }
 }

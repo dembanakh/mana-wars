@@ -1,42 +1,51 @@
 package com.mana_wars.ui.widgets.skills_list_2d;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.Skill;
+import com.mana_wars.model.skills_operations.SkillTable;
 import com.mana_wars.ui.widgets.base.List2D;
 import com.mana_wars.ui.widgets.base.ListItemDrawer;
 
-public class OperationSkillsList2D extends List2D<Skill> {
+public class OperationSkillsList2D implements OperationSkillsList<Skill> {
+
+    private final List2D<Skill> list;
 
     private final boolean ordered;
+    private final SkillTable tableType;
 
-    public OperationSkillsList2D(Skin skin, ListItemDrawer<Skill> listItemDrawer, int cols, boolean ordered) {
-        this(skin.get(List.ListStyle.class), listItemDrawer, cols, ordered);
+    public OperationSkillsList2D(Skin skin, ListItemDrawer<Skill> listItemDrawer, int cols, boolean ordered,
+                                 SkillTable tableType) {
+        this(skin.get(List.ListStyle.class), listItemDrawer, cols, ordered, tableType);
     }
 
-    public OperationSkillsList2D(List.ListStyle style, ListItemDrawer<Skill> listItemDrawer, int cols, boolean ordered) {
-        super(style, listItemDrawer, cols);
+    public OperationSkillsList2D(List.ListStyle style, ListItemDrawer<Skill> listItemDrawer, int cols,
+                                 boolean ordered, SkillTable tableType) {
+        this.list = new List2D<>(style, listItemDrawer, cols);
         this.ordered = ordered;
+        this.tableType = tableType;
+        list.setUserObject(tableType);
     }
 
     @Override
     public int insert(int index, Skill item) {
         if (item == null)
             throw new IllegalArgumentException("SkillsList2D.insert: item cannot be null");
-        if (!ordered && (index < 0 || index >= size()))
+        if (!ordered && (index < 0 || index >= list.size()))
             throw new IllegalArgumentException("SkillsList2D.insert: index is not legal");
 
         if (ordered) {
             int indexToInsert;
-            for (indexToInsert = 0; indexToInsert < size(); ++indexToInsert) {
-                if (getItem(indexToInsert).compareTo(item) <= 0) break;
+            for (indexToInsert = 0; indexToInsert < list.size(); ++indexToInsert) {
+                if (list.getItem(indexToInsert).compareTo(item) <= 0) break;
             }
-            super.insert(indexToInsert, item);
+            list.insert(indexToInsert, item);
             return indexToInsert;
         } else {
-            if (getItem(index).getRarity() == Rarity.EMPTY) setItem(index, item);
-            else super.insert(index, item);
+            if (list.getItem(index).getRarity() == Rarity.EMPTY) list.setItem(index, item);
+            else list.insert(index, item);
             return index;
         }
     }
@@ -44,54 +53,65 @@ public class OperationSkillsList2D extends List2D<Skill> {
     @Override
     public Skill removeIndex(int index) {
         if (ordered) {
-            return super.removeIndex(index);
+            return list.removeIndex(index);
         } else {
-            Skill result = getItem(index);
-            setItem(index, Skill.getEmpty());
+            Skill result = list.getItem(index);
+            list.setItem(index, Skill.getEmpty());
             return result;
         }
     }
 
-    /*
-    /*
-     * Restore elements order in the list providing that items[index] is the only item out of order.
-     * Returns the index of the element after realignment.
-     /
     @Override
-    public int onItemChangeAt(int index) {
-        if (items.size <= 1) return index;
-
-        List2DItem<Skill> item = items.get(index);
-        boolean goDown;
-        if (index == 0) {
-            if (item.data.compareTo(items.get(1).data) >= 0) return index;
-            else goDown = true;
-        } else if (index == items.size - 1) {
-            if (item.data.compareTo(items.get(items.size - 2).data) <= 0) return index;
-            else goDown = false;
+    public void finishMoveOperation(int index, Skill skill) {
+        if (ordered) {
+            list.setItem(index, skill);
         } else {
-            if (item.data.compareTo(items.get(index + 1).data) < 0) goDown = true;
-            else if (item.data.compareTo(items.get(index - 1).data) > 0) goDown = false;
-            else return index;
-        }
-
-        if (goDown) {
-            int indexEnd = index + 1;
-            for (List2DItem<Skill> current = items.get(indexEnd);
-                 indexEnd < items.size && item.data.compareTo(current.data) < 0;
-                 indexEnd++, current = items.get(indexEnd));
-            System.arraycopy(items.items, index + 1, items.items, index, indexEnd - index);
-            items.set(indexEnd, item);
-            return indexEnd;
-        } else {
-            int indexStart = index - 1;
-            for (; indexStart >= 0 && item.data.compareTo(items.get(indexStart).data) > 0; indexStart--);
-            indexStart++;
-            System.arraycopy(items.items, indexStart, items.items, indexStart + 1, index - indexStart);
-            items.set(indexStart, item);
-            return indexStart;
+            list.insert(index, skill);
         }
     }
-    */
 
+    @Override
+    public Actor build() {
+        return list;
+    }
+
+    @Override
+    public void setItems(Iterable<? extends Skill> skills) {
+        list.setItems(skills);
+    }
+
+    @Override
+    public void clearSelection() {
+        list.setSelectedIndex(-1);
+    }
+
+    @Override
+    public Iterable<? extends Skill> getItems() {
+        return list.getItemsCopy();
+    }
+
+    @Override
+    public Skill getItemAt(float x, float y) {
+        return list.getItemAt(x, y);
+    }
+
+    @Override
+    public SkillTable getTableType() {
+        return tableType;
+    }
+
+    @Override
+    public int getItemIndexAt(float x, float y) {
+        return list.getItemIndexAt(x, y);
+    }
+
+    @Override
+    public Skill getItem(int index) {
+        return list.getItem(index);
+    }
+
+    @Override
+    public void setSelectedIndices(Iterable<? extends Integer> mergeableIndices) {
+        list.setSelectedIndices(mergeableIndices);
+    }
 }

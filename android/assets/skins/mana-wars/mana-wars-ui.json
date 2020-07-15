@@ -72,10 +72,10 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 	default: {
-		font: Roboto-Medium
+		font: font
 		fontColorSelected: white
 		fontColorUnselected: white
-		selection: list
+		selection: brown
 		background: list
 	}
 }
