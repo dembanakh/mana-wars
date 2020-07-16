@@ -26,7 +26,7 @@ public class OperationSkillsList2DTest {
     @Test
     public void insert_Rarity_ordered() {
         OperationSkillsList2D list = new OperationSkillsList2D(getStyle(),
-                (batch, font, index, item, x, y, width, height) -> {}, 5, true, SkillTable.ACTIVE_SKILLS);
+                (batch, font, index, item, x, y, width, height) -> {}, 5, true, SkillTable.ACTIVE_SKILLS, null);
 
         Skill skill2 = new Skill(2, 1, Rarity.ARCANE, "2", new ArrayList<>());
         list.setItems(Arrays.asList(skill1, skill2, skill3));
@@ -40,7 +40,7 @@ public class OperationSkillsList2DTest {
     @Test
     public void insert_Name_ordered() {
         OperationSkillsList2D list = new OperationSkillsList2D(getStyle(),
-                (batch, font, index, item, x, y, width, height) -> {}, 5, true, SkillTable.ACTIVE_SKILLS);
+                (batch, font, index, item, x, y, width, height) -> {}, 5, true, SkillTable.ACTIVE_SKILLS, null);
 
         Skill skill2 = new Skill(2, 1, Rarity.ARCANE, "2", new ArrayList<>());
         list.setItems(Arrays.asList(skill1, skill2, skill3));
@@ -54,7 +54,7 @@ public class OperationSkillsList2DTest {
     @Test
     public void insert_Level_ordered() {
         OperationSkillsList2D list = new OperationSkillsList2D(getStyle(),
-                (batch, font, index, item, x, y, width, height) -> {}, 5, true, SkillTable.ACTIVE_SKILLS);
+                (batch, font, index, item, x, y, width, height) -> {}, 5, true, SkillTable.ACTIVE_SKILLS, null);
 
         Skill skill2 = new Skill(2, 1, Rarity.ARCANE, "2", new ArrayList<>());
         list.setItems(Arrays.asList(skill1, skill2, skill3));
@@ -68,7 +68,7 @@ public class OperationSkillsList2DTest {
     @Test
     public void removeIndex_ordered() {
         OperationSkillsList2D list = new OperationSkillsList2D(getStyle(),
-                (batch, font, index, item, x, y, width, height) -> {}, 5, true, SkillTable.ACTIVE_SKILLS);
+                (batch, font, index, item, x, y, width, height) -> {}, 5, true, SkillTable.ACTIVE_SKILLS, null);
 
         Skill skill2 = new Skill(2, 1, Rarity.ARCANE, "2", new ArrayList<>());
         list.setItems(Arrays.asList(skill1, skill2, skill3));
@@ -82,7 +82,7 @@ public class OperationSkillsList2DTest {
     @Test
     public void insert_AtEmpty_unordered() {
         OperationSkillsList2D list = new OperationSkillsList2D(getStyle(),
-                (batch, font, index, item, x, y, width, height) -> {}, 5, false, SkillTable.ACTIVE_SKILLS);
+                (batch, font, index, item, x, y, width, height) -> {}, 5, false, SkillTable.ACTIVE_SKILLS, null);
 
         Skill skill2 = Skill.getEmpty();
         list.setItems(Arrays.asList(skill1, skill2, skill3));
@@ -98,7 +98,7 @@ public class OperationSkillsList2DTest {
     @Test
     public void insert_AtActual_unordered() {
         OperationSkillsList2D list = new OperationSkillsList2D(getStyle(),
-                (batch, font, index, item, x, y, width, height) -> {}, 5, false, SkillTable.ALL_SKILLS);
+                (batch, font, index, item, x, y, width, height) -> {}, 5, false, SkillTable.ALL_SKILLS, null);
 
         Skill skill2 = new Skill(2, 1, Rarity.ARCANE, "2", new ArrayList<>());
         list.setItems(Arrays.asList(skill1, skill2, skill3));
@@ -115,7 +115,7 @@ public class OperationSkillsList2DTest {
     @Test
     public void removeIndex_unordered() {
         OperationSkillsList2D list = new OperationSkillsList2D(getStyle(),
-                (batch, font, index, item, x, y, width, height) -> {}, 5, false, SkillTable.ALL_SKILLS);
+                (batch, font, index, item, x, y, width, height) -> {}, 5, false, SkillTable.ALL_SKILLS, null);
 
         Skill skill2 = new Skill(2, 1, Rarity.ARCANE, "2", new ArrayList<>());
         list.setItems(Arrays.asList(skill1, skill2, skill3));
