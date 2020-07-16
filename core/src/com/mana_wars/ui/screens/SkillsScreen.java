@@ -26,6 +26,7 @@ import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.MenuOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.widgets.base.TimeoutDragAndDrop;
+import com.mana_wars.ui.widgets.skill_window.BriefSkillInfo;
 import com.mana_wars.ui.widgets.skills_list_2d.OperationSkillsList;
 
 import java.util.EnumMap;
@@ -39,6 +40,7 @@ public final class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresente
     private final OperationSkillsList<Skill> passiveSkillsTable;
     private final SkillsDragAndDrop dragAndDrop;
     private final ScrollPane scrollPane;
+    private final BriefSkillInfo skillInfo;
 
     private final EnumMap<SkillTable, OperationSkillsList<Skill>> tables = new EnumMap<>(SkillTable.class);
 
@@ -54,19 +56,24 @@ public final class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresente
         presenter.addObserver_manaAmount(overlayUI.getManaAmountObserver());
         presenter.addObserver_userLevel(overlayUI.getUserLevelObserver());
 
+        skillInfo = new BriefSkillInfo("", skin);
+
         mainSkillsTable = UIElementFactory.orderedOperationSkillsList(skin, COLUMNS_NUMBER,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(),
-                SkillTable.ALL_SKILLS);
+                SkillTable.ALL_SKILLS, skillInfo);
+        addInputProcessor(mainSkillsTable.getDoubleTapProcessor());
 
         activeSkillsTable = UIElementFactory.unorderedOperationSkillsList(skin,
                 GameConstants.MAX_CHOSEN_ACTIVE_SKILL_COUNT,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(),
-                SkillTable.ACTIVE_SKILLS);
+                SkillTable.ACTIVE_SKILLS, skillInfo);
+        addInputProcessor(activeSkillsTable.getDoubleTapProcessor());
 
         passiveSkillsTable = UIElementFactory.unorderedOperationSkillsList(skin,
                 GameConstants.USER_PASSIVE_SKILL_COUNT,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(),
-                SkillTable.PASSIVE_SKILLS);
+                SkillTable.PASSIVE_SKILLS, skillInfo);
+        addInputProcessor(passiveSkillsTable.getDoubleTapProcessor());
 
         tables.put(SkillTable.ALL_SKILLS, mainSkillsTable);
         tables.put(SkillTable.ACTIVE_SKILLS, activeSkillsTable);
@@ -75,6 +82,12 @@ public final class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresente
         scrollPane = new ScrollPane(mainSkillsTable.build(), skin);
         dragAndDrop = new SkillsDragAndDrop(factoryStorage.getSkillIconFactory(),
                 factoryStorage.getRarityFrameFactory());
+    }
+
+    @Override
+    void rebuildStage() {
+        super.rebuildStage();
+        addActor(skillInfo);
     }
 
     @Override

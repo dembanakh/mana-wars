@@ -66,6 +66,7 @@ public abstract class BaseSkillWindow extends Window implements BuildableUI {
         setMovable(false);
         setResizable(false);
         setVisible(false);
+        setModal(true);
 
         add(skillName).padTop(SKILL_NAME_PADDING).width(800).row();
         Stack stack = new Stack();
@@ -138,7 +139,7 @@ public abstract class BaseSkillWindow extends Window implements BuildableUI {
         font.getData().setScale(initialFontScale.x, initialFontScale.y);
     }
 
-    String getDescription(Skill skill) {
+    static String getDescription(Skill skill) {
         StringBuilder result = new StringBuilder();
         for (SkillCharacteristic sc : skill.getCharacteristics()) {
             result.append(getDescription(sc, skill.getLevel()));
@@ -147,7 +148,7 @@ public abstract class BaseSkillWindow extends Window implements BuildableUI {
         return result.toString();
     }
 
-    private String getDescription(SkillCharacteristic sc, int skillLevel) {
+    private static  String getDescription(SkillCharacteristic sc, int skillLevel) {
         String result = String.valueOf(sc.getTarget());
         result += " ";
         result += String.valueOf(sc.getCharacteristic());

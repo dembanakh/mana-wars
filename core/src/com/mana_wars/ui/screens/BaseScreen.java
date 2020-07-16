@@ -1,6 +1,8 @@
 package com.mana_wars.ui.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -25,6 +27,8 @@ public abstract class BaseScreen<U extends BaseOverlayUI, T extends BasePresente
     private final Stage stage;
     private final ScreenSetter screenSetter;
 
+    private final InputMultiplexer inputProcessor;
+
     BaseScreen(ScreenSetter screenSetter, Skin skin, U overlayUI) {
         this.screenSetter = screenSetter;
         this.skin = skin;
@@ -37,6 +41,8 @@ public abstract class BaseScreen<U extends BaseOverlayUI, T extends BasePresente
                 return super.touchDown(screenX, screenY, pointer, button);
             }
         };
+        this.inputProcessor = new InputMultiplexer();
+        inputProcessor.addProcessor(stage);
     }
 
     public BaseScreen reInit(Map<String, Object> arguments) {
@@ -67,6 +73,10 @@ public abstract class BaseScreen<U extends BaseOverlayUI, T extends BasePresente
 
     protected abstract Table buildForegroundLayer(Skin skin);
 
+    void addInputProcessor(InputProcessor inputProcessor) {
+        this.inputProcessor.addProcessor(0, inputProcessor);
+    }
+
     @Override
     public void setScreen(ScreenInstance instance, Map<String, Object> arguments) {
         screenSetter.setScreen(instance, arguments);
@@ -74,7 +84,7 @@ public abstract class BaseScreen<U extends BaseOverlayUI, T extends BasePresente
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(inputProcessor);
         rebuildStage();
         overlayUI.overlay(stage);
     }
