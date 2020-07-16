@@ -358,6 +358,7 @@ public class List2D<T> extends Widget implements Cullable {
             y -= background.getBottomHeight();
             x -= background.getLeftWidth();
         }
+        if (x < 0 || y < 0 || y > height) return -1;
         int indexY = (int) ((height - y) / itemHeight);
         int indexX = (int) ((x) / itemWidth);
         if (indexY < 0 || indexX < 0) return -1;

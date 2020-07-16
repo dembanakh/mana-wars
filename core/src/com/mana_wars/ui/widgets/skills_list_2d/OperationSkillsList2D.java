@@ -1,5 +1,8 @@
 package com.mana_wars.ui.widgets.skills_list_2d;
 
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -8,21 +11,29 @@ import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.skills_operations.SkillTable;
 import com.mana_wars.ui.widgets.base.List2D;
 import com.mana_wars.ui.widgets.base.ListItemDrawer;
+import com.mana_wars.ui.widgets.skill_window.BriefSkillInfo;
 
-public class OperationSkillsList2D implements OperationSkillsList<Skill> {
+import static com.mana_wars.ui.UIElementsSize.SCREEN_HEIGHT;
+
+public class OperationSkillsList2D implements OperationSkillsList<Skill>, GestureDetector.GestureListener {
 
     private final List2D<Skill> list;
+    private final BriefSkillInfo skillInfo;
 
     private final boolean ordered;
     private final SkillTable tableType;
 
     public OperationSkillsList2D(Skin skin, ListItemDrawer<Skill> listItemDrawer, int cols, boolean ordered,
-                                 SkillTable tableType) {
-        this(skin.get(List.ListStyle.class), listItemDrawer, cols, ordered, tableType);
+                                 SkillTable tableType, BriefSkillInfo skillInfo) {
+        this(skin.get(List.ListStyle.class),
+                listItemDrawer, cols, ordered, tableType, skillInfo);
     }
 
-    public OperationSkillsList2D(List.ListStyle style, ListItemDrawer<Skill> listItemDrawer, int cols,
-                                 boolean ordered, SkillTable tableType) {
+    public OperationSkillsList2D(List.ListStyle style,
+                                 ListItemDrawer<Skill> listItemDrawer, int cols,
+                                 boolean ordered, SkillTable tableType,
+                                 BriefSkillInfo skillInfo) {
+        this.skillInfo = skillInfo;
         this.list = new List2D<>(style, listItemDrawer, cols);
         this.ordered = ordered;
         this.tableType = tableType;
@@ -71,6 +82,11 @@ public class OperationSkillsList2D implements OperationSkillsList<Skill> {
     }
 
     @Override
+    public InputProcessor getDoubleTapProcessor() {
+        return new GestureDetector(this);
+    }
+
+    @Override
     public Actor build() {
         return list;
     }
@@ -113,5 +129,59 @@ public class OperationSkillsList2D implements OperationSkillsList<Skill> {
     @Override
     public void setSelectedIndices(Iterable<? extends Integer> mergeableIndices) {
         list.setSelectedIndices(mergeableIndices);
+    }
+
+    @Override
+    public boolean touchDown(float x, float y, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean tap(float x, float y, int count, int button) {
+        if (count == 1) {
+            skillInfo.hide();
+        }
+        else if (count == 2) {
+            y = SCREEN_HEIGHT() - y; // another coordinate system
+            Vector2 localTapPosition = list.stageToLocalCoordinates(new Vector2(x, y));
+            Skill tappedSkill = getItemAt(localTapPosition.x, localTapPosition.y);
+            if (tappedSkill != null) skillInfo.open(tappedSkill, x, y);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean longPress(float x, float y) {
+        return false;
+    }
+
+    @Override
+    public boolean fling(float velocityX, float velocityY, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean pan(float x, float y, float deltaX, float deltaY) {
+        return false;
+    }
+
+    @Override
+    public boolean panStop(float x, float y, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean zoom(float initialDistance, float distance) {
+        return false;
+    }
+
+    @Override
+    public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
+        return false;
+    }
+
+    @Override
+    public void pinchStop() {
+
     }
 }
