@@ -28,7 +28,7 @@ public class VolleyRepository {
         this.requestQueue = Volley.newRequestQueue(context);
     }
 
-    private synchronized  <T> void addToRequestQueue(Request<T> req) {
+    private synchronized <T> void addToRequestQueue(Request<T> req) {
         requestQueue.add(req);
     }
 
@@ -37,16 +37,15 @@ public class VolleyRepository {
     private static final String gss_link = "https://script.google.com/macros/s/AKfycbxkCNcnUbanJsE_4iPaLmEB11yJDj46Rk6ICY8btXOxuvPMWqg/exec";
 
     public void postFCMUserTokenToServer(String token){
-
         StringRequest request = new StringRequest(Request.Method.POST, gss_link,
-                    response -> {Log.i("FCM Valley resonce", response);},
+                    response -> {Log.i("FCM Valley response", response);},
                     error -> {
                         Log.e("FCM Volley FCM error", error.toString());
                     })
         {
 
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
 
                 params.put("action", "add_user");

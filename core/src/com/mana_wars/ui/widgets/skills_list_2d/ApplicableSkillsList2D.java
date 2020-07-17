@@ -63,9 +63,8 @@ public class ApplicableSkillsList2D<T extends ActiveSkill> implements BlockableS
     public void blockSkills(int appliedSkillIndex) {
         T appliedSkill = list.getItem(appliedSkillIndex);
         if (appliedSkill.getRarity() != Rarity.EMPTY) {
-            int i = -1;
+            int i = 0;
             for (T skill : list.getItemsCopy()) {
-                i++;
                 if (skill.getRarity() == Rarity.EMPTY) continue;
                 if (i == appliedSkillIndex)
                     animationController.add(i,
@@ -79,6 +78,7 @@ public class ApplicableSkillsList2D<T extends ActiveSkill> implements BlockableS
                             Arrays.asList(
                                     new UIAnimationController.KeyFrame<>(SkillIconAnimationController.Type.CAST_NON_APPLIED,
                                             appliedSkill.getCastTime(castTime))));
+                i++;
             }
         }
     }

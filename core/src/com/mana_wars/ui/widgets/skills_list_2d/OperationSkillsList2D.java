@@ -23,20 +23,20 @@ public class OperationSkillsList2D implements OperationSkillsList<Skill>, Gestur
     private final boolean ordered;
     private final SkillTable tableType;
 
-    public OperationSkillsList2D(Skin skin, ListItemDrawer<Skill> listItemDrawer, int cols, boolean ordered,
+    public OperationSkillsList2D(Skin skin, ListItemDrawer<Skill> listItemDrawer, int cols,
                                  SkillTable tableType, BriefSkillInfo skillInfo) {
         this(skin.get(List.ListStyle.class),
-                listItemDrawer, cols, ordered, tableType, skillInfo);
+                listItemDrawer, cols, tableType, skillInfo);
     }
 
     public OperationSkillsList2D(List.ListStyle style,
                                  ListItemDrawer<Skill> listItemDrawer, int cols,
-                                 boolean ordered, SkillTable tableType,
+                                 SkillTable tableType,
                                  BriefSkillInfo skillInfo) {
         this.skillInfo = skillInfo;
         this.list = new List2D<>(style, listItemDrawer, cols);
-        this.ordered = ordered;
         this.tableType = tableType;
+        this.ordered = tableType == SkillTable.ALL_SKILLS;
         list.setUserObject(tableType);
     }
 
@@ -75,9 +75,9 @@ public class OperationSkillsList2D implements OperationSkillsList<Skill>, Gestur
     @Override
     public void finishMoveOperation(int index, Skill skill) {
         if (ordered) {
-            list.setItem(index, skill);
+            insert(index, skill);
         } else {
-            list.insert(index, skill);
+            list.setItem(index, skill);
         }
     }
 

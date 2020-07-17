@@ -58,18 +58,18 @@ public final class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresente
 
         skillInfo = new BriefSkillInfo("", skin);
 
-        mainSkillsTable = UIElementFactory.orderedOperationSkillsList(skin, COLUMNS_NUMBER,
+        mainSkillsTable = UIElementFactory.emptyBackgroundOperationSkillsList(skin, COLUMNS_NUMBER,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(),
                 SkillTable.ALL_SKILLS, skillInfo);
         addInputProcessor(mainSkillsTable.getDoubleTapProcessor());
 
-        activeSkillsTable = UIElementFactory.unorderedOperationSkillsList(skin,
+        activeSkillsTable = UIElementFactory.operationSkillsList(skin,
                 GameConstants.MAX_CHOSEN_ACTIVE_SKILL_COUNT,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(),
                 SkillTable.ACTIVE_SKILLS, skillInfo);
         addInputProcessor(activeSkillsTable.getDoubleTapProcessor());
 
-        passiveSkillsTable = UIElementFactory.unorderedOperationSkillsList(skin,
+        passiveSkillsTable = UIElementFactory.operationSkillsList(skin,
                 GameConstants.USER_PASSIVE_SKILL_COUNT,
                 factoryStorage.getSkillIconFactory(), factoryStorage.getRarityFrameFactory(),
                 SkillTable.PASSIVE_SKILLS, skillInfo);
@@ -144,6 +144,7 @@ public final class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresente
     @Override
     public void finishMove(SkillTable tableTarget, int skillTargetIndex, Skill skillSource) {
         OperationSkillsList<Skill> listTarget = getList2D(tableTarget);
+        System.out.println(tableTarget);
         listTarget.finishMoveOperation(skillTargetIndex, skillSource);
     }
 

@@ -44,7 +44,7 @@ public final class UIElementFactory {
         return style;
     }
 
-    public static OperationSkillsList<Skill> orderedOperationSkillsList(Skin skin, int cols,
+    public static OperationSkillsList<Skill> emptyBackgroundOperationSkillsList(Skin skin, int cols,
                                                                         AssetFactory<Integer, TextureRegion> skillIconFactory,
                                                                         AssetFactory<Rarity, TextureRegion> rarityFrameFactory,
                                                                         SkillTable tableType,
@@ -54,10 +54,10 @@ public final class UIElementFactory {
                         new SkillLevelDrawer(skillIconFactory.getAsset(1)),
                         new SkillManaCostDrawer(skillIconFactory.getAsset(1)),
                         new SkillTypeDrawer(skillIconFactory.getAsset(1))),
-                cols, true, tableType, skillInfo);
+                cols, tableType, skillInfo);
     }
 
-    public static OperationSkillsList<Skill> unorderedOperationSkillsList(Skin skin, int cols,
+    public static OperationSkillsList<Skill> operationSkillsList(Skin skin, int cols,
                                                                           AssetFactory<Integer, TextureRegion> skillIconFactory,
                                                                           AssetFactory<Rarity, TextureRegion> rarityFrameFactory,
                                                                           SkillTable tableType,
@@ -67,7 +67,7 @@ public final class UIElementFactory {
                         new SkillLevelDrawer(skillIconFactory.getAsset(1)),
                         new SkillManaCostDrawer(skillIconFactory.getAsset(1)),
                         new SkillTypeDrawer(skillIconFactory.getAsset(1))),
-                cols, false, tableType, skillInfo);
+                cols, tableType, skillInfo);
     }
 
     public static ApplicableSkillsList2D<ActiveSkill> applicableSkillsList(Skin skin, int cols,
