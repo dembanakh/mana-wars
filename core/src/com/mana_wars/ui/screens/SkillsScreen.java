@@ -184,7 +184,7 @@ public final class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresente
 
         SkillsDragAndDrop(AssetFactory<Integer, TextureRegion> skillIconFactory,
                           AssetFactory<Rarity, TextureRegion> skillFrameFactory) {
-            this.dragAndDrop = new TimeoutDragAndDrop(1);
+            this.dragAndDrop = new TimeoutDragAndDrop(0.5f);
             this.skillIconFactory = skillIconFactory;
             this.skillFrameFactory = skillFrameFactory;
         }

@@ -33,7 +33,7 @@ public class RoomRepository {
     public final DBMobDAO dbMobDAO;
     public final DBMobSkillDAO dbMobSkillDAO;
 
-    public static RoomRepository getInstance(Context context) {
+    public static synchronized RoomRepository getInstance(Context context) {
         if (instance == null) {
             AppDatabase db = AppDatabase.getDatabase(context);
             instance = new RoomRepository(db.userSkillsDAO(), db.dbSkillDAO(),
