@@ -43,7 +43,7 @@ public class BattleWithRounds implements Battle {
         this.roundsCount = roundsCount;
         this.observer = observer;
 
-        this.currentRound = 0;
+        this.currentRound = 1;
         this.finishBattleObservable = SingleSubject.create();
     }
 

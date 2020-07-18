@@ -17,6 +17,9 @@ public class DBMob {
     @ColumnInfo(name = "name")
     private String name;
 
+    @ColumnInfo(name = "icon_id")
+    private String iconID;
+
     @ColumnInfo(name = "dungeon_ref_id")
     private int dungeonId;
 
@@ -46,6 +49,14 @@ public class DBMob {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getIconID() {
+        return iconID;
+    }
+
+    public void setIconID(String iconID) {
+        this.iconID = iconID;
     }
 
     public int getDungeonId() {
@@ -92,6 +103,7 @@ public class DBMob {
         DBMob result = new DBMob();
         result.setId(json.getInt("id"));
         result.setName(json.getString("name"));
+        result.setIconID(json.getString("icon_id"));
         result.setDungeonId(json.getInt("dungeon_id"));
         result.setInitialHealth(json.getInt("init_health"));
         result.setManaReward(json.getInt("mana_reward"));

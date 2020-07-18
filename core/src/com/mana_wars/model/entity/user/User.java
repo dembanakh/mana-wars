@@ -20,16 +20,13 @@ public class User implements
         UserBattleAPI, UserGreetingAPI, UserBattleSummaryAPI,
         UserShopAPI {
 
-    private UserBattleParticipant user;
-
     private final UsernameRepository usernameRepository;
     private final UserManaRepository userManaRepository;
     private final UserLevelExperienceRepository userLevelExperienceRepository;
     private final UserSkillCasesRepository userSkillCasesRepository;
-
     private final Subject<Integer> manaAmountObservable;
     private final Subject<Integer> userLevelObservable;
-
+    private UserBattleParticipant user;
     private int nextLevelRequiredExperience;
 
     public User(UserManaRepository userManaRepository, UserLevelExperienceRepository userLevelExperienceRepository,
@@ -50,7 +47,8 @@ public class User implements
 
     @Override
     public BattleParticipant prepareBattleParticipant(List<ActiveSkill> activeSkills, Iterable<PassiveSkill> passiveSkills) {
-        return user = new UserBattleParticipant(usernameRepository.getUsername(), userManaRepository.getUserMana(),
+        return user = new UserBattleParticipant(usernameRepository.getUsername(),
+                userLevelExperienceRepository.getUserLevel(), userManaRepository.getUserMana(),
                 this::setManaAmount, activeSkills, cleanPassiveSkills(passiveSkills));
     }
 
@@ -64,15 +62,10 @@ public class User implements
         return user.tryApplyActiveSkill(skill);
     }
 
-    private void setManaAmount(int mana) {
-        userManaRepository.setUserMana(mana);
-        manaAmountObservable.onNext(mana);
-    }
-
     @Override
     public void checkNextLevel() {
         int experienceCount = userLevelExperienceRepository.getCurrentUserExperience();
-        while (experienceCount >= nextLevelRequiredExperience){
+        while (experienceCount >= nextLevelRequiredExperience) {
             int userLevel = getLevel() + 1;
             userLevelExperienceRepository.setUserLevel(userLevel);
             nextLevelRequiredExperience = userLevelExperienceRepository.getUserLevelRequiredExperience().get(userLevel);
@@ -113,6 +106,11 @@ public class User implements
     }
 
     @Override
+    public void setName(String name) {
+        usernameRepository.setUsername(name);
+    }
+
+    @Override
     public int getLevel() {
         return userLevelExperienceRepository.getUserLevel();
     }
@@ -122,9 +120,9 @@ public class User implements
         return userManaRepository.getUserMana();
     }
 
-    @Override
-    public void setName(String name) {
-        usernameRepository.setUsername(name);
+    private void setManaAmount(int mana) {
+        userManaRepository.setUserMana(mana);
+        manaAmountObservable.onNext(mana);
     }
 
     @Override

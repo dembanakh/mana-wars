@@ -4,6 +4,8 @@ public final class GameConstants {
 
     public static final int DB_VERSION = 1;
 
+    public static final int DEFAULT_USER_INITIAL_HEALTH = 300;
+
     public static final int MAX_CHOSEN_ACTIVE_SKILL_COUNT = 5;
     public static final int USER_PASSIVE_SKILL_COUNT = 5;
 
@@ -15,6 +17,5 @@ public final class GameConstants {
 
     public static final String CHOSEN_BATTLE_BUILDER = "CHOSEN_BATTLE_BUILDER";
 
-    private GameConstants() {
-    }
+    private GameConstants() {}
 }

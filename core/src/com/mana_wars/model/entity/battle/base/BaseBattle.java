@@ -23,7 +23,6 @@ public class BaseBattle implements Battle, BattleClientAPI {
     private final List<BattleParticipant> userSide;
     private final List<BattleParticipant> enemySide;
 
-    private final BattleSummaryData summaryData = new BattleSummaryData();
     private final SingleSubject<BattleSummaryData> finishBattleObservable;
 
     private final BattleEventsHandler battleEvents;
@@ -103,6 +102,12 @@ public class BaseBattle implements Battle, BattleClientAPI {
 
     //region Private methods
     private BattleSummaryData prepareSummaryData() {
+        BattleSummaryData summaryData = new BattleSummaryData();
+
+        for (BattleParticipant bp : opponents.keySet()){
+            summaryData.addStatisticsFrom(bp);
+        }
+
         for (BattleParticipant bp : enemySide){
             if (!bp.isAlive()) {
                 summaryData.addReward(bp.getOnDeathReward());

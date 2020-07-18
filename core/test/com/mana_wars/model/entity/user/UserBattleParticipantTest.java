@@ -37,7 +37,7 @@ public class UserBattleParticipantTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        user = new UserBattleParticipant("a", 100, (mana) -> changedMana = mana,
+        user = new UserBattleParticipant("a", 1,100, (mana) -> changedMana = mana,
                 Collections.singletonList(activeSkill), Collections.singletonList(passiveSkill));
         user.setBattleClientAPI(battleClientAPI);
     }

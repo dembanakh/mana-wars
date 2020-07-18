@@ -151,6 +151,16 @@
       "target" : 1,
       "upgrade_function" : "LINEAR",
       "level_multiplier" : 0
+    },
+    {
+      "id" : 9,
+      "skill_id": 2,
+      "value": 10,
+      "characteristic" : 4,
+      "value_change" : -1,
+      "target" : 1,
+      "upgrade_function" : "LINEAR",
+      "level_multiplier" : 0
     }
   ],
   "dungeons" : [
@@ -171,6 +181,7 @@
     {
       "id" : 1,
       "name" : "Block wolf",
+      "icon_id": "player~mirrored",
       "dungeon_id" : 1,
       "init_health" : 200,
       "mana_reward" : 10,
@@ -180,6 +191,7 @@
     {
       "id" : 2,
       "name" : "Block fox",
+      "icon_id": "enemy",
       "dungeon_id" : 1,
       "init_health" : 100,
       "mana_reward" : 10,
@@ -189,6 +201,7 @@
     {
       "id" : 3,
       "name" : "Allow tiger",
+      "icon_id": "player~mirrored",
       "dungeon_id" : 2,
       "init_health" : 200,
       "mana_reward" : 20,
@@ -198,6 +211,7 @@
     {
       "id" : 4,
       "name" : "Allow rabbit",
+      "icon_id": "enemy",
       "dungeon_id" : 2,
       "init_health" : 100,
       "mana_reward" : 20,
@@ -234,25 +248,25 @@
       "id" : 5,
       "mob_id": 3,
       "skill_id": 1,
-      "lvl" : 1
+      "lvl" : 2
     },
     {
       "id" : 6,
       "mob_id": 3,
       "skill_id": 3,
-      "lvl" : 1
+      "lvl" : 2
     },
     {
       "id" : 7,
       "mob_id": 4,
       "skill_id": 4,
-      "lvl" : 1
+      "lvl" : 2
     },
     {
       "id" : 8,
       "mob_id": 4,
       "skill_id": 3,
-      "lvl" : 1
+      "lvl" : 2
     }
   ],
   "user_lvl_required_experience" : [0, 100, 400, 700, 1000],
