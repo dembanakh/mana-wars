@@ -21,19 +21,19 @@ class BattleEventsHandler {
             if (be.source.isAlive()){
 
                 //TODO refactore
-                int self_health_before = be.source.getCharacteristicValue(Characteristic.HEALTH);
-                int target_health_before = be.target.getCharacteristicValue(Characteristic.HEALTH);
+                int selfHealthBefore = be.source.getCharacteristicValue(Characteristic.HEALTH);
+                int targetHealthBefore = be.target.getCharacteristicValue(Characteristic.HEALTH);
 
                 be.skill.activate(be.source, be.target);
 
-                int self_health_after = be.source.getCharacteristicValue(Characteristic.HEALTH);
-                int target_health_after = be.target.getCharacteristicValue(Characteristic.HEALTH);
+                int selfHealthAfter = be.source.getCharacteristicValue(Characteristic.HEALTH);
+                int targetHealthAfter = be.target.getCharacteristicValue(Characteristic.HEALTH);
 
-                int source_delta = self_health_after - self_health_before;
-                int target_delta = target_health_after - target_health_before;
+                int sourceDelta = selfHealthAfter - selfHealthBefore;
+                int targetDelta = targetHealthAfter - targetHealthBefore;
 
-                be.source.getBattleStatisticsData().updateValuesAsSource(source_delta, target_delta);
-                be.target.getBattleStatisticsData().updateValuesAsTarget(target_delta);
+                be.source.getBattleStatisticsData().updateValuesAsSource(sourceDelta, targetDelta);
+                be.target.getBattleStatisticsData().updateValuesAsTarget(targetDelta);
             }
 
         }
