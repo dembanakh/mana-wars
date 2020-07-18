@@ -1,6 +1,7 @@
 package com.mana_wars.model.entity.battle.base;
 
 import com.mana_wars.model.entity.battle.data.BattleSummaryData;
+import com.mana_wars.model.entity.battle.data.ReadableBattleSummaryData;
 import com.mana_wars.model.entity.battle.participant.BattleParticipant;
 
 import java.util.List;
@@ -15,5 +16,5 @@ public interface Battle {
     BattleParticipant getUser();
     List<BattleParticipant> getUserSide();
     List<BattleParticipant> getEnemySide();
-    Single<BattleSummaryData> getFinishBattleObservable();
+    Single<ReadableBattleSummaryData> getFinishBattleObservable();
 }

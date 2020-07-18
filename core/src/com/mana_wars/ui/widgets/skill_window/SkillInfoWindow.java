@@ -15,8 +15,6 @@ import com.mana_wars.ui.widgets.base.BuildableUI;
 
 public class SkillInfoWindow extends BaseSkillWindow implements BuildableUI {
 
-    private Skill currentSkill;
-
     public SkillInfoWindow(String title, Skin skin, AssetFactory<Integer, TextureRegion> iconFactory,
                            AssetFactory<Rarity, TextureRegion> frameFactory) {
         super(title, skin, iconFactory, frameFactory);
@@ -56,26 +54,17 @@ public class SkillInfoWindow extends BaseSkillWindow implements BuildableUI {
     }
 
     @Override
-    void hide() {
-        super.hide();
-        currentSkill = null;
-    }
-
-    @Override
     public void open(Skill skill) {
-        currentSkill = skill;
         super.open(skill);
     }
 
     private void decreaseLevel() {
         currentSkill.downgradeLevel();
-        setSkillLevel(currentSkill.getLevel());
         setSkillDescription(getDescription(currentSkill));
     }
 
     private void increaseLevel() {
         currentSkill.upgradeLevel();
-        setSkillLevel(currentSkill.getLevel());
         setSkillDescription(getDescription(currentSkill));
     }
 

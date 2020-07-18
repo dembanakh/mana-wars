@@ -6,7 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.mana_wars.model.entity.battle.data.BattleSummaryData;
+import com.mana_wars.model.entity.battle.data.ReadableBattleStatisticsData;
+import com.mana_wars.model.entity.battle.data.ReadableBattleSummaryData;
+import com.mana_wars.model.entity.battle.participant.BattleParticipant;
 import com.mana_wars.model.entity.user.UserBattleSummaryAPI;
 import com.mana_wars.model.interactor.BattleSummaryInteractor;
 import com.mana_wars.presentation.presenters.BattleSummaryPresenter;
@@ -18,6 +20,7 @@ import com.mana_wars.ui.management.ScreenSetter;
 import com.mana_wars.ui.overlays.BaseOverlayUI;
 import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
+import com.mana_wars.ui.widgets.StatisticsTable;
 
 import java.util.Map;
 
@@ -34,6 +37,8 @@ public final class BattleSummaryScreen extends BaseScreen<BaseOverlayUI, BattleS
     private final Label xpRewardLabel;
     private final Label skillCasesRewardLabel;
 
+    private final StatisticsTable statisticsTable;
+
     private final LocalizedStringFactory localizedStringFactory;
 
     public BattleSummaryScreen(final UserBattleSummaryAPI user,
@@ -48,12 +53,13 @@ public final class BattleSummaryScreen extends BaseScreen<BaseOverlayUI, BattleS
         this.manaRewardLabel = new Label("", skin);
         this.xpRewardLabel = new Label("", skin);
         this.skillCasesRewardLabel = new Label("", skin);
+        this.statisticsTable = new StatisticsTable(skin);
         this.localizedStringFactory = factoryStorage.getLocalizedStringFactory();
     }
 
     @Override
     public BaseScreen reInit(Map<String, Object> arguments) {
-        BattleSummaryData summaryData = getArgument(arguments, "BattleSummaryData");
+        ReadableBattleSummaryData summaryData = getArgument(arguments, "BattleSummaryData");
         presenter.parseSummaryData(summaryData);
         return this;
     }
@@ -68,12 +74,15 @@ public final class BattleSummaryScreen extends BaseScreen<BaseOverlayUI, BattleS
     @Override
     protected Table buildForegroundLayer(Skin skin) {
         Table layer = new Table();
+        layer.setFillParent(true);
 
         layer.add(new Label(localizedStringFactory.get(BATTLE_FINISHED_KEY), skin)).padBottom(100).row();
 
         layer.add(manaRewardLabel).row();
         layer.add(xpRewardLabel).row();
         layer.add(skillCasesRewardLabel).row();
+
+        layer.add(statisticsTable.build()).padTop(50).growX().row();
 
         layer.add(UIElementFactory.getButton(skin,
                 localizedStringFactory.get(TO_MAIN_MENU_KEY), new ChangeListener() {
@@ -103,5 +112,15 @@ public final class BattleSummaryScreen extends BaseScreen<BaseOverlayUI, BattleS
     @Override
     public void setSkillCasesReward(int skillCasesReward) {
         skillCasesRewardLabel.setText(localizedStringFactory.format(CASES_REWARD_KEY, skillCasesReward));
+    }
+
+    @Override
+    public void setParticipantsStatistics(Iterable<? extends Map.Entry<BattleParticipant, ? extends ReadableBattleStatisticsData>> participantsStatistics) {
+        statisticsTable.clear();
+        for (Map.Entry<BattleParticipant, ? extends ReadableBattleStatisticsData> entry : participantsStatistics) {
+            statisticsTable.add(entry.getKey().getData().name,
+                    entry.getValue());
+        }
+        statisticsTable.showDefault();
     }
 }

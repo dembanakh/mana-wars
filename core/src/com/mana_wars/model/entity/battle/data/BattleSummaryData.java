@@ -5,9 +5,9 @@ import com.mana_wars.model.entity.battle.participant.BattleParticipant;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BattleSummaryData {
+public class BattleSummaryData implements ReadableBattleSummaryData {
 
-    private final BattleRewardData rewardData = new BattleRewardData(0,0,0);
+    private final BattleRewardData rewardData = new BattleRewardData();
     private final Map<BattleParticipant, BattleStatisticsData> participantsStatistics = new HashMap<>();
 
     public void addReward(BattleRewardData rewardData) {
@@ -20,17 +20,20 @@ public class BattleSummaryData {
         }
     }
 
-    public void combineWith(BattleSummaryData other) {
-        this.rewardData.add(other.rewardData);
-        for (BattleParticipant bp : other.participantsStatistics.keySet()){
+    public void combineWith(ReadableBattleSummaryData other) {
+        rewardData.add(other.getRewardData());
+        for (BattleParticipant bp : other.getParticipantsStatistics().keySet()){
             addStatisticsFrom(bp);
         }
     }
 
-    public BattleRewardData getRewardData() {
+    @Override
+    public ReadableBattleRewardData getRewardData() {
         return rewardData;
     }
-    public Map<BattleParticipant, BattleStatisticsData> getParticipantsStatistics(){
+
+    @Override
+    public Map<BattleParticipant, ? extends ReadableBattleStatisticsData> getParticipantsStatistics() {
         return participantsStatistics;
     }
 }

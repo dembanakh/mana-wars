@@ -1,33 +1,34 @@
 package com.mana_wars.model.interactor;
 
-import com.mana_wars.model.entity.battle.data.BattleStatisticsData;
-import com.mana_wars.model.entity.battle.data.BattleSummaryData;
+import com.mana_wars.model.entity.battle.data.ReadableBattleStatisticsData;
+import com.mana_wars.model.entity.battle.data.ReadableBattleSummaryData;
 import com.mana_wars.model.entity.battle.participant.BattleParticipant;
 import com.mana_wars.model.entity.user.UserBattleSummaryAPI;
 
+import java.util.Map;
 import java.util.Random;
 
 public final class BattleSummaryInteractor extends BaseInteractor<UserBattleSummaryAPI> {
 
     private static Random Random = new Random();
 
-    private BattleSummaryData summaryData;
+    private ReadableBattleSummaryData summaryData;
     private int gainedSkillCases;
 
     public BattleSummaryInteractor(UserBattleSummaryAPI user){
         super(user);
     }
 
-    public void parseSummaryData(BattleSummaryData summaryData) {
+    public void parseSummaryData(ReadableBattleSummaryData summaryData) {
         this.summaryData = summaryData;
 
         //TODO just for testing
         System.out.println("Battle Stats");
-        for (BattleParticipant bp : summaryData.getParticipantsStatistics().keySet()){
-
-            BattleStatisticsData bsd = summaryData.getParticipantsStatistics().get(bp);
-            System.out.println(bp.getData().name +
-                    ":\ncaused damade="+ bsd.getCausedDamage() +
+        for (Map.Entry<BattleParticipant, ? extends ReadableBattleStatisticsData> entry :
+                summaryData.getParticipantsStatistics().entrySet()) {
+            ReadableBattleStatisticsData bsd = entry.getValue();
+            System.out.println(entry.getKey().getData().name +
+                    ":\ncaused damage="+ bsd.getCausedDamage() +
                     "\nreceived damage=" + bsd.getReceivedDamage() +
                     "\nself heal=" + bsd.getSelfHealing() +
                     "\nreceived heal=" + bsd.getReceivedHealing()
@@ -61,5 +62,9 @@ public final class BattleSummaryInteractor extends BaseInteractor<UserBattleSumm
 
     public int getGainedSkillCases() {
         return gainedSkillCases;
+    }
+
+    public Map<BattleParticipant, ? extends ReadableBattleStatisticsData> getParticipantsStatistics() {
+        return summaryData.getParticipantsStatistics();
     }
 }

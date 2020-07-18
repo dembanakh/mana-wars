@@ -1,6 +1,7 @@
 package com.mana_wars.model.entity.battle.base;
 
 import com.mana_wars.model.entity.battle.data.BattleSummaryData;
+import com.mana_wars.model.entity.battle.data.ReadableBattleSummaryData;
 import com.mana_wars.model.entity.battle.participant.BattleParticipant;
 import com.mana_wars.model.entity.battle.participant.BattleClientAPI;
 import com.mana_wars.model.entity.skills.ActiveSkill;
@@ -23,7 +24,7 @@ public class BaseBattle implements Battle, BattleClientAPI {
     private final List<BattleParticipant> userSide;
     private final List<BattleParticipant> enemySide;
 
-    private final SingleSubject<BattleSummaryData> finishBattleObservable;
+    private final SingleSubject<ReadableBattleSummaryData> finishBattleObservable;
 
     private final BattleEventsHandler battleEvents;
     private final BattleStartMode starter;
@@ -162,7 +163,7 @@ public class BaseBattle implements Battle, BattleClientAPI {
     }
 
     @Override
-    public SingleSubject<BattleSummaryData> getFinishBattleObservable() {
+    public SingleSubject<ReadableBattleSummaryData> getFinishBattleObservable() {
         return finishBattleObservable;
     }
 

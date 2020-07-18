@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.entity.skills.Skill;
@@ -72,13 +73,15 @@ public final class ShopScreen extends BaseScreen<MenuOverlayUI, ShopPresenter> i
         Table layer = new Table();
         layer.setFillParent(true);
 
-        layer.add(UIElementFactory.getButton(skin,
+        TextButton button = UIElementFactory.getButton(skin,
                 localizedStringFactory.format(ONE_SKILL_CASE_KEY, GameConstants.SKILL_CASE_PRICE), new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                presenter.buySkillCase();
-            }
-        })).top().padTop(UIElementsSize.MENU_OVERLAY_UI.USER_LEVEL_FIELD_HEIGHT()).expandX().fillX().row();
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        presenter.buySkillCase();
+                    }
+                });
+        presenter.addObserver_manaAmount((mana) -> button.setDisabled(mana < GameConstants.SKILL_CASE_PRICE));
+        layer.add(button).top().padTop(UIElementsSize.MENU_OVERLAY_UI.USER_LEVEL_FIELD_HEIGHT()).expandX().fillX().row();
 
         return layer;
     }

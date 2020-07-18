@@ -20,7 +20,7 @@ class BattleEventsHandler {
             BattleEvent be = battleEvents.poll();
             if (be.source.isAlive()){
 
-                //TODO refactore
+                //TODO refactor
                 int selfHealthBefore = be.source.getCharacteristicValue(Characteristic.HEALTH);
                 int targetHealthBefore = be.target.getCharacteristicValue(Characteristic.HEALTH);
 

@@ -19,6 +19,13 @@ import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.entity.skills.SkillCharacteristic;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.widgets.base.BuildableUI;
+import com.mana_wars.ui.widgets.base.ListItemDrawer;
+import com.mana_wars.ui.widgets.item_drawer.SkillLevelDrawer;
+import com.mana_wars.ui.widgets.item_drawer.SkillManaCostDrawer;
+import com.mana_wars.ui.widgets.item_drawer.SkillTypeDrawer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.mana_wars.ui.UIElementsSize.SCREEN_HEIGHT;
 import static com.mana_wars.ui.UIElementsSize.SCREEN_WIDTH;
@@ -34,11 +41,12 @@ public abstract class BaseSkillWindow extends Window implements BuildableUI {
     private final Label skillDescription;
 
     private final BitmapFont font;
-    private int skillLevel;
-    private int skillManaCost;
+    Skill currentSkill;
 
     private final AssetFactory<Integer, TextureRegion> iconFactory;
     private final AssetFactory<Rarity, TextureRegion> frameFactory;
+
+    private static final List<ListItemDrawer<Skill>> Components = new ArrayList<>();
 
     BaseSkillWindow(String title, Skin skin,
                     AssetFactory<Integer, TextureRegion> iconFactory,
@@ -53,9 +61,12 @@ public abstract class BaseSkillWindow extends Window implements BuildableUI {
         this.skillDescription.setAlignment(Align.center | Align.right);
         //this.skillDescription.setFontScale(2.5f);
         this.skillDescription.setColor(Color.BLACK);
-        this.font = skin.get(Label.LabelStyle.class).font;
+        this.font = skin.getFont("font");
         this.iconFactory = iconFactory;
         this.frameFactory = frameFactory;
+        Components.add(new SkillLevelDrawer(iconFactory.getAsset(1)));
+        Components.add(new SkillManaCostDrawer(iconFactory.getAsset(1)));
+        Components.add(new SkillTypeDrawer(iconFactory.getAsset(1)));
         init();
     }
 
@@ -87,29 +98,23 @@ public abstract class BaseSkillWindow extends Window implements BuildableUI {
 
     void hide() {
         setVisible(false);
+        currentSkill = null;
     }
 
     public void open(Skill skill) {
-        open(skill.getIconID(), skill.getName(), skill.getRarity(), skill.getLevel(),
-                skill.getManaCost(), getDescription(skill));
+        currentSkill = skill;
+        open(skill.getIconID(), skill.getName(), skill.getRarity(), getDescription(skill));
     }
 
-    private void open(int skillID, String skillName, Rarity skillRarity, int skillLevel,
-                      int skillManaCost, String skillDescription) {
+    private void open(int skillID, String skillName, Rarity skillRarity, String skillDescription) {
         skillIcon.setDrawable(new TextureRegionDrawable(iconFactory.getAsset(skillID)));
         skillFrame.setDrawable(new TextureRegionDrawable(frameFactory.getAsset(skillRarity)));
         this.skillName.setText(skillName);
-        setSkillLevel(skillLevel);
-        this.skillManaCost = skillManaCost;
         setSkillDescription(skillDescription);
         setPosition((SCREEN_WIDTH() - getWidth()) * 0.5f,
                 (SCREEN_HEIGHT() - getHeight()) * 0.5f);
         pack();
         setVisible(true);
-    }
-
-    void setSkillLevel(int skillLevel) {
-        this.skillLevel = skillLevel;
     }
 
     void setSkillDescription(String description) {
@@ -120,21 +125,15 @@ public abstract class BaseSkillWindow extends Window implements BuildableUI {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
 
-        Vector2 framePosition = skillFrame.localToStageCoordinates(new Vector2(0, 0));
-        float frameWidth = skillFrame.getWidth();
+        Vector2 iconPosition = skillIcon.localToStageCoordinates(new Vector2(0, 0));
+        float iconWidth = skillIcon.getWidth();
+        float iconHeight = skillIcon.getHeight();
 
         Vector2 initialFontScale = new Vector2(font.getScaleX(), font.getScaleY());
-        font.getData().setScale(3);
 
-        String level = String.valueOf(skillLevel);
-        font.setColor(Color.BLACK);
-        font.draw(batch, level, framePosition.x - frameWidth, framePosition.y + font.getLineHeight() / 2,
-                0, level.length(), frameWidth * 2, Align.center, false, "");
-
-        String manaCost = String.valueOf(skillManaCost);
-        font.setColor(Color.BLUE);
-        font.draw(batch, manaCost, framePosition.x, framePosition.y + font.getLineHeight() / 2,
-                0, manaCost.length(), frameWidth * 2, Align.center, false, "");
+        for (ListItemDrawer<Skill> component : Components) {
+            component.draw(batch, font, 0, currentSkill, iconPosition.x, iconPosition.y, iconWidth, iconHeight);
+        }
 
         font.getData().setScale(initialFontScale.x, initialFontScale.y);
     }

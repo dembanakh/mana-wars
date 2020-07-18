@@ -72,9 +72,7 @@ public final class BattlePresenter extends BasePresenter<BattleView, BattleInter
                     .subscribe(view.addEnemy(enemy.getData())));
         }
         view.setEnemyCount(enemySide.size());
-        uiThreadHandler.postRunnable(() -> {
-            view.setActiveEnemy(userTarget);
-        });
+        uiThreadHandler.postRunnable(() -> view.setActiveEnemy(userTarget));
     }
 
     @Override
