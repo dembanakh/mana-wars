@@ -119,9 +119,9 @@ public class BaseBattle implements Battle, BattleClientAPI {
     private void initParticipants(Iterable<BattleParticipant> participants) {
         for (BattleParticipant participant : participants) {
             participant.setBattleClientAPI(this);
+            participant.changeTarget();
             for (Skill s : participant.getPassiveSkills()) {
-                //TODO think about it
-                s.activate(participant, getOpponents(participant).get(0));
+                s.activate(participant, getOpponents(participant).get(participant.getCurrentTarget()));
             }
         }
     }

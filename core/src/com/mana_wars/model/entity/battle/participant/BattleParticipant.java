@@ -43,7 +43,6 @@ public abstract class BattleParticipant {
 
     public void start() {
         healthObservable.onNext(characteristics.getInitialHealth());
-        changeTarget();
     }
 
     public void applySkillCharacteristic(SkillCharacteristic sc, int skillLevel) {

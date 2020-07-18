@@ -33,7 +33,9 @@
       "name" : "Blood-lust",
       "rarity" : 3,
       "manacost" : 30,
-      "is_active" : false
+      "is_active" : true,
+      "cast_time" : 3,
+      "cooldown" : 3
     },
     {
       "id" : 6,
@@ -157,6 +159,36 @@
       "skill_id": 2,
       "value": 10,
       "characteristic" : 4,
+      "value_change" : -1,
+      "target" : 1,
+      "upgrade_function" : "LINEAR",
+      "level_multiplier" : 1
+    },
+    {
+      "id" : 10,
+      "skill_id": 5,
+      "value": 40,
+      "characteristic" : 1,
+      "value_change" : -1,
+      "target" : 1,
+      "upgrade_function" : "LINEAR",
+      "level_multiplier" : 1
+    },
+    {
+      "id" : 11,
+      "skill_id": 5,
+      "value": 50,
+      "characteristic" : 1,
+      "value_change" : -1,
+      "target" : 2,
+      "upgrade_function" : "LINEAR",
+      "level_multiplier" : 1
+    },
+    {
+      "id" : 12,
+      "skill_id": 5,
+      "value": 10,
+      "characteristic" : 2,
       "value_change" : -1,
       "target" : 1,
       "upgrade_function" : "LINEAR",

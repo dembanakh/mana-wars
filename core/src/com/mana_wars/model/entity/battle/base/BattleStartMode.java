@@ -22,10 +22,6 @@ public enum BattleStartMode {
         public void start(BattleParticipant user,
                           Iterable<? extends BattleParticipant> userSide,
                           Iterable<? extends BattleParticipant> enemySide) {
-            user.changeTarget();
-            for (BattleParticipant participant : userSide) {
-                participant.changeTarget();
-            }
             for (BattleParticipant participant : enemySide) {
                 participant.start();
             }

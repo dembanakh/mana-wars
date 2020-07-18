@@ -27,7 +27,9 @@ public class User implements
     private final Subject<Integer> manaAmountObservable;
     private final Subject<Integer> userLevelObservable;
     private UserBattleParticipant user;
+
     private int nextLevelRequiredExperience;
+    private boolean isMaxLvl;
 
     public User(UserManaRepository userManaRepository, UserLevelExperienceRepository userLevelExperienceRepository,
                 UsernameRepository usernameRepository, UserSkillCasesRepository userSkillCasesRepository) {
@@ -37,9 +39,11 @@ public class User implements
         this.userSkillCasesRepository = userSkillCasesRepository;
 
         int userLevel = userLevelExperienceRepository.getUserLevel();
-        this.nextLevelRequiredExperience = userLevelExperienceRepository
-                .getUserLevelRequiredExperience()
-                .get(userLevel);
+        List<Integer> lvlRequirements = userLevelExperienceRepository.getUserLevelRequiredExperience();
+        isMaxLvl = lvlRequirements.size() <= userLevel;
+        if(!isMaxLvl){
+            this.nextLevelRequiredExperience = lvlRequirements.get(userLevel);
+        }
 
         userLevelObservable = BehaviorSubject.createDefault(userLevel);
         manaAmountObservable = BehaviorSubject.createDefault(userManaRepository.getUserMana());
@@ -64,17 +68,31 @@ public class User implements
 
     @Override
     public void checkNextLevel() {
+        if (isMaxLvl) return;
+
         int experienceCount = userLevelExperienceRepository.getCurrentUserExperience();
+        List<Integer> lvlRequirements = userLevelExperienceRepository.getUserLevelRequiredExperience();
+        int maxLvl = lvlRequirements.size();
+
         while (experienceCount >= nextLevelRequiredExperience) {
             int userLevel = getLevel() + 1;
+            experienceCount -= nextLevelRequiredExperience;
             userLevelExperienceRepository.setUserLevel(userLevel);
+            if(userLevel == maxLvl){
+                isMaxLvl = true;
+                experienceCount = 0;
+                userLevelObservable.onNext(userLevel);
+                break;
+            }
             nextLevelRequiredExperience = userLevelExperienceRepository.getUserLevelRequiredExperience().get(userLevel);
             userLevelObservable.onNext(userLevel);
         }
+        userLevelExperienceRepository.setCurrentUserExperience(experienceCount);
     }
 
     @Override
     public void updateExperience(int delta) {
+        if (isMaxLvl) return;
         int experienceCount = userLevelExperienceRepository.getCurrentUserExperience() + delta;
         userLevelExperienceRepository.setCurrentUserExperience(experienceCount);
         checkNextLevel();
