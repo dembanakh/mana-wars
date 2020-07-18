@@ -27,6 +27,8 @@ import io.reactivex.Single;
 public class DBMapperRepository implements DatabaseRepository {
 
     private final RoomRepository room;
+    private final Map<Skill, UserSkill> lastUserSkillsMap = new HashMap<>();
+    private final Map<Dungeon, DBDungeon> lastDungeonsMap = new HashMap<>();
 
     public DBMapperRepository(RoomRepository room) {
         this.room = room;
@@ -43,8 +45,6 @@ public class DBMapperRepository implements DatabaseRepository {
             return result;
         });
     }
-
-    private final Map<Skill, UserSkill> lastUserSkillsMap = new HashMap<>();
 
     @Override
     public Single<SkillsListTriple> getUserSkills() {
@@ -108,10 +108,6 @@ public class DBMapperRepository implements DatabaseRepository {
         return room.updateEntities(Arrays.asList(source, target), room.userSkillsDAO);
     }
 
-
-    private final Map<Dungeon, DBDungeon> lastDungeonsMap = new HashMap<>();
-
-    //TODO think about this method
     @Override
     public Single<List<Dungeon>> getDungeons() {
         return room.getAllEntities(room.dbDungeonDAO).map(dbDungeons -> {
@@ -145,10 +141,8 @@ public class DBMapperRepository implements DatabaseRepository {
                             } else {
                                 passiveSkills.add(SkillConverter.toPassiveSkill(skill.skill, skill.dbMobSkill.getLvl()));
                             }
-
                         }
-
-                        mobs.add(new MobBlueprint(mob.mob.getName(), "enemy~mirrored",
+                        mobs.add(new MobBlueprint(mob.mob.getName(), mob.mob.getIconID(),
                                 mob.mob.getInitialHealth(), activeSkills, passiveSkills,
                                 mob.mob.getManaReward(), mob.mob.getExperienceReward(),
                                 mob.mob.getCaseProbabilityReward()));

@@ -65,19 +65,20 @@ public class ApplicableSkillsList2D<T extends ActiveSkill> implements BlockableS
         if (appliedSkill.getRarity() != Rarity.EMPTY) {
             int i = 0;
             for (T skill : list.getItemsCopy()) {
-                if (skill.getRarity() == Rarity.EMPTY) continue;
-                if (i == appliedSkillIndex)
-                    animationController.add(i,
-                            Arrays.asList(
-                                    new UIAnimationController.KeyFrame<>(SkillIconAnimationController.Type.CAST_APPLIED,
-                                            appliedSkill.getCastTime(castTime)),
-                                    new UIAnimationController.KeyFrame<>(SkillIconAnimationController.Type.COOLDOWN,
-                                            appliedSkill.getCooldown(cooldown))));
-                else
-                    animationController.add(i,
-                            Arrays.asList(
-                                    new UIAnimationController.KeyFrame<>(SkillIconAnimationController.Type.CAST_NON_APPLIED,
-                                            appliedSkill.getCastTime(castTime))));
+                if (skill.getRarity() != Rarity.EMPTY) {
+                    if (i == appliedSkillIndex)
+                        animationController.add(i,
+                                Arrays.asList(
+                                        new UIAnimationController.KeyFrame<>(SkillIconAnimationController.Type.CAST_APPLIED,
+                                                appliedSkill.getCastTime(castTime)),
+                                        new UIAnimationController.KeyFrame<>(SkillIconAnimationController.Type.COOLDOWN,
+                                                appliedSkill.getCooldown(cooldown))));
+                    else
+                        animationController.add(i,
+                                Arrays.asList(
+                                        new UIAnimationController.KeyFrame<>(SkillIconAnimationController.Type.CAST_NON_APPLIED,
+                                                appliedSkill.getCastTime(castTime))));
+                }
                 i++;
             }
         }

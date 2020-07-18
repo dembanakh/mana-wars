@@ -44,6 +44,7 @@ public class ScreenManager implements FactoryStorage, ScreenSetter {
         pngImageFactory = new ImageFactory(
                 new FixedSizeTexture("white", AdaptiveTexture.ImageFormat.PNG),
                 new FixedSizeTexture("player", AdaptiveTexture.ImageFormat.PNG),
+                new FixedSizeMirroredTexture("player", AdaptiveTexture.ImageFormat.PNG),
                 new FixedSizeTexture("enemy", AdaptiveTexture.ImageFormat.PNG),
                 new FixedSizeMirroredTexture("enemy", AdaptiveTexture.ImageFormat.PNG),
                 new FillScreenTexture("bg1", AdaptiveTexture.ImageFormat.PNG),

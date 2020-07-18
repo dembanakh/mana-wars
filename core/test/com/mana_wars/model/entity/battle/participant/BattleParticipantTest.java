@@ -57,7 +57,6 @@ public class BattleParticipantTest {
         scheduler.triggerActions();
 
         assertEquals(100, initialHealth.get());
-        assertEquals(0, bp.getCurrentTarget());
     }
 
     @Test

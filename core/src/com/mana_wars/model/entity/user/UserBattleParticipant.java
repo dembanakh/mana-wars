@@ -11,6 +11,9 @@ import java.util.List;
 
 import io.reactivex.functions.Consumer;
 
+import static com.mana_wars.model.GameConstants.DEFAULT_USER_INITIAL_HEALTH;
+import static com.mana_wars.model.entity.base.UpgradeFunction.LINEAR;
+
 class UserBattleParticipant extends BattleParticipant {
 
     private final List<ActiveSkill> activeSkills;
@@ -18,9 +21,10 @@ class UserBattleParticipant extends BattleParticipant {
     private ActiveSkill toApply;
     private double battleTime;
 
-    UserBattleParticipant(String name, int currentUserMana, Consumer<? super Integer> manaOnChanged,
+    UserBattleParticipant(String name, int userLvl, int currentUserMana, Consumer<? super Integer> manaOnChanged,
                           List<ActiveSkill> activeSkills, Iterable<PassiveSkill> passiveSkills) {
-        super(name, "player", 1000, activeSkills, passiveSkills, 0,0,0);
+        super(name, "player", LINEAR.apply(DEFAULT_USER_INITIAL_HEALTH, userLvl,1), activeSkills, passiveSkills, 0,0,0);
+
         this.activeSkills = activeSkills;
         this.manaOnChanged = manaOnChanged;
         setCharacteristicValue(Characteristic.MANA, currentUserMana);

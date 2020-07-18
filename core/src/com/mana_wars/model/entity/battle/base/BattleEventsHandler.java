@@ -1,5 +1,6 @@
 package com.mana_wars.model.entity.battle.base;
 
+import com.mana_wars.model.entity.base.Characteristic;
 import com.mana_wars.model.entity.battle.participant.BattleParticipant;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 
@@ -17,8 +18,24 @@ class BattleEventsHandler {
     void update(double currentTime) {
         while (!battleEvents.isEmpty() && battleEvents.peek().targetTime <= currentTime) {
             BattleEvent be = battleEvents.poll();
-            if (be.source.isAlive())
+            if (be.source.isAlive()){
+
+                //TODO refactore
+                int selfHealthBefore = be.source.getCharacteristicValue(Characteristic.HEALTH);
+                int targetHealthBefore = be.target.getCharacteristicValue(Characteristic.HEALTH);
+
                 be.skill.activate(be.source, be.target);
+
+                int selfHealthAfter = be.source.getCharacteristicValue(Characteristic.HEALTH);
+                int targetHealthAfter = be.target.getCharacteristicValue(Characteristic.HEALTH);
+
+                int sourceDelta = selfHealthAfter - selfHealthBefore;
+                int targetDelta = targetHealthAfter - targetHealthBefore;
+
+                be.source.getBattleStatisticsData().updateValuesAsSource(sourceDelta, targetDelta);
+                be.target.getBattleStatisticsData().updateValuesAsTarget(targetDelta);
+            }
+
         }
     }
 

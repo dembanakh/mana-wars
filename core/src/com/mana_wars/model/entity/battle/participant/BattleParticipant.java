@@ -1,6 +1,7 @@
 package com.mana_wars.model.entity.battle.participant;
 
 import com.mana_wars.model.entity.base.Characteristic;
+import com.mana_wars.model.entity.battle.data.BattleStatisticsData;
 import com.mana_wars.model.entity.battle.data.BattleRewardData;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
@@ -21,6 +22,7 @@ public abstract class BattleParticipant {
     private SkillCharacteristicApplicationMode applicator;
 
     private final BattleRewardData onDeathReward;
+    private final BattleStatisticsData battleStatisticsData;
     private final Subject<Integer> healthObservable;
 
     public BattleParticipant(String name, String iconID, int initialHealth,
@@ -33,6 +35,7 @@ public abstract class BattleParticipant {
         setCharacteristicApplicationMode(SkillCharacteristicApplicationMode.DEFAULT);
         this.skills = new BaseSkillsSet(activeSkills);
         this.onDeathReward = new BattleRewardData(manaReward, experienceReward, caseProbabilityReward);
+        this.battleStatisticsData = new BattleStatisticsData();
         healthObservable = BehaviorSubject.create();
     }
 
@@ -40,7 +43,6 @@ public abstract class BattleParticipant {
 
     public void start() {
         healthObservable.onNext(characteristics.getInitialHealth());
-        changeTarget();
     }
 
     public void applySkillCharacteristic(SkillCharacteristic sc, int skillLevel) {
@@ -90,6 +92,10 @@ public abstract class BattleParticipant {
 
     public void setCharacteristicValue(Characteristic type, int value) {
         characteristics.setValue(type, value);
+    }
+
+    public BattleStatisticsData getBattleStatisticsData() {
+        return battleStatisticsData;
     }
 
     public BattleParticipantData getData() {

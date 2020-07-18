@@ -56,7 +56,6 @@ public class DBUpdaterParser {
         T fromJson(JSONObject json) throws JSONException;
     }
 
-    // TODO think about such optimization
     private <T> List<T> parseJSON(JSONArray jsonArray, JSONParser<T> parser) throws JSONException {
         List<T> list = new ArrayList<>();
 

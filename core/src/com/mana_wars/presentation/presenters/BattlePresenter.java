@@ -61,7 +61,7 @@ public final class BattlePresenter extends BasePresenter<BattleView, BattleInter
 
     @Override
     public void setCurrentRound(int round) {
-        uiThreadHandler.postRunnable(() -> view.setRound(round + 1));
+        uiThreadHandler.postRunnable(() -> view.setRound(round));
     }
 
     @Override

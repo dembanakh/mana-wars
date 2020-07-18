@@ -49,7 +49,7 @@ public class BattleWithRoundsTest {
     @Test
     public void testStart() {
         battle.start();
-        verify(observer).setCurrentRound(0);
+        verify(observer).setCurrentRound(1);
     }
 
     // How to test the other? We have no impact on the scheduler used inside BattleWithRounds
