@@ -1,5 +1,6 @@
 package com.mana_wars.model.entity.battle.base;
 
+import com.mana_wars.model.DataDeuce;
 import com.mana_wars.model.entity.battle.data.BattleRewardData;
 import com.mana_wars.model.entity.battle.data.BattleStatisticsData;
 import com.mana_wars.model.entity.battle.data.ReadableBattleSummaryData;
@@ -14,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.stubbing.Answer;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -65,8 +67,8 @@ public class BaseBattleTest {
         for (BattleParticipant bp : enemySide) {
             verify(bp).setBattleClientAPI(battle);
         }
-        verify(skill1).activate(user, enemySide.get(0));
-        verify(skill2).activate(enemySide.get(0), user);
+        verify(skill1).activate(user, enemySide);
+        verify(skill2).activate(enemySide.get(0), Collections.singletonList(user));
     }
 
     @Test
@@ -118,11 +120,12 @@ public class BaseBattleTest {
         ActiveSkill skill = mock(ActiveSkill.class);
         when(user.getPassiveSkills()).thenReturn(Collections.emptyList());
         when(enemySide.get(0).getPassiveSkills()).thenReturn(Collections.emptyList());
+        when(user.getTargets()).thenReturn(Collections.singletonList(0));
         battle.init();
         battle.start();
         battle.requestSkillApplication(user, skill, 1);
         battle.update(1.5f);
-        verify(skill).activate(user, enemySide.get(0));
+        verify(skill).activate(user, enemySide);
     }
 
     @AfterClass

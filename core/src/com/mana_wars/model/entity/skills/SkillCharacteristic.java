@@ -8,20 +8,21 @@ public class SkillCharacteristic {
 
     private final Characteristic characteristic;
     private final ValueChangeType changeType;
-    private final Target target;
+
+    /**
+        target == 0 -> SELF
+        target > 0 -> SELF + target amount of ALLIES
+        target < 0 -> target amount of ENEMIES
+     */
+    private final int target;
 
     private final UpgradeFunction upgradeFunction;
     private final double levelMultiplier;
 
     private final int value;
 
-    public enum Target {
-        SELF,
-        ENEMY
-    }
-
     public SkillCharacteristic(int value, Characteristic characteristic, ValueChangeType changeType,
-                               Target target, UpgradeFunction upgradeFunction, int levelMultiplier) {
+                               int target, UpgradeFunction upgradeFunction, int levelMultiplier) {
         this.characteristic = characteristic;
         this.value = value;
         this.changeType = changeType;
@@ -38,12 +39,12 @@ public class SkillCharacteristic {
         return changeType;
     }
 
-    public Target getTarget() {
+    public int getTarget() {
         return target;
     }
 
     public boolean isManaCost(){
-        return characteristic==Characteristic.MANA && target == Target.SELF && changeType == ValueChangeType.DECREASE;
+        return characteristic==Characteristic.MANA && target == 0 && changeType == ValueChangeType.DECREASE;
     }
 
     public boolean isHealth(){

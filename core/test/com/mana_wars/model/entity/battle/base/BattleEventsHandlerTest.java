@@ -9,6 +9,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Collections;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -37,13 +39,13 @@ public class BattleEventsHandlerTest {
         ActiveSkill skill = mock(ActiveSkill.class);
         when(source.isAlive()).thenReturn(true);
 
-        eventsHandler.add(1.0, skill, source, target);
+        eventsHandler.add(1.0, skill, source, Collections.singletonList(target));
 
         eventsHandler.update(0.5);
         verifyNoMoreInteractions(skill, source, target);
 
         eventsHandler.update(1.0);
-        verify(skill).activate(source, target);
+        verify(skill).activate(source, Collections.singletonList(target));
 
         eventsHandler.update(1.5);
         verifyNoMoreInteractions(skill);
@@ -54,7 +56,7 @@ public class BattleEventsHandlerTest {
         ActiveSkill skill = mock(ActiveSkill.class);
         when(source.isAlive()).thenReturn(false);
 
-        eventsHandler.add(1.0, skill, source, target);
+        eventsHandler.add(1.0, skill, source, Collections.singletonList(target));
 
         eventsHandler.update(0.5);
         verifyNoMoreInteractions(skill, source, target);
@@ -72,21 +74,21 @@ public class BattleEventsHandlerTest {
         ActiveSkill skill2 = mock(ActiveSkill.class);
         when(source.isAlive()).thenReturn(true);
 
-        eventsHandler.add(1.0, skill1, source, target);
-        eventsHandler.add(2.0, skill2, source, target);
+        eventsHandler.add(1.0, skill1, source, Collections.singletonList(target));
+        eventsHandler.add(2.0, skill2, source, Collections.singletonList(target));
 
         eventsHandler.update(0.5);
         verifyNoMoreInteractions(skill1, skill2);
 
         eventsHandler.update(1.0);
-        verify(skill1).activate(source, target);
+        verify(skill1).activate(source, Collections.singletonList(target));
         verifyNoMoreInteractions(skill2);
 
         eventsHandler.update(1.5);
         verifyNoMoreInteractions(skill1, skill2);
 
         eventsHandler.update(2.0);
-        verify(skill2).activate(source, target);
+        verify(skill2).activate(source, Collections.singletonList(target));
         verifyNoMoreInteractions(skill1);
     }
 
@@ -96,15 +98,15 @@ public class BattleEventsHandlerTest {
         ActiveSkill skill2 = mock(ActiveSkill.class);
         when(source.isAlive()).thenReturn(true);
 
-        eventsHandler.add(1.0, skill1, source, target);
-        eventsHandler.add(1.0, skill2, source, target);
+        eventsHandler.add(1.0, skill1, source, Collections.singletonList(target));
+        eventsHandler.add(1.0, skill2, source, Collections.singletonList(target));
 
         eventsHandler.update(0.5);
         verifyNoMoreInteractions(skill1, skill2);
 
         eventsHandler.update(1.0);
-        verify(skill1).activate(source, target);
-        verify(skill2).activate(source, target);
+        verify(skill1).activate(source, Collections.singletonList(target));
+        verify(skill2).activate(source, Collections.singletonList(target));
     }
 
 }
