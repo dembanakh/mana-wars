@@ -13,12 +13,15 @@ import com.mana_wars.ui.widgets.value_field.base.ValueFieldWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
 
 import io.reactivex.functions.Consumer;
 
 public final class EnemyValueField implements BuildableUI {
 
     private final List<ValueFieldWrapper<BattleParticipantData, Integer>> enemyFieldWrappers;
+    private int currentEnemy = -1;
 
     private final ValueField<BattleParticipantData, Integer> enemyField;
 
@@ -46,6 +49,9 @@ public final class EnemyValueField implements BuildableUI {
     }
 
     public void setActiveEnemy(int index) {
+        if (currentEnemy == index) return;
+
+        if (currentEnemy >= 0) enemyFieldWrappers.get(currentEnemy).setField(null);
         enemyFieldWrappers.get(index).setField(enemyField);
     }
 

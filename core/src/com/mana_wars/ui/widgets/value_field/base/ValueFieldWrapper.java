@@ -11,6 +11,7 @@ public class ValueFieldWrapper<TInitial, TValue> implements Consumer<TValue> {
 
     public void setField(ValueField<TInitial, TValue> field) {
         this.field = field;
+        if (field == null) return;
         try {
             this.field.setInitialData(initialData);
             this.field.accept(value);
