@@ -14,7 +14,7 @@ import space.earlygrey.shapedrawer.ShapeDrawer;
 
 public class SkillTypeDrawer implements ListItemDrawer<Skill> {
 
-    private TextureRegion region;
+    private final TextureRegion region;
     private ShapeDrawer drawer;
 
     public SkillTypeDrawer(TextureRegion placeholderRegion) {

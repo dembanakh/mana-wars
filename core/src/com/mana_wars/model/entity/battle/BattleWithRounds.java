@@ -5,6 +5,7 @@ import com.mana_wars.model.entity.battle.base.BaseBattle;
 import com.mana_wars.model.entity.battle.base.Battle;
 import com.mana_wars.model.entity.battle.base.BattleStartMode;
 import com.mana_wars.model.entity.battle.data.BattleSummaryData;
+import com.mana_wars.model.entity.battle.data.ReadableBattleSummaryData;
 import com.mana_wars.model.entity.battle.participant.BattleParticipant;
 import com.mana_wars.model.entity.battle.participant.SkillCharacteristicApplicationMode;
 import com.mana_wars.model.entity.enemy.EnemyFactory;
@@ -24,9 +25,8 @@ public class BattleWithRounds implements Battle {
     private final List<BattleParticipant> userSide;
     private final EnemyFactory enemyFactory;
 
-    private final SingleSubject<BattleSummaryData> finishBattleObservable;
-
-    private final List<BattleSummaryData> battleSummaryDataList = new ArrayList<>();
+    private final SingleSubject<ReadableBattleSummaryData> finishBattleObservable;
+    private final List<ReadableBattleSummaryData> battleSummaryDataList = new ArrayList<>();
 
     private final BattleStateObserver observer;
 
@@ -97,7 +97,7 @@ public class BattleWithRounds implements Battle {
             }
             else {
                 BattleSummaryData finalSummaryData = new BattleSummaryData();
-                for (BattleSummaryData bsd : battleSummaryDataList){
+                for (ReadableBattleSummaryData bsd : battleSummaryDataList){
                     finalSummaryData.combineWith(bsd);
                 }
                 finishBattleObservable.onSuccess(finalSummaryData);
@@ -122,7 +122,7 @@ public class BattleWithRounds implements Battle {
     }
 
     @Override
-    public Single<BattleSummaryData> getFinishBattleObservable() {
+    public Single<ReadableBattleSummaryData> getFinishBattleObservable() {
         return finishBattleObservable;
     }
     //endregion

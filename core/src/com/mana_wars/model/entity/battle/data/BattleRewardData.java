@@ -1,6 +1,6 @@
 package com.mana_wars.model.entity.battle.data;
 
-public class BattleRewardData {
+public class BattleRewardData implements ReadableBattleRewardData {
 
     private int manaReward;
     private int experienceReward;
@@ -12,20 +12,27 @@ public class BattleRewardData {
         this.caseProbabilityReward = caseProbabilityReward;
     }
 
-    public void add(BattleRewardData other) {
-        this.manaReward += other.manaReward;
-        this.experienceReward += other.experienceReward;
-        this.caseProbabilityReward += other.caseProbabilityReward;
+    BattleRewardData() {
+        this(0, 0, 0);
     }
 
+    public void add(ReadableBattleRewardData other) {
+        this.manaReward += other.getManaReward();
+        this.experienceReward += other.getExperienceReward();
+        this.caseProbabilityReward += other.getCaseProbabilityReward();
+    }
+
+    @Override
     public int getManaReward() {
         return manaReward;
     }
 
+    @Override
     public int getExperienceReward() {
         return experienceReward;
     }
 
+    @Override
     public int getCaseProbabilityReward() {
         return caseProbabilityReward;
     }

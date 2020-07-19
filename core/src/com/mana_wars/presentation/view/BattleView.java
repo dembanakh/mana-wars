@@ -1,7 +1,7 @@
 package com.mana_wars.presentation.view;
 
+import com.mana_wars.model.entity.battle.data.ReadableBattleSummaryData;
 import com.mana_wars.model.entity.battle.participant.BattleParticipantData;
-import com.mana_wars.model.entity.battle.data.BattleSummaryData;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 
 import io.reactivex.functions.Consumer;
@@ -13,7 +13,7 @@ public interface BattleView extends BaseView {
     Consumer<? super Integer> addEnemy(BattleParticipantData enemyData);
     void blockSkills(int appliedSkillIndex);
     void startBattle(int enemiesNumber);
-    void finishBattle(BattleSummaryData summaryData);
+    void finishBattle(ReadableBattleSummaryData summaryData);
     void cleanEnemies();
     void setEnemyCount(int count);
     void setRound(int round);

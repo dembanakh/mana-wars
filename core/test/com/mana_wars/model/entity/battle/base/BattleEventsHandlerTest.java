@@ -1,5 +1,6 @@
 package com.mana_wars.model.entity.battle.base;
 
+import com.mana_wars.model.entity.battle.data.BattleStatisticsData;
 import com.mana_wars.model.entity.battle.participant.BattleParticipant;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 
@@ -27,6 +28,8 @@ public class BattleEventsHandlerTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         eventsHandler = new BattleEventsHandler();
+        when(source.getBattleStatisticsData()).thenReturn(new BattleStatisticsData());
+        when(target.getBattleStatisticsData()).thenReturn(new BattleStatisticsData());
     }
 
     @Test

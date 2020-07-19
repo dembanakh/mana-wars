@@ -3,8 +3,8 @@ package com.mana_wars.model.interactor;
 import com.mana_wars.model.entity.battle.BattleStateObserverStarter;
 import com.mana_wars.model.entity.battle.builder.BattleBuilder;
 import com.mana_wars.model.entity.battle.base.Battle;
-import com.mana_wars.model.entity.battle.data.BattleSummaryData;
 import com.mana_wars.model.entity.base.Characteristic;
+import com.mana_wars.model.entity.battle.data.ReadableBattleSummaryData;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.user.UserBattleAPI;
 import com.mana_wars.model.repository.DatabaseRepository;
@@ -49,7 +49,7 @@ public final class BattleInteractor extends BaseInteractor<UserBattleAPI> {
         return user.getManaAmountObservable();
     }
 
-    public Single<BattleSummaryData> getFinishBattleObservable() {
+    public Single<ReadableBattleSummaryData> getFinishBattleObservable() {
         return battle.getFinishBattleObservable();
     }
 

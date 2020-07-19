@@ -1,7 +1,8 @@
 package com.mana_wars.model.entity.battle.base;
 
 import com.mana_wars.model.entity.battle.data.BattleRewardData;
-import com.mana_wars.model.entity.battle.data.BattleSummaryData;
+import com.mana_wars.model.entity.battle.data.BattleStatisticsData;
+import com.mana_wars.model.entity.battle.data.ReadableBattleSummaryData;
 import com.mana_wars.model.entity.battle.participant.BattleParticipant;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
@@ -36,7 +37,7 @@ public class BaseBattleTest {
     private List<BattleParticipant> userSide;
     private List<BattleParticipant> enemySide;
 
-    private BattleSummaryData summaryData;
+    private ReadableBattleSummaryData summaryData;
 
     @Before
     public void setup() {
@@ -112,6 +113,8 @@ public class BaseBattleTest {
     public void testRequireSkillApplication() {
         when(user.isAlive()).thenReturn(true);
         when(enemySide.get(0).isAlive()).thenReturn(true);
+        when(user.getBattleStatisticsData()).thenReturn(new BattleStatisticsData());
+        when(enemySide.get(0).getBattleStatisticsData()).thenReturn(new BattleStatisticsData());
         ActiveSkill skill = mock(ActiveSkill.class);
         when(user.getPassiveSkills()).thenReturn(Collections.emptyList());
         when(enemySide.get(0).getPassiveSkills()).thenReturn(Collections.emptyList());

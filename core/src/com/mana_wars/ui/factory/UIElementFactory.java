@@ -32,8 +32,11 @@ public final class UIElementFactory {
         return button;
     }
 
-    public static TextButton getButton(String label, ChangeListener eventListener) {
-        TextButton button = new TextButton(label, new TextButton.TextButtonStyle());
+    public static TextButton getNoBGButton(Skin skin, String label, ChangeListener eventListener) {
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
+        style.font = skin.get(TextButton.TextButtonStyle.class).font;
+        style.fontColor = skin.get(TextButton.TextButtonStyle.class).fontColor;
+        TextButton button = new TextButton(label, style);
         button.addListener(eventListener);
         return button;
     }

@@ -1,7 +1,5 @@
 package com.mana_wars.presentation.presenters;
 
-import com.mana_wars.model.GameConstants;
-import com.mana_wars.model.interactor.BaseInteractor;
 import com.mana_wars.model.interactor.ShopInteractor;
 import com.mana_wars.presentation.util.UIThreadHandler;
 import com.mana_wars.presentation.view.ShopView;

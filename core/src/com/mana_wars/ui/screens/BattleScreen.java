@@ -9,8 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mana_wars.model.GameConstants;
+import com.mana_wars.model.entity.battle.data.ReadableBattleSummaryData;
 import com.mana_wars.model.entity.battle.participant.BattleParticipantData;
-import com.mana_wars.model.entity.battle.data.BattleSummaryData;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.user.UserBattleAPI;
 import com.mana_wars.model.interactor.BattleInteractor;
@@ -232,7 +232,7 @@ public final class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresente
     }
 
     @Override
-    public void finishBattle(BattleSummaryData summaryData) {
+    public void finishBattle(ReadableBattleSummaryData summaryData) {
         Map<String, Object> arguments = new HashMap<>();
         arguments.put("BattleSummaryData", summaryData);
         setScreen(ScreenInstance.BATTLE_SUMMARY, arguments);
