@@ -1,11 +1,14 @@
 package com.mana_wars.model.entity.battle.participant;
 
+import com.mana_wars.model.DataDeuce;
 import com.mana_wars.model.entity.base.Characteristic;
 import com.mana_wars.model.entity.battle.data.BattleStatisticsData;
 import com.mana_wars.model.entity.battle.data.BattleRewardData;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.entity.skills.SkillCharacteristic;
+
+import java.util.List;
 
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.Subject;
@@ -83,7 +86,11 @@ public abstract class BattleParticipant {
     }
 
     public int getCurrentTarget() {
-        return currentTarget.get();
+        return currentTarget.getCurrent();
+    }
+
+    public List<Integer> getTargets(){
+        return currentTarget.get(battleClientAPI);
     }
 
     public int getCharacteristicValue(Characteristic type) {

@@ -45,7 +45,7 @@ public class UserBattleParticipantTest {
     @Test
     public void testApplySkillCharacteristic_MANA() {
         SkillCharacteristic sc = new SkillCharacteristic(20, Characteristic.MANA,
-                ValueChangeType.DECREASE, SkillCharacteristic.Target.SELF,
+                ValueChangeType.DECREASE, 0,
                 UpgradeFunction.LINEAR, 0);
         user.applySkillCharacteristic(sc, 2);
         assertEquals(80, changedMana);

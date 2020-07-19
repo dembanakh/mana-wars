@@ -35,7 +35,7 @@ public class BattleParticipantTargetTest {
 
     @Test
     public void testInitialTarget() {
-        assertEquals(0, target.get());
+        assertEquals(0, target.getCurrent());
     }
 
     @Test
@@ -47,7 +47,7 @@ public class BattleParticipantTargetTest {
         when(battle.getOpponents(bp)).thenReturn(Arrays.asList(other1, other2));
         target.change(battle);
 
-        assertEquals(1, target.get());
+        assertEquals(1, target.getCurrent());
     }
 
     @Test
@@ -59,7 +59,7 @@ public class BattleParticipantTargetTest {
         when(battle.getOpponents(bp)).thenReturn(Arrays.asList(other1, other2));
         target.change(battle);
 
-        assertEquals(0, target.get());
+        assertEquals(0, target.getCurrent());
     }
 
 }

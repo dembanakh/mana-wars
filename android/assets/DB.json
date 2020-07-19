@@ -70,7 +70,7 @@
       "value": 10,
       "characteristic" : 1,
       "value_change" : -1,
-      "target" : 2,
+      "target" : -1,
       "upgrade_function" : "LINEAR",
       "level_multiplier" : 1
     },
@@ -80,7 +80,7 @@
       "value": 40,
       "characteristic" : 1,
       "value_change" : 1,
-      "target" : 1,
+      "target" : 0,
       "upgrade_function" : "LINEAR",
       "level_multiplier" : 1
     },
@@ -90,7 +90,7 @@
       "value": 10,
       "characteristic" : 3,
       "value_change" : -1,
-      "target" : 1,
+      "target" : 0,
       "upgrade_function" : "LINEAR",
       "level_multiplier" : 1
     },
@@ -100,7 +100,7 @@
       "value": 20,
       "characteristic" : 1,
       "value_change" : -1,
-      "target" : 2,
+      "target" : -1,
       "upgrade_function" : "LINEAR",
       "level_multiplier" : 1
     },
@@ -110,7 +110,7 @@
       "value": 10,
       "characteristic" : 1,
       "value_change" : 1,
-      "target" : 1,
+      "target" : 0,
       "upgrade_function" : "LINEAR",
       "level_multiplier" : 1
     },
@@ -120,7 +120,7 @@
       "value": 10,
       "characteristic" : 2,
       "value_change" : -1,
-      "target" : 1,
+      "target" : 0,
       "upgrade_function" : "LINEAR",
       "level_multiplier" : 0
     },
@@ -130,7 +130,7 @@
       "value": 10,
       "characteristic" : 2,
       "value_change" : -1,
-      "target" : 1,
+      "target" : 0,
       "upgrade_function" : "LINEAR",
       "level_multiplier" : 0
     },
@@ -140,7 +140,7 @@
       "value": 50,
       "characteristic" : 2,
       "value_change" : -1,
-      "target" : 1,
+      "target" : 0,
       "upgrade_function" : "LINEAR",
       "level_multiplier" : 0
     },
@@ -150,7 +150,7 @@
       "value": 20,
       "characteristic" : 2,
       "value_change" : -1,
-      "target" : 1,
+      "target" : 0,
       "upgrade_function" : "LINEAR",
       "level_multiplier" : 0
     },
@@ -160,7 +160,7 @@
       "value": 10,
       "characteristic" : 4,
       "value_change" : -1,
-      "target" : 1,
+      "target" : 0,
       "upgrade_function" : "LINEAR",
       "level_multiplier" : 1
     },
@@ -170,7 +170,7 @@
       "value": 40,
       "characteristic" : 1,
       "value_change" : -1,
-      "target" : 1,
+      "target" : 0,
       "upgrade_function" : "LINEAR",
       "level_multiplier" : 1
     },
@@ -180,7 +180,7 @@
       "value": 50,
       "characteristic" : 1,
       "value_change" : -1,
-      "target" : 2,
+      "target" : -2,
       "upgrade_function" : "LINEAR",
       "level_multiplier" : 1
     },
@@ -190,7 +190,7 @@
       "value": 10,
       "characteristic" : 2,
       "value_change" : -1,
-      "target" : 1,
+      "target" : 0,
       "upgrade_function" : "LINEAR",
       "level_multiplier" : 0
     }

@@ -18,7 +18,7 @@ public class SkillCharacteristicTest {
     @Before
     public void setup() {
         sc = new SkillCharacteristic(2, Characteristic.COOLDOWN,
-                ValueChangeType.INCREASE, SkillCharacteristic.Target.ENEMY,
+                ValueChangeType.INCREASE, -1,
                 UpgradeFunction.LINEAR, 1);
     }
 
@@ -36,7 +36,7 @@ public class SkillCharacteristicTest {
     @Test
     public void testIsManaCost_Yes() {
         SkillCharacteristic characteristic = new SkillCharacteristic(2, Characteristic.MANA,
-                ValueChangeType.DECREASE, SkillCharacteristic.Target.SELF,
+                ValueChangeType.DECREASE, 0,
                 UpgradeFunction.LINEAR, 0);
         assertTrue(characteristic.isManaCost());
     }

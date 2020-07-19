@@ -16,27 +16,31 @@ public class BattleStatisticsDataTest {
 
     @Test
     public void testUpdateSource_PosPos() {
-        statisticsData.updateValuesAsSource(10, 20);
+        statisticsData.updateValuesAsSourceSelf(10);
+        statisticsData.updateValuesAsSourceTarget(20);
         assertEquals(30, statisticsData.getSelfHealing());
     }
 
     @Test
     public void testUpdateSource_PosNeg() {
-        statisticsData.updateValuesAsSource(10, -20);
+        statisticsData.updateValuesAsSourceSelf(10);
+        statisticsData.updateValuesAsSourceTarget(-20);
         assertEquals(10, statisticsData.getSelfHealing());
         assertEquals(20, statisticsData.getCausedDamage());
     }
 
     @Test
     public void testUpdateSource_NegPos() {
-        statisticsData.updateValuesAsSource(-10, 20);
+        statisticsData.updateValuesAsSourceSelf(-10);
+        statisticsData.updateValuesAsSourceTarget(20);
         assertEquals(20, statisticsData.getSelfHealing());
         assertEquals(10, statisticsData.getReceivedDamage());
     }
 
     @Test
     public void testUpdateSource_NegNeg() {
-        statisticsData.updateValuesAsSource(-10, -20);
+        statisticsData.updateValuesAsSourceSelf(-10);
+        statisticsData.updateValuesAsSourceTarget(-20);
         assertEquals(20, statisticsData.getCausedDamage());
         assertEquals(10, statisticsData.getReceivedDamage());
     }

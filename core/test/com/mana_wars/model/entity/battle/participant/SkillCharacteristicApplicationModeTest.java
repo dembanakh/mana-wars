@@ -32,7 +32,7 @@ public class SkillCharacteristicApplicationModeTest {
         when(storage.getValue(Characteristic.HEALTH)).thenReturn(100);
         SkillCharacteristicApplicationMode.DEFAULT.applySkillCharacteristic(
                 new SkillCharacteristic(10, Characteristic.HEALTH, ValueChangeType.DECREASE,
-                        SkillCharacteristic.Target.ENEMY, UpgradeFunction.LINEAR, 1),
+                        -1, UpgradeFunction.LINEAR, 1),
                 1, storage);
         verify(storage).setValue(Characteristic.HEALTH, 90);
     }
@@ -42,7 +42,7 @@ public class SkillCharacteristicApplicationModeTest {
         when(storage.getValue(Characteristic.MANA)).thenReturn(100);
         SkillCharacteristicApplicationMode.DEFAULT.applySkillCharacteristic(
                 new SkillCharacteristic(10, Characteristic.MANA, ValueChangeType.DECREASE,
-                        SkillCharacteristic.Target.SELF, UpgradeFunction.LINEAR, 1),
+                        0, UpgradeFunction.LINEAR, 1),
                 1, storage);
         verify(storage).setValue(Characteristic.MANA, 90);
     }
@@ -52,7 +52,7 @@ public class SkillCharacteristicApplicationModeTest {
         when(storage.getValue(Characteristic.HEALTH)).thenReturn(100);
         SkillCharacteristicApplicationMode.NO_MANA_CONSUMPTION.applySkillCharacteristic(
                 new SkillCharacteristic(10, Characteristic.HEALTH, ValueChangeType.DECREASE,
-                        SkillCharacteristic.Target.ENEMY, UpgradeFunction.LINEAR, 1),
+                        -1, UpgradeFunction.LINEAR, 1),
                 1, storage);
         verify(storage).setValue(Characteristic.HEALTH, 90);
     }
@@ -62,7 +62,7 @@ public class SkillCharacteristicApplicationModeTest {
         when(storage.getValue(Characteristic.MANA)).thenReturn(100);
         SkillCharacteristicApplicationMode.NO_MANA_CONSUMPTION.applySkillCharacteristic(
                 new SkillCharacteristic(10, Characteristic.MANA, ValueChangeType.DECREASE,
-                        SkillCharacteristic.Target.SELF, UpgradeFunction.LINEAR, 1),
+                        0, UpgradeFunction.LINEAR, 1),
                 1, storage);
 
         verifyNoMoreInteractions(storage);

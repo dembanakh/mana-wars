@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -36,12 +37,12 @@ public class SkillTest {
 
     @Test
     public void testActivate() {
-        when(sc1.getTarget()).thenReturn(SkillCharacteristic.Target.SELF);
-        when(sc2.getTarget()).thenReturn(SkillCharacteristic.Target.ENEMY);
+        when(sc1.getTarget()).thenReturn(0);
+        when(sc2.getTarget()).thenReturn(-1);
         BattleParticipant self = mock(BattleParticipant.class);
         BattleParticipant enemy = mock(BattleParticipant.class);
         when(enemy.isAlive()).thenReturn(true);
-        skill.activate(self, enemy);
+        skill.activate(self, Collections.singletonList(enemy));
 
         verify(self).applySkillCharacteristic(sc1, 1);
         verify(enemy).applySkillCharacteristic(sc2, 1);
