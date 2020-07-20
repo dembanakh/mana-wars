@@ -57,6 +57,8 @@ public final class MainMenuScreen extends BaseScreen<MenuOverlayUI, MainMenuPres
                 Gdx.app::postRunnable);
         presenter.addObserver_manaAmount(overlayUI.getManaAmountObserver());
         presenter.addObserver_userLevel(overlayUI.getUserLevelObserver());
+        presenter.addObserver_userExperience(overlayUI.getUserExperienceObserver());
+        presenter.addObserver_userNextLevelRequiredExperienceObserver(overlayUI.getUserNextLevelRequiredExperienceObserver());
 
         this.skillCaseWindow = new SkillCaseWindow(SKILL_CASE_WINDOW.TITLE, skin,
                 factoryStorage.getSkillIconFactory(),

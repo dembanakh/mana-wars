@@ -147,13 +147,19 @@ public abstract class BaseSkillWindow extends Window implements BuildableUI {
         return result.toString();
     }
 
-    private static  String getDescription(SkillCharacteristic sc, int skillLevel) {
-        String result = String.valueOf(sc.getTarget());
+    private static String getDescription(SkillCharacteristic sc, int skillLevel) {
+        String result = getDescription(sc.getTarget());
         result += " ";
         result += String.valueOf(sc.getCharacteristic());
         result += (sc.getChangeType() == ValueChangeType.DECREASE) ? " -" : " +";
         result += String.valueOf(sc.getValue(skillLevel));
         return result;
+    }
+
+    private static String getDescription(int skillCharTarget) {
+        if (skillCharTarget == 0) return "SELF";
+        if (skillCharTarget > 0) return "ALLIES("+skillCharTarget+")";
+        return "ENEMIES("+(-skillCharTarget)+")";
     }
 
 }

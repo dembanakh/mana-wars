@@ -55,6 +55,8 @@ public final class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresente
                 new SkillsInteractor(user, databaseRepository));
         presenter.addObserver_manaAmount(overlayUI.getManaAmountObserver());
         presenter.addObserver_userLevel(overlayUI.getUserLevelObserver());
+        presenter.addObserver_userExperience(overlayUI.getUserExperienceObserver());
+        presenter.addObserver_userNextLevelRequiredExperienceObserver(overlayUI.getUserNextLevelRequiredExperienceObserver());
 
         skillInfo = new BriefSkillInfo("", skin);
 

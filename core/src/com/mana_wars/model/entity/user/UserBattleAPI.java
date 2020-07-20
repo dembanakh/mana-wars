@@ -6,13 +6,14 @@ import com.mana_wars.model.entity.skills.PassiveSkill;
 
 import java.util.List;
 
-import io.reactivex.subjects.Subject;
+import io.reactivex.Observable;
 
 public interface UserBattleAPI extends UserBaseAPI{
     boolean tryApplyActiveSkill(ActiveSkill skill);
 
-    Subject<Integer> getManaAmountObservable();
+    Observable<Integer> getManaAmountObservable();
     Iterable<ActiveSkill> getActiveSkills();
 
-    BattleParticipant prepareBattleParticipant(List<ActiveSkill> userActiveSkills, Iterable<PassiveSkill> userPassiveSkills);
+    BattleParticipant prepareBattleParticipant(List<ActiveSkill> userActiveSkills,
+                                               Iterable<PassiveSkill> userPassiveSkills);
 }

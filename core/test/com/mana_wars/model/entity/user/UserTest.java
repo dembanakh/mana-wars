@@ -88,7 +88,7 @@ public class UserTest {
         when(userLevelExperienceRepository.getCurrentUserExperience()).thenReturn(150);
         TestScheduler scheduler = new TestScheduler();
         AtomicInteger userLevel = new AtomicInteger();
-        disposable.add(user.getUserLevelObservable().observeOn(scheduler).subscribe(userLevel::set));
+        disposable.add(user.getLevelObservable().observeOn(scheduler).subscribe(userLevel::set));
 
         user.checkNextLevel();
         scheduler.triggerActions();

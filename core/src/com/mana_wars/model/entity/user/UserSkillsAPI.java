@@ -1,8 +1,10 @@
 package com.mana_wars.model.entity.user;
 
-import io.reactivex.subjects.Subject;
+import io.reactivex.Observable;
 
 public interface UserSkillsAPI extends UserBaseAPI{
-    Subject<Integer> getManaAmountObservable();
-    Subject<Integer> getUserLevelObservable();
+    Observable<Integer> getManaAmountObservable();
+    Observable<Integer> getUserLevelObservable();
+    Observable<Integer> getExperienceObservable();
+    Observable<Integer> getNextLevelRequiredExperienceObservable();
 }

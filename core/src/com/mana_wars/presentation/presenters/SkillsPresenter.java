@@ -97,4 +97,12 @@ public final class SkillsPresenter extends BasePresenter<SkillsView, SkillsInter
     public void onSkillDragStop() {
         view.clearSelection();
     }
+
+    public void addObserver_userExperience(Consumer<? super Integer> observer) {
+        disposable.add(interactor.getUserExperienceObservable().subscribe(observer));
+    }
+
+    public void addObserver_userNextLevelRequiredExperienceObserver(Consumer<? super Integer> observer) {
+        disposable.add(interactor.getUserNextLevelRequiredExperienceObservable().subscribe(observer));
+    }
 }

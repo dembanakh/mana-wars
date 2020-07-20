@@ -12,6 +12,7 @@ import com.mana_wars.model.repository.UsernameRepository;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.Subject;
 
@@ -25,7 +26,10 @@ public class User implements
     private final UserLevelExperienceRepository userLevelExperienceRepository;
     private final UserSkillCasesRepository userSkillCasesRepository;
     private final Subject<Integer> manaAmountObservable;
-    private final Subject<Integer> userLevelObservable;
+    private final Subject<Integer> levelObservable;
+    private final Subject<Integer> nextLevelRequiredExperienceObservable;
+    private final Subject<Integer> experienceObservable;
+
     private UserBattleParticipant user;
 
     private int nextLevelRequiredExperience;
@@ -45,8 +49,10 @@ public class User implements
             this.nextLevelRequiredExperience = lvlRequirements.get(userLevel);
         }
 
-        userLevelObservable = BehaviorSubject.createDefault(userLevel);
+        levelObservable = BehaviorSubject.createDefault(userLevel);
         manaAmountObservable = BehaviorSubject.createDefault(userManaRepository.getUserMana());
+        nextLevelRequiredExperienceObservable = BehaviorSubject.createDefault(nextLevelRequiredExperience);
+        experienceObservable = BehaviorSubject.createDefault(userLevelExperienceRepository.getCurrentUserExperience());
     }
 
     @Override
@@ -81,11 +87,12 @@ public class User implements
             if(userLevel == maxLvl){
                 isMaxLvl = true;
                 experienceCount = 0;
-                userLevelObservable.onNext(userLevel);
+                levelObservable.onNext(userLevel);
                 break;
             }
             nextLevelRequiredExperience = userLevelExperienceRepository.getUserLevelRequiredExperience().get(userLevel);
-            userLevelObservable.onNext(userLevel);
+            nextLevelRequiredExperienceObservable.onNext(nextLevelRequiredExperience);
+            levelObservable.onNext(userLevel);
         }
         userLevelExperienceRepository.setCurrentUserExperience(experienceCount);
     }
@@ -95,6 +102,7 @@ public class User implements
         if (isMaxLvl) return;
         int experienceCount = userLevelExperienceRepository.getCurrentUserExperience() + delta;
         userLevelExperienceRepository.setCurrentUserExperience(experienceCount);
+        experienceObservable.onNext(experienceCount);
         checkNextLevel();
     }
 
@@ -144,13 +152,28 @@ public class User implements
     }
 
     @Override
-    public Subject<Integer> getManaAmountObservable() {
+    public Observable<Integer> getManaAmountObservable() {
         return manaAmountObservable;
     }
 
     @Override
-    public Subject<Integer> getUserLevelObservable() {
-        return userLevelObservable;
+    public Observable<Integer> getUserLevelObservable() {
+        return levelObservable;
+    }
+
+    @Override
+    public Observable<Integer> getLevelObservable() {
+        return levelObservable;
+    }
+
+    @Override
+    public Observable<Integer> getExperienceObservable() {
+        return experienceObservable;
+    }
+
+    @Override
+    public Observable<Integer> getNextLevelRequiredExperienceObservable() {
+        return nextLevelRequiredExperienceObservable;
     }
 
     @Override

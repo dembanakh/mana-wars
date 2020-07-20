@@ -1,5 +1,6 @@
 package com.mana_wars.model.entity.user;
 
+import io.reactivex.Observable;
 import io.reactivex.subjects.Subject;
 
 public interface UserMenuAPI extends UserBaseAPI{
@@ -7,7 +8,9 @@ public interface UserMenuAPI extends UserBaseAPI{
     void updateSkillCases(int delta);
 
     String getName();
-    Subject<Integer> getManaAmountObservable();
-    Subject<Integer> getUserLevelObservable();
+    Observable<Integer> getManaAmountObservable();
+    Observable<Integer> getLevelObservable();
+    Observable<Integer> getExperienceObservable();
+    Observable<Integer> getNextLevelRequiredExperienceObservable();
     int getSkillCasesNumber();
 }

@@ -29,6 +29,7 @@ public class MenuOverlayUI extends BaseOverlayUI {
     private final ValueField<Void, Integer> manaAmountField;
     private final ValueField<Void, Integer> userLevelField;
     private final ValueField<Void, String> usernameField;
+    private final ValueField<Integer, Integer> userExperienceField;
     private final BuildableUI navigationBar;
 
     MenuOverlayUI(final Skin skin, final ScreenSetter screenSetter,
@@ -63,12 +64,21 @@ public class MenuOverlayUI extends BaseOverlayUI {
                 .build();
         usernameField = ValueFieldFactory.textValueField(skin, TransformFactory.manualTransform(transform));
 
+        transform = new TransformBuilder()
+                .setXConstraint(new AbsoluteXPositionConstraint(Align.left, 0))
+                .setYConstraint(new AbsoluteYPositionConstraint(Align.top, 50))
+                .setWidthConstraint(new RelativeWidthConstraint())
+                .setHeightConstraint(new AbsoluteSizeConstraint(50))
+                .build();
+        userExperienceField = ValueFieldFactory.progressBarValueField(skin,
+                TransformFactory.manualTransform(transform));
+
         navigationBar = new NavigationBar(skin, screenSetter, localizedStringFactory);
     }
 
     @Override
     protected Iterable<BuildableUI> getElements() {
-        return Arrays.asList(navigationBar, manaAmountField, userLevelField, usernameField);
+        return Arrays.asList(navigationBar, manaAmountField, userLevelField, usernameField, userExperienceField);
     }
 
     public Consumer<? super Integer> getManaAmountObserver() {
@@ -77,6 +87,14 @@ public class MenuOverlayUI extends BaseOverlayUI {
 
     public Consumer<? super Integer> getUserLevelObserver() {
         return userLevelField;
+    }
+
+    public Consumer<? super Integer> getUserExperienceObserver() {
+        return userExperienceField;
+    }
+
+    public Consumer<? super Integer> getUserNextLevelRequiredExperienceObserver() {
+        return userExperienceField::setInitialData;
     }
 
     public void setUsername(final String username) {

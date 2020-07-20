@@ -6,8 +6,8 @@ import com.mana_wars.model.entity.user.UserMenuAPI;
 import com.mana_wars.model.mana_bonus.ManaBonus;
 import com.mana_wars.model.repository.DatabaseRepository;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
-import io.reactivex.subjects.Subject;
 
 public final class MainMenuInteractor extends BaseInteractor<UserMenuAPI> {
 
@@ -37,14 +37,6 @@ public final class MainMenuInteractor extends BaseInteractor<UserMenuAPI> {
 
             return s;
         });
-    }
-
-    public Subject<Integer> getManaAmountObservable() {
-        return user.getManaAmountObservable();
-    }
-
-    public Subject<Integer> getUserLevelObservable() {
-        return user.getUserLevelObservable();
     }
 
     private void updateManaAmount(int delta) {
@@ -78,5 +70,21 @@ public final class MainMenuInteractor extends BaseInteractor<UserMenuAPI> {
 
     public void useSkillCase() {
         user.updateSkillCases(-1);
+    }
+
+    public Observable<Integer> getManaAmountObservable() {
+        return user.getManaAmountObservable();
+    }
+
+    public Observable<Integer> getUserLevelObservable() {
+        return user.getLevelObservable();
+    }
+
+    public Observable<Integer> getUserExperienceObservable() {
+        return user.getExperienceObservable();
+    }
+
+    public Observable<Integer> getUserNextLevelRequiredExperienceObservable() {
+        return user.getNextLevelRequiredExperienceObservable();
     }
 }
