@@ -39,7 +39,7 @@ public class CharacteristicsConverterTest {
         when(mockSkill.getValue()).thenReturn(2);
         when(mockSkill.getType()).thenReturn(1);
         when(mockSkill.getChangeType()).thenReturn(true);
-        when(mockSkill.getTarget()).thenReturn(1);
+        when(mockSkill.getTarget()).thenReturn(0);
         when(mockSkill.getUpgradeFunction()).thenReturn("LINEAR");
         when(mockSkill.getLevelMultiplier()).thenReturn(1);
         input.add(mockSkill);
@@ -49,7 +49,7 @@ public class CharacteristicsConverterTest {
         assertEquals(2, output.get(0).getValue(1));
         assertEquals(Characteristic.getCharacteristicById(1), output.get(0).getCharacteristic());
         assertEquals(ValueChangeType.INCREASE, output.get(0).getChangeType());
-        assertEquals(SkillCharacteristic.Target.SELF, output.get(0).getTarget());
+        assertEquals(0, output.get(0).getTarget());
         assertEquals(UpgradeFunction.LINEAR, output.get(0).getUpgradeFunction());
         assertEquals(0, Double.compare(1, output.get(0).getLevelMultiplier()));
     }

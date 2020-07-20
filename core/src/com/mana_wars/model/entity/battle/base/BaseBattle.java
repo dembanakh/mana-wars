@@ -1,5 +1,6 @@
 package com.mana_wars.model.entity.battle.base;
 
+import com.mana_wars.model.DataDeuce;
 import com.mana_wars.model.entity.battle.data.BattleSummaryData;
 import com.mana_wars.model.entity.battle.data.ReadableBattleSummaryData;
 import com.mana_wars.model.entity.battle.participant.BattleParticipant;
@@ -97,8 +98,15 @@ public class BaseBattle implements Battle, BattleClientAPI {
         if (!isActive.get()) return;
 
         double activationTime = battleTime + castTime;
-        battleEvents.add(activationTime, skill, participant,
-                getOpponents(participant).get(participant.getCurrentTarget()));
+
+        List<BattleParticipant> targets = new ArrayList<>();
+        List<BattleParticipant> participantOpponents = getOpponents(participant);
+
+        List<Integer> targetsIndices = participant.getTargets();
+        for (Integer i : targetsIndices){
+            targets.add(participantOpponents.get(i));
+        }
+        battleEvents.add(activationTime, skill, participant, targets);
     }
 
     //region Private methods
@@ -122,7 +130,7 @@ public class BaseBattle implements Battle, BattleClientAPI {
             participant.setBattleClientAPI(this);
             participant.changeTarget();
             for (Skill s : participant.getPassiveSkills()) {
-                s.activate(participant, getOpponents(participant).get(participant.getCurrentTarget()));
+                s.activate(participant, getOpponents(participant));
             }
         }
     }

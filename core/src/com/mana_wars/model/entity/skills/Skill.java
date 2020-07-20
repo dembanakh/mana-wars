@@ -18,12 +18,21 @@ public class Skill extends GameItem {
         this.skillCharacteristics = skillCharacteristics;
     }
 
-    public void activate(BattleParticipant self, BattleParticipant enemy) {
+    public void activate(BattleParticipant self, List<BattleParticipant> enemies) {
         for (SkillCharacteristic sc : skillCharacteristics) {
-            if (sc.getTarget() == SkillCharacteristic.Target.SELF)
+            if (sc.getTarget() >= 0)
                 self.applySkillCharacteristic(sc, getLevel());
-            else if (sc.getTarget() == SkillCharacteristic.Target.ENEMY && enemy.isAlive())
-                enemy.applySkillCharacteristic(sc, getLevel());
+
+            if (sc.getTarget() < 0){
+                for (int i=0, n=-sc.getTarget(); i < n && i < enemies.size(); i++){
+                    BattleParticipant enemy = enemies.get(i);
+                    if (enemy.isAlive())
+                        enemy.applySkillCharacteristic(sc, getLevel());
+                }
+            }
+            else if (sc.getTarget() > 0) {
+                //TODO add implementation for allies
+            }
         }
     }
 

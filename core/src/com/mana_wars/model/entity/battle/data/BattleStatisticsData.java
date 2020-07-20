@@ -18,11 +18,6 @@ public class BattleStatisticsData implements ReadableBattleStatisticsData {
         this(0,0,0,0);
     }
 
-    public void updateValuesAsSource(int selfDelta, int targetDelta) {
-        updateWithSelfChange(selfDelta);
-        updateWithTargetChange(targetDelta);
-    }
-
     public void updateValuesAsTarget(int delta) {
         if (delta > 0) {
             receivedHealing += delta;
@@ -32,7 +27,7 @@ public class BattleStatisticsData implements ReadableBattleStatisticsData {
         }
     }
 
-    private void updateWithSelfChange(int delta) {
+    public void updateValuesAsSourceSelf(int delta) {
         if (delta > 0) {
             selfHealing += delta;
         } else {
@@ -40,7 +35,7 @@ public class BattleStatisticsData implements ReadableBattleStatisticsData {
         }
     }
 
-    private void updateWithTargetChange(int delta){
+    public void updateValuesAsSourceTarget(int delta){
         if (delta > 0) {
             selfHealing += delta;
         } else {

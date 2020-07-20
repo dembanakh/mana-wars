@@ -1,6 +1,9 @@
 package com.mana_wars.model.entity.battle.participant;
 
+import com.mana_wars.model.DataDeuce;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -35,7 +38,16 @@ class BattleParticipantTarget {
         return aliveOpponents;
     }
 
-    int get() {
+
+    int getCurrent() {
         return currentTarget;
     }
+
+    List<Integer> get(BattleClientAPI battle){
+        List<Integer> targets = possibleOpponents(battle.getOpponents(participant));
+        Collections.shuffle(targets);
+        targets.add(0, currentTarget);
+        return targets;
+    }
+
 }

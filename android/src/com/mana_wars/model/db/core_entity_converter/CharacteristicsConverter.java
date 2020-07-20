@@ -20,8 +20,7 @@ class CharacteristicsConverter {
                     Characteristic.getCharacteristicById(dbsc.getType()),
                     dbsc.getChangeType() ? ValueChangeType.INCREASE :
                             ValueChangeType.DECREASE,
-                    dbsc.getTarget() == 1 ? SkillCharacteristic.Target.SELF :
-                            SkillCharacteristic.Target.ENEMY,
+                    dbsc.getTarget(),
                     UpgradeFunction.valueOf(dbsc.getUpgradeFunction()),
                     dbsc.getLevelMultiplier());
             list.add(skillCharacteristic);
