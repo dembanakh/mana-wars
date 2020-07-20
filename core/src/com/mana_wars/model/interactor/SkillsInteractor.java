@@ -8,8 +8,8 @@ import com.mana_wars.model.repository.DatabaseRepository;
 import com.mana_wars.model.skills_operations.SkillsOperations;
 
 import io.reactivex.Completable;
+import io.reactivex.Observable;
 import io.reactivex.Single;
-import io.reactivex.subjects.Subject;
 
 public final class SkillsInteractor extends BaseInteractor<UserSkillsAPI> {
 
@@ -56,12 +56,19 @@ public final class SkillsInteractor extends BaseInteractor<UserSkillsAPI> {
                 .validate();
     }
 
-    public Subject<Integer> getManaAmountObservable() {
+    public Observable<Integer> getManaAmountObservable() {
         return user.getManaAmountObservable();
     }
 
-    public Subject<Integer> getUserLevelObservable() {
+    public Observable<Integer> getUserLevelObservable() {
         return user.getUserLevelObservable();
     }
 
+    public Observable<Integer> getUserExperienceObservable() {
+        return user.getExperienceObservable();
+    }
+
+    public Observable<Integer> getUserNextLevelRequiredExperienceObservable() {
+        return user.getNextLevelRequiredExperienceObservable();
+    }
 }

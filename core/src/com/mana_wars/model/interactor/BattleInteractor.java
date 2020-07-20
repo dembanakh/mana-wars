@@ -9,8 +9,8 @@ import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.user.UserBattleAPI;
 import com.mana_wars.model.repository.DatabaseRepository;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
-import io.reactivex.subjects.Subject;
 
 public final class BattleInteractor extends BaseInteractor<UserBattleAPI> {
 
@@ -45,7 +45,7 @@ public final class BattleInteractor extends BaseInteractor<UserBattleAPI> {
         return user.tryApplyActiveSkill(skill);
     }
 
-    public Subject<Integer> getUserManaAmountObservable() {
+    public Observable<Integer> getUserManaAmountObservable() {
         return user.getManaAmountObservable();
     }
 

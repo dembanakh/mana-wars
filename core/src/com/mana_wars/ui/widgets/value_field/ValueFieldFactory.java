@@ -21,6 +21,11 @@ public final class ValueFieldFactory {
         return new TextValueField<>(skin, backgroundColor, transformApplier);
     }
 
+    public static <T extends Number, U extends Number> ValueField<T, U> progressBarValueField(Skin skin,
+                                                                                              TransformApplier transformApplier) {
+        return new ProgressBarValueField<>(skin, transformApplier);
+    }
+
     public static ValueField<Integer, Integer> aliveEnemiesValueField(Skin skin,
                                                                       UIStringConstants.UI_SKIN.BACKGROUND_COLOR backgroundColor,
                                                                       TransformApplier transformApplier) {

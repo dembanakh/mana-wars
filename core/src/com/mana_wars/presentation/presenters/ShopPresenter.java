@@ -26,4 +26,11 @@ public final class ShopPresenter extends BasePresenter<ShopView, ShopInteractor>
                 .postRunnable(() -> view.openSkillCaseWindow(s)), Throwable::printStackTrace));
     }
 
+    public void addObserver_userExperience(Consumer<? super Integer> observer) {
+        disposable.add(interactor.getUserExperienceObservable().subscribe(observer));
+    }
+
+    public void addObserver_userNextLevelRequiredExperienceObserver(Consumer<? super Integer> observer) {
+        disposable.add(interactor.getUserNextLevelRequiredExperienceObservable().subscribe(observer));
+    }
 }

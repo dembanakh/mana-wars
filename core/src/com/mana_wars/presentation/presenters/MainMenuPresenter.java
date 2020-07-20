@@ -20,22 +20,28 @@ public final class MainMenuPresenter extends BasePresenter<MainMenuView, MainMen
         disposable.add(interactor.getUserLevelObservable().subscribe(observer));
     }
 
+    public void addObserver_userExperience(Consumer<? super Integer> observer) {
+        disposable.add(interactor.getUserExperienceObservable().subscribe(observer));
+    }
+
+    public void addObserver_userNextLevelRequiredExperienceObserver(Consumer<? super Integer> observer) {
+        disposable.add(interactor.getUserNextLevelRequiredExperienceObservable().subscribe(observer));
+    }
+
     public void onScreenShow() {
-        disposable.add(interactor.initManaBonus().subscribe(time -> {
+        disposable.add(interactor.initManaBonus().subscribe(time ->
             uiThreadHandler.postRunnable(() -> {
                 view.setTimeSinceLastManaBonusClaimed(time);
                 if (interactor.isBonusAvailable()) view.onManaBonusReady();
-            });
-        }, Throwable::printStackTrace));
+            }), Throwable::printStackTrace));
 
-        disposable.add(interactor.getUsername().subscribe(username -> {
-            uiThreadHandler.postRunnable(() -> {
-                view.setUsername(username);
-            });
-        }, Throwable::printStackTrace));
+        disposable.add(interactor.getUsername().subscribe(username ->
+            uiThreadHandler.postRunnable(() -> view.setUsername(username)),
+                Throwable::printStackTrace));
     }
 
     public void onOpenSkillCase() {
+        System.out.println("Skill Cases " + interactor.getUserSkillCasesNumber());
         if (interactor.getUserSkillCasesNumber() > 0) {
             disposable.add(interactor.getNewSkill().subscribe(s -> {
                 interactor.useSkillCase();
