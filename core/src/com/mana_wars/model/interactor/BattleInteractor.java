@@ -27,10 +27,10 @@ public final class BattleInteractor extends BaseInteractor<UserBattleAPI> {
         battleBuilder.fetchData(disposable, databaseRepository, () -> {
             this.battle = battleBuilder.build(observer);
 
-            observer.setSkills(user.getActiveSkills());
             observer.updateDurationCoefficients(
                     battle.getUser().getCharacteristicValue(Characteristic.CAST_TIME),
                     battle.getUser().getCharacteristicValue(Characteristic.COOLDOWN));
+            observer.setSkills(user.getActiveSkills());
             battle.start();
             observer.setOpponents(battle.getUser(), battle.getUserSide(), battle.getEnemySide());
             observer.onStartBattle();
