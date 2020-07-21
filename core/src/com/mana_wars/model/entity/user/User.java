@@ -107,8 +107,9 @@ public class User implements
     }
 
     @Override
-    public void updateSkillCases(int delta) {
+    public int updateSkillCases(int delta) {
         userSkillCasesRepository.updateSkillCasesNumber(delta);
+        return userSkillCasesRepository.getSkillCasesNumber();
     }
 
     private Iterable<PassiveSkill> cleanPassiveSkills(Iterable<PassiveSkill> passiveSkills) {

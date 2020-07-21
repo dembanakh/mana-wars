@@ -32,6 +32,7 @@ import static com.mana_wars.ui.UIStringConstants.SKILL_CASE_WINDOW;
 public final class MainMenuScreen extends BaseScreen<MenuOverlayUI, MainMenuPresenter> implements MainMenuView {
 
     private final BaseSkillWindow skillCaseWindow;
+    private final TextButton skillCaseButton;
     private final ManaBonusProgressBar manaBonusProgressBar;
 
     private final AssetFactory<String, TextureRegion> imageFactory;
@@ -60,19 +61,30 @@ public final class MainMenuScreen extends BaseScreen<MenuOverlayUI, MainMenuPres
         presenter.addObserver_userExperience(overlayUI.getUserExperienceObserver());
         presenter.addObserver_userNextLevelRequiredExperienceObserver(overlayUI.getUserNextLevelRequiredExperienceObserver());
 
+        this.imageFactory = factoryStorage.getImageFactory();
+        this.localizedStringFactory = factoryStorage.getLocalizedStringFactory();
+
         this.skillCaseWindow = new SkillCaseWindow(SKILL_CASE_WINDOW.TITLE, skin,
                 factoryStorage.getSkillIconFactory(),
                 factoryStorage.getRarityFrameFactory());
+        this.skillCaseButton = UIElementFactory.getButton(skin,
+                localizedStringFactory.format(MAIN_MENU_SCREEN.OPEN_SKILL_CASE_BUTTON_KEY, 0),
+                new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        presenter.onOpenSkillCase();
+                    }
+                });
+
         this.manaBonusProgressBar = new ManaBonusProgressBar(skin, presenter.getFullManaBonusTimeout(),
                 this::claimBonus);
-        this.imageFactory = factoryStorage.getImageFactory();
-        this.localizedStringFactory = factoryStorage.getLocalizedStringFactory();
     }
 
     @Override
     protected void rebuildStage() {
         super.rebuildStage();
         addActor(skillCaseWindow.build());
+        presenter.refreshSkillCasesNumber();
     }
 
     @Override
@@ -90,14 +102,6 @@ public final class MainMenuScreen extends BaseScreen<MenuOverlayUI, MainMenuPres
         Table layer = new Table();
         layer.setFillParent(true);
 
-        TextButton skillCaseButton = UIElementFactory.getButton(skin,
-                localizedStringFactory.get(MAIN_MENU_SCREEN.OPEN_SKILL_CASE_BUTTON_KEY),
-                new ChangeListener() {
-                    @Override
-                    public void changed(ChangeEvent event, Actor actor) {
-                        presenter.onOpenSkillCase();
-                    }
-                });
         layer.add(skillCaseButton).row();
         // TODO: remove constants
         layer.add(manaBonusProgressBar.build()).height(100).width(200);
@@ -127,6 +131,11 @@ public final class MainMenuScreen extends BaseScreen<MenuOverlayUI, MainMenuPres
     @Override
     public void setUsername(String username) {
         overlayUI.setUsername(username);
+    }
+
+    @Override
+    public void setSkillCasesNumber(int number) {
+        skillCaseButton.setText(localizedStringFactory.format(MAIN_MENU_SCREEN.OPEN_SKILL_CASE_BUTTON_KEY, number));
     }
 
     @Override

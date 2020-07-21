@@ -41,11 +41,13 @@ public final class MainMenuPresenter extends BasePresenter<MainMenuView, MainMen
     }
 
     public void onOpenSkillCase() {
-        System.out.println("Skill Cases " + interactor.getUserSkillCasesNumber());
         if (interactor.getUserSkillCasesNumber() > 0) {
             disposable.add(interactor.getNewSkill().subscribe(s -> {
-                interactor.useSkillCase();
-                uiThreadHandler.postRunnable(() -> view.openSkillCaseWindow(s));
+                final int actualCasesNumber = interactor.useSkillCase();
+                uiThreadHandler.postRunnable(() -> {
+                    view.openSkillCaseWindow(s);
+                    view.setSkillCasesNumber(actualCasesNumber);
+                });
             }, Throwable::printStackTrace));
         }
     }
@@ -61,5 +63,9 @@ public final class MainMenuPresenter extends BasePresenter<MainMenuView, MainMen
     public void synchronizeManaBonusTime() {
         view.setTimeSinceLastManaBonusClaimed(interactor.getTimeSinceLastManaBonusClaim());
         if (interactor.isBonusAvailable()) view.onManaBonusReady();
+    }
+
+    public void refreshSkillCasesNumber() {
+        view.setSkillCasesNumber(interactor.getUserSkillCasesNumber());
     }
 }

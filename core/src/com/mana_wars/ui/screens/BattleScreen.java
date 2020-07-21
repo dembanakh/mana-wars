@@ -106,6 +106,7 @@ public final class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresente
         this.roundLabel = new Container<>(new Label("", skin));
         roundLabel.setTransform(true);
         roundLabel.setOrigin(Align.center);
+        roundLabel.getActor().setOrigin(Align.center);
         this.changeEnemyButton = new ChangeEnemyButton(skin, localizedStringFactory, this::changeActiveEnemy);
     }
 
@@ -137,12 +138,13 @@ public final class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresente
     public void setRound(int round) {
         roundLabel.getActor().setText(localizedStringFactory.format(ROUND_KEY, round));
 
-        Vector2 initialPosition = new Vector2(roundLabel.getX(), roundLabel.getY());
+        Vector2 initialPosition = new Vector2(roundLabel.getX(Align.center), roundLabel.getY(Align.center));
         roundLabel.setPosition(SCREEN_WIDTH() / 2f, SCREEN_HEIGHT() / 2f, Align.center);
         roundLabel.setScale(3f);
         roundLabel.addAction(Actions.sequence(
                 Actions.parallel(
-                    Actions.moveTo(initialPosition.x, initialPosition.y, 1f, Interpolation.bounceOut),
+                    Actions.moveToAligned(initialPosition.x, initialPosition.y, Align.center,
+                            1f, Interpolation.bounceOut),
                     Actions.scaleBy(-2f, -2f, 1f, Interpolation.linear)
         )));
     }
@@ -196,7 +198,7 @@ public final class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresente
 
         Table battleInfoSection = new Table();
         battleInfoSection.add(userManaAmountField.build()).center().uniformX().expandX();
-        battleInfoSection.add(roundLabel).center().uniformX().expandX();
+        battleInfoSection.add(roundLabel).uniformX().expandX();
         battleInfoSection.add(UIElementFactory.getButton(skin,
                 localizedStringFactory.get(LEAVE_KEY),
                 new ChangeListener() {
@@ -213,6 +215,8 @@ public final class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresente
                 .height(ACTIVE_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH).bottom().row();
 
         layer.add(bottomPart).growY().fillX();
+
+        System.out.println(roundLabel.getX());
 
         return layer;
     }

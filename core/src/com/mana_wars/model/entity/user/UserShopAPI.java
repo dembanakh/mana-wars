@@ -8,5 +8,6 @@ public interface UserShopAPI extends UserBaseAPI{
     Observable<Integer> getExperienceObservable();
     Observable<Integer> getNextLevelRequiredExperienceObservable();
     void updateManaAmount(int delta);
-    void updateSkillCases(int delta);
+    int updateSkillCases(int delta);
+    int getSkillCasesNumber();
 }
