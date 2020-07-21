@@ -22,8 +22,7 @@ public final class ShopPresenter extends BasePresenter<ShopView, ShopInteractor>
 
     public void buySkillCase() {
         // obtain cases
-        disposable.add(interactor.buySkillCase().subscribe(s -> uiThreadHandler
-                .postRunnable(() -> view.openSkillCaseWindow(s)), Throwable::printStackTrace));
+        view.setSkillCasesNumber(interactor.buySkillCase());
     }
 
     public void addObserver_userExperience(Consumer<? super Integer> observer) {
@@ -32,5 +31,21 @@ public final class ShopPresenter extends BasePresenter<ShopView, ShopInteractor>
 
     public void addObserver_userNextLevelRequiredExperienceObserver(Consumer<? super Integer> observer) {
         disposable.add(interactor.getUserNextLevelRequiredExperienceObservable().subscribe(observer));
+    }
+
+    public void onOpenSkillCase() {
+        if (interactor.getUserSkillCasesNumber() > 0) {
+            disposable.add(interactor.getNewSkill().subscribe(s -> {
+                final int actualCasesNumber = interactor.useSkillCase();
+                uiThreadHandler.postRunnable(() -> {
+                    view.openSkillCaseWindow(s);
+                    view.setSkillCasesNumber(actualCasesNumber);
+                });
+            }, Throwable::printStackTrace));
+        }
+    }
+
+    public void refreshSkillCasesNumber() {
+        view.setSkillCasesNumber(interactor.getUserSkillCasesNumber());
     }
 }

@@ -28,6 +28,7 @@ import static com.mana_wars.ui.UIStringConstants.SHOP_SCREEN.*;
 public final class ShopScreen extends BaseScreen<MenuOverlayUI, ShopPresenter> implements ShopView {
 
     private final BaseSkillWindow skillCaseWindow;
+    private final TextButton skillCaseButton;
 
     private final LocalizedStringFactory localizedStringFactory;
 
@@ -45,16 +46,25 @@ public final class ShopScreen extends BaseScreen<MenuOverlayUI, ShopPresenter> i
         presenter.addObserver_userExperience(overlayUI.getUserExperienceObserver());
         presenter.addObserver_userNextLevelRequiredExperienceObserver(overlayUI.getUserNextLevelRequiredExperienceObserver());
 
+        this.localizedStringFactory = factoryStorage.getLocalizedStringFactory();
         this.skillCaseWindow = new SkillCaseWindow(UIStringConstants.SKILL_CASE_WINDOW.TITLE, skin,
                 factoryStorage.getSkillIconFactory(),
                 factoryStorage.getRarityFrameFactory());
-        this.localizedStringFactory = factoryStorage.getLocalizedStringFactory();
+        this.skillCaseButton = UIElementFactory.getButton(skin,
+                localizedStringFactory.format(UIStringConstants.MAIN_MENU_SCREEN.OPEN_SKILL_CASE_BUTTON_KEY, 0),
+                new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        presenter.onOpenSkillCase();
+                    }
+                });
     }
 
     @Override
     void rebuildStage() {
         super.rebuildStage();
         addActor(skillCaseWindow.build());
+        presenter.refreshSkillCasesNumber();
     }
 
     @Override
@@ -75,6 +85,7 @@ public final class ShopScreen extends BaseScreen<MenuOverlayUI, ShopPresenter> i
         Table layer = new Table();
         layer.setFillParent(true);
 
+        layer.add(skillCaseButton).row();
         TextButton button = UIElementFactory.getButton(skin,
                 localizedStringFactory.format(ONE_SKILL_CASE_KEY, GameConstants.SKILL_CASE_PRICE), new ChangeListener() {
                     @Override
@@ -91,5 +102,10 @@ public final class ShopScreen extends BaseScreen<MenuOverlayUI, ShopPresenter> i
     @Override
     public void openSkillCaseWindow(Skill skill) {
         skillCaseWindow.open(skill);
+    }
+
+    @Override
+    public void setSkillCasesNumber(int number) {
+        skillCaseButton.setText(localizedStringFactory.format(UIStringConstants.MAIN_MENU_SCREEN.OPEN_SKILL_CASE_BUTTON_KEY, number));
     }
 }

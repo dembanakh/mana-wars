@@ -68,8 +68,8 @@ public final class MainMenuInteractor extends BaseInteractor<UserMenuAPI> {
         return user.getSkillCasesNumber();
     }
 
-    public void useSkillCase() {
-        user.updateSkillCases(-1);
+    public int useSkillCase() {
+        return user.updateSkillCases(-1);
     }
 
     public Observable<Integer> getManaAmountObservable() {

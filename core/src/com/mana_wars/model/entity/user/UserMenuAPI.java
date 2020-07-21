@@ -5,7 +5,7 @@ import io.reactivex.subjects.Subject;
 
 public interface UserMenuAPI extends UserBaseAPI{
     void updateManaAmount(int delta);
-    void updateSkillCases(int delta);
+    int updateSkillCases(int delta);
 
     String getName();
     Observable<Integer> getManaAmountObservable();

@@ -38,16 +38,29 @@ public final class ShopInteractor extends BaseInteractor<UserShopAPI> {
         user.updateManaAmount(delta);
     }
 
-    public Single<Skill> buySkillCase() {
+    public int buySkillCase() {
         // obtain cases
         updateManaAmount(- GameConstants.SKILL_CASE_PRICE);
-        //user.updateSkillCases(1);
-        // TODO: change behaviour
+        return user.updateSkillCases(1);
+    }
+
+    public int getUserSkillCasesNumber() {
+        return user.getSkillCasesNumber();
+    }
+
+    //TODO refactor
+    public Single<Skill> getNewSkill() {
         return databaseRepository.getSkillsList().map((skills) -> {
+
             Skill s = SkillFactory.getNewSkill(skills);
-            disposable.add(databaseRepository.insertUserSkill(s).subscribe());
+            disposable.add(databaseRepository.insertUserSkill(s).subscribe(() -> {
+            }, Throwable::printStackTrace));
+
             return s;
         });
     }
-    
+
+    public int useSkillCase() {
+        return user.updateSkillCases(-1);
+    }
 }
