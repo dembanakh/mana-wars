@@ -8,11 +8,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class SharedPreferencesRepository implements LocalUserDataRepository {
 
-    private Activity hostActivity;
+    private final Activity hostActivity;
 
     //Constants
     private final String DB_VERSION = "DB_VERSION";
@@ -23,6 +26,7 @@ public class SharedPreferencesRepository implements LocalUserDataRepository {
     private final String USER_LVL_REQUIRED_EXPERIENCE = "USER_LVL_REQUIRED_EXPERIENCE";
     private final String CURRENT_USER_EXPERIENCE = "CURRENT_USER_EXPERIENCE";
     private final String USER_SKILL_CASES = "USER_SKILL_CASES";
+    private final String LAST_SHOP_REFRESH = "LAST_SHOP_REFRESH";
 
     public SharedPreferencesRepository(Activity hostActivity) {
         this.hostActivity = hostActivity;
@@ -135,5 +139,19 @@ public class SharedPreferencesRepository implements LocalUserDataRepository {
     @Override
     public void updateSkillCasesNumber(int delta) {
         getPrefsEditor().putInt(USER_SKILL_CASES, getSkillCasesNumber() + delta).apply();
+    }
+
+    @Override
+    public Calendar getLastRefreshTime() {
+        long timeInMillis = getDefaultManager().getLong(LAST_SHOP_REFRESH, 0);
+        if (timeInMillis == 0) return GregorianCalendar.getInstance();
+        Calendar result = new GregorianCalendar();
+        result.setTime(new Date(timeInMillis));
+        return result;
+    }
+
+    @Override
+    public void updateRefreshTime(Calendar calendar) {
+        getPrefsEditor().putLong(LAST_SHOP_REFRESH, calendar.getTimeInMillis()).apply();
     }
 }
