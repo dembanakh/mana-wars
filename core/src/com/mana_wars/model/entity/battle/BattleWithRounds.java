@@ -66,7 +66,6 @@ public class BattleWithRounds implements Battle {
         currentRound++;
         observer.setCurrentRound(currentRound);
 
-        //TODO
         user.setCharacteristicValue(Characteristic.CAST_TIME, 100);
         user.setCharacteristicValue(Characteristic.COOLDOWN, 100);
 
