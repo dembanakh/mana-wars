@@ -2,8 +2,8 @@ package com.mana_wars.model;
 
 public class DataDeuce <V,T> {
 
-    public V first;
-    public T second;
+    private final V first;
+    private final T second;
 
     public DataDeuce (V first, T second){
         this.first = first;
