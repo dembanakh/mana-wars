@@ -22,7 +22,6 @@ public class BattleWithRounds implements Battle {
     private BaseBattle currentRoundBattle;
 
     private final BattleParticipant user;
-    private final List<BattleParticipant> userSide;
     private final EnemyFactory enemyFactory;
 
     private final SingleSubject<ReadableBattleSummaryData> finishBattleObservable;
@@ -35,10 +34,9 @@ public class BattleWithRounds implements Battle {
 
     private final CompositeDisposable disposable = new CompositeDisposable();
 
-    public BattleWithRounds(BattleParticipant user, List<BattleParticipant> userSide, EnemyFactory enemyFactory,
+    public BattleWithRounds(BattleParticipant user, EnemyFactory enemyFactory,
                             int roundsCount, BattleStateObserver observer) {
         this.user = user;
-        this.userSide = userSide;
         this.enemyFactory = enemyFactory;
         this.roundsCount = roundsCount;
         this.observer = observer;
@@ -48,7 +46,7 @@ public class BattleWithRounds implements Battle {
     }
 
     public Battle init() {
-        currentRoundBattle = new BaseBattle(user, userSide, enemyFactory.generateEnemies()).init();
+        currentRoundBattle = new BaseBattle(user, enemyFactory.generateEnemies()).init();
         subscribeOnBattleFinish();
         return this;
     }
@@ -74,7 +72,7 @@ public class BattleWithRounds implements Battle {
 
         user.setCharacteristicApplicationMode(SkillCharacteristicApplicationMode.NO_MANA_CONSUMPTION);
 
-        currentRoundBattle = new BaseBattle(user, userSide, enemyFactory.generateEnemies(),
+        currentRoundBattle = new BaseBattle(user, enemyFactory.generateEnemies(),
                 BattleStartMode.ROUND, currentRoundBattle.getBattleTime()).init();
         subscribeOnBattleFinish();
 
@@ -111,10 +109,6 @@ public class BattleWithRounds implements Battle {
         return user;
     }
 
-    @Override
-    public List<BattleParticipant> getUserSide() {
-        return userSide;
-    }
 
     @Override
     public List<BattleParticipant> getEnemySide() {

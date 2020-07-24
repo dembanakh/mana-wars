@@ -9,6 +9,7 @@ import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.Skill;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,6 @@ public class BaseBattle implements Battle, BattleClientAPI {
 
     private final Map<BattleParticipant, List<BattleParticipant>> opponents = new HashMap<>();
     private final BattleParticipant user;
-    private final List<BattleParticipant> userSide;
     private final List<BattleParticipant> enemySide;
 
     private final SingleSubject<ReadableBattleSummaryData> finishBattleObservable;
@@ -33,18 +33,15 @@ public class BaseBattle implements Battle, BattleClientAPI {
     private double battleTime;
 
     public BaseBattle(final BattleParticipant user,
-               final List<BattleParticipant> userSide,
                final List<BattleParticipant> enemySide) {
-        this(user, userSide, enemySide, BattleStartMode.DEFAULT, 0);
+        this(user, enemySide, BattleStartMode.DEFAULT, 0);
     }
 
     public BaseBattle(final BattleParticipant user,
-               final List<BattleParticipant> userSide,
                final List<BattleParticipant> enemySide,
                final BattleStartMode starter,
                final double startTime) {
         this.user = user;
-        this.userSide = userSide;
         this.enemySide = enemySide;
         this.starter = starter;
         this.battleTime = startTime;
@@ -52,12 +49,8 @@ public class BaseBattle implements Battle, BattleClientAPI {
         this.battleEvents = new BattleEventsHandler();
 
         opponents.put(user, new ArrayList<>(enemySide));
-        for (BattleParticipant userAlly : userSide) {
-            opponents.put(userAlly, new ArrayList<>(enemySide));
-        }
         for (BattleParticipant userEnemy : enemySide) {
-            opponents.put(userEnemy, new ArrayList<>(userSide));
-            opponents.get(userEnemy).add(user);
+            opponents.put(userEnemy, new ArrayList<>(Collections.singletonList(user)));
         }
     }
 
@@ -68,7 +61,7 @@ public class BaseBattle implements Battle, BattleClientAPI {
 
     @Override
     public void start() {
-        starter.start(user, userSide, enemySide);
+        starter.start(user, enemySide);
         isActive.set(true);
     }
 
@@ -158,11 +151,6 @@ public class BaseBattle implements Battle, BattleClientAPI {
     @Override
     public BattleParticipant getUser() {
         return user;
-    }
-
-    @Override
-    public List<BattleParticipant> getUserSide() {
-        return userSide;
     }
 
     @Override

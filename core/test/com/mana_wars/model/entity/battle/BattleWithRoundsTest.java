@@ -27,7 +27,6 @@ public class BattleWithRoundsTest {
 
     @Mock
     private BattleParticipant user;
-    private List<BattleParticipant> userSide;
     private List<BattleParticipant> enemySide;
 
     private BattleSummaryData summaryData;
@@ -35,14 +34,13 @@ public class BattleWithRoundsTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        userSide = Collections.emptyList();
         enemySide = Collections.singletonList(mock(BattleParticipant.class));
         when(user.getPassiveSkills()).thenReturn(Collections.emptyList());
         when(enemySide.get(0).getPassiveSkills()).thenReturn(Collections.emptyList());
         when(enemySide.get(0).getOnDeathReward()).thenReturn(new BattleRewardData(1, 2, 3));
         EnemyFactory enemyFactory = mock(EnemyFactory.class);
         when(enemyFactory.generateEnemies()).thenReturn(enemySide);
-        battle = new BattleWithRounds(user, userSide, enemyFactory, 2, observer);
+        battle = new BattleWithRounds(user, enemyFactory, 2, observer);
         battle.init();
     }
 

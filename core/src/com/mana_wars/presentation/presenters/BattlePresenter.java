@@ -48,8 +48,7 @@ public final class BattlePresenter extends BasePresenter<BattleView, BattleInter
     }
 
     @Override
-    public void setOpponents(BattleParticipant user, Iterable<BattleParticipant> userSide,
-                             List<BattleParticipant> enemySide) {
+    public void setOpponents(BattleParticipant user, List<BattleParticipant> enemySide) {
         disposable.add(user.getHealthObservable().subscribe(view.setUser(user.getData())));
 
         setEnemies(enemySide, user.getCurrentTarget());
