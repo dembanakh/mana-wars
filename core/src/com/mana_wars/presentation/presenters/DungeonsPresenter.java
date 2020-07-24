@@ -1,6 +1,5 @@
 package com.mana_wars.presentation.presenters;
 
-import com.mana_wars.model.entity.user.UserDungeonsAPI;
 import com.mana_wars.model.interactor.DungeonsInteractor;
 import com.mana_wars.presentation.util.UIThreadHandler;
 import com.mana_wars.presentation.view.DungeonsView;
@@ -21,7 +20,7 @@ public final class DungeonsPresenter extends BasePresenter<DungeonsView, Dungeon
         disposable.add(interactor.getRequiredManaAmountForBattle().subscribe(requiredMana->{
             uiThreadHandler.postRunnable(()->{
                 view.disableDungeons(interactor.getUserLevel(),
-                        interactor.getUserAmount() < requiredMana);
+                        interactor.getUserManaAmount() < requiredMana);
             });
         }, Throwable::printStackTrace));
     }

@@ -11,7 +11,7 @@ import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
-public final class SkillsInteractor extends BaseInteractor<UserSkillsAPI> {
+public class SkillsInteractor extends BaseInteractor<UserSkillsAPI> {
 
     private final DatabaseRepository databaseRepository;
 

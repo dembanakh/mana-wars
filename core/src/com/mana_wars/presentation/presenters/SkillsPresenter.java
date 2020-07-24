@@ -15,25 +15,16 @@ import io.reactivex.functions.Consumer;
 
 public final class SkillsPresenter extends BasePresenter<SkillsView, SkillsInteractor> {
 
-    public SkillsPresenter(SkillsView view, UIThreadHandler uiThreadHandler, SkillsInteractor interactor) {
+    public SkillsPresenter(SkillsView view, SkillsInteractor interactor, UIThreadHandler uiThreadHandler) {
         super(view, interactor, uiThreadHandler);
     }
 
-    public void addObserver_manaAmount(Consumer<? super Integer> observer) {
-        disposable.add(interactor.getManaAmountObservable().subscribe(observer));
-    }
-
-    public void addObserver_userLevel(Consumer<? super Integer> observer) {
-        disposable.add(interactor.getUserLevelObservable().subscribe(observer));
-    }
-
     public void refreshSkillsList() {
-        disposable.add(interactor.getUserSkills().subscribe(skills -> {
-            uiThreadHandler.postRunnable(() -> view.setSkillsList(
+        disposable.add(interactor.getUserSkills().subscribe(skills -> uiThreadHandler
+                .postRunnable(() -> view.setSkillsList(
                     skills.activeSkills,
                     skills.passiveSkills,
-                    skills.allSkills));
-        }, Throwable::printStackTrace));
+                    skills.allSkills)), Throwable::printStackTrace));
     }
 
     private void mergeSkills(Skill toUpdate, Skill toDelete) {
@@ -104,5 +95,13 @@ public final class SkillsPresenter extends BasePresenter<SkillsView, SkillsInter
 
     public void addObserver_userNextLevelRequiredExperienceObserver(Consumer<? super Integer> observer) {
         disposable.add(interactor.getUserNextLevelRequiredExperienceObservable().subscribe(observer));
+    }
+
+    public void addObserver_manaAmount(Consumer<? super Integer> observer) {
+        disposable.add(interactor.getManaAmountObservable().subscribe(observer));
+    }
+
+    public void addObserver_userLevel(Consumer<? super Integer> observer) {
+        disposable.add(interactor.getUserLevelObservable().subscribe(observer));
     }
 }

@@ -40,7 +40,7 @@ public class MenuOverlayUI extends BaseOverlayUI {
                 .setXConstraint(new AbsoluteXPositionConstraint(Align.right, 0))
                 .setYConstraint(new AbsoluteYPositionConstraint(Align.top, 0))
                 .setWidthConstraint(new AbsoluteSizeConstraint(200))
-                .setHeightConstraint(new AbsoluteSizeConstraint(MANA_AMOUNT_FIELD_HEIGHT()))
+                .setHeightConstraint(new AbsoluteSizeConstraint(MANA_AMOUNT_FIELD_HEIGHT))
                 .build();
         manaAmountField = ValueFieldFactory.textValueField(skin,
                 UIStringConstants.UI_SKIN.BACKGROUND_COLOR.WHITE,
@@ -50,7 +50,7 @@ public class MenuOverlayUI extends BaseOverlayUI {
                 .setXConstraint(new AbsoluteXPositionConstraint(Align.left, 0))
                 .setYConstraint(new AbsoluteYPositionConstraint(Align.top, 0))
                 .setWidthConstraint(new AbsoluteSizeConstraint(200))
-                .setHeightConstraint(new AbsoluteSizeConstraint(USER_LEVEL_FIELD_HEIGHT()))
+                .setHeightConstraint(new AbsoluteSizeConstraint(USER_LEVEL_FIELD_HEIGHT))
                 .build();
         userLevelField = ValueFieldFactory.textValueField(skin,
                 UIStringConstants.UI_SKIN.BACKGROUND_COLOR.WHITE,

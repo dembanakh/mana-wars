@@ -8,7 +8,7 @@ import java.util.List;
 
 import io.reactivex.Single;
 
-public final class SkillsInfoInteractor extends BaseInteractor<UserBaseAPI> {
+public class SkillsInfoInteractor extends BaseInteractor<UserBaseAPI> {
 
     private final DatabaseRepository databaseRepository;
 

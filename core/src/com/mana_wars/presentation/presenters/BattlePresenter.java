@@ -19,20 +19,11 @@ public final class BattlePresenter extends BasePresenter<BattleView, BattleInter
         super(view, interactor, uiThreadHandler);
     }
 
-    public void initBattle(BattleBuilder battleBuilder) {
-        interactor.init(this, battleBuilder);
-    }
-
     public void applyUserSkill(ActiveSkill skill, int appliedSkillIndex) {
         if (interactor.tryApplyUserSkill(skill)) {
             view.blockSkills(appliedSkillIndex);
         }
     }
-
-    public void updateBattle(float timeDelta) {
-        interactor.updateBattle(timeDelta);
-    }
-
 
     @Override
     public void onStartBattle() {
@@ -43,24 +34,13 @@ public final class BattlePresenter extends BasePresenter<BattleView, BattleInter
     }
 
     @Override
-    public void setSkills(Iterable<ActiveSkill> activeSkills) {
-        uiThreadHandler.postRunnable(() -> view.setSkills(activeSkills));
-    }
-
-    @Override
     public void setOpponents(BattleParticipant user, List<BattleParticipant> enemySide) {
         disposable.add(user.getHealthObservable().subscribe(view.setUser(user.getData())));
-
         setEnemies(enemySide, user.getCurrentTarget());
     }
 
     public void changeActiveEnemy() {
         view.setActiveEnemy(interactor.changeUserTarget());
-    }
-
-    @Override
-    public void setCurrentRound(int round) {
-        uiThreadHandler.postRunnable(() -> view.setRound(round));
     }
 
     @Override
@@ -75,8 +55,26 @@ public final class BattlePresenter extends BasePresenter<BattleView, BattleInter
     }
 
     @Override
+    public void setSkills(Iterable<ActiveSkill> activeSkills) {
+        uiThreadHandler.postRunnable(() -> view.setSkills(activeSkills));
+    }
+
+    @Override
+    public void setCurrentRound(int round) {
+        uiThreadHandler.postRunnable(() -> view.setRound(round));
+    }
+
+    @Override
     public void updateDurationCoefficients(int castTime, int cooldown) {
         view.updateDurationCoefficients(castTime, cooldown);
+    }
+
+    public void initBattle(BattleBuilder battleBuilder) {
+        interactor.init(this, battleBuilder);
+    }
+
+    public void updateBattle(float timeDelta) {
+        interactor.updateBattle(timeDelta);
     }
 
     public void addObserver_userManaAmount(Consumer<? super Integer> observer) {

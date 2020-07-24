@@ -99,7 +99,7 @@ public final class ShopScreen extends BaseScreen<MenuOverlayUI, ShopPresenter> i
                     }
                 });
         presenter.addObserver_manaAmount((mana) -> button.setDisabled(mana < GameConstants.SKILL_CASE_PRICE));
-        layer.add(button).top().padTop(UIElementsSize.MENU_OVERLAY_UI.USER_LEVEL_FIELD_HEIGHT())
+        layer.add(button).top().padTop(UIElementsSize.MENU_OVERLAY_UI.USER_LEVEL_FIELD_HEIGHT)
                 .expandX().fillX().row();
 
         return layer;

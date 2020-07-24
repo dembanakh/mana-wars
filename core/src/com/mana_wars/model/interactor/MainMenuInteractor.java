@@ -9,7 +9,7 @@ import com.mana_wars.model.repository.DatabaseRepository;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
-public final class MainMenuInteractor extends BaseInteractor<UserMenuAPI> {
+public class MainMenuInteractor extends BaseInteractor<UserMenuAPI> {
 
     private final ManaBonus manaBonus;
 

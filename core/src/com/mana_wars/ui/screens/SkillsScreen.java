@@ -51,8 +51,7 @@ public final class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresente
         super(screenSetter, skin, overlayUI);
 
         this.presenter = new SkillsPresenter(this,
-                Gdx.app::postRunnable,
-                new SkillsInteractor(user, databaseRepository));
+                new SkillsInteractor(user, databaseRepository), Gdx.app::postRunnable);
         presenter.addObserver_manaAmount(overlayUI.getManaAmountObserver());
         presenter.addObserver_userLevel(overlayUI.getUserLevelObserver());
         presenter.addObserver_userExperience(overlayUI.getUserExperienceObserver());
@@ -106,7 +105,7 @@ public final class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresente
         scrollPaneCont.setBackground("list");
         scrollPaneCont.add(scrollPane).expand().fill();
 
-        layer.add(activeSkillsTable.build()).top().padTop(UIElementsSize.MENU_OVERLAY_UI.USER_LEVEL_FIELD_HEIGHT())
+        layer.add(activeSkillsTable.build()).top().padTop(UIElementsSize.MENU_OVERLAY_UI.USER_LEVEL_FIELD_HEIGHT)
                 .expandX().fillX().row();
         layer.add(passiveSkillsTable.build()).top()
                 .expandX().fillX().row();
