@@ -11,14 +11,6 @@
         android:label="@string/app_name"
         android:theme="@style/GdxTheme" >
 
-        <service
-            android:name=".fcm.CloudMessagingService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-
         <activity
             android:name="com.mana_wars.AndroidLauncher"
             android:label="@string/app_name" 

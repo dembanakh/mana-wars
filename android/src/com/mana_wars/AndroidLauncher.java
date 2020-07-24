@@ -27,18 +27,6 @@ public class AndroidLauncher extends AndroidApplication {
         RoomRepository roomRepository = RoomRepository.getInstance(this);
         VolleyRepository volleyRepository = VolleyRepository.getInstance(this);
 
-        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(
-                task -> {
-                    if (!task.isSuccessful()) {
-                        Log.i("FCM id", "getInstanceId failed", task.getException());
-                        return;
-                    }
-                    String token = task.getResult().getToken();
-                    Log.d("FCM id", token);
-                    volleyRepository.postFCMUserTokenToServer(token);
-                }
-        );
-
         initialize(new ManaWars(sharedPreferencesRepository,
                         new DBMapperRepository(roomRepository),
                         new DBUpdateChecker(this, roomRepository, sharedPreferencesRepository)),
