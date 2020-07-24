@@ -23,7 +23,7 @@ public class ShopSkill implements ReadableSkill {
             alreadyBought++;
             return skill;
         }
-        else return Skill.getEmpty();
+        else return skill = Skill.getEmpty();
     }
 
     public int getPrice() {
