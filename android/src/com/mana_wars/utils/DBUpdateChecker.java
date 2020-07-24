@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -60,14 +61,13 @@ public class DBUpdateChecker implements DatabaseUpdater {
         } else check();
 
         //TODO extract
-        final SimpleDateFormat dateFormat = new SimpleDateFormat ("yyyy/MM/dd");
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
         final String todayDateString = dateFormat.format(new Date());
 
-        if(!todayDateString.equals(preferences.getLastDailySkillUpdateDate())){
+        if (!todayDateString.equals(preferences.getLastDailySkillUpdateDate())) {
 
-            disposable.add(volleyRepository.doGetRequest("https://arturkasymov.student.tcs.uj.edu.pl/mana_wars_daily_skills.html").subscribe(response->{
-
-                Log.i("responce", response);
+            disposable.add(volleyRepository.doGetRequest("https://arturkasymov.student.tcs.uj.edu.pl/mana_wars_daily_skills.html").subscribe(response -> {
+                Log.i("response", response);
 
                 try {
                     JSONObject responseJSON = new JSONObject(response);
@@ -94,9 +94,9 @@ public class DBUpdateChecker implements DatabaseUpdater {
 
     }
 
-    private synchronized void check(){
+    private synchronized void check() {
         stagesCounter++;
-        if (stagesCounter>=2) {
+        if (stagesCounter >= 2) {
             disposable.dispose();
             callback.run();
         }

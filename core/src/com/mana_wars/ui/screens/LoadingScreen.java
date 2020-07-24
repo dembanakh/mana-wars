@@ -47,14 +47,11 @@ public final class LoadingScreen extends BaseScreen<BaseOverlayUI, BasePresenter
 
     @Override
     public BaseScreen reInit(Map<String, Object> arguments) {
-        //TODO activate loading animation
         updater.checkUpdate(() -> {
             Gdx.app.postRunnable(() -> {
                 setScreen(ScreenInstance.GREETING, null);
             });
-        }, () ->{
-            //TODO handle error
-        });
+        }, Gdx.app::exit);
         return super.reInit(arguments);
     }
 

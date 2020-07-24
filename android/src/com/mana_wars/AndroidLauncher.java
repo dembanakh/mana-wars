@@ -39,6 +39,6 @@ public class AndroidLauncher extends AndroidApplication {
 
     @Override
     public void onBackPressed() {
-        // TODO: NOT handle
+
     }
 }

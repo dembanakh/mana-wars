@@ -29,9 +29,6 @@ public class Skill extends GameItem implements ReadableSkill {
                         enemy.applySkillCharacteristic(sc, getLevel());
                 }
             }
-            else if (sc.getTarget() > 0) {
-                //TODO add implementation for allies
-            }
         }
     }
 

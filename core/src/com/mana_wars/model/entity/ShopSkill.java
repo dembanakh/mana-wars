@@ -8,28 +8,23 @@ import static com.mana_wars.model.GameConstants.MAX_DAILY_SKILL_AMOUNT;
 
 public class ShopSkill implements ReadableSkill {
 
-    private Skill skill;
+    private final Skill skill;
     private int alreadyBought;
     private final int price;
 
-    public ShopSkill(Skill skill, int alreadyBought, int price){
+    public ShopSkill(Skill skill, int alreadyBought, int price) {
         this.skill = skill;
         this.alreadyBought = alreadyBought;
         this.price = price;
     }
 
-    public Skill purchaseSkill() {
-        if (canBePurchased()){
-            alreadyBought++;
-            return skill;
-        }
-        else return skill = Skill.getEmpty();
+    public int purchaseSkill() {
+        return ++alreadyBought;
     }
 
     public int getPrice() {
         return price;
     }
-
 
     public boolean canBePurchased() {
         return alreadyBought < MAX_DAILY_SKILL_AMOUNT;
@@ -37,21 +32,21 @@ public class ShopSkill implements ReadableSkill {
 
     @Override
     public int getIconID() {
-        return skill.getIconID();
+        return canBePurchased() ? skill.getIconID() : Skill.getEmpty().getIconID();
     }
 
     @Override
     public Rarity getRarity() {
-        return skill.getRarity();
+        return canBePurchased() ? skill.getRarity() : Skill.getEmpty().getRarity();
     }
 
     @Override
     public int getLevel() {
-        return skill.getLevel();
+        return canBePurchased() ? skill.getLevel() : Skill.getEmpty().getLevel();
     }
 
     @Override
     public int getManaCost() {
-        return skill.getManaCost();
+        return canBePurchased() ? skill.getManaCost() : Skill.getEmpty().getManaCost();
     }
 }

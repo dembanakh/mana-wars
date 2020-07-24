@@ -54,9 +54,7 @@ public final class ShopPresenter extends BasePresenter<ShopView, ShopInteractor>
         disposable.add(interactor.getPurchasableSkills().subscribe(
                 shopSkills -> {
                     uiThreadHandler.postRunnable(
-                            ()->{
-                                view.setPurchasableSkills(shopSkills);
-                            }
+                            () -> view.setPurchasableSkills(shopSkills)
                     );
                 },
                 Throwable::printStackTrace

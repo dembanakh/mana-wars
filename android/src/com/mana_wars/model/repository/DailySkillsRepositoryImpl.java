@@ -4,7 +4,6 @@ import com.mana_wars.model.db.core_entity_converter.SkillConverter;
 import com.mana_wars.model.db.entity.DBSkillWithCharacteristics;
 import com.mana_wars.model.db.entity.UserSkill;
 import com.mana_wars.model.entity.ShopSkill;
-import com.mana_wars.model.entity.skills.Skill;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +17,7 @@ public class DailySkillsRepositoryImpl implements DailySkillsRepository {
 
     private final RoomRepository repository;
     private final SharedPreferencesRepository preferences;
-    private final Map<Skill, Integer> lastFetchSkillsMap = new HashMap<>();
+    private final Map<ShopSkill, Integer> lastFetchSkillsMap = new HashMap<>();
 
     public DailySkillsRepositoryImpl(RoomRepository repository, SharedPreferencesRepository preferences){
         this.repository = repository;
@@ -28,37 +27,37 @@ public class DailySkillsRepositoryImpl implements DailySkillsRepository {
     private Map<Integer, Integer> getDailySkillsIDsMap(){
         Map<Integer, Integer> result = new HashMap<>();
         //TODO add max size
-        for(int i=0; i < 3; i++){
+        for (int i = 0; i < 3; i++) {
             result.put(preferences.getDailySkillID(i),i);
         }
         return result;
     }
 
     @Override
-    public Single<List<ShopSkill>> getDailySkills() {
+    public Single<Iterable<ShopSkill>> getDailySkills() {
         Map<Integer, Integer> idsMap = getDailySkillsIDsMap();
         return repository.getSkillsWithCharacteristicsByIDs(new ArrayList<>(getDailySkillsIDsMap().keySet()))
                 .map(dbSkills -> {
                     List<ShopSkill> result = new ArrayList<>();
                     lastFetchSkillsMap.clear();
-                    for(DBSkillWithCharacteristics skill : dbSkills){
+                    for (DBSkillWithCharacteristics skill : dbSkills) {
                         int id = idsMap.get(skill.skill.getId());
-                        Skill s = SkillConverter.toSkill(skill);
-                        lastFetchSkillsMap.put(s, id);
-                        result.add(new ShopSkill(
-                                                 s,
-                                                 preferences.getDailySkillBought(id),
-                                                 preferences.getDailySkillPrice(id))
-                        );
+                        ShopSkill shopSkill = new ShopSkill(
+                                SkillConverter.toSkill(skill),
+                                preferences.getDailySkillBought(id),
+                                preferences.getDailySkillPrice(id));
+                        lastFetchSkillsMap.put(shopSkill, id);
+                        result.add(shopSkill);
                     }
                     return result;
                 });
     }
 
     @Override
-    public Completable buySkill(Skill s) {
-        int id = lastFetchSkillsMap.get(s);
-        preferences.setDailySkillBought(id, preferences.getDailySkillBought(id) + 1);
-        return repository.insertEntity(new UserSkill(s.getLevel(), s.getIconID()), repository.userSkillsDAO);
+    public Completable purchaseSkill(ShopSkill skill) {
+        int id = lastFetchSkillsMap.get(skill);
+        UserSkill userSkill = new UserSkill(skill.getLevel(), skill.getIconID());
+        preferences.setDailySkillBought(id, skill.purchaseSkill());
+        return repository.insertEntity(userSkill, repository.userSkillsDAO);
     }
 }

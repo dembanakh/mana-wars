@@ -22,6 +22,7 @@ import com.mana_wars.ui.storage.FactoryStorage;
 import com.mana_wars.ui.storage.RepositoryStorage;
 import com.mana_wars.ui.widgets.StatisticsTable;
 
+import java.util.Locale;
 import java.util.Map;
 
 import static com.mana_wars.ui.UIStringConstants.BATTLE_SUMMARY_SCREEN.BATTLE_FINISHED_KEY;
@@ -33,6 +34,7 @@ import static com.mana_wars.ui.UIStringConstants.BATTLE_SUMMARY_SCREEN.XP_REWARD
 public final class BattleSummaryScreen extends BaseScreen<BaseOverlayUI, BattleSummaryPresenter>
         implements BattleSummaryView {
 
+    private final Label battleDurationLabel;
     private final Label manaRewardLabel;
     private final Label xpRewardLabel;
     private final Label skillCasesRewardLabel;
@@ -50,6 +52,7 @@ public final class BattleSummaryScreen extends BaseScreen<BaseOverlayUI, BattleS
         presenter = new BattleSummaryPresenter(this,
                 new BattleSummaryInteractor(user),
                 Gdx.app::postRunnable);
+        this.battleDurationLabel = new Label("", skin);
         this.manaRewardLabel = new Label("", skin);
         this.xpRewardLabel = new Label("", skin);
         this.skillCasesRewardLabel = new Label("", skin);
@@ -78,6 +81,7 @@ public final class BattleSummaryScreen extends BaseScreen<BaseOverlayUI, BattleS
 
         layer.add(new Label(localizedStringFactory.get(BATTLE_FINISHED_KEY), skin)).padBottom(100).row();
 
+        layer.add(battleDurationLabel).row();
         layer.add(manaRewardLabel).row();
         layer.add(xpRewardLabel).row();
         layer.add(skillCasesRewardLabel).row();
@@ -122,5 +126,10 @@ public final class BattleSummaryScreen extends BaseScreen<BaseOverlayUI, BattleS
                     entry.getValue());
         }
         statisticsTable.showDefault();
+    }
+
+    @Override
+    public void setBattleDuration(double battleDuration) {
+        battleDurationLabel.setText(String.format(Locale.US, "%.2f", battleDuration));
     }
 }

@@ -28,8 +28,6 @@ public final class ShopInteractor extends BaseInteractor<UserShopAPI> {
 
     }
 
-
-    //TODO refactor
     public Single<Skill> getNewSkill() {
         return databaseRepository.getSkillsList().map((skills) -> {
 
@@ -41,19 +39,18 @@ public final class ShopInteractor extends BaseInteractor<UserShopAPI> {
         });
     }
 
-    public Single<List<ShopSkill>> getPurchasableSkills() {
+    public Single<Iterable<ShopSkill>> getPurchasableSkills() {
         return dailySkillsRepository.getDailySkills();
     }
 
     public void purchaseSkill(ShopSkill shopSkill) {
-        if (!shopSkill.canBePurchased()) return;
-        user.updateManaAmount(-shopSkill.getPrice());
-        dailySkillsRepository.buySkill(shopSkill.purchaseSkill());
-        //disposable.add(databaseRepository.insertUserSkill(shopSkill.purchaseSkill()).subscribe(() -> {}, Throwable::printStackTrace));
+        if (shopSkill.canBePurchased()) {
+            disposable.add(dailySkillsRepository.purchaseSkill(shopSkill)
+                    .subscribe(() -> user.updateManaAmount(-shopSkill.getPrice()), Throwable::printStackTrace));
+        }
     }
 
     public int buySkillCase() {
-        // obtain cases
         updateManaAmount(- GameConstants.SKILL_CASE_PRICE);
         return user.updateSkillCases(1);
     }

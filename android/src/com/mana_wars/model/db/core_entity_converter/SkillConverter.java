@@ -7,7 +7,6 @@ import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.entity.skills.Skill;
 
-//TODO think about better impl
 public class SkillConverter {
 
     public static Skill toSkill(DBSkillWithCharacteristics skill) {

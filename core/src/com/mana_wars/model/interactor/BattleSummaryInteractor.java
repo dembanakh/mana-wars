@@ -53,4 +53,8 @@ public final class BattleSummaryInteractor extends BaseInteractor<UserBattleSumm
     public Map<BattleParticipant, ? extends ReadableBattleStatisticsData> getParticipantsStatistics() {
         return summaryData.getParticipantsStatistics();
     }
+
+    public double getBattleDuration() {
+        return summaryData.getTime();
+    }
 }
