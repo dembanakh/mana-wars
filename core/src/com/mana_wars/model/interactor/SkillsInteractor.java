@@ -11,17 +11,13 @@ import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
-public final class SkillsInteractor extends BaseInteractor<UserSkillsAPI> {
+public class SkillsInteractor extends BaseInteractor<UserSkillsAPI> {
 
     private final DatabaseRepository databaseRepository;
 
     public SkillsInteractor(final UserSkillsAPI user, final DatabaseRepository databaseRepository) {
         super(user);
         this.databaseRepository = databaseRepository;
-    }
-
-    public Single<SkillsListTriple> getUserSkills() {
-        return databaseRepository.getUserSkills();
     }
 
     public Completable mergeSkills(Skill toUpdate, Skill toDelete) {
@@ -54,6 +50,10 @@ public final class SkillsInteractor extends BaseInteractor<UserSkillsAPI> {
                 .from(skillSource)
                 .to(skillTarget)
                 .validate();
+    }
+
+    public Single<SkillsListTriple> getUserSkills() {
+        return databaseRepository.getUserSkills();
     }
 
     public Observable<Integer> getManaAmountObservable() {

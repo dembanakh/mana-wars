@@ -18,7 +18,6 @@ public final class ShopInteractor extends BaseInteractor<UserShopAPI> {
 
     private final DatabaseRepository databaseRepository;
     private final DailySkillsRepository dailySkillsRepository;
-    private final List<ShopSkill> shopSkills = new ArrayList<>();
 
     public ShopInteractor(final UserShopAPI user, final DatabaseRepository databaseRepository,
                           final DailySkillsRepository dailySkillsRepository) {

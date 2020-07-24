@@ -18,10 +18,4 @@ public final class SkillsListTriple {
         activeSkills = new ArrayList<>();
         passiveSkills = new ArrayList<>();
     }
-
-    public SkillsListTriple(List<Skill> allSkills, List<ActiveSkill> activeSkills, List<PassiveSkill> passiveSkills) {
-        this.allSkills = allSkills;
-        this.activeSkills = activeSkills;
-        this.passiveSkills = passiveSkills;
-    }
 }

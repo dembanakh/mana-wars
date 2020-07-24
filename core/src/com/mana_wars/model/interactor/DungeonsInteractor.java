@@ -8,7 +8,7 @@ import java.util.List;
 
 import io.reactivex.Single;
 
-public final class DungeonsInteractor extends BaseInteractor<UserDungeonsAPI> {
+public class DungeonsInteractor extends BaseInteractor<UserDungeonsAPI> {
 
     private final DatabaseRepository databaseRepository;
 
@@ -29,7 +29,7 @@ public final class DungeonsInteractor extends BaseInteractor<UserDungeonsAPI> {
         return user.getLevel();
     }
 
-    public int getUserAmount() {
+    public int getUserManaAmount() {
         return user.getManaAmount();
     }
 }

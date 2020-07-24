@@ -12,7 +12,7 @@ import com.mana_wars.model.repository.DatabaseRepository;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
-public final class BattleInteractor extends BaseInteractor<UserBattleAPI> {
+public class BattleInteractor extends BaseInteractor<UserBattleAPI> {
 
     private Battle battle;
     private final DatabaseRepository databaseRepository;

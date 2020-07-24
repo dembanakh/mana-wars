@@ -46,9 +46,8 @@ public class UserTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         when(userManaRepository.getUserMana()).thenReturn(100);
-        when(userLevelExperienceRepository.getUserLevel()).thenReturn(1);
-        when(userLevelExperienceRepository.getUserLevelRequiredExperience()).thenReturn(Arrays.asList(0, 100, 400));
         when(usernameRepository.getUsername()).thenReturn("a");
+        mockUserLevelRepository(Arrays.asList(0, 100, 400));
         user = new User(userManaRepository, userLevelExperienceRepository,
                 usernameRepository, userSkillCasesRepository);
     }
@@ -85,7 +84,7 @@ public class UserTest {
 
     @Test
     public void testCheckNextLevel() {
-        when(userLevelExperienceRepository.getCurrentUserExperience()).thenReturn(150);
+        userLevelExperienceRepository.setCurrentUserExperience(150);
         TestScheduler scheduler = new TestScheduler();
         AtomicInteger userLevel = new AtomicInteger();
         disposable.add(user.getLevelObservable().observeOn(scheduler).subscribe(userLevel::set));
@@ -93,8 +92,60 @@ public class UserTest {
         user.checkNextLevel();
         scheduler.triggerActions();
 
-        verify(userLevelExperienceRepository).setUserLevel(2);
+        assertEquals(2, userLevelExperienceRepository.getUserLevel());
         assertEquals(2, userLevel.get());
+    }
+
+    @Test
+    public void testUpdateExperienceMaxLvl() {
+        mockUserLevelRepository(Collections.singletonList(0));
+        user = new User(userManaRepository, userLevelExperienceRepository,
+                usernameRepository, userSkillCasesRepository);
+
+        user.updateExperience(100);
+
+        assertNotEquals(100, userLevelExperienceRepository.getCurrentUserExperience());
+    }
+
+    @Test
+    public void testUpdateExperienceNextLvl() {
+        AtomicInteger level = new AtomicInteger();
+        disposable.add(user.getUserLevelObservable().subscribe(level::set));
+
+        user.updateExperience(101);
+
+        assertEquals(2, level.get());
+    }
+
+    private void mockUserLevelRepository(List<Integer> reqXPs) {
+        userLevelExperienceRepository = new UserLevelExperienceRepository() {
+            private int userLevel = 1;
+            private int userXP = 0;
+            @Override
+            public int getUserLevel() {
+                return userLevel;
+            }
+
+            @Override
+            public List<Integer> getUserLevelRequiredExperience() {
+                return reqXPs;
+            }
+
+            @Override
+            public void setUserLevel(int level) {
+                userLevel = level;
+            }
+
+            @Override
+            public int getCurrentUserExperience() {
+                return userXP;
+            }
+
+            @Override
+            public void setCurrentUserExperience(int currentUserExperience) {
+                userXP = currentUserExperience;
+            }
+        };
     }
 
     @AfterClass

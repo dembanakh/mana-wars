@@ -8,7 +8,7 @@ import com.mana_wars.model.entity.user.UserBattleSummaryAPI;
 import java.util.Map;
 import java.util.Random;
 
-public final class BattleSummaryInteractor extends BaseInteractor<UserBattleSummaryAPI> {
+public class BattleSummaryInteractor extends BaseInteractor<UserBattleSummaryAPI> {
 
     private static Random Random = new Random();
 

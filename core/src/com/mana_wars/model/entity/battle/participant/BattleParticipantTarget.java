@@ -1,7 +1,5 @@
 package com.mana_wars.model.entity.battle.participant;
 
-import com.mana_wars.model.DataDeuce;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
