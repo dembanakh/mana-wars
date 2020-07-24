@@ -39,21 +39,26 @@ public final class MainMenuInteractor extends BaseInteractor<UserMenuAPI> {
         });
     }
 
+    public void claimBonus() {
+        updateManaAmount(manaBonus.evalCurrentBonus());
+        manaBonus.onBonusClaimed();
+    }
+
+    public int useSkillCase() {
+        return user.updateSkillCases(-1);
+    }
+
     private void updateManaAmount(int delta) {
         user.updateManaAmount(delta);
     }
 
+    //region Getters
     public long getTimeSinceLastManaBonusClaim() {
         return manaBonus.getTimeSinceLastClaim();
     }
 
     public boolean isBonusAvailable() {
         return manaBonus.isBonusBitAvailable();
-    }
-
-    public void claimBonus() {
-        updateManaAmount(manaBonus.evalCurrentBonus());
-        manaBonus.onBonusClaimed();
     }
 
     public int getFullManaBonusTimeout() {
@@ -66,10 +71,6 @@ public final class MainMenuInteractor extends BaseInteractor<UserMenuAPI> {
 
     public int getUserSkillCasesNumber() {
         return user.getSkillCasesNumber();
-    }
-
-    public int useSkillCase() {
-        return user.updateSkillCases(-1);
     }
 
     public Observable<Integer> getManaAmountObservable() {
@@ -87,4 +88,5 @@ public final class MainMenuInteractor extends BaseInteractor<UserMenuAPI> {
     public Observable<Integer> getUserNextLevelRequiredExperienceObservable() {
         return user.getNextLevelRequiredExperienceObservable();
     }
+    //endregion
 }

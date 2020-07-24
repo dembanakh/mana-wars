@@ -20,6 +20,7 @@ public final class GreetingInteractor extends BaseInteractor<UserGreetingAPI> {
         } else {
             // something went wrong
             System.out.println("Has username");
+            throw new IllegalStateException("User has already got a username");
         }
     }
 }

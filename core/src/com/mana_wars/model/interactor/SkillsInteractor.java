@@ -20,10 +20,6 @@ public final class SkillsInteractor extends BaseInteractor<UserSkillsAPI> {
         this.databaseRepository = databaseRepository;
     }
 
-    public Single<SkillsListTriple> getUserSkills() {
-        return databaseRepository.getUserSkills();
-    }
-
     public Completable mergeSkills(Skill toUpdate, Skill toDelete) {
         return databaseRepository.mergeSkills(toUpdate, toDelete);
     }
@@ -54,6 +50,10 @@ public final class SkillsInteractor extends BaseInteractor<UserSkillsAPI> {
                 .from(skillSource)
                 .to(skillTarget)
                 .validate();
+    }
+
+    public Single<SkillsListTriple> getUserSkills() {
+        return databaseRepository.getUserSkills();
     }
 
     public Observable<Integer> getManaAmountObservable() {
