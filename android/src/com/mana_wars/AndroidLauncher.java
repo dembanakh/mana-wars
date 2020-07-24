@@ -7,6 +7,8 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.mana_wars.model.repository.DBMapperRepository;
+import com.mana_wars.model.repository.DailySkillsRepository;
+import com.mana_wars.model.repository.DailySkillsRepositoryImpl;
 import com.mana_wars.model.repository.RoomRepository;
 import com.mana_wars.model.repository.SharedPreferencesRepository;
 import com.mana_wars.model.repository.VolleyRepository;
@@ -26,10 +28,12 @@ public class AndroidLauncher extends AndroidApplication {
         SharedPreferencesRepository sharedPreferencesRepository = new SharedPreferencesRepository(this);
         RoomRepository roomRepository = RoomRepository.getInstance(this);
         VolleyRepository volleyRepository = VolleyRepository.getInstance(this);
+        DailySkillsRepository dailySkillsRepository = new DailySkillsRepositoryImpl(roomRepository, sharedPreferencesRepository);
 
         initialize(new ManaWars(sharedPreferencesRepository,
                         new DBMapperRepository(roomRepository),
-                        new DBUpdateChecker(this, roomRepository, sharedPreferencesRepository)),
+                        dailySkillsRepository,
+                        new DBUpdateChecker(this, roomRepository, volleyRepository, sharedPreferencesRepository)),
                 config);
     }
 

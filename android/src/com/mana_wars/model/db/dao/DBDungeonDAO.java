@@ -17,6 +17,10 @@ public abstract class DBDungeonDAO extends BaseDAO<DBDungeon> {
     public abstract Single<DBDungeon> getEntityByID(int id);
 
     @Override
+    @Query("SELECT * FROM dungeons WHERE dungeon_id IN (:ids)")
+    public abstract Single<List<DBDungeon>> getEntitiesByIDs(List<Integer> ids);
+
+    @Override
     @Query("SELECT * FROM dungeons")
     public abstract Single<List<DBDungeon>> getAllEntities();
 

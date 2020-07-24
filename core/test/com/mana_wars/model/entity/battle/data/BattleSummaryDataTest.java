@@ -15,7 +15,7 @@ public class BattleSummaryDataTest {
 
     @Before
     public void setup() {
-        data = new BattleSummaryData();
+        data = new BattleSummaryData(0);
     }
 
     @Test
@@ -39,7 +39,7 @@ public class BattleSummaryDataTest {
 
     @Test
     public void testCombineWith() {
-        BattleSummaryData other = new BattleSummaryData();
+        BattleSummaryData other = new BattleSummaryData(0);
         other.addReward(new BattleRewardData(1, 2, 3));
         BattleParticipant bp = mock(BattleParticipant.class);
         BattleStatisticsData bpData = mock(BattleStatisticsData.class);

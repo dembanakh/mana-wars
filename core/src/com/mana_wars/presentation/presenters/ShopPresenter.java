@@ -1,6 +1,6 @@
 package com.mana_wars.presentation.presenters;
 
-import com.mana_wars.model.entity.skills.ShopSkill;
+import com.mana_wars.model.entity.ShopSkill;
 import com.mana_wars.model.interactor.ShopInteractor;
 import com.mana_wars.presentation.util.UIThreadHandler;
 import com.mana_wars.presentation.view.ShopView;
@@ -51,7 +51,16 @@ public final class ShopPresenter extends BasePresenter<ShopView, ShopInteractor>
     }
 
     public void refreshPurchasableSkills() {
-        view.setPurchasableSkills(interactor.getPurchasableSkills());
+        disposable.add(interactor.getPurchasableSkills().subscribe(
+                shopSkills -> {
+                    uiThreadHandler.postRunnable(
+                            ()->{
+                                view.setPurchasableSkills(shopSkills);
+                            }
+                    );
+                },
+                Throwable::printStackTrace
+        ));
     }
 
     public void purchaseSkill(ShopSkill skill) {

@@ -5,7 +5,7 @@ import com.mana_wars.model.entity.user.User;
 import com.mana_wars.model.repository.DatabaseRepository;
 import com.mana_wars.model.repository.DatabaseUpdater;
 import com.mana_wars.model.repository.LocalUserDataRepository;
-import com.mana_wars.model.repository.ShopRepository;
+import com.mana_wars.model.repository.DailySkillsRepository;
 import com.mana_wars.ui.management.ScreenHandler;
 import com.mana_wars.ui.management.ScreenManager;
 import com.mana_wars.ui.storage.RepositoryStorage;
@@ -17,14 +17,17 @@ public class ManaWars extends Game implements ScreenHandler, RepositoryStorage {
     //platform repos
     private final LocalUserDataRepository localUserDataRepository;
     private final DatabaseRepository databaseRepository;
+    private final DailySkillsRepository dailySkillsRepository;
 
     private final DatabaseUpdater databaseUpdater;
 
     public ManaWars(final LocalUserDataRepository localUserDataRepository,
                     final DatabaseRepository databaseRepository,
+                    final DailySkillsRepository dailySkillsRepository,
                     final DatabaseUpdater databaseUpdater) {
         this.localUserDataRepository = localUserDataRepository;
         this.databaseRepository = databaseRepository;
+        this.dailySkillsRepository = dailySkillsRepository;
         this.databaseUpdater = databaseUpdater;
     }
 
@@ -46,8 +49,8 @@ public class ManaWars extends Game implements ScreenHandler, RepositoryStorage {
     }
 
     @Override
-    public ShopRepository getShopRepository() {
-        return localUserDataRepository;
+    public DailySkillsRepository getShopRepository() {
+        return dailySkillsRepository;
     }
 
     @Override

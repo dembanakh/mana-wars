@@ -10,7 +10,7 @@ import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.skills_operations.SkillTable;
-import com.mana_wars.model.entity.skills.ShopSkill;
+import com.mana_wars.model.entity.ShopSkill;
 import com.mana_wars.ui.animation.controller.SkillIconAnimationController;
 import com.mana_wars.ui.widgets.base.ClickableList2D;
 import com.mana_wars.ui.widgets.base.List2D;

@@ -93,7 +93,7 @@ public class BattleWithRounds implements Battle {
                 changeRound();
             }
             else {
-                BattleSummaryData finalSummaryData = new BattleSummaryData();
+                BattleSummaryData finalSummaryData = new BattleSummaryData(battleSummaryData.getTime());
                 for (ReadableBattleSummaryData bsd : battleSummaryDataList){
                     finalSummaryData.combineWith(bsd);
                 }

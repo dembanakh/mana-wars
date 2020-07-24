@@ -11,10 +11,10 @@ import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.entity.user.UserShopAPI;
 import com.mana_wars.model.interactor.ShopInteractor;
 import com.mana_wars.model.repository.DatabaseRepository;
-import com.mana_wars.model.repository.ShopRepository;
+import com.mana_wars.model.repository.DailySkillsRepository;
 import com.mana_wars.presentation.presenters.ShopPresenter;
 import com.mana_wars.presentation.view.ShopView;
-import com.mana_wars.model.entity.skills.ShopSkill;
+import com.mana_wars.model.entity.ShopSkill;
 import com.mana_wars.ui.UIElementsSize;
 import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.factory.LocalizedStringFactory;
@@ -42,10 +42,10 @@ public final class ShopScreen extends BaseScreen<MenuOverlayUI, ShopPresenter> i
                       final ScreenSetter screenSetter,
                       final FactoryStorage factoryStorage,
                       final DatabaseRepository databaseRepository,
-                      final ShopRepository shopRepository,
+                      final DailySkillsRepository dailySkillsRepository,
                       final MenuOverlayUI overlayUI) {
         super(screenSetter, skin, overlayUI);
-        presenter = new ShopPresenter(this, new ShopInteractor(user, databaseRepository, shopRepository),
+        presenter = new ShopPresenter(this, new ShopInteractor(user, databaseRepository, dailySkillsRepository),
                 Gdx.app::postRunnable);
         presenter.addObserver_manaAmount(overlayUI.getManaAmountObserver());
         presenter.addObserver_userLevel(overlayUI.getUserLevelObserver());

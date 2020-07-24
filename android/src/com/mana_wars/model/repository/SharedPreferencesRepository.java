@@ -28,6 +28,12 @@ public class SharedPreferencesRepository implements LocalUserDataRepository {
     private final String USER_SKILL_CASES = "USER_SKILL_CASES";
     private final String LAST_SHOP_REFRESH = "LAST_SHOP_REFRESH";
 
+    private final String LAST_DAILY_SKILL_UPDATE_DATE = "LAST_DAILY_SKILL_UPDATE_DATE";
+    private final String DAILY_SKILL_BOUGHT = "DAILY_SKILL_BOUGHT";
+    private final String DAILY_SKILL_ID = "DAILY_SKILL_ID";
+    private final String DAILY_SKILL_PRICE = "DAILY_SKILL_PRICE";
+
+
     public SharedPreferencesRepository(Activity hostActivity) {
         this.hostActivity = hostActivity;
     }
@@ -141,7 +147,39 @@ public class SharedPreferencesRepository implements LocalUserDataRepository {
         getPrefsEditor().putInt(USER_SKILL_CASES, getSkillCasesNumber() + delta).apply();
     }
 
-    @Override
+    public void setDailySkillBought(int skill, int amount){
+        getPrefsEditor().putInt(DAILY_SKILL_BOUGHT + skill, amount).apply();
+    }
+
+    public int getDailySkillBought(int skill){
+        return getDefaultManager().getInt(DAILY_SKILL_BOUGHT + skill, 0);
+    }
+
+    public void setDailySkillID(int skill, int id){
+        getPrefsEditor().putInt(DAILY_SKILL_ID + skill, id).apply();
+    }
+
+    public int getDailySkillID(int skill){
+        return getDefaultManager().getInt(DAILY_SKILL_ID + skill, 0);
+    }
+
+    public void setDailySkillPrice(int skill, int price){
+        getPrefsEditor().putInt(DAILY_SKILL_PRICE + skill, price).apply();
+    }
+
+    public int getDailySkillPrice(int skill){
+        return getDefaultManager().getInt(DAILY_SKILL_PRICE + skill, 0);
+    }
+
+    public void setLastDailySkillUpdateDate(String s){
+        getPrefsEditor().putString(LAST_DAILY_SKILL_UPDATE_DATE, s).apply();
+    }
+
+    public String getLastDailySkillUpdateDate(){
+        return getDefaultManager().getString(LAST_DAILY_SKILL_UPDATE_DATE, "2000/07/05");
+    }
+
+    /*@Override
     public Calendar getLastRefreshTime() {
         long timeInMillis = getDefaultManager().getLong(LAST_SHOP_REFRESH, 0);
         if (timeInMillis == 0) return GregorianCalendar.getInstance();
@@ -153,5 +191,5 @@ public class SharedPreferencesRepository implements LocalUserDataRepository {
     @Override
     public void updateRefreshTime(Calendar calendar) {
         getPrefsEditor().putLong(LAST_SHOP_REFRESH, calendar.getTimeInMillis()).apply();
-    }
+    }*/
 }

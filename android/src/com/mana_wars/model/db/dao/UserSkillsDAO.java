@@ -21,6 +21,10 @@ public abstract class UserSkillsDAO extends BaseDAO<UserSkill> {
     public abstract Single<UserSkill> getEntityByID(int id);
 
     @Override
+    @Query("SELECT * FROM user_skills WHERE user_skill_id IN (:ids)")
+    public abstract Single<List<UserSkill>> getEntitiesByIDs(List<Integer> ids);
+
+    @Override
     @Query("SELECT * FROM user_skills")
     public abstract Single<List<UserSkill>> getAllEntities();
 
