@@ -15,6 +15,8 @@ public abstract class BaseDAO<T> {
 
     public abstract Single<T> getEntityByID(int id);
 
+    public abstract Single<List<T>> getEntitiesByIDs(List<Integer> ids);
+
     public abstract Single<List<T>> getAllEntities();
 
     @Insert

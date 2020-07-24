@@ -14,9 +14,12 @@ import com.android.volley.toolbox.Volley;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.reactivex.Single;
+
 public class VolleyRepository {
 
     private static VolleyRepository instance;
+    private static final RetryPolicy retryPolicy = new DefaultRetryPolicy(5000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
     private RequestQueue requestQueue;
 
     public static synchronized VolleyRepository getInstance(Context context){
@@ -32,31 +35,22 @@ public class VolleyRepository {
         requestQueue.add(req);
     }
 
-
-    //TODO delete temp solution
-    private static final String gss_link = "https://script.google.com/macros/s/AKfycbxkCNcnUbanJsE_4iPaLmEB11yJDj46Rk6ICY8btXOxuvPMWqg/exec";
-
-    public void postFCMUserTokenToServer(String token){
-        StringRequest request = new StringRequest(Request.Method.POST, gss_link,
-                    response -> {Log.i("FCM Valley response", response);},
+    public Single<String> doGetRequest(String url) {
+        return Single.create(emitter -> {
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                    emitter::onSuccess,
                     error -> {
-                        Log.e("FCM Volley FCM error", error.toString());
-                    })
-        {
-
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-
-                params.put("action", "add_user");
-                params.put("fcm_token", token);
-
-                return params;
-            }
-        };
-        RetryPolicy retryPolicy = new DefaultRetryPolicy(5000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(retryPolicy);
-        addToRequestQueue(request);
+                        if (error.getMessage() != null) {
+                            Log.e("RESPONCE ERROR", error.getMessage());
+                        } else {
+                            Log.e("RESPONCE ERROR", "error");
+                        }
+                        emitter.onError(error);
+                    }
+            );
+            stringRequest.setRetryPolicy(retryPolicy);
+            addToRequestQueue(stringRequest);
+        });
     }
 
 }

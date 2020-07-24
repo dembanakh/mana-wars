@@ -1,6 +1,5 @@
 package com.mana_wars.model.entity.battle.base;
 
-import com.mana_wars.model.DataDeuce;
 import com.mana_wars.model.entity.battle.data.BattleSummaryData;
 import com.mana_wars.model.entity.battle.data.ReadableBattleSummaryData;
 import com.mana_wars.model.entity.battle.participant.BattleParticipant;
@@ -104,7 +103,7 @@ public class BaseBattle implements Battle, BattleClientAPI {
 
     //region Private methods
     private BattleSummaryData prepareSummaryData() {
-        BattleSummaryData summaryData = new BattleSummaryData();
+        BattleSummaryData summaryData = new BattleSummaryData(getBattleTime());
 
         for (BattleParticipant bp : opponents.keySet()){
             summaryData.addStatisticsFrom(bp);

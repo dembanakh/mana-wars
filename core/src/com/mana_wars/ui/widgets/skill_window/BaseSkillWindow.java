@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.base.ValueChangeType;
+import com.mana_wars.model.entity.skills.ReadableSkill;
 import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.entity.skills.SkillCharacteristic;
 import com.mana_wars.ui.factory.AssetFactory;
@@ -46,7 +47,7 @@ public abstract class BaseSkillWindow extends Window implements BuildableUI {
     private final AssetFactory<Integer, TextureRegion> iconFactory;
     private final AssetFactory<Rarity, TextureRegion> frameFactory;
 
-    private static final List<ListItemDrawer<Skill>> Components = new ArrayList<>();
+    private static final List<ListItemDrawer<? super ReadableSkill>> Components = new ArrayList<>();
 
     BaseSkillWindow(String title, Skin skin,
                     AssetFactory<Integer, TextureRegion> iconFactory,
@@ -131,7 +132,7 @@ public abstract class BaseSkillWindow extends Window implements BuildableUI {
 
         Vector2 initialFontScale = new Vector2(font.getScaleX(), font.getScaleY());
 
-        for (ListItemDrawer<Skill> component : Components) {
+        for (ListItemDrawer<? super ReadableSkill> component : Components) {
             component.draw(batch, font, 0, currentSkill, iconPosition.x, iconPosition.y, iconWidth, iconHeight);
         }
 

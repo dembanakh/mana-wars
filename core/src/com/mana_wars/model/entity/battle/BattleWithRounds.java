@@ -66,7 +66,6 @@ public class BattleWithRounds implements Battle {
         currentRound++;
         observer.setCurrentRound(currentRound);
 
-        //TODO
         user.setCharacteristicValue(Characteristic.CAST_TIME, 100);
         user.setCharacteristicValue(Characteristic.COOLDOWN, 100);
 
@@ -94,7 +93,7 @@ public class BattleWithRounds implements Battle {
                 changeRound();
             }
             else {
-                BattleSummaryData finalSummaryData = new BattleSummaryData();
+                BattleSummaryData finalSummaryData = new BattleSummaryData(battleSummaryData.getTime());
                 for (ReadableBattleSummaryData bsd : battleSummaryDataList){
                     finalSummaryData.combineWith(bsd);
                 }

@@ -19,10 +19,18 @@ public abstract class DBSkillDAO extends BaseDAO<DBSkill> {
     public abstract Single<DBSkill> getEntityByID(int id);
 
     @Override
+    @Query("SELECT * FROM skills WHERE skill_id IN (:ids)")
+    public abstract Single<List<DBSkill>> getEntitiesByIDs(List<Integer> ids);
+
+    @Override
     @Query("SELECT * FROM skills")
     public abstract Single<List<DBSkill>> getAllEntities();
 
     @Transaction
     @Query("SELECT * FROM skills")
     public abstract Single<List<DBSkillWithCharacteristics>> getSkillsWithCharacteristics();
+
+    @Transaction
+    @Query("SELECT * FROM skills WHERE skill_id IN (:ids)")
+    public abstract Single<List<DBSkillWithCharacteristics>> getSkillsWithCharacteristicsByIDs(List<Integer> ids);
 }

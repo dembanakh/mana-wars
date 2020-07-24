@@ -52,6 +52,8 @@ public final class LoadingScreen extends BaseScreen<BaseOverlayUI, BasePresenter
             Gdx.app.postRunnable(() -> {
                 setScreen(ScreenInstance.GREETING, null);
             });
+        }, () ->{
+            //TODO handle error
         });
         return super.reInit(arguments);
     }

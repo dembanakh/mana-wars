@@ -6,12 +6,12 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Align;
 import com.mana_wars.model.entity.base.Rarity;
-import com.mana_wars.model.entity.skills.Skill;
+import com.mana_wars.model.entity.skills.ReadableSkill;
 import com.mana_wars.ui.widgets.base.ListItemDrawer;
 
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
-public class SkillLevelDrawer implements ListItemDrawer<Skill> {
+public class SkillLevelDrawer implements ListItemDrawer<ReadableSkill> {
 
     private TextureRegion region;
     private ShapeDrawer drawer;
@@ -21,7 +21,7 @@ public class SkillLevelDrawer implements ListItemDrawer<Skill> {
     }
 
     @Override
-    public void draw(Batch batch, BitmapFont font, int index, Skill item, float x, float y, float width, float height) {
+    public void draw(Batch batch, BitmapFont font, int index, ReadableSkill item, float x, float y, float width, float height) {
         if (!shouldShowLevel(item)) return;
 
         String level = String.valueOf(item.getLevel());
@@ -41,7 +41,7 @@ public class SkillLevelDrawer implements ListItemDrawer<Skill> {
                 false, "");
     }
 
-    private boolean shouldShowLevel(Skill skill) {
+    private boolean shouldShowLevel(ReadableSkill skill) {
         return skill.getRarity() != Rarity.EMPTY;
     }
 }

@@ -15,6 +15,8 @@ public final class GameConstants {
 
     public static final int SKILL_CASE_PRICE = 100;
 
+    public static final int MAX_DAILY_SKILL_AMOUNT = 1 << 9;
+
     public static final String CHOSEN_BATTLE_BUILDER = "CHOSEN_BATTLE_BUILDER";
 
     private GameConstants() {}

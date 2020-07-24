@@ -10,6 +10,7 @@ import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.skills_operations.SkillTable;
+import com.mana_wars.model.entity.ShopSkill;
 import com.mana_wars.ui.animation.controller.SkillIconAnimationController;
 import com.mana_wars.ui.widgets.base.ClickableList2D;
 import com.mana_wars.ui.widgets.base.List2D;
@@ -17,6 +18,7 @@ import com.mana_wars.ui.widgets.base.ListItemConsumer;
 import com.mana_wars.ui.widgets.item_drawer.ApplicableSkillDrawer;
 import com.mana_wars.ui.widgets.item_drawer.SkillLevelDrawer;
 import com.mana_wars.ui.widgets.item_drawer.SkillManaCostDrawer;
+import com.mana_wars.ui.widgets.item_drawer.SkillShopPriceDrawer;
 import com.mana_wars.ui.widgets.item_drawer.SkillTypeDrawer;
 import com.mana_wars.ui.widgets.item_drawer.StandardSkillDrawer;
 import com.mana_wars.ui.widgets.skill_window.BriefSkillInfo;
@@ -99,10 +101,23 @@ public final class UIElementFactory {
     public static <T extends Skill> List2D<T> clickableSkillsListWithoutLevel(Skin skin, int cols,
                                                     AssetFactory<Integer, TextureRegion> skillIconFactory,
                                                     AssetFactory<Rarity, TextureRegion> rarityFrameFactory,
-                                                    ListItemConsumer<Skill> onSkillClick) {
+                                                    ListItemConsumer<? super T> onSkillClick) {
         return new ClickableList2D<>(skin,
                 new StandardSkillDrawer<>(skillIconFactory, rarityFrameFactory,
                         new SkillTypeDrawer(skillIconFactory.getAsset(1))),
+                cols, onSkillClick);
+    }
+
+    public static <T extends ShopSkill> List2D<T> purchasableSkillsList(Skin skin, int cols,
+                                                                        AssetFactory<Integer, TextureRegion> skillIconFactory,
+                                                                        AssetFactory<Rarity, TextureRegion> rarityFrameFactory,
+                                                                        ListItemConsumer<T> onSkillClick) {
+        return new ClickableList2D<>(skin,
+                new StandardSkillDrawer<>(skillIconFactory, rarityFrameFactory,
+                        new SkillLevelDrawer(skillIconFactory.getAsset(1)),
+                        new SkillManaCostDrawer(skillIconFactory.getAsset(1)),
+                        new SkillTypeDrawer(skillIconFactory.getAsset(1)),
+                        new SkillShopPriceDrawer()),
                 cols, onSkillClick);
     }
 

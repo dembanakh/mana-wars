@@ -70,6 +70,7 @@ public enum ScreenInstance {
         SHOP.screen = new ShopScreen(user,
                 factoryStorage.getSkinFactory().getAsset(UIStringConstants.UI_SKIN.MANA_WARS),
                 screenSetter, factoryStorage, repositoryStorage.getDatabaseRepository(),
+                repositoryStorage.getShopRepository(),
                 overlayUIFactory.getMenuOverlayUI());
     }
 

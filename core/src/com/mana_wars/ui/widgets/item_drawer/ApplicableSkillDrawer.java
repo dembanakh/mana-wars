@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.ActiveSkill;
-import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.ui.animation.controller.UIAnimator;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.widgets.base.ListItemDrawer;
@@ -18,7 +17,7 @@ public class ApplicableSkillDrawer<T extends ActiveSkill> extends StandardSkillD
     public ApplicableSkillDrawer(AssetFactory<Integer, TextureRegion> iconFactory,
                                  AssetFactory<Rarity, TextureRegion> frameFactory,
                                  UIAnimator<Integer> animator,
-                                 ListItemDrawer<Skill>... skillComponents) {
+                                 ListItemDrawer<? super T>... skillComponents) {
         super(iconFactory, frameFactory, skillComponents);
         this.animator = animator;
     }

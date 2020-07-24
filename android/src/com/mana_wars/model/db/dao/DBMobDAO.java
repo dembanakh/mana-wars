@@ -20,6 +20,10 @@ public abstract class DBMobDAO extends BaseDAO<DBMob> {
     public abstract Single<DBMob> getEntityByID(int id);
 
     @Override
+    @Query("SELECT * FROM mobs WHERE mob_id IN (:ids)")
+    public abstract Single<List<DBMob>> getEntitiesByIDs(List<Integer> ids);
+
+    @Override
     @Query("SELECT * FROM mobs")
     public abstract Single<List<DBMob>> getAllEntities();
 

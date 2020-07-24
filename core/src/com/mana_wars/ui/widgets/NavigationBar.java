@@ -50,14 +50,12 @@ public class NavigationBar implements BuildableUI {
         addButton(UIElementFactory.getButton(skin, localizedStringFactory.get(INFO_KEY), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                // TODO: TEMP
                 onSkillsInfo();
             }
         }));
         addButton(UIElementFactory.getButton(skin, localizedStringFactory.get(SHOP_KEY), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                // TODO: TEMP
                 onShop();
             }
         }));
