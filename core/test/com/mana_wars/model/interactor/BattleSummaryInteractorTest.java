@@ -36,6 +36,7 @@ public class BattleSummaryInteractorTest {
 
         ReadableBattleSummaryData summaryData = mock(ReadableBattleSummaryData.class);
         when(summaryData.getRewardData()).thenReturn(rewardData);
+        when(summaryData.getTime()).thenReturn(200d);
 
         interactor.parseSummaryData(summaryData);
     }
@@ -61,6 +62,11 @@ public class BattleSummaryInteractorTest {
     public void testGetGainedSkillCases() {
         int cases = interactor.getGainedSkillCases();
         assertTrue(1 <= cases && cases <= 2);
+    }
+
+    @Test
+    public void testGetBattleDuration() {
+        assertEquals(200, interactor.getBattleDuration(), 0.001);
     }
 
 }

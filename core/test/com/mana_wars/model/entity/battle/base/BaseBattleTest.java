@@ -1,6 +1,5 @@
 package com.mana_wars.model.entity.battle.base;
 
-import com.mana_wars.model.DataDeuce;
 import com.mana_wars.model.entity.battle.data.BattleRewardData;
 import com.mana_wars.model.entity.battle.data.BattleStatisticsData;
 import com.mana_wars.model.entity.battle.data.ReadableBattleSummaryData;
