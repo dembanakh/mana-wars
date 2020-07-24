@@ -21,20 +21,6 @@ public final class BattleSummaryInteractor extends BaseInteractor<UserBattleSumm
 
     public void parseSummaryData(ReadableBattleSummaryData summaryData) {
         this.summaryData = summaryData;
-
-        //TODO just for testing
-        System.out.println("Battle Stats");
-        for (Map.Entry<BattleParticipant, ? extends ReadableBattleStatisticsData> entry :
-                summaryData.getParticipantsStatistics().entrySet()) {
-            ReadableBattleStatisticsData bsd = entry.getValue();
-            System.out.println(entry.getKey().getData().name +
-                    ":\ncaused damage="+ bsd.getCausedDamage() +
-                    "\nreceived damage=" + bsd.getReceivedDamage() +
-                    "\nself heal=" + bsd.getSelfHealing() +
-                    "\nreceived heal=" + bsd.getReceivedHealing()
-            );
-        }
-
         user.updateManaAmount(getManaReward());
         user.updateExperience(getExperienceReward());
         computeGainedSkillCases();
@@ -66,5 +52,9 @@ public final class BattleSummaryInteractor extends BaseInteractor<UserBattleSumm
 
     public Map<BattleParticipant, ? extends ReadableBattleStatisticsData> getParticipantsStatistics() {
         return summaryData.getParticipantsStatistics();
+    }
+
+    public double getBattleDuration() {
+        return summaryData.getTime();
     }
 }

@@ -46,8 +46,16 @@ public class RoomRepository {
         return dao.getAllEntities();
     }
 
+    public <T> Single<List<T>> getEntitiesByIDs(BaseDAO<T> dao, List<Integer> ids) {
+        return dao.getEntitiesByIDs(ids);
+    }
+
     public Single<List<DBSkillWithCharacteristics>> getSkillsWithCharacteristics() {
         return dbSkillDAO.getSkillsWithCharacteristics();
+    }
+
+    public Single<List<DBSkillWithCharacteristics>> getSkillsWithCharacteristicsByIDs(List<Integer> ids) {
+        return dbSkillDAO.getSkillsWithCharacteristicsByIDs(ids);
     }
 
     public Single<List<CompleteUserSkill>> getCompleteUserSkills() {
@@ -56,7 +64,6 @@ public class RoomRepository {
 
     public Single<List<DBMobWithSkills>> getDBMobsWithSkillsByDungeonID(int id) {
         return dbMobDAO.getDBMobsWithSkillsByDungeonID(id);
-
     }
 
     public Single<List<CompleteUserSkill>> getChosenPassiveSkills() {

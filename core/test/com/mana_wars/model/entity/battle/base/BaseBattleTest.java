@@ -36,7 +36,6 @@ public class BaseBattleTest {
     @Mock
     private BattleParticipant user;
 
-    private List<BattleParticipant> userSide;
     private List<BattleParticipant> enemySide;
 
     private ReadableBattleSummaryData summaryData;
@@ -44,9 +43,8 @@ public class BaseBattleTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        userSide = Collections.emptyList();
         enemySide = Collections.singletonList(mock(BattleParticipant.class));
-        battle = new BaseBattle(user, userSide, enemySide);
+        battle = new BaseBattle(user, enemySide);
     }
 
     @Test
@@ -61,9 +59,6 @@ public class BaseBattleTest {
         battle.init();
 
         verify(user).setBattleClientAPI(battle);
-        for (BattleParticipant bp : userSide) {
-            verify(bp).setBattleClientAPI(battle);
-        }
         for (BattleParticipant bp : enemySide) {
             verify(bp).setBattleClientAPI(battle);
         }
@@ -103,9 +98,6 @@ public class BaseBattleTest {
         battle.update(1);
 
         verify(user).update(1);
-        for (BattleParticipant bp : userSide) {
-            verify(bp).update(1);
-        }
         for (BattleParticipant bp : enemySide) {
             verify(bp).update(1);
         }

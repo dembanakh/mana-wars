@@ -3,13 +3,12 @@ package com.mana_wars.model.entity.skills;
 import com.mana_wars.model.entity.base.GameItem;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.battle.participant.BattleParticipant;
-import com.mana_wars.model.entity.base.Characteristic;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Skill extends GameItem {
+public class Skill extends GameItem implements ReadableSkill {
 
     private final Iterable<SkillCharacteristic> skillCharacteristics;
 
@@ -29,9 +28,6 @@ public class Skill extends GameItem {
                     if (enemy.isAlive())
                         enemy.applySkillCharacteristic(sc, getLevel());
                 }
-            }
-            else if (sc.getTarget() > 0) {
-                //TODO add implementation for allies
             }
         }
     }

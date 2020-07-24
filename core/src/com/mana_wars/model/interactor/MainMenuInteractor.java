@@ -27,7 +27,6 @@ public final class MainMenuInteractor extends BaseInteractor<UserMenuAPI> {
         return Single.just(manaBonus.getTimeSinceLastClaim());
     }
 
-    //TODO refactor
     public Single<Skill> getNewSkill() {
         return databaseRepository.getSkillsList().map((skills) -> {
 

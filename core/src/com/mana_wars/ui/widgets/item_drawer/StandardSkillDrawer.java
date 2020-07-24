@@ -4,20 +4,20 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mana_wars.model.entity.base.Rarity;
-import com.mana_wars.model.entity.skills.Skill;
+import com.mana_wars.model.entity.skills.ReadableSkill;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.widgets.base.ListItemDrawer;
 
-public class StandardSkillDrawer<T extends Skill> implements ListItemDrawer<T> {
+public class StandardSkillDrawer<T extends ReadableSkill> implements ListItemDrawer<T> {
 
     private final AssetFactory<Integer, TextureRegion> iconFactory;
     private final AssetFactory<Rarity, TextureRegion> frameFactory;
-    private final ListItemDrawer<Skill>[] skillComponents;
+    private final ListItemDrawer<? super T>[] skillComponents;
 
     @SafeVarargs
     public StandardSkillDrawer(AssetFactory<Integer, TextureRegion> iconFactory,
                                AssetFactory<Rarity, TextureRegion> frameFactory,
-                               ListItemDrawer<Skill>... skillComponents) {
+                               ListItemDrawer<? super T>... skillComponents) {
         this.iconFactory = iconFactory;
         this.frameFactory = frameFactory;
         this.skillComponents = skillComponents;
@@ -36,7 +36,7 @@ public class StandardSkillDrawer<T extends Skill> implements ListItemDrawer<T> {
         batch.draw(icon, x + iconOffsetX, y + iconOffsetY);
         batch.draw(frame, x + frameOffsetX, y + frameOffsetY);
 
-        for (ListItemDrawer<Skill> component : skillComponents) {
+        for (ListItemDrawer<? super T> component : skillComponents) {
             component.draw(batch, font, index, item, x + iconOffsetX, y + iconOffsetY,
                     icon.getRegionWidth(), icon.getRegionHeight());
         }

@@ -13,6 +13,7 @@ public final class BattleSummaryPresenter extends BasePresenter<BattleSummaryVie
 
     public void parseSummaryData(ReadableBattleSummaryData summaryData) {
         interactor.parseSummaryData(summaryData);
+        view.setBattleDuration(interactor.getBattleDuration());
         view.setManaReward(interactor.getManaReward());
         view.setExperienceReward(interactor.getExperienceReward());
         view.setSkillCasesReward(interactor.getGainedSkillCases());

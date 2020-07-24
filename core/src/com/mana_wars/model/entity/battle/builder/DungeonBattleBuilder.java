@@ -35,9 +35,8 @@ public class DungeonBattleBuilder implements BattleBuilder {
 
     @Override
     public Battle build(BattleStateObserver observer) {
-        //return new BaseBattle(user.prepareBattleParticipant(), new ArrayList<>(), dungeonEnemyFactory.generateEnemies());
         return new BattleWithRounds(user.prepareBattleParticipant(userActiveSkills, userPassiveSkills),
-                new ArrayList<>(), dungeonEnemyFactory,
+                dungeonEnemyFactory,
                 dungeonEnemyFactory.getDungeon().getRounds(), observer).init();
     }
 

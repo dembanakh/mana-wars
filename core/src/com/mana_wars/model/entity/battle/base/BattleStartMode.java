@@ -6,12 +6,8 @@ public enum BattleStartMode {
     DEFAULT {
         @Override
         public void start(BattleParticipant user,
-                          Iterable<? extends BattleParticipant> userSide,
                           Iterable<? extends BattleParticipant> enemySide) {
             user.start();
-            for (BattleParticipant participant : userSide) {
-                participant.start();
-            }
             for (BattleParticipant participant : enemySide) {
                 participant.start();
             }
@@ -19,9 +15,7 @@ public enum BattleStartMode {
     },
     ROUND {
         @Override
-        public void start(BattleParticipant user,
-                          Iterable<? extends BattleParticipant> userSide,
-                          Iterable<? extends BattleParticipant> enemySide) {
+        public void start(BattleParticipant user, Iterable<? extends BattleParticipant> enemySide) {
             for (BattleParticipant participant : enemySide) {
                 participant.start();
             }
@@ -29,6 +23,5 @@ public enum BattleStartMode {
     };
 
     public abstract void start(BattleParticipant user,
-                               Iterable<? extends BattleParticipant> userSide,
                                Iterable<? extends BattleParticipant> enemySide);
 }

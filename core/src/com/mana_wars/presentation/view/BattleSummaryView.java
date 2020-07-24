@@ -12,4 +12,5 @@ public interface BattleSummaryView extends BaseView {
     void setSkillCasesReward(int skillCasesReward);
     void setParticipantsStatistics(Iterable<? extends Map.Entry<BattleParticipant,
             ? extends ReadableBattleStatisticsData>> participantsStatistics);
+    void setBattleDuration(double battleDuration);
 }

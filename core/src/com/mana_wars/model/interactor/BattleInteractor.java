@@ -32,7 +32,7 @@ public final class BattleInteractor extends BaseInteractor<UserBattleAPI> {
                     battle.getUser().getCharacteristicValue(Characteristic.COOLDOWN));
             observer.setSkills(user.getActiveSkills());
             battle.start();
-            observer.setOpponents(battle.getUser(), battle.getUserSide(), battle.getEnemySide());
+            observer.setOpponents(battle.getUser(), battle.getEnemySide());
             observer.onStartBattle();
         });
     }
