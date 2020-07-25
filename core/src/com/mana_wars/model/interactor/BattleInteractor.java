@@ -26,6 +26,7 @@ public class BattleInteractor extends BaseInteractor<UserBattleAPI> {
         battleBuilder.setUser(user);
         battleBuilder.fetchData(disposable, databaseRepository, () -> {
             this.battle = battleBuilder.build(observer);
+            disposable.add(battle.getFinishBattleObservable().subscribe(d -> battle.dispose()));
 
             observer.updateDurationCoefficients(
                     battle.getUser().getCharacteristicValue(Characteristic.CAST_TIME),
@@ -60,11 +61,5 @@ public class BattleInteractor extends BaseInteractor<UserBattleAPI> {
 
     public int getEnemiesNumber() {
         return battle.getEnemySide().size();
-    }
-
-    @Override
-    public void dispose(){
-        super.dispose();
-        this.battle.dispose();
     }
 }

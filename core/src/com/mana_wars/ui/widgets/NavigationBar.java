@@ -41,7 +41,10 @@ public class NavigationBar implements BuildableUI {
                 onSkills();
             }
         }));
-        addButton(UIElementFactory.getButton(skin, localizedStringFactory.get(DUNGEONS_KEY), new ChangeListener() {
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(skin.get(TextButton.TextButtonStyle.class));
+        style.font = skin.getFont("font");
+        style.font.getData().setScale(2);
+        addButton(UIElementFactory.getButton(style, localizedStringFactory.get(DUNGEONS_KEY), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 onDungeons();

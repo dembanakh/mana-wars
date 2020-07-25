@@ -22,6 +22,15 @@ public final class MainMenuPresenter extends BasePresenter<MainMenuView, MainMen
                 Throwable::printStackTrace));
     }
 
+    public void synchronizeManaBonusTime() {
+        synchronizeManaBonusTime(interactor.getTimeSinceLastManaBonusClaim());
+    }
+
+    private void synchronizeManaBonusTime(long time) {
+        view.setTimeSinceLastManaBonusClaimed(time);
+        if (interactor.isBonusAvailable()) view.onManaBonusReady();
+    }
+
     public void onOpenSkillCase() {
         if (interactor.getUserSkillCasesNumber() > 0) {
             disposable.add(interactor.getNewSkill().subscribe(s -> {
@@ -34,17 +43,8 @@ public final class MainMenuPresenter extends BasePresenter<MainMenuView, MainMen
         }
     }
 
-    public void synchronizeManaBonusTime() {
-        synchronizeManaBonusTime(interactor.getTimeSinceLastManaBonusClaim());
-    }
-
     public void refreshSkillCasesNumber() {
         view.setSkillCasesNumber(interactor.getUserSkillCasesNumber());
-    }
-
-    private void synchronizeManaBonusTime(long time) {
-        view.setTimeSinceLastManaBonusClaimed(time);
-        if (interactor.isBonusAvailable()) view.onManaBonusReady();
     }
 
     public void addObserver_manaAmount(Consumer<? super Integer> observer) {

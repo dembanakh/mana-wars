@@ -4,7 +4,6 @@ import com.mana_wars.model.entity.user.UserBaseAPI;
 import com.mana_wars.model.interactor.BaseInteractor;
 import com.mana_wars.presentation.util.UIThreadHandler;
 import com.mana_wars.presentation.view.BaseView;
-import com.mana_wars.ui.widgets.value_field.base.ValueField;
 
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -20,6 +19,11 @@ public abstract class BasePresenter<U extends BaseView, T extends BaseInteractor
         this.view = view;
         this.interactor = interactor;
         this.uiThreadHandler = handler;
+    }
+
+    public static BasePresenter<BaseView, BaseInteractor<UserBaseAPI>> Default(BaseView view, UIThreadHandler handler) {
+        return new BasePresenter<BaseView, BaseInteractor<UserBaseAPI>>(
+                view, new BaseInteractor<UserBaseAPI>(null) {}, handler){};
     }
 
     public void dispose() {

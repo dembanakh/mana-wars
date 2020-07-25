@@ -4,8 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.mana_wars.model.entity.user.UserBaseAPI;
+import com.mana_wars.model.interactor.BaseInteractor;
 import com.mana_wars.model.repository.DatabaseUpdater;
 import com.mana_wars.presentation.presenters.BasePresenter;
+import com.mana_wars.presentation.view.BaseView;
 import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.factory.LocalizedStringFactory;
 import com.mana_wars.ui.management.ScreenInstance;
@@ -15,7 +18,7 @@ import com.mana_wars.ui.storage.FactoryStorage;
 
 import java.util.Map;
 
-public final class LoadingScreen extends BaseScreen<BaseOverlayUI, BasePresenter> {
+public final class LoadingScreen extends BaseScreen<BaseOverlayUI, BasePresenter> implements BaseView {
 
     private final DatabaseUpdater updater;
     private final LocalizedStringFactory localizedStringFactory;
@@ -27,6 +30,7 @@ public final class LoadingScreen extends BaseScreen<BaseOverlayUI, BasePresenter
                 overlayUI);
         this.updater = updater;
         this.localizedStringFactory = factoryStorage.getLocalizedStringFactory();
+        this.presenter = BasePresenter.Default(this, Gdx.app::postRunnable);
     }
 
     @Override
