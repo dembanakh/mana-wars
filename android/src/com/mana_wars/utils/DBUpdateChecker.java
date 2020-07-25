@@ -18,6 +18,8 @@ import java.util.Locale;
 
 import io.reactivex.disposables.CompositeDisposable;
 
+import static com.mana_wars.model.GameConstants.DAILY_SKILLS_COUNT;
+
 public class DBUpdateChecker implements DatabaseUpdater {
 
     private final RoomRepository dbrepository;
@@ -27,6 +29,8 @@ public class DBUpdateChecker implements DatabaseUpdater {
 
     //TEMP
     private CompositeDisposable disposable = new CompositeDisposable();
+    private Runnable callback;
+    private volatile int stagesCounter = 0;
 
     public DBUpdateChecker(Context context,
                            RoomRepository dbrepository,
@@ -37,9 +41,6 @@ public class DBUpdateChecker implements DatabaseUpdater {
         this.preferences = preferences;
         this.volleyRepository = volleyRepository;
     }
-
-    private Runnable callback;
-    private volatile int stagesCounter = 0;
 
     @Override
     public void checkUpdate(Runnable callback, Runnable onError) {
@@ -73,20 +74,19 @@ public class DBUpdateChecker implements DatabaseUpdater {
                     JSONObject responseJSON = new JSONObject(response);
                     JSONArray dailySkillsJSONArray = responseJSON.getJSONArray(todayDateString);
 
-                    for (int i=0; i<dailySkillsJSONArray.length(); i++){
+                    for (int i = 0; i < DAILY_SKILLS_COUNT; i++) {
                         JSONObject dailySkillJSON = dailySkillsJSONArray.getJSONObject(i);
                         preferences.setDailySkillID(i, dailySkillJSON.getInt("skill_id"));
                         preferences.setDailySkillPrice(i, dailySkillJSON.getInt("price"));
-                        preferences.setDailySkillBought(i,0);
+                        preferences.setDailySkillBought(i, 0);
                     }
                     preferences.setLastDailySkillUpdateDate(todayDateString);
                     check();
-                }
-                catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                     onError.run();
                 }
-            }, error->{
+            }, error -> {
                 error.printStackTrace();
                 onError.run();
             }));

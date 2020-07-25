@@ -2,7 +2,6 @@ package com.mana_wars.presentation.presenters;
 
 import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.interactor.MainMenuInteractor;
-import com.mana_wars.presentation.util.UIThreadHandler;
 import com.mana_wars.presentation.view.MainMenuView;
 
 import org.junit.Before;
@@ -13,7 +12,6 @@ import org.mockito.stubbing.Answer;
 
 import io.reactivex.Single;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;

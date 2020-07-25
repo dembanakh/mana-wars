@@ -22,7 +22,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.TestScheduler;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -121,6 +122,7 @@ public class UserTest {
         userLevelExperienceRepository = new UserLevelExperienceRepository() {
             private int userLevel = 1;
             private int userXP = 0;
+
             @Override
             public int getUserLevel() {
                 return userLevel;

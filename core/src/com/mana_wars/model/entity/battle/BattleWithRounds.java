@@ -8,7 +8,7 @@ import com.mana_wars.model.entity.battle.data.BattleSummaryData;
 import com.mana_wars.model.entity.battle.data.ReadableBattleSummaryData;
 import com.mana_wars.model.entity.battle.participant.BattleParticipant;
 import com.mana_wars.model.entity.battle.participant.SkillCharacteristicApplicationMode;
-import com.mana_wars.model.entity.enemy.EnemyFactory;
+import com.mana_wars.model.entity.base.EnemyFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +46,7 @@ public class BattleWithRounds implements Battle {
     }
 
     public Battle init() {
-        currentRoundBattle = new BaseBattle(user, enemyFactory.generateEnemies()).init();
+        currentRoundBattle = new BaseBattle(user, enemyFactory.generateEnemies(currentRound)).init();
         subscribeOnBattleFinish();
         return this;
     }
@@ -71,7 +71,7 @@ public class BattleWithRounds implements Battle {
 
         user.setCharacteristicApplicationMode(SkillCharacteristicApplicationMode.NO_MANA_CONSUMPTION);
 
-        currentRoundBattle = new BaseBattle(user, enemyFactory.generateEnemies(),
+        currentRoundBattle = new BaseBattle(user, enemyFactory.generateEnemies(currentRound),
                 BattleStartMode.ROUND, currentRoundBattle.getBattleTime()).init();
         subscribeOnBattleFinish();
 

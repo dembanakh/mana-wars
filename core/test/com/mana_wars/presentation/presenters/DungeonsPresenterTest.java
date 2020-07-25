@@ -1,6 +1,6 @@
 package com.mana_wars.presentation.presenters;
 
-import com.mana_wars.model.entity.enemy.Dungeon;
+import com.mana_wars.model.entity.dungeon.Dungeon;
 import com.mana_wars.model.interactor.DungeonsInteractor;
 import com.mana_wars.presentation.view.DungeonsView;
 

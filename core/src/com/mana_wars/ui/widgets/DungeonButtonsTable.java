@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
-import com.mana_wars.model.entity.enemy.Dungeon;
+import com.mana_wars.model.entity.dungeon.Dungeon;
 import com.mana_wars.ui.factory.UIElementFactory;
 import com.mana_wars.ui.widgets.base.BuildableUI;
 

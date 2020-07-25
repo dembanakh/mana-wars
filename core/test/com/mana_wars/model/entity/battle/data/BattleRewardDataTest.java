@@ -2,7 +2,7 @@ package com.mana_wars.model.entity.battle.data;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class BattleRewardDataTest {
 

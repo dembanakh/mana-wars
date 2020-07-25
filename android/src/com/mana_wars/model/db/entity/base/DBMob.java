@@ -1,4 +1,4 @@
-package com.mana_wars.model.db.entity;
+package com.mana_wars.model.db.entity.base;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

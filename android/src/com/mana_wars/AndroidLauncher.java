@@ -1,11 +1,9 @@
 package com.mana_wars;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.mana_wars.model.repository.DBMapperRepository;
 import com.mana_wars.model.repository.DailySkillsRepository;
 import com.mana_wars.model.repository.DailySkillsRepositoryImpl;

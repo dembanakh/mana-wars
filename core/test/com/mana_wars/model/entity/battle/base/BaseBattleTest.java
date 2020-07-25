@@ -14,14 +14,13 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.stubbing.Answer;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.TestScheduler;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -73,7 +72,7 @@ public class BaseBattleTest {
         when(user.isAlive()).thenReturn(false);
         when(user.getPassiveSkills()).thenReturn(Collections.emptyList());
         when(enemySide.get(0).getPassiveSkills()).thenReturn(Collections.emptyList());
-        when(enemySide.get(0).getOnDeathReward()).thenReturn(new BattleRewardData(1,2,3));
+        when(enemySide.get(0).getOnDeathReward()).thenReturn(new BattleRewardData(1, 2, 3));
 
         battle.init();
         battle.start();

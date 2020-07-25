@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import io.reactivex.disposables.CompositeDisposable;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 

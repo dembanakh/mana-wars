@@ -8,9 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 public class SharedPreferencesRepository implements LocalUserDataRepository {
@@ -116,14 +113,14 @@ public class SharedPreferencesRepository implements LocalUserDataRepository {
     }
 
     @Override
-    public List<Integer> getUserLevelRequiredExperience(){
+    public List<Integer> getUserLevelRequiredExperience() {
 
         List<Integer> userLvlReq = new ArrayList<>();
 
         String jsonArrayString = getDefaultManager().getString(USER_LVL_REQUIRED_EXPERIENCE, "[0]");
         try {
             JSONArray jsonArray = new JSONArray(jsonArrayString);
-            for(int i = 0 ; i < jsonArray.length(); i++){
+            for (int i = 0; i < jsonArray.length(); i++) {
                 userLvlReq.add(jsonArray.getInt(i));
             }
         } catch (JSONException e) {
@@ -142,35 +139,35 @@ public class SharedPreferencesRepository implements LocalUserDataRepository {
         getPrefsEditor().putInt(USER_SKILL_CASES, getSkillCasesNumber() + delta).apply();
     }
 
-    public void setDailySkillBought(int skill, int amount){
+    public void setDailySkillBought(int skill, int amount) {
         getPrefsEditor().putInt(DAILY_SKILL_BOUGHT + skill, amount).apply();
     }
 
-    public int getDailySkillBought(int skill){
+    public int getDailySkillBought(int skill) {
         return getDefaultManager().getInt(DAILY_SKILL_BOUGHT + skill, 0);
     }
 
-    public void setDailySkillID(int skill, int id){
+    public void setDailySkillID(int skill, int id) {
         getPrefsEditor().putInt(DAILY_SKILL_ID + skill, id).apply();
     }
 
-    public int getDailySkillID(int skill){
+    public int getDailySkillID(int skill) {
         return getDefaultManager().getInt(DAILY_SKILL_ID + skill, 0);
     }
 
-    public void setDailySkillPrice(int skill, int price){
+    public void setDailySkillPrice(int skill, int price) {
         getPrefsEditor().putInt(DAILY_SKILL_PRICE + skill, price).apply();
     }
 
-    public int getDailySkillPrice(int skill){
+    public int getDailySkillPrice(int skill) {
         return getDefaultManager().getInt(DAILY_SKILL_PRICE + skill, 0);
     }
 
-    public void setLastDailySkillUpdateDate(String s){
+    public void setLastDailySkillUpdateDate(String s) {
         getPrefsEditor().putString(LAST_DAILY_SKILL_UPDATE_DATE, s).apply();
     }
 
-    public String getLastDailySkillUpdateDate(){
+    public String getLastDailySkillUpdateDate() {
         return getDefaultManager().getString(LAST_DAILY_SKILL_UPDATE_DATE, "2000/07/05");
     }
 

@@ -199,14 +199,70 @@
     {
       "id" : 1,
       "name" : "The block forest",
-      "required_lvl" : 1,
-      "rounds" : 3
+      "required_lvl" : 1
     },
     {
       "id" : 2,
       "name" : "The allow hill",
-      "required_lvl" : 2,
-      "rounds" : 3
+      "required_lvl" : 2
+    }
+  ],
+  "dungeon_rounds_description": [
+    {
+      "id" : 1,
+      "dungeon_id": 1,
+      "round": 1,
+      "min": 3,
+      "max": 5,
+      "is_with_boss": false
+    },
+    {
+      "id" : 2,
+      "dungeon_id": 1,
+      "round": 2,
+      "min": 2,
+      "max": 4,
+      "is_with_boss": false
+    },
+    {
+      "id" : 3,
+      "dungeon_id": 1,
+      "round": 3,
+      "min": 1,
+      "max": 2,
+      "is_with_boss": true
+    },
+    {
+      "id" : 4,
+      "dungeon_id": 2,
+      "round": 1,
+      "min": 4,
+      "max": 5,
+      "is_with_boss": false
+    },
+    {
+      "id" : 5,
+      "dungeon_id": 2,
+      "round": 2,
+      "min": 3,
+      "max": 4,
+      "is_with_boss": false
+    },
+    {
+      "id" : 6,
+      "dungeon_id": 2,
+      "round": 3,
+      "min": 2,
+      "max": 3,
+      "is_with_boss": false
+    },
+    {
+      "id" : 7,
+      "dungeon_id": 2,
+      "round": 4,
+      "min": 2,
+      "max": 3,
+      "is_with_boss": true
     }
   ],
   "mobs" : [

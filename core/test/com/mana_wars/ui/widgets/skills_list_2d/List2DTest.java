@@ -17,11 +17,12 @@ public class List2DTest {
     private Integer item1, item2;
 
     @Before
-    public void setup(){
+    public void setup() {
         Skin skin = new Skin();
         skin.add("default", new List.ListStyle());
         list = new com.mana_wars.ui.widgets.base.List2D<>(skin,
-                (batch, font, index, item, x, y, width, height) -> {}, 5);
+                (batch, font, index, item, x, y, width, height) -> {
+                }, 5);
         item1 = 1;
         item2 = 2;
         list.setItems(item1, item2);
