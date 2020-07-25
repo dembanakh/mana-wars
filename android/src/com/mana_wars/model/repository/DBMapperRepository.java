@@ -2,21 +2,25 @@ package com.mana_wars.model.repository;
 
 import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.SkillsListTriple;
+import com.mana_wars.model.db.core_entity_converter.DungeonRoundDescriptionConverter;
 import com.mana_wars.model.db.core_entity_converter.SkillConverter;
-import com.mana_wars.model.db.entity.CompleteUserSkill;
-import com.mana_wars.model.db.entity.DBDungeon;
-import com.mana_wars.model.db.entity.DBMobSkillWithCharacteristics;
-import com.mana_wars.model.db.entity.DBMobWithSkills;
-import com.mana_wars.model.db.entity.DBSkillWithCharacteristics;
-import com.mana_wars.model.db.entity.UserSkill;
-import com.mana_wars.model.entity.enemy.Dungeon;
-import com.mana_wars.model.entity.enemy.MobBlueprint;
+import com.mana_wars.model.db.entity.base.DBDungeonRoundDescription;
+import com.mana_wars.model.db.entity.query.CompleteUserSkill;
+import com.mana_wars.model.db.entity.query.DBDungeonWithRoundsDescription;
+import com.mana_wars.model.db.entity.query.DBMobSkillWithCharacteristics;
+import com.mana_wars.model.db.entity.query.DBMobWithSkills;
+import com.mana_wars.model.db.entity.query.DBSkillWithCharacteristics;
+import com.mana_wars.model.db.entity.query.UserSkill;
+import com.mana_wars.model.entity.dungeon.Dungeon;
+import com.mana_wars.model.entity.dungeon.DungeonRoundDescription;
+import com.mana_wars.model.entity.dungeon.MobBlueprint;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.entity.skills.Skill;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +32,7 @@ public class DBMapperRepository implements DatabaseRepository {
 
     private final RoomRepository room;
     private final Map<Skill, UserSkill> lastUserSkillsMap = new HashMap<>();
-    private final Map<Dungeon, DBDungeon> lastDungeonsMap = new HashMap<>();
+    private final Map<Dungeon, DBDungeonWithRoundsDescription> lastDungeonsMap = new HashMap<>();
 
     public DBMapperRepository(RoomRepository room) {
         this.room = room;
@@ -110,12 +114,19 @@ public class DBMapperRepository implements DatabaseRepository {
 
     @Override
     public Single<List<Dungeon>> getDungeons() {
-        return room.getAllEntities(room.dbDungeonDAO).map(dbDungeons -> {
+        return room.getDBDungeonsWithRoundsDescription().map(dbDungeons -> {
             lastDungeonsMap.clear();
             List<Dungeon> dungeons = new ArrayList<>();
-            for (DBDungeon dbDungeon : dbDungeons) {
-                Dungeon dungeon = new Dungeon(dbDungeon.getId(), dbDungeon.getName(),
-                        dbDungeon.getRequiredLvl(), dbDungeon.getRounds());
+            for (DBDungeonWithRoundsDescription dbDungeon : dbDungeons) {
+                List<DungeonRoundDescription> roundDescriptions =
+                        new ArrayList<>(Collections.nCopies(dbDungeon.roundDescriptions.size(), null));
+
+                for (DBDungeonRoundDescription drd : dbDungeon.roundDescriptions) {
+                    roundDescriptions.set(drd.getRound() - 1, DungeonRoundDescriptionConverter.toDungeonRoundsDescription(drd));
+                }
+
+                Dungeon dungeon = new Dungeon(dbDungeon.dungeon.getId(), dbDungeon.dungeon.getName(),
+                        dbDungeon.dungeon.getRequiredLvl(), roundDescriptions);
                 lastDungeonsMap.put(dungeon, dbDungeon);
                 dungeons.add(dungeon);
             }
@@ -125,7 +136,7 @@ public class DBMapperRepository implements DatabaseRepository {
 
     @Override
     public Single<List<MobBlueprint>> getMobsListByDungeon(Dungeon dungeon) {
-        return room.getDBMobsWithSkillsByDungeonID(lastDungeonsMap.get(dungeon).getId()).map(
+        return room.getDBMobsWithSkillsByDungeonID(lastDungeonsMap.get(dungeon).dungeon.getId()).map(
                 dbMobsWithSkills -> {
 
                     List<MobBlueprint> mobs = new ArrayList<>();

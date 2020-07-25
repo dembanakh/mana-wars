@@ -3,7 +3,7 @@ package com.mana_wars.model.db.dao;
 import androidx.room.Dao;
 import androidx.room.Query;
 
-import com.mana_wars.model.db.entity.DBMobSkill;
+import com.mana_wars.model.db.entity.base.DBMobSkill;
 
 import java.util.List;
 

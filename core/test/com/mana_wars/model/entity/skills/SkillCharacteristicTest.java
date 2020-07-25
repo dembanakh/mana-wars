@@ -1,8 +1,8 @@
 package com.mana_wars.model.entity.skills;
 
+import com.mana_wars.model.entity.base.Characteristic;
 import com.mana_wars.model.entity.base.UpgradeFunction;
 import com.mana_wars.model.entity.base.ValueChangeType;
-import com.mana_wars.model.entity.base.Characteristic;
 
 import org.junit.Before;
 import org.junit.Test;

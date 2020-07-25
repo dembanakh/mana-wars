@@ -1,6 +1,6 @@
 package com.mana_wars.presentation.view;
 
-import com.mana_wars.model.entity.enemy.Dungeon;
+import com.mana_wars.model.entity.dungeon.Dungeon;
 
 import java.util.List;
 

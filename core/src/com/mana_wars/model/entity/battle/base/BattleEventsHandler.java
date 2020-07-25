@@ -20,29 +20,26 @@ class BattleEventsHandler {
     void update(double currentTime) {
         while (!battleEvents.isEmpty() && battleEvents.peek().targetTime <= currentTime) {
             BattleEvent be = battleEvents.poll();
-            if (be.source.isAlive()){
-
-                //TODO refactor
+            if (be.source.isAlive()) {
                 List<Integer> targetsHealthDelta = new ArrayList<>();
-                int sourceHealthDelta = - be.source.getCharacteristicValue(Characteristic.HEALTH);
-                for (BattleParticipant tbp : be.target){
-                    targetsHealthDelta.add(- tbp.getCharacteristicValue(Characteristic.HEALTH));
+                int sourceHealthDelta = -be.source.getCharacteristicValue(Characteristic.HEALTH);
+                for (BattleParticipant tbp : be.target) {
+                    targetsHealthDelta.add(-tbp.getCharacteristicValue(Characteristic.HEALTH));
                 }
 
                 be.skill.activate(be.source, be.target);
 
                 sourceHealthDelta += be.source.getCharacteristicValue(Characteristic.HEALTH);
-                for (int i=0; i < be.target.size(); i++){
+                for (int i = 0; i < be.target.size(); i++) {
                     targetsHealthDelta.set(i, targetsHealthDelta.get(i) + be.target.get(i).getCharacteristicValue(Characteristic.HEALTH));
                 }
 
                 be.source.getBattleStatisticsData().updateValuesAsSourceSelf(sourceHealthDelta);
-                for (int i=0; i < be.target.size(); i++){
+                for (int i = 0; i < be.target.size(); i++) {
                     be.source.getBattleStatisticsData().updateValuesAsSourceTarget(targetsHealthDelta.get(i));
                     be.target.get(i).getBattleStatisticsData().updateValuesAsTarget(targetsHealthDelta.get(i));
                 }
             }
-
         }
     }
 

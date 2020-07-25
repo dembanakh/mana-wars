@@ -7,9 +7,9 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.mana_wars.model.db.AppDatabase;
-import com.mana_wars.model.db.entity.CompleteUserSkill;
-import com.mana_wars.model.db.entity.DBSkill;
-import com.mana_wars.model.db.entity.UserSkill;
+import com.mana_wars.model.db.entity.query.CompleteUserSkill;
+import com.mana_wars.model.db.entity.base.DBSkill;
+import com.mana_wars.model.db.entity.query.UserSkill;
 
 import org.junit.After;
 import org.junit.Before;

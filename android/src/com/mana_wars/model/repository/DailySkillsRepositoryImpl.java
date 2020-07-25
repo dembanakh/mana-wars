@@ -1,8 +1,8 @@
 package com.mana_wars.model.repository;
 
 import com.mana_wars.model.db.core_entity_converter.SkillConverter;
-import com.mana_wars.model.db.entity.DBSkillWithCharacteristics;
-import com.mana_wars.model.db.entity.UserSkill;
+import com.mana_wars.model.db.entity.query.DBSkillWithCharacteristics;
+import com.mana_wars.model.db.entity.query.UserSkill;
 import com.mana_wars.model.entity.ShopSkill;
 
 import java.util.ArrayList;
@@ -13,22 +13,23 @@ import java.util.Map;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 
+import static com.mana_wars.model.GameConstants.DAILY_SKILLS_COUNT;
+
 public class DailySkillsRepositoryImpl implements DailySkillsRepository {
 
     private final RoomRepository repository;
     private final SharedPreferencesRepository preferences;
     private final Map<ShopSkill, Integer> lastFetchSkillsMap = new HashMap<>();
 
-    public DailySkillsRepositoryImpl(RoomRepository repository, SharedPreferencesRepository preferences){
+    public DailySkillsRepositoryImpl(RoomRepository repository, SharedPreferencesRepository preferences) {
         this.repository = repository;
         this.preferences = preferences;
     }
 
-    private Map<Integer, Integer> getDailySkillsIDsMap(){
+    private Map<Integer, Integer> getDailySkillsIDsMap() {
         Map<Integer, Integer> result = new HashMap<>();
-        //TODO add max size
-        for (int i = 0; i < 3; i++) {
-            result.put(preferences.getDailySkillID(i),i);
+        for (int i = 0; i < DAILY_SKILLS_COUNT; i++) {
+            result.put(preferences.getDailySkillID(i), i);
         }
         return result;
     }

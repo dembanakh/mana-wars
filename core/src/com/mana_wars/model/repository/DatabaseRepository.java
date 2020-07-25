@@ -1,8 +1,8 @@
 package com.mana_wars.model.repository;
 
 import com.mana_wars.model.SkillsListTriple;
-import com.mana_wars.model.entity.enemy.Dungeon;
-import com.mana_wars.model.entity.enemy.MobBlueprint;
+import com.mana_wars.model.entity.dungeon.Dungeon;
+import com.mana_wars.model.entity.dungeon.MobBlueprint;
 import com.mana_wars.model.entity.skills.Skill;
 
 import java.util.List;

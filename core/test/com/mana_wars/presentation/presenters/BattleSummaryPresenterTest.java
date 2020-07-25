@@ -11,7 +11,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Collections;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

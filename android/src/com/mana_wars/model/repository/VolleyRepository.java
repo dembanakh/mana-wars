@@ -3,16 +3,12 @@ package com.mana_wars.model.repository;
 import android.content.Context;
 import android.util.Log;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import io.reactivex.Single;
 
@@ -22,12 +18,12 @@ public class VolleyRepository {
     private static final RetryPolicy retryPolicy = new DefaultRetryPolicy(5000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
     private RequestQueue requestQueue;
 
-    public static synchronized VolleyRepository getInstance(Context context){
+    public static synchronized VolleyRepository getInstance(Context context) {
         if (instance == null) instance = new VolleyRepository(context);
         return instance;
     }
 
-    private VolleyRepository(Context context){
+    private VolleyRepository(Context context) {
         this.requestQueue = Volley.newRequestQueue(context);
     }
 

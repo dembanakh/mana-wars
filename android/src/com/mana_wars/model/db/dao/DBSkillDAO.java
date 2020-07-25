@@ -4,8 +4,8 @@ import androidx.room.Dao;
 import androidx.room.Query;
 import androidx.room.Transaction;
 
-import com.mana_wars.model.db.entity.DBSkill;
-import com.mana_wars.model.db.entity.DBSkillWithCharacteristics;
+import com.mana_wars.model.db.entity.base.DBSkill;
+import com.mana_wars.model.db.entity.query.DBSkillWithCharacteristics;
 
 import java.util.List;
 

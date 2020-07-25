@@ -17,7 +17,6 @@ import java.util.Collections;
 
 import io.reactivex.disposables.CompositeDisposable;
 
-import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -50,6 +49,7 @@ public class BattleInteractorTest {
         when(user.getActiveSkills()).thenReturn(Collections.emptyList());
         BattleBuilder builder = new BattleBuilder() {
             private UserBattleAPI user;
+
             @Override
             public void setUser(UserBattleAPI user) {
                 this.user = user;

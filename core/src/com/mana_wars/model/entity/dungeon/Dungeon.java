@@ -1,17 +1,19 @@
-package com.mana_wars.model.entity.enemy;
+package com.mana_wars.model.entity.dungeon;
+
+import java.util.List;
 
 public class Dungeon {
 
     private final int iconID;
     private final String name;
     private final int requiredLvl;
-    private final int rounds;
+    private final List<DungeonRoundDescription> roundDescriptions;
 
-    public Dungeon(int iconID, String name, int requiredLvl, int rounds) {
+    public Dungeon(int iconID, String name, int requiredLvl, List<DungeonRoundDescription> roundDescriptions) {
         this.iconID = iconID;
         this.name = name;
         this.requiredLvl = requiredLvl;
-        this.rounds = rounds;
+        this.roundDescriptions = roundDescriptions;
     }
 
     public int getIconID() {
@@ -26,7 +28,7 @@ public class Dungeon {
         return requiredLvl;
     }
 
-    public int getRounds() {
-        return rounds;
+    public List<DungeonRoundDescription> getRoundDescriptions() {
+        return roundDescriptions;
     }
 }
