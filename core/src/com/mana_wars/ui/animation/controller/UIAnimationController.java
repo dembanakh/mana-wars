@@ -21,5 +21,18 @@ public interface UIAnimationController<T, Type> {
         public double getDuration() {
             return duration;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o == this) return true;
+            if (!(o instanceof KeyFrame<?>)) return false;
+            KeyFrame<?> other = (KeyFrame<?>) o;
+            return other.type.equals(type) && other.duration == duration;
+        }
+
+        @Override
+        public String toString() {
+            return "KeyFrame: (" + type.toString() + ", " + duration + ")";
+        }
     }
 }

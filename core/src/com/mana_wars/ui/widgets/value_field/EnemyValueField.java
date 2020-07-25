@@ -13,8 +13,6 @@ import com.mana_wars.ui.widgets.value_field.base.ValueFieldWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.OptionalInt;
 
 import io.reactivex.functions.Consumer;
 
@@ -53,6 +51,8 @@ public final class EnemyValueField implements BuildableUI {
 
         if (currentEnemy >= 0) enemyFieldWrappers.get(currentEnemy).setField(null);
         enemyFieldWrappers.get(index).setField(enemyField);
+
+        currentEnemy = index;
     }
 
     @Override

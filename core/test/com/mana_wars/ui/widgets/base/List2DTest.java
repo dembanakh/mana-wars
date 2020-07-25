@@ -1,4 +1,4 @@
-package com.mana_wars.ui.widgets.skills_list_2d;
+package com.mana_wars.ui.widgets.base;
 
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -13,14 +13,14 @@ import static org.junit.Assert.assertEquals;
 @RunWith(GdxTestRunner.class)
 public class List2DTest {
 
-    private com.mana_wars.ui.widgets.base.List2D<Integer> list;
+    private List2D<Integer> list;
     private Integer item1, item2;
 
     @Before
     public void setup() {
         Skin skin = new Skin();
         skin.add("default", new List.ListStyle());
-        list = new com.mana_wars.ui.widgets.base.List2D<>(skin,
+        list = new List2D<>(skin,
                 (batch, font, index, item, x, y, width, height) -> {
                 }, 5);
         item1 = 1;

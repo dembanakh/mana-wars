@@ -33,6 +33,11 @@ public final class UIElementsSize {
         public static final int BUTTON_PADDING_BOTTOM = 100;
     }
 
+    public static class MAIN_MENU_SCREEN {
+        public static final int MANA_BONUS_PROGRESS_BAR_WIDTH = 200;
+        public static final int MANA_BONUS_PROGRESS_BAR_HEIGHT = 100;
+    }
+
     public static class SKILLS_SCREEN {
         public static final int COLUMNS_NUMBER = 5;
         public static final float ACTIVE_SKILLS_TABLE_HEIGHT = SCREEN_HEIGHT() * 0.1f;
