@@ -5,8 +5,8 @@ import androidx.room.Query;
 import androidx.room.RoomWarnings;
 import androidx.room.Transaction;
 
-import com.mana_wars.model.db.entity.CompleteUserSkill;
-import com.mana_wars.model.db.entity.UserSkill;
+import com.mana_wars.model.db.entity.query.CompleteUserSkill;
+import com.mana_wars.model.db.entity.query.UserSkill;
 
 import java.util.List;
 

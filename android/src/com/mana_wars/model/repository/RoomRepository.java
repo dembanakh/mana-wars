@@ -5,15 +5,17 @@ import android.content.Context;
 import com.mana_wars.model.db.AppDatabase;
 import com.mana_wars.model.db.dao.BaseDAO;
 import com.mana_wars.model.db.dao.DBDungeonDAO;
+import com.mana_wars.model.db.dao.DBDungeonRoundDescriptionDAO;
 import com.mana_wars.model.db.dao.DBMobDAO;
 import com.mana_wars.model.db.dao.DBMobSkillDAO;
 import com.mana_wars.model.db.dao.DBSkillCharacteristicDAO;
 import com.mana_wars.model.db.dao.DBSkillDAO;
 import com.mana_wars.model.db.dao.UserSkillsDAO;
-import com.mana_wars.model.db.entity.CompleteUserSkill;
-import com.mana_wars.model.db.entity.DBMobWithSkills;
-import com.mana_wars.model.db.entity.DBSkillWithCharacteristics;
-import com.mana_wars.model.db.entity.UserSkill;
+import com.mana_wars.model.db.entity.query.CompleteUserSkill;
+import com.mana_wars.model.db.entity.query.DBDungeonWithRoundsDescription;
+import com.mana_wars.model.db.entity.query.DBMobWithSkills;
+import com.mana_wars.model.db.entity.query.DBSkillWithCharacteristics;
+import com.mana_wars.model.db.entity.query.UserSkill;
 
 import java.util.List;
 
@@ -32,12 +34,13 @@ public class RoomRepository {
     public final DBDungeonDAO dbDungeonDAO;
     public final DBMobDAO dbMobDAO;
     public final DBMobSkillDAO dbMobSkillDAO;
+    public final DBDungeonRoundDescriptionDAO dbDungeonRoundDescriptionDAO;
 
     public static synchronized RoomRepository getInstance(Context context) {
         if (instance == null) {
             AppDatabase db = AppDatabase.getDatabase(context);
             instance = new RoomRepository(db.userSkillsDAO(), db.dbSkillDAO(),
-                    db.dbSkillCharacteristicDAO(), db.dbDungeonDAO(), db.dbMobDAO(), db.dbMobSkillDAO());
+                    db.dbSkillCharacteristicDAO(), db.dbDungeonDAO(), db.dbMobDAO(), db.dbMobSkillDAO(), db.dbDungeonRoundDescriptionDAO());
         }
         return instance;
     }
@@ -48,6 +51,10 @@ public class RoomRepository {
 
     public <T> Single<List<T>> getEntitiesByIDs(BaseDAO<T> dao, List<Integer> ids) {
         return dao.getEntitiesByIDs(ids);
+    }
+
+    public Single<List<DBDungeonWithRoundsDescription>> getDBDungeonsWithRoundsDescription() {
+        return dbDungeonDAO.getDBDungeonsWithRoundsDescription();
     }
 
     public Single<List<DBSkillWithCharacteristics>> getSkillsWithCharacteristics() {
@@ -72,13 +79,14 @@ public class RoomRepository {
 
     private RoomRepository(UserSkillsDAO userSkillsDAO, DBSkillDAO dbSkillDAO,
                            DBSkillCharacteristicDAO dbSkillCharacteristicDAO,
-                           DBDungeonDAO dbDungeonDAO, DBMobDAO dbMobDAO, DBMobSkillDAO dbMobSkillDAO) {
+                           DBDungeonDAO dbDungeonDAO, DBMobDAO dbMobDAO, DBMobSkillDAO dbMobSkillDAO, DBDungeonRoundDescriptionDAO dbDungeonRoundDescriptionDAO) {
         this.userSkillsDAO = userSkillsDAO;
         this.dbSkillDAO = dbSkillDAO;
         this.dbSkillCharacteristicDAO = dbSkillCharacteristicDAO;
         this.dbDungeonDAO = dbDungeonDAO;
         this.dbMobDAO = dbMobDAO;
         this.dbMobSkillDAO = dbMobSkillDAO;
+        this.dbDungeonRoundDescriptionDAO = dbDungeonRoundDescriptionDAO;
     }
 
     public <T> Completable insertEntities(final List<T> entities, final BaseDAO<T> dao) {

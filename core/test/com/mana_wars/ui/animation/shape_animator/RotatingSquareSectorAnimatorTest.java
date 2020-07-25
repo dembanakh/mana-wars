@@ -9,7 +9,8 @@ import org.junit.Test;
 
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class RotatingSquareSectorAnimatorTest {
 
@@ -154,7 +155,7 @@ public class RotatingSquareSectorAnimatorTest {
     }
 
     private void extract(float[] x, float[] y) {
-        for (int i = 0, j = 1, k = 0; k < x.length; i+=2, j+=2, k++) {
+        for (int i = 0, j = 1, k = 0; k < x.length; i += 2, j += 2, k++) {
             x[k] = vertices[i];
             y[k] = vertices[j];
         }

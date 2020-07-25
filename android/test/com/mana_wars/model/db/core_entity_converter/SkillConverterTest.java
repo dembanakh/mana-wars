@@ -1,8 +1,8 @@
 package com.mana_wars.model.db.core_entity_converter;
 
-import com.mana_wars.model.db.entity.CompleteUserSkill;
-import com.mana_wars.model.db.entity.DBSkill;
-import com.mana_wars.model.db.entity.UserSkill;
+import com.mana_wars.model.db.entity.query.CompleteUserSkill;
+import com.mana_wars.model.db.entity.base.DBSkill;
+import com.mana_wars.model.db.entity.query.UserSkill;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;

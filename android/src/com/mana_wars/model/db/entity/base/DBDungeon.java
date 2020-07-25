@@ -1,4 +1,4 @@
-package com.mana_wars.model.db.entity;
+package com.mana_wars.model.db.entity.base;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -20,9 +20,6 @@ public class DBDungeon {
     @ColumnInfo(name = "required_lvl")
     private int requiredLvl;
 
-    @ColumnInfo(name = "rounds")
-    private int rounds;
-
     public int getId() {
         return id;
     }
@@ -33,10 +30,6 @@ public class DBDungeon {
 
     public String getName() {
         return name;
-    }
-
-    public int getRounds() {
-        return rounds;
     }
 
     public void setName(String name) {
@@ -51,16 +44,11 @@ public class DBDungeon {
         this.requiredLvl = requiredLvl;
     }
 
-    public void setRounds(int rounds) {
-        this.rounds = rounds;
-    }
-
     public static DBDungeon fromJSON(JSONObject json) throws JSONException {
         DBDungeon result = new DBDungeon();
         result.setId(json.getInt("id"));
         result.setName(json.getString("name"));
         result.setRequiredLvl(json.getInt("required_lvl"));
-        result.setRounds(json.getInt("rounds"));
         return result;
     }
 }

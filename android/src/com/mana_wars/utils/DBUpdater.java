@@ -2,11 +2,6 @@ package com.mana_wars.utils;
 
 import android.util.Log;
 
-import com.mana_wars.model.db.entity.DBDungeon;
-import com.mana_wars.model.db.entity.DBMob;
-import com.mana_wars.model.db.entity.DBMobSkill;
-import com.mana_wars.model.db.entity.DBSkill;
-import com.mana_wars.model.db.entity.DBSkillCharacteristic;
 import com.mana_wars.model.repository.RoomRepository;
 import com.mana_wars.model.repository.SharedPreferencesRepository;
 
@@ -28,7 +23,7 @@ public class DBUpdater implements DBUpdaterParser.DBUpdater {
     private Callback callback;
 
     private int updatedInstancesCount = 0;
-    private final int instancesToUpdate = 5;
+    private final int instancesToUpdate = 6;
 
     public DBUpdater(RoomRepository repository, SharedPreferencesRepository preferences, Callback callback) {
         this.repository = repository;
@@ -42,41 +37,8 @@ public class DBUpdater implements DBUpdaterParser.DBUpdater {
     }
 
     @Override
-    public void updateSkills(List<DBSkill> skills) {
-        disposable.add(repository.insertEntities(skills, repository.dbSkillDAO).subscribe(
-                this::completeUpdate,
-                Throwable::printStackTrace
-        ));
-
-    }
-
-    @Override
-    public void updateCharacteristics(List<DBSkillCharacteristic> characteristics) {
-        disposable.add(repository.insertEntities(characteristics, repository.dbSkillCharacteristicDAO).subscribe(
-                this::completeUpdate,
-                Throwable::printStackTrace
-        ));
-    }
-
-    @Override
-    public void updateDungeons(List<DBDungeon> dungeons) {
-        disposable.add(repository.insertEntities(dungeons, repository.dbDungeonDAO).subscribe(
-                this::completeUpdate,
-                Throwable::printStackTrace
-        ));
-    }
-
-    @Override
-    public void updateMobs(List<DBMob> mobs) {
-        disposable.add(repository.insertEntities(mobs, repository.dbMobDAO).subscribe(
-                this::completeUpdate,
-                Throwable::printStackTrace
-        ));
-    }
-
-    @Override
-    public void updateMobsSkills(List<DBMobSkill> mobSkills) {
-        disposable.add(repository.insertEntities(mobSkills, repository.dbMobSkillDAO).subscribe(
+    public <T> void update(List<T> entities, DBUpdaterParser.DAOMapper<T> DAOMapper) {
+        disposable.add(repository.insertEntities(entities, DAOMapper.get(repository)).subscribe(
                 this::completeUpdate,
                 Throwable::printStackTrace
         ));
@@ -84,7 +46,6 @@ public class DBUpdater implements DBUpdaterParser.DBUpdater {
 
     private synchronized void completeUpdate() {
         Log.i("UPDATER", "updated=" + updatedInstancesCount);
-
         if (++updatedInstancesCount == instancesToUpdate) {
             disposable.dispose();
             callback.afterUpdate();

@@ -1,4 +1,4 @@
-package com.mana_wars.model.entity.enemy;
+package com.mana_wars.model.entity.dungeon;
 
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;

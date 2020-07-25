@@ -9,7 +9,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.AdditionalMatchers.and;
 import static org.mockito.AdditionalMatchers.geq;
 import static org.mockito.AdditionalMatchers.leq;

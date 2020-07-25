@@ -1,13 +1,13 @@
 package com.mana_wars.model.entity.battle;
 
 import com.mana_wars.model.entity.base.Characteristic;
+import com.mana_wars.model.entity.base.EnemyFactory;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.base.UpgradeFunction;
 import com.mana_wars.model.entity.base.ValueChangeType;
 import com.mana_wars.model.entity.battle.data.BattleRewardData;
 import com.mana_wars.model.entity.battle.data.ReadableBattleSummaryData;
 import com.mana_wars.model.entity.battle.participant.BattleParticipant;
-import com.mana_wars.model.entity.enemy.EnemyFactory;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.entity.skills.SkillCharacteristic;
 
@@ -24,7 +24,7 @@ import java.util.List;
 
 import io.reactivex.disposables.CompositeDisposable;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.atLeastOnce;
@@ -54,13 +54,14 @@ public class BattleWithRoundsTest {
         when(user.getPassiveSkills()).thenReturn(Collections.emptyList());
         when(enemySide.get(0).getPassiveSkills()).thenAnswer((Answer<Iterable<? extends PassiveSkill>>)
                 invocation -> Collections.singletonList(
-                    new PassiveSkill(1, 1, Rarity.COMMON, "a", Collections.singletonList(
-                        new SkillCharacteristic(5, Characteristic.COOLDOWN,
-                                ValueChangeType.DECREASE, -1, UpgradeFunction.LINEAR, 1)
-                ))));
+                        new PassiveSkill(1, 1, Rarity.COMMON, "a", Collections.singletonList(
+                                new SkillCharacteristic(5, Characteristic.COOLDOWN,
+                                        ValueChangeType.DECREASE, -1, UpgradeFunction.LINEAR, 1)
+                        ))));
         when(enemySide.get(0).getOnDeathReward()).thenReturn(new BattleRewardData(1, 2, 3));
         EnemyFactory enemyFactory = mock(EnemyFactory.class);
-        when(enemyFactory.generateEnemies()).thenReturn(enemySide);
+        when(enemyFactory.generateEnemies(1)).thenReturn(enemySide);
+        when(enemyFactory.generateEnemies(2)).thenReturn(enemySide);
         battle = new BattleWithRounds(user, enemyFactory, 2, observer);
         battle.init();
     }

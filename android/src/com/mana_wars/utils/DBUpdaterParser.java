@@ -3,11 +3,14 @@ package com.mana_wars.utils;
 import android.content.Context;
 
 import com.mana_wars.model.GameConstants;
-import com.mana_wars.model.db.entity.DBDungeon;
-import com.mana_wars.model.db.entity.DBMob;
-import com.mana_wars.model.db.entity.DBMobSkill;
-import com.mana_wars.model.db.entity.DBSkill;
-import com.mana_wars.model.db.entity.DBSkillCharacteristic;
+import com.mana_wars.model.db.dao.BaseDAO;
+import com.mana_wars.model.db.entity.base.DBDungeon;
+import com.mana_wars.model.db.entity.base.DBDungeonRoundDescription;
+import com.mana_wars.model.db.entity.base.DBMob;
+import com.mana_wars.model.db.entity.base.DBMobSkill;
+import com.mana_wars.model.db.entity.base.DBSkill;
+import com.mana_wars.model.db.entity.base.DBSkillCharacteristic;
+import com.mana_wars.model.repository.RoomRepository;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,11 +33,11 @@ public class DBUpdaterParser {
 
     public interface DBUpdater {
         void updateUserLvlRequiredExperience(String userLvlRequiredExperience);
-        void updateSkills(List<DBSkill> skills);
-        void updateCharacteristics(List<DBSkillCharacteristic> characteristics);
-        void updateDungeons(List<DBDungeon> dungeons);
-        void updateMobs(List<DBMob> mobs);
-        void updateMobsSkills(List<DBMobSkill> mobSkills);
+        <T> void update(List<T> entities, DAOMapper<T> DAOMapper);
+    }
+
+    public interface DAOMapper<V> {
+        BaseDAO<V> get(RoomRepository repository);
     }
 
     void updateFromJSON(DBUpdater updater) throws IOException, JSONException {
@@ -45,11 +48,12 @@ public class DBUpdaterParser {
 
         updater.updateUserLvlRequiredExperience(dbjson.getJSONArray("user_lvl_required_experience").toString());
 
-        updater.updateSkills(parseJSON(dbjson.getJSONArray("skills"), DBSkill::fromJSON));
-        updater.updateCharacteristics(parseJSON(dbjson.getJSONArray("skill_characteristics"), DBSkillCharacteristic::fromJSON));
-        updater.updateDungeons(parseJSON(dbjson.getJSONArray("dungeons"), DBDungeon::fromJSON));
-        updater.updateMobs(parseJSON(dbjson.getJSONArray("mobs"), DBMob::fromJSON));
-        updater.updateMobsSkills(parseJSON(dbjson.getJSONArray("mobs_skills"), DBMobSkill::fromJSON));
+        updater.update(parseJSON(dbjson.getJSONArray("skills"), DBSkill::fromJSON), repository -> repository.dbSkillDAO);
+        updater.update(parseJSON(dbjson.getJSONArray("skill_characteristics"), DBSkillCharacteristic::fromJSON), repository -> repository.dbSkillCharacteristicDAO);
+        updater.update(parseJSON(dbjson.getJSONArray("dungeons"), DBDungeon::fromJSON), repository -> repository.dbDungeonDAO);
+        updater.update(parseJSON(dbjson.getJSONArray("mobs"), DBMob::fromJSON), repository -> repository.dbMobDAO);
+        updater.update(parseJSON(dbjson.getJSONArray("mobs_skills"), DBMobSkill::fromJSON), repository -> repository.dbMobSkillDAO);
+        updater.update(parseJSON(dbjson.getJSONArray("dungeon_rounds_description"), DBDungeonRoundDescription::fromJSON), repository -> repository.dbDungeonRoundDescriptionDAO);
     }
 
     private interface JSONParser<T> {

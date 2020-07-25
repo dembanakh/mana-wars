@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-//TODO refactor
 public class SkillFactory {
 
     public static Skill getNewSkill(Iterable<Skill> skills) {

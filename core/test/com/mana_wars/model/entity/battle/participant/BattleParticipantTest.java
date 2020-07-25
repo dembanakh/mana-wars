@@ -39,7 +39,8 @@ public class BattleParticipantTest {
                 Collections.emptyList(),
                 1, 2, 3) {
             @Override
-            public void update(double currentTime) {}
+            public void update(double currentTime) {
+            }
         };
         bp.setBattleClientAPI(battle);
     }

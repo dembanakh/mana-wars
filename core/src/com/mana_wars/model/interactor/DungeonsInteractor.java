@@ -1,6 +1,6 @@
 package com.mana_wars.model.interactor;
 
-import com.mana_wars.model.entity.enemy.Dungeon;
+import com.mana_wars.model.entity.dungeon.Dungeon;
 import com.mana_wars.model.entity.user.UserDungeonsAPI;
 import com.mana_wars.model.repository.DatabaseRepository;
 

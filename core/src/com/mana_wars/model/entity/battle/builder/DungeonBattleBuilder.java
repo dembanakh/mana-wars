@@ -3,13 +3,12 @@ package com.mana_wars.model.entity.battle.builder;
 import com.mana_wars.model.entity.battle.base.Battle;
 import com.mana_wars.model.entity.battle.BattleStateObserver;
 import com.mana_wars.model.entity.battle.BattleWithRounds;
-import com.mana_wars.model.entity.enemy.DungeonEnemyFactory;
+import com.mana_wars.model.entity.dungeon.DungeonEnemyFactory;
 import com.mana_wars.model.entity.skills.ActiveSkill;
 import com.mana_wars.model.entity.skills.PassiveSkill;
 import com.mana_wars.model.entity.user.UserBattleAPI;
 import com.mana_wars.model.repository.DatabaseRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -37,7 +36,7 @@ public class DungeonBattleBuilder implements BattleBuilder {
     public Battle build(BattleStateObserver observer) {
         return new BattleWithRounds(user.prepareBattleParticipant(userActiveSkills, userPassiveSkills),
                 dungeonEnemyFactory,
-                dungeonEnemyFactory.getDungeon().getRounds(), observer).init();
+                dungeonEnemyFactory.getDungeon().getRoundDescriptions().size(), observer).init();
     }
 
     @Override
