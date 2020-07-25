@@ -18,7 +18,7 @@ import com.mana_wars.ui.widgets.base.ListItemConsumer;
 import com.mana_wars.ui.widgets.item_drawer.ApplicableSkillDrawer;
 import com.mana_wars.ui.widgets.item_drawer.SkillLevelDrawer;
 import com.mana_wars.ui.widgets.item_drawer.SkillManaCostDrawer;
-import com.mana_wars.ui.widgets.item_drawer.SkillShopPriceDrawer;
+import com.mana_wars.ui.widgets.item_drawer.SkillShopPriceAndCountDrawer;
 import com.mana_wars.ui.widgets.item_drawer.SkillTypeDrawer;
 import com.mana_wars.ui.widgets.item_drawer.StandardSkillDrawer;
 import com.mana_wars.ui.widgets.skill_window.BriefSkillInfo;
@@ -30,6 +30,12 @@ public final class UIElementFactory {
 
     public static TextButton getButton(Skin skin, String label, ChangeListener eventListener) {
         TextButton button = new TextButton(label, skin);
+        button.addListener(eventListener);
+        return button;
+    }
+
+    public static TextButton getButton(TextButton.TextButtonStyle style, String label, ChangeListener eventListener) {
+        TextButton button = new TextButton(label, style);
         button.addListener(eventListener);
         return button;
     }
@@ -117,7 +123,7 @@ public final class UIElementFactory {
                         new SkillLevelDrawer(skillIconFactory.getAsset(1)),
                         new SkillManaCostDrawer(skillIconFactory.getAsset(1)),
                         new SkillTypeDrawer(skillIconFactory.getAsset(1)),
-                        new SkillShopPriceDrawer()),
+                        new SkillShopPriceAndCountDrawer(skillIconFactory.getAsset(1))),
                 cols, onSkillClick);
     }
 

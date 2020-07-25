@@ -13,25 +13,23 @@ public final class ShopPresenter extends BasePresenter<ShopView, ShopInteractor>
         super(view, interactor, handler);
     }
 
-    public void addObserver_manaAmount(Consumer<? super Integer> observer) {
-        disposable.add(interactor.getManaAmountObservable().subscribe(observer));
+    public void buyOneSkillCase() {
+        view.setSkillCasesNumber(interactor.buySkillCases(1, 1));
     }
 
-    public void addObserver_userLevel(Consumer<? super Integer> observer) {
-        disposable.add(interactor.getUserLevelObservable().subscribe(observer));
+    public void buyTenSkillCases() {
+        view.setSkillCasesNumber(interactor.buySkillCases(10, 9));
     }
 
-    public void buySkillCase() {
-        // obtain cases
-        view.setSkillCasesNumber(interactor.buySkillCase());
-    }
-
-    public void addObserver_userExperience(Consumer<? super Integer> observer) {
-        disposable.add(interactor.getUserExperienceObservable().subscribe(observer));
-    }
-
-    public void addObserver_userNextLevelRequiredExperienceObserver(Consumer<? super Integer> observer) {
-        disposable.add(interactor.getUserNextLevelRequiredExperienceObservable().subscribe(observer));
+    public void refreshPurchasableSkills() {
+        disposable.add(interactor.getPurchasableSkills().subscribe(
+                shopSkills -> {
+                    uiThreadHandler.postRunnable(
+                            () -> view.setPurchasableSkills(shopSkills)
+                    );
+                },
+                Throwable::printStackTrace
+        ));
     }
 
     public void onOpenSkillCase() {
@@ -50,18 +48,23 @@ public final class ShopPresenter extends BasePresenter<ShopView, ShopInteractor>
         view.setSkillCasesNumber(interactor.getUserSkillCasesNumber());
     }
 
-    public void refreshPurchasableSkills() {
-        disposable.add(interactor.getPurchasableSkills().subscribe(
-                shopSkills -> {
-                    uiThreadHandler.postRunnable(
-                            () -> view.setPurchasableSkills(shopSkills)
-                    );
-                },
-                Throwable::printStackTrace
-        ));
-    }
-
     public void purchaseSkill(ShopSkill skill) {
         interactor.purchaseSkill(skill);
+    }
+
+    public void addObserver_manaAmount(Consumer<? super Integer> observer) {
+        disposable.add(interactor.getManaAmountObservable().subscribe(observer));
+    }
+
+    public void addObserver_userLevel(Consumer<? super Integer> observer) {
+        disposable.add(interactor.getUserLevelObservable().subscribe(observer));
+    }
+
+    public void addObserver_userExperience(Consumer<? super Integer> observer) {
+        disposable.add(interactor.getUserExperienceObservable().subscribe(observer));
+    }
+
+    public void addObserver_userNextLevelRequiredExperienceObserver(Consumer<? super Integer> observer) {
+        disposable.add(interactor.getUserNextLevelRequiredExperienceObservable().subscribe(observer));
     }
 }

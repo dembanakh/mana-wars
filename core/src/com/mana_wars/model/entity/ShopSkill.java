@@ -27,7 +27,11 @@ public class ShopSkill implements ReadableSkill {
     }
 
     public boolean canBePurchased() {
-        return alreadyBought < MAX_DAILY_SKILL_AMOUNT;
+        return instancesLeft() > 0;
+    }
+
+    public int instancesLeft() {
+        return MAX_DAILY_SKILL_AMOUNT - alreadyBought;
     }
 
     @Override

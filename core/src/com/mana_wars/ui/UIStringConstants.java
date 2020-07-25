@@ -39,7 +39,7 @@ public final class UIStringConstants {
     }
 
     public static class SHOP_SCREEN {
-        public static final String ONE_SKILL_CASE_KEY = "1SkillCase";
+        public static final String BUY_SKILL_CASE_KEY = "BuySkillCase";
     }
 
     public static class SKILLS_INFO_SCREEN {

@@ -8,13 +8,10 @@ import com.mana_wars.model.repository.DatabaseRepository;
 import com.mana_wars.model.entity.ShopSkill;
 import com.mana_wars.model.repository.DailySkillsRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
-public final class ShopInteractor extends BaseInteractor<UserShopAPI> {
+public class ShopInteractor extends BaseInteractor<UserShopAPI> {
 
     private final DatabaseRepository databaseRepository;
     private final DailySkillsRepository dailySkillsRepository;
@@ -24,7 +21,6 @@ public final class ShopInteractor extends BaseInteractor<UserShopAPI> {
         super(user);
         this.databaseRepository = databaseRepository;
         this.dailySkillsRepository = dailySkillsRepository;
-
     }
 
     public Single<Skill> getNewSkill() {
@@ -38,10 +34,6 @@ public final class ShopInteractor extends BaseInteractor<UserShopAPI> {
         });
     }
 
-    public Single<Iterable<ShopSkill>> getPurchasableSkills() {
-        return dailySkillsRepository.getDailySkills();
-    }
-
     public void purchaseSkill(ShopSkill shopSkill) {
         if (shopSkill.canBePurchased()) {
             disposable.add(dailySkillsRepository.purchaseSkill(shopSkill)
@@ -49,9 +41,13 @@ public final class ShopInteractor extends BaseInteractor<UserShopAPI> {
         }
     }
 
-    public int buySkillCase() {
-        updateManaAmount(- GameConstants.SKILL_CASE_PRICE);
-        return user.updateSkillCases(1);
+    public int buySkillCases(int actualCases, int costCases) {
+        updateManaAmount(- costCases * GameConstants.SKILL_CASE_PRICE);
+        return user.updateSkillCases(actualCases);
+    }
+
+    public Single<Iterable<ShopSkill>> getPurchasableSkills() {
+        return dailySkillsRepository.getDailySkills();
     }
 
     public int getUserSkillCasesNumber() {

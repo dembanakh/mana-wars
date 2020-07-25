@@ -4,6 +4,7 @@ import com.mana_wars.model.entity.battle.BattleStateObserver;
 import com.mana_wars.model.entity.battle.BattleStateObserverStarter;
 import com.mana_wars.model.entity.battle.base.Battle;
 import com.mana_wars.model.entity.battle.builder.BattleBuilder;
+import com.mana_wars.model.entity.battle.data.BattleSummaryData;
 import com.mana_wars.model.entity.battle.participant.BattleParticipant;
 import com.mana_wars.model.entity.user.UserBattleAPI;
 import com.mana_wars.model.repository.DatabaseRepository;
@@ -15,6 +16,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Collections;
 
+import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 
 import static org.junit.Assert.*;
@@ -46,6 +48,7 @@ public class BattleInteractorTest {
         Battle battle = mock(Battle.class);
         when(battle.getUser()).thenReturn(userBP);
         when(battle.getEnemySide()).thenReturn(Collections.singletonList(enemyBP));
+        when(battle.getFinishBattleObservable()).thenReturn(Single.just(new BattleSummaryData(0)));
         when(userBP.getCharacteristicValue(any())).thenReturn(100);
         when(user.getActiveSkills()).thenReturn(Collections.emptyList());
         BattleBuilder builder = new BattleBuilder() {

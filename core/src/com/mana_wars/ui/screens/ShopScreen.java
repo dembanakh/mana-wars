@@ -15,7 +15,6 @@ import com.mana_wars.model.repository.DailySkillsRepository;
 import com.mana_wars.presentation.presenters.ShopPresenter;
 import com.mana_wars.presentation.view.ShopView;
 import com.mana_wars.model.entity.ShopSkill;
-import com.mana_wars.ui.UIElementsSize;
 import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.factory.LocalizedStringFactory;
 import com.mana_wars.ui.factory.UIElementFactory;
@@ -87,20 +86,28 @@ public final class ShopScreen extends BaseScreen<MenuOverlayUI, ShopPresenter> i
     protected Table buildForegroundLayer(Skin skin) {
         Table layer = new Table();
         layer.setFillParent(true);
-        layer.setDebug(true);
 
-        layer.add(purchasableSkills).top().padTop(50).growX().row();
+        layer.add(purchasableSkills).top().growX().row();
         layer.add(skillCaseButton).top().padTop(50).row();
-        TextButton button = UIElementFactory.getButton(skin,
-                localizedStringFactory.format(ONE_SKILL_CASE_KEY, GameConstants.SKILL_CASE_PRICE), new ChangeListener() {
+        TextButton button1 = UIElementFactory.getButton(skin,
+                localizedStringFactory.format(BUY_SKILL_CASE_KEY, 1, GameConstants.SKILL_CASE_PRICE), new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
-                        presenter.buySkillCase();
+                        presenter.buyOneSkillCase();
                     }
                 });
-        presenter.addObserver_manaAmount((mana) -> button.setDisabled(mana < GameConstants.SKILL_CASE_PRICE));
-        layer.add(button).top().padTop(UIElementsSize.MENU_OVERLAY_UI.USER_LEVEL_FIELD_HEIGHT)
-                .expandX().fillX().row();
+        presenter.addObserver_manaAmount((mana) -> button1.setDisabled(mana < GameConstants.SKILL_CASE_PRICE));
+        TextButton button2 = UIElementFactory.getButton(skin,
+                localizedStringFactory.format(BUY_SKILL_CASE_KEY, 10, 9 * GameConstants.SKILL_CASE_PRICE), new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        presenter.buyTenSkillCases();
+                    }
+                });
+        presenter.addObserver_manaAmount((mana) -> button2.setDisabled(mana < 9 * GameConstants.SKILL_CASE_PRICE));
+        layer.padTop(50);
+        layer.add(button1).top().expandX().row();
+        layer.add(button2).top().expandX().row();
 
         return layer;
     }
