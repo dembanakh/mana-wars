@@ -215,9 +215,6 @@ public final class BattleScreen extends BaseScreen<BaseOverlayUI, BattlePresente
                 .height(ACTIVE_SKILLS_TABLE_HEIGHT).width(SKILLS_TABLES_WIDTH).bottom().row();
 
         layer.add(bottomPart).growY().fillX();
-
-        System.out.println(roundLabel.getX());
-
         return layer;
     }
 

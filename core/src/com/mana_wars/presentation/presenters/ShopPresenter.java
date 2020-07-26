@@ -5,6 +5,8 @@ import com.mana_wars.model.interactor.ShopInteractor;
 import com.mana_wars.presentation.util.UIThreadHandler;
 import com.mana_wars.presentation.view.ShopView;
 
+import java.util.Collections;
+
 import io.reactivex.functions.Consumer;
 
 public final class ShopPresenter extends BasePresenter<ShopView, ShopInteractor> {
@@ -28,7 +30,12 @@ public final class ShopPresenter extends BasePresenter<ShopView, ShopInteractor>
                             () -> view.setPurchasableSkills(shopSkills)
                     );
                 },
-                Throwable::printStackTrace
+                e -> {
+                    e.printStackTrace();
+                    uiThreadHandler.postRunnable(
+                            () -> view.setPurchasableSkills(Collections.emptyList())
+                    );
+                }
         ));
     }
 

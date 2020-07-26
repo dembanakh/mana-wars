@@ -10,7 +10,7 @@ import com.mana_wars.model.repository.DailySkillsRepositoryImpl;
 import com.mana_wars.model.repository.RoomRepository;
 import com.mana_wars.model.repository.SharedPreferencesRepository;
 import com.mana_wars.model.repository.VolleyRepository;
-import com.mana_wars.utils.DBUpdateChecker;
+import com.mana_wars.utils.UpdateChecker;
 
 public class AndroidLauncher extends AndroidApplication {
     @Override
@@ -26,12 +26,13 @@ public class AndroidLauncher extends AndroidApplication {
         SharedPreferencesRepository sharedPreferencesRepository = new SharedPreferencesRepository(this);
         RoomRepository roomRepository = RoomRepository.getInstance(this);
         VolleyRepository volleyRepository = VolleyRepository.getInstance(this);
-        DailySkillsRepository dailySkillsRepository = new DailySkillsRepositoryImpl(roomRepository, sharedPreferencesRepository);
+        UpdateChecker updateChecker = new UpdateChecker(this, roomRepository, volleyRepository, sharedPreferencesRepository);
+        DailySkillsRepository dailySkillsRepository = new DailySkillsRepositoryImpl(roomRepository, sharedPreferencesRepository, updateChecker);
 
         initialize(new ManaWars(sharedPreferencesRepository,
                         new DBMapperRepository(roomRepository),
-                        dailySkillsRepository,
-                        new DBUpdateChecker(this, roomRepository, volleyRepository, sharedPreferencesRepository)),
+                        dailySkillsRepository, updateChecker
+                        ),
                 config);
     }
 
