@@ -4,12 +4,16 @@ import com.mana_wars.model.GameConstants;
 import com.mana_wars.model.entity.skills.Skill;
 import com.mana_wars.model.entity.skills.SkillFactory;
 import com.mana_wars.model.entity.user.UserShopAPI;
+import com.mana_wars.model.repository.ApplicationDataUpdater;
 import com.mana_wars.model.repository.DatabaseRepository;
 import com.mana_wars.model.entity.ShopSkill;
 import com.mana_wars.model.repository.DailySkillsRepository;
 
+import java.util.List;
+
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.schedulers.Schedulers;
 
 public class ShopInteractor extends BaseInteractor<UserShopAPI> {
 
@@ -46,7 +50,7 @@ public class ShopInteractor extends BaseInteractor<UserShopAPI> {
         return user.updateSkillCases(actualCases);
     }
 
-    public Single<Iterable<ShopSkill>> getPurchasableSkills() {
+    public Single<List<ShopSkill>> getPurchasableSkills() {
         return dailySkillsRepository.getDailySkills();
     }
 

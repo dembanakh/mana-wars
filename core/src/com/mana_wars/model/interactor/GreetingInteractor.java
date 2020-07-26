@@ -18,8 +18,6 @@ public class GreetingInteractor extends BaseInteractor<UserGreetingAPI> {
             user.updateManaAmount(1000);
             user.checkNextLevel();
         } else {
-            // something went wrong
-            System.out.println("Has username");
             throw new IllegalStateException("User has already got a username");
         }
     }

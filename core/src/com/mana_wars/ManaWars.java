@@ -3,7 +3,7 @@ package com.mana_wars;
 import com.badlogic.gdx.Game;
 import com.mana_wars.model.entity.user.User;
 import com.mana_wars.model.repository.DatabaseRepository;
-import com.mana_wars.model.repository.DatabaseUpdater;
+import com.mana_wars.model.repository.ApplicationDataUpdater;
 import com.mana_wars.model.repository.LocalUserDataRepository;
 import com.mana_wars.model.repository.DailySkillsRepository;
 import com.mana_wars.ui.management.ScreenHandler;
@@ -19,23 +19,23 @@ public class ManaWars extends Game implements ScreenHandler, RepositoryStorage {
     private final DatabaseRepository databaseRepository;
     private final DailySkillsRepository dailySkillsRepository;
 
-    private final DatabaseUpdater databaseUpdater;
+    private final ApplicationDataUpdater applicationDataUpdater;
 
     public ManaWars(final LocalUserDataRepository localUserDataRepository,
                     final DatabaseRepository databaseRepository,
                     final DailySkillsRepository dailySkillsRepository,
-                    final DatabaseUpdater databaseUpdater) {
+                    final ApplicationDataUpdater applicationDataUpdater) {
         this.localUserDataRepository = localUserDataRepository;
         this.databaseRepository = databaseRepository;
         this.dailySkillsRepository = dailySkillsRepository;
-        this.databaseUpdater = databaseUpdater;
+        this.applicationDataUpdater = applicationDataUpdater;
     }
 
     @Override
     public void create() {
         screenManager = new ScreenManager(this,
                 new User(localUserDataRepository, localUserDataRepository, localUserDataRepository, localUserDataRepository),
-                this, databaseUpdater);
+                this, applicationDataUpdater);
     }
 
     @Override
