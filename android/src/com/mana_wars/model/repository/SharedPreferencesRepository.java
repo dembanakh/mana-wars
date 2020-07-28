@@ -23,7 +23,6 @@ public class SharedPreferencesRepository implements LocalUserDataRepository {
     private final String USER_LVL_REQUIRED_EXPERIENCE = "USER_LVL_REQUIRED_EXPERIENCE";
     private final String CURRENT_USER_EXPERIENCE = "CURRENT_USER_EXPERIENCE";
     private final String USER_SKILL_CASES = "USER_SKILL_CASES";
-    private final String LAST_SHOP_REFRESH = "LAST_SHOP_REFRESH";
 
     private final String LAST_DAILY_SKILL_UPDATE_DATE = "LAST_DAILY_SKILL_UPDATE_DATE";
     private final String DAILY_SKILL_BOUGHT = "DAILY_SKILL_BOUGHT";
@@ -143,7 +142,7 @@ public class SharedPreferencesRepository implements LocalUserDataRepository {
         getPrefsEditor().putInt(DAILY_SKILL_BOUGHT + skill, amount).apply();
     }
 
-    public int getDailySkillBought(int skill) {
+    int getDailySkillBought(int skill) {
         return getDefaultManager().getInt(DAILY_SKILL_BOUGHT + skill, 0);
     }
 
@@ -151,7 +150,7 @@ public class SharedPreferencesRepository implements LocalUserDataRepository {
         getPrefsEditor().putInt(DAILY_SKILL_ID + skill, id).apply();
     }
 
-    public int getDailySkillID(int skill) {
+    int getDailySkillID(int skill) {
         return getDefaultManager().getInt(DAILY_SKILL_ID + skill, -1);
     }
 
@@ -159,7 +158,7 @@ public class SharedPreferencesRepository implements LocalUserDataRepository {
         getPrefsEditor().putInt(DAILY_SKILL_PRICE + skill, price).apply();
     }
 
-    public int getDailySkillPrice(int skill) {
+    int getDailySkillPrice(int skill) {
         return getDefaultManager().getInt(DAILY_SKILL_PRICE + skill, 0);
     }
 
@@ -170,18 +169,4 @@ public class SharedPreferencesRepository implements LocalUserDataRepository {
     public String getLastDailySkillUpdateDate() {
         return getDefaultManager().getString(LAST_DAILY_SKILL_UPDATE_DATE, "2000/07/05");
     }
-
-    /*@Override
-    public Calendar getLastRefreshTime() {
-        long timeInMillis = getDefaultManager().getLong(LAST_SHOP_REFRESH, 0);
-        if (timeInMillis == 0) return GregorianCalendar.getInstance();
-        Calendar result = new GregorianCalendar();
-        result.setTime(new Date(timeInMillis));
-        return result;
-    }
-
-    @Override
-    public void updateRefreshTime(Calendar calendar) {
-        getPrefsEditor().putLong(LAST_SHOP_REFRESH, calendar.getTimeInMillis()).apply();
-    }*/
 }

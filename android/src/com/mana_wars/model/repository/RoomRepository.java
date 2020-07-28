@@ -28,7 +28,7 @@ public class RoomRepository {
 
     private static RoomRepository instance;
 
-    public final UserSkillsDAO userSkillsDAO;
+    final UserSkillsDAO userSkillsDAO;
     public final DBSkillDAO dbSkillDAO;
     public final DBSkillCharacteristicDAO dbSkillCharacteristicDAO;
     public final DBDungeonDAO dbDungeonDAO;
@@ -53,27 +53,27 @@ public class RoomRepository {
         return dao.getEntitiesByIDs(ids);
     }
 
-    public Single<List<DBDungeonWithRoundsDescription>> getDBDungeonsWithRoundsDescription() {
+    Single<List<DBDungeonWithRoundsDescription>> getDBDungeonsWithRoundsDescription() {
         return dbDungeonDAO.getDBDungeonsWithRoundsDescription();
     }
 
-    public Single<List<DBSkillWithCharacteristics>> getSkillsWithCharacteristics() {
+    Single<List<DBSkillWithCharacteristics>> getSkillsWithCharacteristics() {
         return dbSkillDAO.getSkillsWithCharacteristics();
     }
 
-    public Single<List<DBSkillWithCharacteristics>> getSkillsWithCharacteristicsByIDs(List<Integer> ids) {
+    Single<List<DBSkillWithCharacteristics>> getSkillsWithCharacteristicsByIDs(List<Integer> ids) {
         return dbSkillDAO.getSkillsWithCharacteristicsByIDs(ids);
     }
 
-    public Single<List<CompleteUserSkill>> getCompleteUserSkills() {
+    Single<List<CompleteUserSkill>> getCompleteUserSkills() {
         return userSkillsDAO.getUserSkills();
     }
 
-    public Single<List<DBMobWithSkills>> getDBMobsWithSkillsByDungeonID(int id) {
+    Single<List<DBMobWithSkills>> getDBMobsWithSkillsByDungeonID(int id) {
         return dbMobDAO.getDBMobsWithSkillsByDungeonID(id);
     }
 
-    public Single<List<CompleteUserSkill>> getChosenPassiveSkills() {
+    Single<List<CompleteUserSkill>> getChosenPassiveSkills() {
         return userSkillsDAO.getChosenPassiveSkills();
     }
 
@@ -113,7 +113,7 @@ public class RoomRepository {
         ));
     }
 
-    public Completable mergeSkills(UserSkill toUpdate, UserSkill toDelete) {
+    Completable mergeSkills(UserSkill toUpdate, UserSkill toDelete) {
         return multithreading(Completable.fromAction(
                 () -> userSkillsDAO.mergeUserSkills(toUpdate, toDelete)
         ));

@@ -25,7 +25,7 @@ public class SkillTypeDrawer implements ListItemDrawer<ReadableSkill> {
     public void draw(Batch batch, BitmapFont font, int index, ReadableSkill item, float x, float y, float width, float height) {
         if (!shouldShowType(item)) return;
 
-        String type = (item instanceof ActiveSkill) ? "A" : "P";
+        String type = (item.isActive()) ? "A" : "P";
 
         font.getData().setScale(3);
         float halfLineHeight = font.getLineHeight() / 2;

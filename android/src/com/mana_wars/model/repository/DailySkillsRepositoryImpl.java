@@ -25,7 +25,6 @@ public class DailySkillsRepositoryImpl implements DailySkillsRepository {
     private final UpdateChecker checker;
     private final Map<ShopSkill, Integer> lastFetchSkillsMap = new HashMap<>();
 
-
     public DailySkillsRepositoryImpl(RoomRepository repository, SharedPreferencesRepository preferences, UpdateChecker checker) {
         this.repository = repository;
         this.preferences = preferences;
@@ -36,7 +35,7 @@ public class DailySkillsRepositoryImpl implements DailySkillsRepository {
         Map<Integer, Integer> result = new HashMap<>();
         for (int i = 0; i < DAILY_SKILLS_COUNT; i++) {
             int id = preferences.getDailySkillID(i);
-            if(id > -1) result.put(id, i);
+            if (id > -1) result.put(id, i);
         }
         return result;
     }

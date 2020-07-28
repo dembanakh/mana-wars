@@ -63,7 +63,6 @@ public class DBMapperRepository implements DatabaseRepository {
                 result.passiveSkills.add(PassiveSkill.getEmpty());
 
             for (CompleteUserSkill skill : completeUserSkills) {
-
                 Skill convertedSkill;
 
                 if (skill.userSkill.getChosen_id() > 0) {
@@ -146,13 +145,13 @@ public class DBMapperRepository implements DatabaseRepository {
                         List<PassiveSkill> passiveSkills = new ArrayList<>();
 
                         for (DBMobSkillWithCharacteristics skill : mob.skills) {
-
                             if (skill.skill.skill.isActive()) {
                                 activeSkills.add(SkillConverter.toActiveSkill(skill.skill, skill.dbMobSkill.getLvl()));
                             } else {
                                 passiveSkills.add(SkillConverter.toPassiveSkill(skill.skill, skill.dbMobSkill.getLvl()));
                             }
                         }
+
                         mobs.add(new MobBlueprint(mob.mob.getName(), mob.mob.getIconID(),
                                 mob.mob.getInitialHealth(), activeSkills, passiveSkills,
                                 mob.mob.getManaReward(), mob.mob.getExperienceReward(),

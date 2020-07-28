@@ -53,4 +53,9 @@ public class ShopSkill implements ReadableSkill {
     public int getManaCost() {
         return canBePurchased() ? skill.getManaCost() : Skill.getEmpty().getManaCost();
     }
+
+    @Override
+    public boolean isActive() {
+        return canBePurchased() ? skill.isActive() : Skill.getEmpty().isActive();
+    }
 }

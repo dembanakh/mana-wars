@@ -7,4 +7,5 @@ public interface ReadableSkill {
     Rarity getRarity();
     int getLevel();
     int getManaCost();
+    boolean isActive();
 }
