@@ -37,9 +37,9 @@ public class VolleyRepository {
                     emitter::onSuccess,
                     error -> {
                         if (error.getMessage() != null) {
-                            Log.e("RESPONCE ERROR", error.getMessage());
+                            Log.e("RESPONSE ERROR", error.getMessage());
                         } else {
-                            Log.e("RESPONCE ERROR", "error");
+                            Log.e("RESPONSE ERROR", "error");
                         }
                         emitter.onError(error);
                     }

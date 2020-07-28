@@ -41,6 +41,12 @@ public class Skill extends GameItem implements ReadableSkill {
         return 0;
     }
 
+    //TODO temp
+    @Override
+    public boolean isActive() {
+        return false;
+    }
+
     public Iterable<SkillCharacteristic> getCharacteristics() {
         List<SkillCharacteristic> result = new ArrayList<>();
         for (SkillCharacteristic sc : skillCharacteristics) {

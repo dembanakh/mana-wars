@@ -32,7 +32,7 @@ public enum ScreenInstance {
 
     private BaseScreen screen;
 
-    public static void init(final User user,
+    static void init(final User user,
                             final ScreenSetter screenSetter,
                             final FactoryStorage factoryStorage,
                             final RepositoryStorage repositoryStorage,
@@ -74,13 +74,13 @@ public enum ScreenInstance {
                 overlayUIFactory.getMenuOverlayUI());
     }
 
-    public static void dispose() {
+    static void dispose() {
         for (ScreenInstance screenInstance : ScreenInstance.values()) {
             screenInstance.screen.dispose();
         }
     }
 
-    public BaseScreen getScreen(Map<String, Object> arguments) {
+    BaseScreen getScreen(Map<String, Object> arguments) {
         return screen.reInit(arguments);
     }
 }

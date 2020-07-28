@@ -13,12 +13,6 @@ final class AliveEnemiesValueField extends ValueField<Integer, Integer> {
 
     private int aliveEnemiesNumber;
 
-    AliveEnemiesValueField(final Skin skin, final TransformApplier transformApplier) {
-        super(skin, transformApplier);
-        this.label = new Label("", skin);
-        init();
-    }
-
     AliveEnemiesValueField(final Skin skin, UIStringConstants.UI_SKIN.BACKGROUND_COLOR backgroundColor,
                    TransformApplier transformApplier) {
         super(skin, backgroundColor, transformApplier);

@@ -11,8 +11,6 @@ import com.mana_wars.ui.widgets.base.BuildableUI;
 
 import static com.mana_wars.ui.UIElementsSize.SCREEN_HEIGHT;
 import static com.mana_wars.ui.UIElementsSize.SCREEN_WIDTH;
-import static com.mana_wars.ui.UIElementsSize.SKILL_CASE_WINDOW.SKILL_DESCRIPTION_PADDING;
-import static com.mana_wars.ui.UIElementsSize.SKILL_CASE_WINDOW.SKILL_NAME_PADDING;
 
 public class BriefSkillInfo extends Window implements BuildableUI {
 

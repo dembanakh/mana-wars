@@ -21,25 +21,39 @@ class BattleEventsHandler {
         while (!battleEvents.isEmpty() && battleEvents.peek().targetTime <= currentTime) {
             BattleEvent be = battleEvents.poll();
             if (be.source.isAlive()) {
-                List<Integer> targetsHealthDelta = new ArrayList<>();
+                List<Integer> targetsHealthDelta = prepareTargetsDeltaHealth(be);
                 int sourceHealthDelta = -be.source.getCharacteristicValue(Characteristic.HEALTH);
-                for (BattleParticipant tbp : be.target) {
-                    targetsHealthDelta.add(-tbp.getCharacteristicValue(Characteristic.HEALTH));
-                }
 
                 be.skill.activate(be.source, be.target);
 
+                updateTargetsDeltaHealth(be, targetsHealthDelta);
                 sourceHealthDelta += be.source.getCharacteristicValue(Characteristic.HEALTH);
-                for (int i = 0; i < be.target.size(); i++) {
-                    targetsHealthDelta.set(i, targetsHealthDelta.get(i) + be.target.get(i).getCharacteristicValue(Characteristic.HEALTH));
-                }
 
-                be.source.getBattleStatisticsData().updateValuesAsSourceSelf(sourceHealthDelta);
-                for (int i = 0; i < be.target.size(); i++) {
-                    be.source.getBattleStatisticsData().updateValuesAsSourceTarget(targetsHealthDelta.get(i));
-                    be.target.get(i).getBattleStatisticsData().updateValuesAsTarget(targetsHealthDelta.get(i));
-                }
+                applyDeltaHealthValues(targetsHealthDelta, sourceHealthDelta, be);
             }
+        }
+    }
+
+    private List<Integer> prepareTargetsDeltaHealth(BattleEvent be) {
+        List<Integer> targetsHealthDelta = new ArrayList<>();
+        for (BattleParticipant tbp : be.target) {
+            targetsHealthDelta.add(-tbp.getCharacteristicValue(Characteristic.HEALTH));
+        }
+        return targetsHealthDelta;
+    }
+
+    private void updateTargetsDeltaHealth(BattleEvent be, List<Integer> targetsHealthDelta) {
+        for (int i = 0; i < be.target.size(); i++) {
+            targetsHealthDelta.set(i, targetsHealthDelta.get(i) +
+                    be.target.get(i).getCharacteristicValue(Characteristic.HEALTH));
+        }
+    }
+
+    private void applyDeltaHealthValues(List<Integer> targetsHealthDelta, int sourceHealthDelta, BattleEvent be) {
+        be.source.getBattleStatisticsData().updateValuesAsSourceSelf(sourceHealthDelta);
+        for (int i = 0; i < be.target.size(); i++) {
+            be.source.getBattleStatisticsData().updateValuesAsSourceTarget(targetsHealthDelta.get(i));
+            be.target.get(i).getBattleStatisticsData().updateValuesAsTarget(targetsHealthDelta.get(i));
         }
     }
 

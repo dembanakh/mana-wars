@@ -1,5 +1,6 @@
 package com.mana_wars.model.db.entity.query;
 
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -62,4 +63,11 @@ public class UserSkill {
         this.chosen_id = chosen_id;
     }
 
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof UserSkill)) return false;
+        UserSkill other = (UserSkill)obj;
+        return lvl == other.lvl && skillID == other.skillID;
+    }
 }

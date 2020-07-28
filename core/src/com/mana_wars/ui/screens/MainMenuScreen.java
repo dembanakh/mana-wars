@@ -26,6 +26,8 @@ import com.mana_wars.ui.widgets.ManaBonusProgressBar;
 import com.mana_wars.ui.widgets.skill_window.BaseSkillWindow;
 import com.mana_wars.ui.widgets.skill_window.SkillCaseWindow;
 
+import static com.mana_wars.ui.UIElementsSize.MAIN_MENU_SCREEN.MANA_BONUS_PROGRESS_BAR_HEIGHT;
+import static com.mana_wars.ui.UIElementsSize.MAIN_MENU_SCREEN.MANA_BONUS_PROGRESS_BAR_WIDTH;
 import static com.mana_wars.ui.UIStringConstants.MAIN_MENU_SCREEN;
 import static com.mana_wars.ui.UIStringConstants.SKILL_CASE_WINDOW;
 
@@ -103,8 +105,8 @@ public final class MainMenuScreen extends BaseScreen<MenuOverlayUI, MainMenuPres
         layer.setFillParent(true);
 
         layer.add(skillCaseButton).row();
-        // TODO: remove constants
-        layer.add(manaBonusProgressBar.build()).height(100).width(200);
+        layer.add(manaBonusProgressBar.build())
+                .height(MANA_BONUS_PROGRESS_BAR_HEIGHT).width(MANA_BONUS_PROGRESS_BAR_WIDTH);
 
         return layer;
     }

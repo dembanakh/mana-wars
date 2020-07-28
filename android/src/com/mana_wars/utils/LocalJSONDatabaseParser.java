@@ -26,10 +26,9 @@ import io.reactivex.Completable;
 
 import static com.mana_wars.utils.ApplicationConstants.DB_VERSION;
 
-public class LocalJSONDatabaseParser {
+class LocalJSONDatabaseParser {
 
-    private LocalJSONDatabaseParser() {
-    }
+    private LocalJSONDatabaseParser() {}
 
     static synchronized Completable updateFromJSON(final Context context, final SharedPreferencesRepository preferences, RoomRepository repository) throws IOException, JSONException {
         return new LocalJSONDatabaseParser().updateFromLocalJSON(context, preferences, repository);

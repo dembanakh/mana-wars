@@ -31,6 +31,11 @@ public class ActiveSkill extends Skill {
         return castTime * percent / 100;
     }
 
+    @Override
+    public boolean isActive() {
+        return true;
+    }
+
     private static ActiveSkill Empty = new ActiveSkill(50, 0, Rarity.EMPTY, 0, 0, "EMPTY",
             Collections.emptyList());
 

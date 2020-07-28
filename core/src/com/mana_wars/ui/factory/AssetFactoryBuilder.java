@@ -25,7 +25,7 @@ abstract class AssetFactoryBuilder<K, V, I> {
     protected static class Entry<K, V> {
         private final K key;
         private final V value;
-        protected Entry(K key, V value) {
+        Entry(K key, V value) {
             this.key = key;
             this.value = value;
         }

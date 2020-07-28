@@ -20,7 +20,7 @@ class CharacteristicsConverter {
         return list;
     }
 
-    static SkillCharacteristic toSkillCharacteristic(final DBSkillCharacteristic dbsc) {
+    private static SkillCharacteristic toSkillCharacteristic(final DBSkillCharacteristic dbsc) {
         return new SkillCharacteristic(dbsc.getValue(),
                 Characteristic.getCharacteristicById(dbsc.getType()),
                 dbsc.getChangeType() ? ValueChangeType.INCREASE :

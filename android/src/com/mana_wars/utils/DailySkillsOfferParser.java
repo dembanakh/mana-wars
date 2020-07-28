@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 import static com.mana_wars.model.GameConstants.DAILY_SKILLS_COUNT;
 
-public class DailySkillsOfferParser {
+class DailySkillsOfferParser {
 
     static synchronized void updateFromJSON(final SharedPreferencesRepository preferences, final String jsonString, final String todayDateString) throws JSONException {
         JSONObject responseJSON = new JSONObject(jsonString);
