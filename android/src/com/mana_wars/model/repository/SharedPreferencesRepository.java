@@ -152,7 +152,7 @@ public class SharedPreferencesRepository implements LocalUserDataRepository {
     }
 
     public int getDailySkillID(int skill) {
-        return getDefaultManager().getInt(DAILY_SKILL_ID + skill, 0);
+        return getDefaultManager().getInt(DAILY_SKILL_ID + skill, -1);
     }
 
     public void setDailySkillPrice(int skill, int price) {

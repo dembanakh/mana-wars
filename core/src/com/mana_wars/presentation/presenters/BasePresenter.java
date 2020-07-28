@@ -21,11 +21,6 @@ public abstract class BasePresenter<U extends BaseView, T extends BaseInteractor
         this.uiThreadHandler = handler;
     }
 
-    public static BasePresenter<BaseView, BaseInteractor<UserBaseAPI>> Default(BaseView view, UIThreadHandler handler) {
-        return new BasePresenter<BaseView, BaseInteractor<UserBaseAPI>>(
-                view, new BaseInteractor<UserBaseAPI>(null) {}, handler){};
-    }
-
     public void dispose() {
         disposable.dispose();
         interactor.dispose();

@@ -4,11 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.mana_wars.model.entity.user.UserBaseAPI;
-import com.mana_wars.model.interactor.BaseInteractor;
-import com.mana_wars.model.repository.DatabaseUpdater;
-import com.mana_wars.presentation.presenters.BasePresenter;
-import com.mana_wars.presentation.view.BaseView;
+import com.mana_wars.model.interactor.LoadingInteractor;
+import com.mana_wars.model.repository.ApplicationDataUpdater;
+import com.mana_wars.presentation.presenters.LoadingPresenter;
+import com.mana_wars.presentation.view.LoadingView;
 import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.factory.LocalizedStringFactory;
 import com.mana_wars.ui.management.ScreenInstance;
@@ -18,19 +17,18 @@ import com.mana_wars.ui.storage.FactoryStorage;
 
 import java.util.Map;
 
-public final class LoadingScreen extends BaseScreen<BaseOverlayUI, BasePresenter> implements BaseView {
+public final class LoadingScreen extends BaseScreen<BaseOverlayUI, LoadingPresenter> implements LoadingView {
 
-    private final DatabaseUpdater updater;
     private final LocalizedStringFactory localizedStringFactory;
 
     public LoadingScreen(ScreenSetter screenSetter, FactoryStorage factoryStorage,
-                         BaseOverlayUI overlayUI, DatabaseUpdater updater) {
+                         BaseOverlayUI overlayUI, ApplicationDataUpdater updater) {
         super(screenSetter,
                 factoryStorage.getSkinFactory().getAsset(UIStringConstants.UI_SKIN.FREEZING),
                 overlayUI);
-        this.updater = updater;
         this.localizedStringFactory = factoryStorage.getLocalizedStringFactory();
-        this.presenter = BasePresenter.Default(this, Gdx.app::postRunnable);
+        this.presenter = new LoadingPresenter(this,
+                new LoadingInteractor(updater), Gdx.app::postRunnable);
     }
 
     @Override
@@ -49,14 +47,21 @@ public final class LoadingScreen extends BaseScreen<BaseOverlayUI, BasePresenter
         return layer;
     }
 
+
+
     @Override
     public BaseScreen reInit(Map<String, Object> arguments) {
-        updater.checkUpdate(() -> {
-            Gdx.app.postRunnable(() -> {
-                setScreen(ScreenInstance.GREETING, null);
-            });
-        }, Gdx.app::exit);
+        presenter.checkApplicationUpdate();
         return super.reInit(arguments);
     }
 
+    @Override
+    public void goToGreetingScreen() {
+        setScreen(ScreenInstance.GREETING, null);
+    }
+
+    @Override
+    public void exitFromApplication() {
+        Gdx.app.exit();
+    }
 }

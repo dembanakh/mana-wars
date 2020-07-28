@@ -2,8 +2,6 @@ package com.mana_wars.model;
 
 public final class GameConstants {
 
-    public static final int DB_VERSION = 1;
-
     public static final int DEFAULT_USER_INITIAL_HEALTH = 300;
 
     public static final int MAX_CHOSEN_ACTIVE_SKILL_COUNT = 5;

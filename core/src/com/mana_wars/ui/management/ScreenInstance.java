@@ -1,7 +1,7 @@
 package com.mana_wars.ui.management;
 
 import com.mana_wars.model.entity.user.User;
-import com.mana_wars.model.repository.DatabaseUpdater;
+import com.mana_wars.model.repository.ApplicationDataUpdater;
 import com.mana_wars.ui.UIStringConstants;
 import com.mana_wars.ui.overlays.OverlayUIFactory;
 import com.mana_wars.ui.screens.BaseScreen;
@@ -36,11 +36,11 @@ public enum ScreenInstance {
                             final ScreenSetter screenSetter,
                             final FactoryStorage factoryStorage,
                             final RepositoryStorage repositoryStorage,
-                            final DatabaseUpdater databaseUpdater) {
+                            final ApplicationDataUpdater applicationDataUpdater) {
         OverlayUIFactory overlayUIFactory = new OverlayUIFactory(factoryStorage.getSkinFactory(), screenSetter,
                 factoryStorage.getLocalizedStringFactory());
         LOADING.screen = new LoadingScreen(screenSetter, factoryStorage,
-                overlayUIFactory.getEmptyOverlayUI(), databaseUpdater);
+                overlayUIFactory.getEmptyOverlayUI(), applicationDataUpdater);
         GREETING.screen = new GreetingScreen(user, screenSetter, factoryStorage,
                 overlayUIFactory.getEmptyOverlayUI());
         MAIN_MENU.screen = new MainMenuScreen(user,

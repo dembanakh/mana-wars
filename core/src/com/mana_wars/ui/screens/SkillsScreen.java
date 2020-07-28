@@ -145,7 +145,6 @@ public final class SkillsScreen extends BaseScreen<MenuOverlayUI, SkillsPresente
     @Override
     public void finishMove(SkillTable tableTarget, int skillTargetIndex, Skill skillSource) {
         OperationSkillsList<Skill> listTarget = getList2D(tableTarget);
-        System.out.println(tableTarget);
         listTarget.finishMoveOperation(skillTargetIndex, skillSource);
     }
 

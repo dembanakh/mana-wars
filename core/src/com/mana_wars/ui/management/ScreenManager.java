@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mana_wars.model.entity.base.Rarity;
 import com.mana_wars.model.entity.user.User;
-import com.mana_wars.model.repository.DatabaseUpdater;
+import com.mana_wars.model.repository.ApplicationDataUpdater;
 import com.mana_wars.ui.factory.AssetFactory;
 import com.mana_wars.ui.factory.ImageFactory;
 import com.mana_wars.ui.factory.LocalizedStringFactory;
@@ -36,7 +36,7 @@ public class ScreenManager implements FactoryStorage, ScreenSetter {
     public ScreenManager(final ScreenHandler handler,
                          final User user,
                          final RepositoryStorage repositoryStorage,
-                         final DatabaseUpdater databaseUpdater) {
+                         final ApplicationDataUpdater applicationDataUpdater) {
         this.handler = handler;
         skillIconFactory = new SkillIconFactory(1, 112).build();
         skinFactory = new SkinFactory(UI_SKIN.FREEZING, UI_SKIN.MANA_WARS).build();
@@ -52,7 +52,7 @@ public class ScreenManager implements FactoryStorage, ScreenSetter {
                 .build();
         localizedStringFactory = new LocalizedStringFactory("localization/Bundle",
                 new Locale("en", "US"));
-        ScreenInstance.init(user, this, this, repositoryStorage, databaseUpdater);
+        ScreenInstance.init(user, this, this, repositoryStorage, applicationDataUpdater);
         start();
     }
 
