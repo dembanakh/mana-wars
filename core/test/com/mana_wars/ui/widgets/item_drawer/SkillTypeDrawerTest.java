@@ -9,7 +9,6 @@ import com.mana_wars.model.entity.skills.PassiveSkill;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -24,6 +23,7 @@ public class SkillTypeDrawerTest {
         when(font.getData()).thenReturn(fontData);
         when(font.getLineHeight()).thenReturn(2f);
         ActiveSkill skill = mock(ActiveSkill.class);
+        when(skill.isActive()).thenReturn(true);
         TextureRegion region = mock(TextureRegion.class);
 
         SkillTypeDrawer drawer = new SkillTypeDrawer(region);
@@ -41,6 +41,7 @@ public class SkillTypeDrawerTest {
         when(font.getData()).thenReturn(fontData);
         when(font.getLineHeight()).thenReturn(2f);
         PassiveSkill skill = mock(PassiveSkill.class);
+        when(skill.isActive()).thenReturn(false);
         TextureRegion region = mock(TextureRegion.class);
 
         SkillTypeDrawer drawer = new SkillTypeDrawer(region);
