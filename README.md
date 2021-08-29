@@ -1,6 +1,8 @@
 
 # Mana Wars
 
+Team project for university course.
+
 Single-player game for Android. The main goal is to develop the collection of skills (passive and active) and their levels, which are then used in 1v1 combats against bots of different levels. New skills can be dropped at random from a case earned during a successful battle, or bought in the store for mana (in-game currency) choosing from a small range of skills on sale. 
 
 # Technical Details
